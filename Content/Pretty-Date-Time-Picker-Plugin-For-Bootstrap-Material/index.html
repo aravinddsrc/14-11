@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Bootstrap Material Datetimepicker Examples</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css" />
+		<link rel="stylesheet" href="./css/bootstrap-material-datetimepicker.css" />
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.min.js"></script>
+		<script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+		<script type="text/javascript" src="./js/bootstrap-material-datetimepicker.js"></script>
+
+		<style>
+			body 
+			{
+				font-family: 'Roboto', sans-serif;
+			}
+			h2 
+			{
+				padding: 0 20px 10px 20px;
+				font-size: 20px;
+				font-weight: 400;
+			}
+			.form-control-wrapper 
+			{
+				margin: 10px 20px;
+			}
+			code 
+			{
+				padding: 10px;
+				background: #eee!important;
+				display: block;
+				color: #000;
+			}
+			code > p 
+			{
+				font-weight: bold;
+				color: #000;
+				font-size: 1.5em;
+			}
+			@media(max-width: 300px)
+			{
+				.well { margin : 0}
+			}
+		</style>
+		
+	</head>
+	<body>
+    <div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/time-clock/Pretty-Date-Time-Picker-Plugin-For-Bootstrap-Material.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+		<div class="container well" style="margin-top:150px;">
+			<div class="row">
+				<div class="col-md-6">
+					<h1>Bootstrap Material Datetimepicker Examples</h1>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Date Picker</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-control-wrapper">
+						<input type="text" id="date" class="form-control floating-label" placeholder="Date">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<code>
+						<p>Code</p>
+						$('#date').bootstrapMaterialDatePicker({ weekStart : 0, time: false });
+					</code>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Time Picker</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-control-wrapper">
+						<input type="text" id="time" class="form-control floating-label" placeholder="Time">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<code>
+						<p>Code</p>
+						$('#time').bootstrapMaterialDatePicker({ date: false });
+					</code>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Date Time Picker</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-control-wrapper">
+						<input type="text" id="date-format" class="form-control floating-label" placeholder="Begin Date Time">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<code>
+						<p>Code</p>
+						$('#date-format').bootstrapMaterialDatePicker({ format : 'dddd DD MMMM YYYY - HH:mm' });
+					</code>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>French Locales (Week starts at Monday)</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-control-wrapper">
+						<input type="text" id="date-fr" class="form-control floating-label" value="18/03/2015 08:00" placeholder="Date de début">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<code>
+						<p>Code</p>
+						$('#date-fr').bootstrapMaterialDatePicker({ format : 'DD/MM/YYYY HH:mm', lang : 'fr', weekStart : 1, cancelText : 'ANNULER' });
+					</code>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Min Date set</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-control-wrapper">
+						<input type="text" id="min-date" class="form-control floating-label" placeholder="Start Date">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<code>
+						<p>Code</p>
+						$('#min-date').bootstrapMaterialDatePicker({ format : 'DD/MM/YYYY HH:mm', minDate : new Date() });
+					</code>
+				</div>
+			</div>
+		</div>
+		<div class="container well">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>Events</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-control-wrapper">
+								<input type="text" id="date-start" class="form-control floating-label" placeholder="Start Date">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-control-wrapper">
+								<input type="text" id="date-end" class="form-control floating-label" placeholder="End Date">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+							<code>
+								<p>Code</p>
+								$('#date-end').bootstrapMaterialDatePicker({ weekStart : 0 });<br />
+								$('#date-start').bootstrapMaterialDatePicker({ weekStart : 0 }).on('change', function(e, date)<br />
+								{<br />
+									$('#date-end').bootstrapMaterialDatePicker('setMinDate', date);<br />
+								});
+							</code>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			$('#date').bootstrapMaterialDatePicker
+			({
+				time: false
+			});
+
+			$('#time').bootstrapMaterialDatePicker
+			({
+				date: false,
+				shortTime: true,
+				format: 'HH:mm'
+			});
+
+			$('#date-format').bootstrapMaterialDatePicker
+			({
+				format: 'dddd DD MMMM YYYY - HH:mm'
+			});
+			$('#date-fr').bootstrapMaterialDatePicker
+			({
+				format: 'DD/MM/YYYY HH:mm',
+				lang: 'fr',
+				weekStart: 1, 
+				cancelText : 'ANNULER'
+			});
+
+			$('#date-end').bootstrapMaterialDatePicker
+			({
+				weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+			});
+			$('#date-start').bootstrapMaterialDatePicker
+			({
+				weekStart: 0, format: 'DD/MM/YYYY HH:mm'
+			}).on('change', function(e, date)
+			{
+				$('#date-end').bootstrapMaterialDatePicker('setMinDate', date);
+			});
+
+			$('#min-date').bootstrapMaterialDatePicker({ format : 'DD/MM/YYYY HH:mm', minDate : new Date() });
+
+			$.material.init()
+		});
+		</script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	</body>
+</html>
