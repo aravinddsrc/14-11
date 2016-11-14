@@ -1,0 +1,64 @@
+﻿@model DSRCManagementSystem.Models.UserFeedback
+@{
+    ViewBag.Title = "User Feedback";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead{
+<style>
+    textarea
+    {
+        resize: none;
+    }
+</style>
+    }
+<ol class="breadcrumb bc-3">
+    <li><b>Feedback</b> </li>
+</ol>
+<div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Feedback</div>
+            </div>
+            <br />
+            <div class="panel-body">
+                @using (Html.BeginForm("UserFeedback", "Home", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(x => x.Feedback)
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                @Html.TextAreaFor(x => x.Feedback, new { @id = "feedback", @name = "feedback", @class = "form-control", @style = "Height: 275px", @placeholder = "Enter feedback", @maxlength = 1500 })
+                                @Html.ValidationMessageFor(x => x.Feedback, "", new { @style = "color:red" })
+                                <br />
+                                <div style="text-align: right">
+                                    <button type="submit" class="btn btn-info" >
+                                        Send Feedback</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.StatusMessage != null)
+{
+    <script type="text/javascript">
+        $("#feedback").empty();
+        toastr.success("Feedback sent successfully");
+
+    </script>
+}

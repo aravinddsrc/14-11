@@ -1,0 +1,410 @@
+﻿@model DSRCManagementSystem.Models.CompletedTraining
+@{
+    ViewBag.Title = "Training Completion Form";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Completion/netdna.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Training Completion Form</title>    
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+    <script src="../../Completion/3.34.js" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+</head>
+<body>
+   
+ <a href="@Url.Action("Mylearning","LDHome")"style="color:black ">
+            Training Management
+        </a> &#160;<img src="~/Images/righ-arrow.png" />&#160;
+      <strong>Training Completion Form</strong>
+
+   
+    <div style="text-align:right;">
+    <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("Mylearning", "LDHome", new { Id = Convert.ToInt32(Session["TrainingId"])}) + "'");" ) >
+              Back
+            </button>
+    </div>                
+    <br />
+   <br />
+    <div class="row">
+        <div class="col-md-12" style="text-align: right">
+            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"  color="White">
+                     Training Completion Form </div>
+                </div>
+                <br />
+              @using (Html.BeginForm("Form", "LDRController", FormMethod.Post))
+                  {
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                          @if (Convert.ToInt32(Session["Instructorid"]) != null)
+                               {
+                              
+                            <div class="col-md-2">
+                                @Html.Label("Training Id")
+                            </div>
+                            
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.TrainingId, new { @id = "TrainingId", @name = "TrainingId", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.Label("Training Name")
+                            </div>
+                            <div class="col-md-4">
+                                  @Html.TextBoxFor(x => x.Name, new { @id = "TrainingName", @name = "TrainingName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                            </div>
+                             }
+                             else
+                             {
+                                 
+                            <div class="col-md-2">
+                                @Html.Label("Training Id")
+                            </div>
+                            
+                              <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.TrainingId, new { @id = "TrainingId", @name = "TrainingId", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.Label("Training Name")
+                            </div>
+                            <div class="col-md-4">
+                                  @Html.TextBoxFor(x => x.Name, new { @id = "TrainingName", @name = "TrainingName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                            </div>
+                             }
+                        </div>
+                    </div>
+                    <br />
+                    @*<br />*@
+                    <div class="form-group">
+                        <div class="row">
+                         @if (Convert.ToInt32(Session["Instructorid"]) != null)
+                         {
+                            <div class="col-md-2">
+                                @Html.Label("Scheduled Date")
+                            </div>
+                              
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.ScheduleDate, new { @id = "TrainingDate", @name = "TrainingName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @*<div style="margin-top: 20px;">
+                                    <button type="button" class="btn btn-info form-control" style="width: 100px" id="AssignButton"
+                                        onclick="AddItem()">
+                                        Assign</button>
+                                </div>*@
+                            </div>
+                         }
+                         else
+                         {
+                              <div class="col-md-2">
+                                @Html.Label("Scheduling Date")
+                            </div>
+                              
+                               <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.ScheduleDate, new { @id = "TrainingDate", @name = "TrainingName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @*<div style="margin-top: 20px;">
+                                    <button type="button" class="btn btn-info form-control" style="width: 100px" id="AssignButton"
+                                        onclick="AddItem()">
+                                        Assign</button>
+                                </div>*@
+                            </div>
+                         }
+
+                            </div>
+                            <br />
+                           
+<div class="row"> 
+ 
+  <div class="col-xs-5">
+ <div  style="text-align:center;">
+     @Html.Label("List Of Nomination")     
+      </div>
+      <br />     
+  @Html.DropDownList("CategoryId", (MultiSelectList)ViewBag.Categories, new { @multiple = "multiple", @class = "form-control", @size = "8", @id = "multiselect", @name = "from" }) 
+    @*<select name="from" id="multiselect" class="form-control" size="8" multiple="multiple"> 
+      <option value="1">C++</option> 
+      <option value="2">C#</option> 
+      <option value="3">Haskell</option> 
+      <option value="4">Java</option> 
+      <option value="5">JavaScript</option> 
+      <option value="6">Lisp</option> 
+      <option value="7">Lua</option> 
+      <option value="8">MATLAB</option> 
+     <option value="9">NewLISP</option> 
+    <option value="10">PHP</option> 
+      <option value="11">Perl</option> 
+      <option value="12">SQL</option> 
+      <option value="13">Unix shell</option> 
+    </select> *@
+  </div> 
+  <div class="col-xs-2" style="text-align:center";> 
+  <div  style="text-align:center;">
+     @Html.Label("")
+      </div>
+      <br /><br /><br /><br />
+   @*<button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button> *@
+    <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button> 
+    <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button> 
+    <button type="button" id="multiselect_leftAll" style="visibility:hidden" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button> 
+  </div> 
+  <div class="col-xs-5"> 
+  <div  style="text-align:center;">
+     @Html.Label("Attendees")
+     @Html.Label(" *", new { @style = "color:#FF0000" })  
+      </div>
+      <br />
+    <select name="to" id="multiselect_to" class="form-control" size="8" multiple="multiple"> 
+    </select>
+      <span id="span_ID8" style="color: Red;"></span>
+  </div> 
+</div>
+<br /> <br /> 
+ <div class="row">
+           @*<div class="col-md-2"> 
+                     
+                        <label for="file">
+                            Upload Material 
+                          
+                            </label>
+                    </div>*@
+                   @* <div class="col-md-4">                 
+                        <input type="file" name="file" id="file"  />
+                        <div style="height: 5px">
+                        </div>
+                        <span id="span_ID9" style="color: Red;"></span>
+                    </div>  *@      
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4" style="text-align: center">
+                                @*<button type="button" class="btn btn-info form-control" style="width: 100px" id="AssignButton"
+                                    onclick="AddItem()">
+                                    Assign</button>*@
+                            </div>
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4" style="text-align: center">
+                            <button type="button"  style="width: 100px" id="RemoveButton" class="btn btn-default" onclick="Clear()">
+                        Reset</button>
+                                
+                                <button type="button" class="btn btn-info form-control" style="width: 100px;" id="Submit"
+                                    onclick='Completion()'>
+                                    Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    @*<br />*@
+                    <div class="form-group">
+                        <div class="row">
+                            @* <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-12" style="text-align: center">
+                                <button type="button" class="btn btn-info form-control" style="width: 100px;" id="FinalizeButton"
+                                    onclick="AssignMembers()">
+                                    Finalize</button>
+                            </div>
+                            <div class="col-md-4">
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                  }
+                  </div>
+                  </div>
+                  </div>
+    
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+       
+        $('#multiselect').multiselect();
+
+        $('#multiselect').multiselect({
+
+
+            startUp: function ($left, $right) {
+
+                $right.find('option').each(function (index, option) {
+                    $left.find('option[value="' + option.value + '"]').remove();
+                });
+            },
+            beforeMoveToRight: function ($left, $right, options) { return true; },
+            afterMoveToRight: function ($left, $right, options) { },
+            beforeMoveToLeft: function ($left, $right, option) { return true; },
+            afterMoveToLeft: function ($left, $right, option) { },
+            sort: function (a, b) {
+
+                if (a.innerHTML == 'NA') {
+                    return 1;
+                } else if (b.innerHTML == 'NA') {
+                    return -1;
+                }
+                return (a.innerHTML > b.innerHTML) ? 1 : -1;
+            }
+        });
+
+ </script>
+
+
+ 
+  <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+ <script type="text/javascript">
+
+
+     function Clear() {
+
+         // $("#multiselect_leftSelected").click();        
+               
+         $("#multiselect_leftAll").click();  
+       $("#file").val('');
+     }
+
+     function Completion() {
+
+      
+
+//         if (document.getElementById('file').value == '') {
+//             document.getElementById('span_ID9').innerHTML = "";
+
+         //         }
+
+         $("#multiselect_to option").prop("selected", "selected");
+
+         $('#multiselect option').prop('selected', true);
+
+         //alert($('#multiselect_to').val().toString());
+
+         if (document.getElementById('multiselect_to').value == '')
+         {
+
+             document.getElementById("span_ID8").innerHTML = "Please Select The Attendees";
+         }
+
+
+         else
+         {
+
+         
+
+           //  $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+             $("div#portlet-config").fadeIn("fast");
+
+           
+
+
+             var values =
+                           {
+                               "TrainingId": $("#TrainingId").val(),
+                               "Name": $("#TrainingName").val(),
+                               "Schedule ": $("#TrainingDate").val(),
+                               "upload": $("#file").val(),
+                               "Attendess": $("#multiselect_to").val(),
+                               "Unattendess": $('#multiselect').val()
+                               
+                           }
+
+             var opts =
+                          {
+                              "closeButton": true,
+                              "debug": false,
+                              "positionClass": "toast-top-right",
+                              "toastClass": "White",
+                              "onclick": null,
+                              "showDuration": "300",
+                              "hideDuration": "1000",
+                              "timeOut": "2000",
+                              "extendedTimeOut": "1000",
+                              "showEasing": "swing",
+                              "hideEasing": "linear",
+                              "showMethod": "fadeIn",
+                              "hideMethod": "fadeOut"
+                          }
+
+                          $.ajax({
+                              url: "../../LDR/Form/",
+                              type: 'POST',
+                              cache: false,
+                              traditional: true,
+                              data: values,
+                              traditional: true,
+                              global: false,
+
+                              success: function (result) {
+                                  if (result.Result === "Success") {
+                                      toastr.success("Completion Form Submitted Successfully", opts);
+
+                                      setTimeout(function () { //location.reload(); 
+                                     
+                                      window.location.href = '@Url.Action("Mylearning", "LDHome")'; },500);
+                                      $('#portlet-config').appendTo("body").modal('hide');
+                                      setTimeout(function () { location.reload(); }, 1000);
+                                      @*$('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });*@
+
+                                  }
+                              }
+
+                          });
+
+
+                      }    
+         
+     }
+                  
+ </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+﻿@model DSRCManagementSystem.Models.ProjectMeetingTime
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProjectMeeting</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+ @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+@*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                x</button>
+            <h4 class="modal-title">
+             Add New Schedule</h4>
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("ProjectMeeting", "MeetingSchedule", FormMethod.Post))          
+            
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                 <div class="row" >
+
+                   <div class="col-md-6">
+                   <div class="form-group">
+                @Html.Label("Project Meeting Day", new { @class = "control-label" })
+                @Html.Label("*", new { @style = "color:#FF0000" })
+                @Html.DropDownList("DayId", ViewBag.DayList as SelectList, new { @id = "DayId", @name = "DayId", @class = "form-control"})              
+                <span id="span_ID6" style="color: Red;"></span>
+                   </div>
+                </div>  
+                
+                <div class="col-md-3"> 
+                    <div class="form-group datetimepickerTime1">
+                      @Html.Label("From", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.TextBoxFor(x => x.TimeSlotFrom, new { @id = "TimeSlot1", @name = "TimeSlot1", @class = "form-control", @autocomplete = "off" })
+                       <span id="span_ID12" style="color: Red;"></span>                     
+                     </div>
+                  </div>
+
+
+                  <div class="col-md-3"> 
+                    <div class="form-group datetimepickerTime2">
+                      @Html.Label("To", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.TextBoxFor(x => x.TimeSlotTo, new { @id = "TimeSlot2", @name = "TimeSlot2", @class = "form-control", @autocomplete = "off" })
+                      <span id="span_ID13" style="color: Red;"></span>
+                      
+                     </div>
+                    
+                  </div>
+                   <span id ="span_ID14" style="color:Red;"> </span>
+                </div>
+              
+                
+                 <div class="row">
+                   
+                    <div class="col-md-6">  
+                     <div class="form-group">
+                      @Html.Label("Project Name", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.DropDownList("ProjectNameId", ViewBag.Projects as SelectList,"--Select--", new { @id = "ProjectNameId", @name = "ProjectNameId", @class = "form-control" })
+                     <span id="span_ID8" style="color: Red;"></span>
+                      </div>
+                      </div>
+                    
+
+                    <div class="col-md-6">  
+                     <div class="form-group">
+                      @Html.Label("Attendees", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.DropDownList("Id", ViewBag.Leaders as MultiSelectList, new { @id = "AttendeeId", @name = "AttendeeId", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })                    
+                     <span id="span_ID10" style="color: Red;"></span>
+                      </div>
+                      </div>
+                      </div>
+
+
+
+                
+                <div class="row" >
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      @Html.Label("Week", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.DropDownList("Week", ViewBag.Week as SelectList, new { @id = "Week", @name = "Week", @class = "form-control" })
+                     <span id="span_ID9" style="color: Red;"></span>
+                   </div>
+                   </div>
+                </div>  
+                                 
+                }   
+
+             </div>   
+           
+             <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='AddNewProject()' >
+                Save
+            </button>
+        </div>
+      </div>
+                
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+            <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>   
+            <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+          <script type="text/javascript">
+
+
+              $(document).ready(function () {
+                  $(".datetimepickerTime1").datetimepicker
+           ({
+               //               format: 'LT',
+               //               format:'hh:mm',
+               pickDate: false
+           });
+              });
+
+              $(document).ready(function () {
+                  $(".datetimepickerTime2").datetimepicker
+           ({
+               //               format: 'LT',
+               pickDate: false
+           });
+              });
+
+
+              $(function () {
+                  $(".modal-body select").select2();
+              });
+
+              function AddNewProject() {
+
+
+                  if (document.getElementById('DayId').value == 0 || document.getElementById('TimeSlot1').value == 0 || document.getElementById('TimeSlot2').value == 0 || document.getElementById('ProjectNameId').value == 0 || document.getElementById('Week').value == 0 || document.getElementById('AttendeeId').value == 0) {
+
+                      if (document.getElementById('DayId').value == 0) {
+                          document.getElementById("span_ID6").innerHTML = "Select Project Meeting Day";
+                      }
+                      else {
+                          document.getElementById("span_ID6").innerHTML = "";
+                      }
+                      if (document.getElementById('TimeSlot1').value == 0) {
+                          document.getElementById("span_ID12").innerHTML = " Select From Time ";
+                      }
+                      else {
+                          document.getElementById("span_ID12").innerHTML = "";
+
+                      }
+                      if (document.getElementById('TimeSlot2').value == 0) {
+                          document.getElementById("span_ID13").innerHTML = " Select  To  Time";
+                      }
+                      else
+                          document.getElementById("span_ID13").innerHTML = "";
+
+                      if (document.getElementById('ProjectNameId').value == 0) {
+                          document.getElementById("span_ID8").innerHTML = "Select Project Name";
+                      }
+                      else {
+                          document.getElementById("span_ID8").innerHTML = "";
+                      }
+
+                      if (document.getElementById('Week').value == 0) {
+                          document.getElementById("span_ID9").innerHTML = "Select Week";
+                      }
+                      else {
+                          document.getElementById("span_ID9").innerHTML = "";
+                      }
+
+                      if (document.getElementById('AttendeeId').value == 0) {
+                          document.getElementById("span_ID10").innerHTML = " Select Project Attendees";
+                      }
+                      else {
+                          document.getElementById("span_ID10").innerHTML = "";
+                      }
+
+                  }
+
+
+                  else {
+                      $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                      var fromTime = $("#TimeSlot1").val();
+                      var endTime = $("#TimeSlot2").val();
+
+                      var hour1 = parseInt(fromTime.substring(0, 2));
+                      var hour2 = parseInt(endTime.substring(0, 2));
+
+                      if (hour1 > hour2) {
+
+                          if (hour1 == 12 && hour2 == 1) {
+                              var values =
+                           {
+                               "DayId": $("#DayId").val(),
+                               "Day": $("#DayId").find("option:selected").text(),
+                               "TimeSlotFrom": $("#TimeSlot1").val(),
+                               "TimeSlotTo": $("#TimeSlot2").val(),
+                               "ProjectName": $("#ProjectNameId").find("option:selected").text(),
+                               "ProjectNameId": $("#ProjectNameId").find("option:selected").val(),
+                               "Agenda": $("#Agenda").val(),
+                               "Week": $("#Week").find("option:selected").val(),
+                               "Attendee": $("#AttendeeId").val().toString()//.find("option:selected")
+                           }
+                              var opts =
+                          {
+                              "closeButton": true,
+                              "debug": false,
+                              "positionClass": "toast-top-right",
+                              "toastClass": "White",
+                              "onclick": null,
+                              "showDuration": "300",
+                              "hideDuration": "1000",
+                              "timeOut": "2000",
+                              "extendedTimeOut": "1000",
+                              "showEasing": "swing",
+                              "hideEasing": "linear",
+                              "showMethod": "fadeIn",
+                              "hideMethod": "fadeOut"
+                          }
+                              $.ajax({
+                                  url: "../../MeetingSchedule/ProjectMeeting/",
+                                  type: 'POST',
+                                  cache: false,
+                                  data: values,
+                                  traditional: true,
+                                  global: false,
+                                  success: function (result) {
+                                      if (result.Result === "Success") {
+                                          $("#portlet-config").modal("hide");
+                                          toastr.success("Project Meeting added successfully", opts);
+                                          setTimeout(function () { location.reload(); }, 1000);
+
+                                      }
+                                      if (result.Result === "availabletime") {
+                                          // $("#portlet-config").modal("hide");
+
+                                          toastr.success("Meeting has been scheduled for the same timing.Please select different timings", opts);
+                                          setTimeout(function () { location.reload(); }, 1000);
+
+                                      }
+                                  }
+
+                              });
+                          }
+                          else {
+                              document.getElementById("span_ID14").innerHTML = "End Time Must Greater Than The Start Time ";
+                              var submitForm = false;
+                          }
+                      }
+
+
+                      else {
+                          var fromTime = $("#TimeSlot1").val();
+                          var endTime = $("#TimeSlot2").val();
+                          //var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;
+                          var timeformat = /^\d{2}:\d{2}:\d{2}$/;
+                          var parts1 = fromTime.split(":");
+                          var parts2 = endTime.split(":");
+                          if ((parts1[0] > 12 || parts1[1] > 59 || parts1[2] > 59) && (parts2[0] > 12 || parts2[1] > 59 || parts2[2] > 59)) {
+
+                              document.getElementById("span_ID14").innerHTML = "Invalid From And  Invalid To Time";
+                          }
+                          else if ((parts1[0] < 12 || parts1[1] < 59 || parts1[2] < 59) && (parts2[0] > 12 || parts2[1] > 59 || parts2[2] > 59)) {
+
+                              document.getElementById("span_ID10").innerHTML = " ";
+                              document.getElementById("span_ID13").innerHTML = "Invalid To Time";
+                          }
+                          else if ((parts2[0] < 12 || parts2[1] < 59 || parts2[2] < 59) && (parts1[0] > 12 || parts2[1] > 59 || parts2[2] > 59)) {
+
+                              document.getElementById("span_ID12").innerHTML = "Invalid From Time";
+                          }
+                          else {
+                              var submitForm = true;
+                              if (submitForm == true) {
+                                  var values =
+                           {
+                               "DayId": $("#DayId").val(),
+                               "Day": $("#DayId").find("option:selected").text(),
+                               "TimeSlotFrom": $("#TimeSlot1").val(),
+                               "TimeSlotTo": $("#TimeSlot2").val(),
+                               "ProjectName": $("#ProjectNameId").find("option:selected").text(),
+                               "ProjectNameId": $("#ProjectNameId").find("option:selected").val(),
+                               "Agenda": $("#Agenda").val(),
+                               "Week": $("#Week").find("option:selected").val(),
+                               "Attendee": $("#AttendeeId").val().toString()//.find("option:selected")
+
+                           }
+                                  var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+                                  $.ajax({
+                                      url: "../../MeetingSchedule/ProjectMeeting/",
+                                      type: 'POST',
+                                      cache: false,
+                                      data: values,
+                                      global: false,
+                                      success: function (result) {
+                                          if (result.Result == "AlreadyExist") {
+                                              toastr.warning("Meeting Time Schedule already exists");
+                                              setTimeout(function () { location.reload(); }, 1000);
+                                          }
+                                          if (result.Result == "NotEqual") {
+                                              bootbox.alert("From Time And To Time Should Not Same");
+                                              setTimeout(function () { location.reload(); }, 1000);
+                                          }
+                                          if (result.Result === "Success") {
+                                              $("#portlet-config").modal("hide");
+
+                                              toastr.success("Project New Schedule Meeting added successfully", opts);
+                                              setTimeout(function () { location.reload(); }, 1000);
+
+                                          }
+                                          if (result.Result === "availabletime") {
+                                              // $("#portlet-config").modal("hide");
+                                              toastr.warning("Meeting has been scheduled for the same timing.Please select different timings", opts);
+                                              setTimeout(function () { location.reload(); }, 1000);
+                                          }
+                                      }
+
+                                  });
+
+                              }
+                          }
+
+                      }
+                  }
+              }
+          </script>
+         </body>
+         </html>

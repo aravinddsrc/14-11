@@ -1,0 +1,957 @@
+﻿@model DSRCManagementSystem.Models.UserModel
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead
+{
+    <meta name="viewport" content="width=device-width" />
+    <title>NewUser</title>
+    <link href="../../Content/Template/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+          rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+          type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+          id="style-resource-4" />
+    <link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+          }  
+        </style>
+}
+<head>
+    <title></title>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".panel-body select").select2({
+                minimumResultsForSearch: -1
+            });
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                orientation: 'auto bottom',
+                autoclose: true
+            });
+
+            $(".datetimepickerUp").datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                orientation: 'auto bottom',
+                autoclose: true
+
+            });
+        });
+        $("#CC").select2();
+
+
+        $("#EmpID").click(function () {
+            $('#IsUnderProbation').prop('checked', true);
+            $("#OnBoarding").attr("disabled", true);
+        });
+
+
+        $(document).ready(function () {
+            if ($("#OnBoarding").is(':checked')) {
+                $('input[type="text"], input[type="checkbox"]').not("#DateOfJoin,#OnBoarding,#IsActive,#leftusers").prop("disabled", true);
+                $("select[name*='DepartmentId'],[name*='RoleID'],[name*='GenderID']").prop("disabled", true);
+            }
+            else {
+                $("#OnBoarding").prop("disabled", false);
+            }
+
+            var dateVar = $("#lastworkingdate").val();
+            var dateSplit = dateVar.split("-");
+            var lastWorkingDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]);
+            var currentDate = new Date();
+            if (lastWorkingDate < new Date(currentDate.getYear(), currentDate.getMonth() - 1, currentDate.getDate())) {
+                $("#IsActive").attr("checked", false);
+                $("#IsActive").attr("disabled", true);
+            }
+        });
+
+        $("#IsUnderProbation").on('change', function (event) {
+            if ($("#IsUnderProbation").prop('checked')) {
+                $("#IsUnderNoticePeriod").attr("checked", false);
+                $("#IsUnderNoticePeriod").attr("disabled", true);
+            } else {
+                $("#IsUnderNoticePeriod").attr("disabled", false);
+
+            }
+        });
+
+
+        $("#OnBoarding").on('change', function (event) {
+            if ($("#OnBoarding").prop('checked')) {
+                $('input[type="text"], input[type="checkbox"]').not("#DateOfJoin,#OnBoarding,#IsActive,#leftusers").prop("disabled", true);
+                $("select[name*='DepartmentId'],[name*='RoleID'],[name*='GenderID']").prop("disabled", true);
+            } else {
+                $('input[type="text"], input[type="checkbox"], select').prop("disabled", false);
+            }
+        });
+
+        if ($("#IsUnderNoticePeriod").prop('checked')) {
+            $("#fornoticeperioid").show();
+            $("#IsUnderProbation").attr("checked", false);
+            $("#IsUnderProbation").attr("disabled", true);
+        }
+        else {
+            $("#fornoticeperioid").hide();
+        }
+
+        $("#IsUnderNoticePeriod").change(function () {
+            if ($("#IsUnderNoticePeriod").prop('checked')) {
+                $("#fornoticeperioid").show();
+                $("#IsUnderProbation").attr("checked", false);
+                $("#IsUnderProbation").attr("disabled", true);
+
+            } else {
+                $("#fornoticeperioid").hide();
+                $("#Resignedon").val("");
+                $("#lastworkingdate").val("");
+                $("#IsUnderProbation").attr("disabled", false);
+                $("#ResignedOn_Error").html("");
+                $("#LastWorkingDate_Error").html("");
+            }
+
+        });
+
+        if (($("#OnBoarding").is(':checked')) == false) {
+            $("#OnBoarding").attr("disabled", true);
+        }
+
+        
+
+        function DateValidation() {
+            var lastWorking = $("#lastworkingdate").val();
+            var dateSplit = lastWorking.split("-");
+            var lastWorkingDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]);
+            var resigned = $("#Resignedon").val();
+            dateSplit = resigned.split("-");
+            var resignedDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]);
+
+            if (lastWorkingDate < resignedDate) {
+                return true;
+            }
+            return false;
+        }
+
+
+        function UpdateUser() {
+            
+            var submitForm = true;
+            var submitForm1 = true;
+            var value = $("#DateOfJoin").val();
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            var today = dd + '-' + mm + '-' + yyyy;
+            var startDate = $("#DateOfJoin").val();
+
+
+
+            var splitedStartDate = startDate.split("-");
+            var endDate = today;
+            var splitedEndDate = endDate.split("-");
+
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (document.getElementById('CC').value == "") {
+                document.getElementById("span_ID14").innerHTML = "Select Reporting Person";
+            }
+            else {
+                document.getElementById("span_ID14").innerHTML = "";
+            }
+            if (document.getElementById('ID').value == "") {
+                document.getElementById("spanskills").innerHTML = "Enter Skills";
+            }
+            else {
+                document.getElementById("spanskills").innerHTML = "";
+            }
+            if (endDateTime > startDateTime) {
+
+                if ($('#IsUnderProbation').is(':checked') == false && $('#OnBoarding').is(':checked') == true) {
+                    submitForm = false;
+                    document.getElementById("DateOfJoin_ID").innerHTML = "Joining date is less than todays date please check under propation";
+                }
+                else if ($('#IsUnderProbation').is(':checked') == true && $('#OnBoarding').is(':checked') == false) {
+                    submitForm = true;
+                    document.getElementById("DateOfJoin_ID").innerHTML = "";
+                }
+            }
+            //else {
+            if ($("#OnBoarding").is(':checked')) {
+                if (submitForm == true) {
+                    var values = {
+                        "IsActive": $("#IsActive").is(":checked"),
+                        "IsBoarding": $("#OnBoarding").is(":checked"),
+                        "DateOfJoin": $("#DateOfJoin").val(),
+                        "UserId": $("#UserId").val(),
+                        "ExperienceYear": $("#YearId").find("option:selected").val(),
+                        "ExperienceMonth": $("#MonthId").find("option:selected").val(),
+                        "MaritalStatusId": $("#MaritalStatusId").find("option:selected").prop("value"),
+                        "GenderID": $("#GenderID").find("option:selected").prop("value"),
+                        "Tecnology": $("#ID").val(),
+                        //"Marital":$("#Marital").find("option:selected").text(),
+                        "WorkplaceId": $("#WorkplaceId").find("option:selected").prop("value"),
+                        "BranchName": $("#BranchName").find("option:selected").prop("value"),
+                        "userid": $("#CC").val(),
+                        "multiselectemployees": $("#CC").val().toString(),
+                        "SelectedEmpList": $("#CC").val(),
+                        "RegionId":$("#Idregion").val()
+
+                    };
+                    $.ajax({
+                        url: "../../User/OnBoardingUpdateUser/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        success: function (result) {
+                            if (result == true) {
+                                //                            $("#portlet-config").modal("hide");
+
+                                window.location.href = '@Url.Action("UserProfile", "User")';
+                                toastr.success('Employee details has been updated successfully');
+                            }
+                            else {
+                                //                            $("#portlet-config").modal("hide");
+                            }
+                        }
+                    });
+                }
+            }
+
+
+            else {
+                var contactexp = /^[7-9][0-9]{9}$/;
+                var phone = $("#ContactNo").val();
+
+
+                var FirstName = $("#FirstName").val();
+
+                var FirstNametrim = FirstName.replace(/\s/g, "").length;
+
+
+
+
+                var LastName = $("#LastName").val();
+
+                var LastNametrim = jQuery.trim(LastName).length;
+                if ($("#EmpID").val() == '') {
+
+                    document.getElementById("emp_ID").innerHTML = "Enter Employee ID";
+                } else if (FirstNametrim == "") {
+
+                    document.getElementById("FirstName_ID").innerHTML = "Enter First Name";
+                    submitForm1 = false;
+                } else if (LastNametrim == "") {
+
+                    document.getElementById("LastName_ID").innerHTML = "Enter Last Name";
+                    submitForm1 = false;
+                } else if ($("#EmailAddress").val() == '') {
+
+                    document.getElementById("EmailAddress_ID").innerHTML = "Enter Email Address";
+                }
+                    // else if ($("#ContactNo").val() !== "" && !Is10DigitNumber($("#ContactNo").val()))
+                else if ($("#ContactNo").val() != '') {
+                    if (!contactexp.test(phone))
+                        document.getElementById("contactNo_Error").innerHTML = "Invalid Mobile Number";
+                    else
+                        document.getElementById("contactNo_Error").innerHTML = "";
+                    submitForm1 = false;
+                }
+
+                else if ($("#IsUnderNoticePeriod").prop('checked') && $("#Resignedon").val() === "") {
+
+                    document.getElementById("ResignedOn_Error").innerHTML = "Select Resigned On date";
+                } else if ($("#IsUnderNoticePeriod").prop('checked') && $("#lastworkingdate").val() === "") {
+                    document.getElementById("LastWorkingDate_Error").innerHTML = "Select Last Working Date";
+                }
+                else if (DateValidation()) {
+
+                    document.getElementById("LastWorkingDate_Error").innerHTML = "Last Working Date must be greater than Resigned Date";
+                } else if ($("#DateOfJoin").val() == '') {
+
+                    document.getElementById("DateOfJoin_ID").innerHTML = "Enter Date Of Join";
+                }
+
+                else if ($("#CC").val() == '') {
+                    document.getElementById("span_ID14").innerHTML = "Select Reporting Person";
+                }
+
+                else if ($("#YearId").find("option:selected").val() == '-1') {
+
+                    document.getElementById("ExperienceYearError").innerHTML = "Select Experience Year";
+                    /*else
+                    document.getElementById("ExperienceYearError").innerHTML = "";*/
+                } else if ($("#MonthId").find("option:selected").val() == '-1') {
+
+                    document.getElementById("ExperienceMonthError").innerHTML = "Select Experience Month";
+                    /*else
+                    document.getElementById("ExperienceMonthError").innerHTML = "";*/
+
+                }
+                else if (document.getElementById('EmailAddress').value == "") {
+                    document.getElementById("EmailAddress_ID").innerHTML = "Enter Email Address";
+                }
+                else if ($("#WorkPlace").val() == '0') {
+
+                    document.getElementById("workplace").innerHTML = "Select Workplace";
+                }
+                else if (document.getElementById('ID').value == "") {
+                    document.getElementById("spanskills").innerHTML = "Enter Skills";
+                }
+                else if (document.getElementById('CC').value == "") {
+                    document.getElementById("span_ID14").innerHTML = "Select Reporting Person";
+                }
+
+
+                //var value = $("#DateOfJoin").val();
+                //var today = new Date();
+                //var dd = today.getDate();
+                //var mm = today.getMonth() + 1; //January is 0!
+
+                //var yyyy = today.getFullYear();
+                //if (dd < 10) {
+                //    dd = '0' + dd
+                //}
+                //if (mm < 10) {
+                //    mm = '0' + mm
+                //}
+
+                //var today = dd + '-' + mm + '-' + yyyy;
+                //var startDate = $("#DateOfJoin").val();
+
+
+
+                //var splitedStartDate = startDate.split("-");
+                //var endDate = today;
+                //var splitedEndDate = endDate.split("-");
+
+                //var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+
+                //var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+
+                if (startDateTime > endDateTime) {
+
+                    if ($('#IsUnderProbation').is(':checked') == true && $('#IsOnBoarding').is(':checked') == false) {
+
+                        document.getElementById("DateOfJoin_ID").innerHTML = "Joining date is greater than todays date please check onboarding";
+                        submitForm = false;
+                    }
+                    else if ($('#IsUnderProbation').is(':checked') == false && $('#IsOnBoarding').is(':checked') == true) {
+
+                        document.getElementById("DateOfJoin_ID").innerHTML = "";
+                        submitForm = true;
+                    }
+                }
+
+                if (endDateTime > startDateTime) {
+
+                    if ($('#IsUnderProbation').is(':checked') == false && $('#IsOnBoarding').is(':checked') == true) {
+                        submitForm = false;
+                        document.getElementById("DateOfJoin_ID").innerHTML = "Joining date is less than todays date please check under propation";
+                    }
+                    else if ($('#IsUnderProbation').is(':checked') == true && $('#IsOnBoarding').is(':checked') == false) {
+                        submitForm = true;
+                        document.getElementById("DateOfJoin_ID").innerHTML = "";
+                    }
+
+                }
+                //else {
+
+                if (submitForm == true || submitForm1 == true) {
+                    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                   
+                    var values =
+
+            {
+                "UserId": $("#UserId").val(),
+                "EmpID": $("#EmpID").val(),
+                "EmailAddress": $("#EmailAddress").val(),
+                "DepartmentName": $("#DepartmentName").find("option:selected").prop("value"),
+                "FirstName": $("#FirstName").val(),
+                "MiddleName": $("#MiddleName").val(),
+                "LastName": $("#LastName").val(),
+                "UserName": $("#UserName").val(),
+                "Password": $("#Password").val(),
+                "DateOfBirth": $("#DateOfBirth").val(),
+                "DateOfJoin": $("#DateOfJoin").val(),
+                "ContactNo": $("#ContactNo").val(),
+                "EmailAddress": $("#EmailAddress").val(),
+                "IPAddress": $("#IPAddress").val(),
+                "MachineName": $("#MachineName").val(),
+                "CreatedAt": $("#CreatedAt").val(),
+                "LastAccessed": $("#LastAccessed").val(),
+                "IsUnderProbation": $("#IsUnderProbation").is(":checked"),
+                "IsUnderNoticePeriod": $("#IsUnderNoticePeriod").is(":checked"),
+                "IsFirstLogin": $("#IsFirstLogin").is(":checked"),
+                "IsActive": $("#IsActive").is(":checked"),
+                "Block": $("#Block").is(":checked"),
+                "DesignationName": $("#DesignationName").find("option:selected").prop("value"),
+                "GenderID": $("#GenderID").find("option:selected").prop("value"),
+                "PAddress": $("#PAddress").val(),
+                "TAddress": $("#TAddress").val(),
+                "ResignedOn": $("#Resignedon").val(),
+                "LastworkingDate": $("#lastworkingdate").val(),
+                "IsNew": $("#IsNew").val(),
+                "Experience": $("#Experience").val(),
+                "ExperienceMonth": $("#MonthId").find("option:selected").val(),
+                "ExperienceYear": $("#YearId").find("option:selected").val(),
+                "Tecnology": $("#ID").val(),
+                "WorkplaceId": $("#WorkplaceId").find("option:selected").prop("value"),
+                "WorkPlace": $("#WorkplaceId").find("option:selected").text(),
+                //"Marital":$("#Marital").find("option:selected").prop("value")
+                "MaritalStatusId": $("#MaritalStatusId").find("option:selected").prop("value"),
+                "Marital": $("#Marital").find("option:selected").text(),
+                "IsBoarding": $("#OnBoarding").is(":checked"),
+                "BranchName": $("#BranchName").find("option:selected").prop("value"),
+                "userid": $("#CC").val(),
+                "DesignationID": $("#DesignationID").val(),
+                "multiselectemployees": $("#CC").val().toString(),
+                "SelectedEmpList": $("#CC").val(),
+                "RegionId":$("#Idregion").val()
+            };
+
+                    $.ajax({
+                        url: "../../User/UserDetails/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        success: function (result) {
+
+                            if (result === 'MailProcessingFailed') {
+                                document.getElementById("EmailAddress_ID").innerHTML = "Invalid Email Address";
+                                $("#portlet-config1").modal("hide");
+                            } else if (result === 'EmailAddressExisting') {
+                                document.getElementById("EmailAddress_ID").innerHTML = "Email Address Existing";
+                                $("#portlet-config1").modal("hide");
+                            } else if (result === 'EmpIDExisting') {
+                                document.getElementById("EmailAddress_ID").innerHTML = "";
+                                document.getElementById("emp_ID").innerHTML = "Employee ID Existing";
+                                $("#portlet-config1").modal("hide");
+                            }
+
+                            else if (result == true) {
+                                $("#portlet-config").modal("hide");
+                                var opts = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "positionClass": "toast-top-right",
+                                    "toastClass": "White",
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "3000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                window.location.href = '@Url.Action("UserProfile", "User")';
+                                toastr.success("Employee details has been updated successfully", opts);
+
+
+                            } else {
+                                $('#PartialSection').html(result);
+                                $("#portlet-config").modal("show");
+                            }
+                        }
+                    });
+                }
+                //}
+            }
+
+            //}
+        }
+
+    </script>
+    <script type="text/javascript">
+
+
+
+
+
+        $("#ContactNo").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,10}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        function Is10DigitNumber(value) {
+            if (/^[0-9]{10}$/.test(value)) {
+                return true;
+            }
+            return false;
+        }
+
+        /*       $("#EmailAddress").on('paste keypress', (function (e) {
+                   var key;
+                   if (e.which) {
+                       key = String.fromCharCode(e.which);
+                   } else {
+                       key = e.originalEvent.clipboardData.getData('Text');
+                   }
+                   var value = $(this).val() + key;
+                   if (!/^([a-zA-Z]){1}(\w|\d)*?(@@)?(d)?(s)?(r)?(c)?(\.)?(c)?(o)?(\.)?(i)?(n)?$/.test(value)) {
+                       e.preventDefault();
+                   }
+               }));*/
+    </script>
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+        <li><b>Manage Employees</b></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6" style="text-align: right">
+            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Edit Employee
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+
+
+                    @using (Html.BeginForm("UserDetails", "User", FormMethod.Post, new { @id = "edituser" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.IsBoarding, new { @id = "OnBoarding", @name = "OnBoarding" })
+                                    On Boarding
+                                </label>
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <br />
+                        if (Model.EmpID != null)
+                        {
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.EmpID, new { @id = "EmpID", @name = "EmpID", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmpID, @autocomplete = "off", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly" })
+                                @Html.HiddenFor(x => x.UserId)
+                                <span id="emp_ID" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.DepartmentName,(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(x => x.DepartmentId, ViewBag.DepartmentIdList as SelectList, new { @id = "DepartmentName", @name = "DepartmentName", @class = "form-control" })
+
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <br />
+
+                            @* <div class="col-md-2">
+                                        @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                                        @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                                    </div>
+
+                                <div class="col-md-4">
+                                  @Html.DropDownListFor(x => x.DesignationID, ViewBag.DesignationList as SelectList, new { @id = "DesignationName", @name = "DesignationName", @class = "form-control" })
+
+                                    </div>*@
+
+
+
+                        }
+                        else
+                        {
+
+
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.EmpID, new { @id = "EmpID", @name = "EmpID", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmpID, @autocomplete = "off", ondrop = "return false;", onpaste = "return false;" })
+                                @Html.HiddenFor(x => x.UserId)
+                                <span id="emp_ID" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.DepartmentName, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(x => x.DepartmentId, ViewBag.DepartmentIdList as SelectList, new { @id = "DepartmentName", @name = "DepartmentName", @class = "form-control" })
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <br />
+
+
+                            @*   <div class="col-md-2">
+                                          @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                                         @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                                     </div>
+
+                                  <div class="col-md-4">
+                                       @Html.DropDownListFor(x => x.DesignationID, ViewBag.DesignationList as SelectList, new { @id = "DesignationName", @name = "DesignationName", @class = "form-control" })
+                                    </div>
+                                <div class="clear">
+                                     </div>
+                                     <br />*@
+
+                        }
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @name = "FirstName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_FirstName, @autocomplete = "off" })
+                            @Html.ValidationMessageFor(x => x.FirstName, "", new { @style = "color:red;" })
+                            <span id="FirstName_ID" style="color: Red;"></span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.MiddleName, new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.MiddleName, new { @id = "MiddleName", @name = "MiddleName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_MiddleName, @autocomplete = "off" })
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @name = "LastName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_LastName, @autocomplete = "off" })
+                            <span id="LastName_ID" style="color: Red;"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.DateOfBirth, new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.DateOfBirth, "{0:dd/MM/yyyy}", new { @id = "DateOfBirth", @name = "DateOfBirth", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_ProfileModel_DateofBirth, @autocomplete = "off" })
+                            @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @style = "font-weight:bold;color:red;" })
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.DateOfJoin, new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.DateOfJoin, "{0:dd/MM/yyyy}", new { @id = "DateOfJoin", @name = "DateOfJoin", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_ProfileModel_DateofJoin, @autocomplete = "off" })
+                            @Html.ValidationMessageFor(x => x.DateOfJoin, "", new { @style = "font-weight:bold;color:red;" })
+                            <span id="DateOfJoin_ID" style="color: Red;"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.Label("Mobile Number", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(x => x.ContactNo, new { @id = "ContactNo", @name = "ContactNo", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_ContactNo, @autocomplete = "off", @maxlength = 10 })
+                            @Html.ValidationMessageFor(x => x.ContactNo, "", new { @style = "font-weight:bold;color:red;" })
+                            <span id="contactNo_Error" style="color: Red;"></span>
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.GenderID, new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(x => x.GenderID, ViewBag.GenderList as SelectList, new { @id = "GenderID", @name = "GenderName", @class = "form-control" })
+
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.Experience, new { @class = "control-label" })
+                            @Html.Label("Year", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.DropDownList("YearId", ViewBag.YearsList as SelectList, new { @id = "YearId", @name = "YearId", @class = "form-control" })
+                            <span id="ExperienceYearError" style="color: Red;"></span>
+                        </div>
+                        <div class="clear">
+                        </div>
+                        <br />
+                        <div class="col-md-2">
+                            @Html.Label("Experience Month", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownList("MonthId", ViewBag.MonthList as SelectList, new { @id = "MonthId", @name = "MonthId", @class = "form-control" })
+                            <span id="ExperienceMonthError" style="color: Red;"></span>
+                        </div>
+                        if (Model.EmailAddress != null)
+                        {
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+                            </div>
+
+                            <div class="col-md-4">
+
+                                @Html.TextBoxFor(x => x.EmailAddress, new { @id = "EmailAddress", @name = "EmailAddress", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off" })
+                                <span id="EmailAddress_ID" style="color: Red;"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+                                <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.EmailAddress, new { @id = "EmailAddress", @name = "EmailAddress", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off" })
+                                <span id="EmailAddress_ID" style="color: Red;"></span>
+                            </div>
+                        }
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+                        <div class="col-md-2">
+                            @Html.Label("Branch",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(x => x.BranchID, ViewBag.BranchList as SelectList, new { @id = "BranchName", @name = "BranchName", @class = "form-control" })
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.Label("Work Place", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(x => x.WorkplaceId, ViewBag.WorkPlaceList as SelectList, new { @id = "WorkplaceId", @class = "form-control" })
+                            <span id="workplace" style="color: Red;"></span>
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+
+                        <div class="col-md-2">
+                            @Html.Label("Marital Status", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(x => x.MaritalStatusId, ViewBag.Marital as SelectList, "Select", new { @id = "MaritalStatusId", @class = "form-control" })
+                            <span id="marital" style="color: Red;"></span>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Skills", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(x => x.Tecnology, new { @id = "ID", @name = "ID", @class = "form-control", @placeholder = "Skills", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })
+                            <span id="spanskills" style="color: Red;"></span>
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <br />
+
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(x => x.DesignationID, ViewBag.DesignationList as SelectList, new { @id = "DesignationName", @name = "DesignationName", @class = "form-control" })
+
+                        </div>
+
+
+                        <div class="col-md-2">
+                            @Html.Label("Assign Reporting Person", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+
+                        <div class="col-md-4">
+                            @Html.DropDownList("Id1", ViewBag.Email1 as MultiSelectList, new { @id = "CC", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                            <span id="span_ID14" style="color: Red;"></span>
+                        </div>
+
+
+                        <div class="clear">
+                        </div>
+                        <br />
+                          
+
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.IsUnderProbation, new { @id = "IsUnderProbation", @name = "IsUnderProbation" })Under
+                                    Probationary Period
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.IsUnderNoticePeriod, new { @id = "IsUnderNoticePeriod", @name = "IsUnderNoticePeriod" })Under
+                                    Notice Period
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.IsActive, new { @id = "IsActive", @name = "IsActive" })Is
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.Block, new { @id = "Block", @name = "Blocking" })
+                                    Block
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="clear">
+                        </div>
+                        <br />
+                        
+                        
+
+                        <div class="row" id='fornoticeperioid'>
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.ResignedOn, new { @class = "control-label" })
+                                <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.ResignedOn, "{0:dd/MM/yyyy}", new { @id = "Resignedon", @class = "form-control datetimepickerUp", @placeholder = "Resigned On", @autocomplete = "off" })
+                                <span id="ResignedOn_Error" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.LastworkingDate, new { @class = "control-label" })
+                                <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.LastworkingDate, "{0:dd/MM/yyyy}", new { @id = "lastworkingdate", @class = "form-control datetimepickerUp", @placeholder = "Last Working Date", @autocomplete = "off" })
+
+                                <span id="LastWorkingDate_Error" style="color: Red;"></span>
+                            </div>
+
+                        </div>
+                        <div class="clear">
+                        </div>
+                        <br />
+                        
+                         <div class="row" >
+
+                         <div class="col-md-2">
+                            @Html.Label("Region", new { @class = "control-label" })
+                           
+                        </div>
+                        
+                         <div class="col-md-4">                  
+                             
+                                    @Html.DropDownListFor(x => x.RegionId, ViewBag.Region as SelectList, new
+                               {
+                                   @id = "Idregion",
+                                   @class = "form-control"
+                               })
+                               <span id="span_region" style="color: Red;"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                        </div>
+                         <div class="col-md-4">      
+                         </div>
+
+                        </div>
+                        
+                         <div class="clear">
+                        </div>
+                        <br />
+
+                        <div class="col-md-8"></div>
+
+
+                        <div class="col-md-4" style="text-align: right">
+
+                            <a type="submit" class="btn btn-default" href="@Url.Action("UserProfile", "User")">Cancel</a>
+
+
+                            <button type="button" id="btnAdd" class="btn btn-info" onclick="UpdateUser()">
+                                Save
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

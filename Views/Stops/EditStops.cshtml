@@ -1,0 +1,195 @@
+﻿@model DSRCManagementSystem.Models.StopList 
+
+@{
+    ViewBag.Title = "Edit Stops";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6v5-2uaq_wusHDktM9ILcqIrlPtnZgEk&sensor=false"> </script>
+
+    <style>
+        .abc {
+            background-color: #ffb3b3;
+        }
+    </style>
+    <style type="text/css">
+        table td:nth-child(2) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        table td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        body {
+            overflow-y: auto;
+        }
+        
+       .dropdown-menu {
+            background-color: white;
+        }        
+    </style>  
+   
+}
+<body onload="Search()">
+    <p>
+        <a href="@Url.Action("ManageStops","Stops")"style="color:black ">
+            Stops
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Edit Stops</b>
+    </p>
+<br />
+<div class="row">
+    <div class="panel panel-default panel-shadow" data-collapsed="0">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f0f0f1;">
+                <h4 class="modal-title"> Edit Stops </h4>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                    <div class="clear"> </div><br />
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: right">
+                            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Stop Id")
+                                    @Html.TextBoxFor(x => x.StopId, new { @id="StopId", @name="StopId", @class="form-control", @disabled="true" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.Label("Location(Stop Name)")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })    
+                                    @Html.TextBoxFor(x => x.Stop_Name, new { @id = "StopName", @name = "Stop Name", @class = "form-control", @autocomplete = "off", @maxlength = "100", @onkeydown="if (event.keyCode == 13) {Search()}" })
+                                    <span id="span_ID1" style="color: Red;"></span>
+                                </div>
+                                <div class="form-group" style="margin-left:330px">
+                                    <button type="reset" id="btnAdd" class="btn btn-default" data-dismiss="modal" onclick="Cancel()"> Cancel </button>
+                                    <button id="btnSave" type="button" style="margin-right: -10px"  class="btn btn-info" onclick="SaveDetails()"> Save </button>
+                                </div>
+                            </div>
+                            <div class="col-md-5" style="margin-left: 0px;" >
+                                <div class="form-group">
+                                    <div id="googleMap" style="width: 300px; height: 300px;"></div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div> 
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        $('#StopName').keypress(function (e) {
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+            return false;
+        });
+    });
+    function Cancel() {
+        window.location.href = '@Url.Action("ManageStops", "Stops")';
+    }
+    function SaveDetails() {
+        debugger;
+        if (document.getElementById('StopName').value == 0 ) {
+            document.getElementById("span_ID1").innerHTML = "Enter the Location(Stop Name)";
+        }
+        else {
+            document.getElementById("span_ID1").innerHTML = "";
+            var values = {
+                "Stop_Name": $("#StopName").val(),
+                "StopId": $('#StopId').val(),
+                         }
+            var opts =   {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "toastClass": "White",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+            $.ajax({
+                url: "../../Stops/EditStops/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result== "Success") {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("Stops edited successfully", opts);
+                        window.location.href = '@Url.Action("ManageStops", "Stops")';   
+                    }
+                    else {
+                       // $("#portlet-config").modal('hide');
+                        toastr.warning("Stops Name already exists", opts);
+                    }
+                }
+            });
+        }
+    }
+
+    var myCenter;
+    function Search() {
+        debugger;
+        var address = $("#StopName").val();
+        var lo, la;
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            var location = results[0].geometry.location;
+            la = location.lat();
+            lo = location.lng();
+            myCenter = new google.maps.LatLng(la, lo);
+            initialize();
+            google.maps.event.addDomListener(window, 'load', initialize);
+        });
+    }
+
+    function initialize() {
+        var mapProp = {
+            center: myCenter,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        var marker = new google.maps.Marker({
+            position: myCenter,
+        });
+        marker.setMap(map);
+    }
+
+</script>

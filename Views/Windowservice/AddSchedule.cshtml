@@ -1,0 +1,187 @@
+﻿@model DSRCManagementSystem.Models.Windowservice
+@{
+    ViewBag.Title = "Add New Schedule";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+}
+<style>
+
+.dropdown-menu {
+    background-color: white;
+}  
+    </style>
+
+<html>
+
+<body>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+               
+                 <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                  Schedules </div>
+                </div>
+               
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="btn-group" style="float: right" id="AddNewSchedule">
+                        <button type="button" class="btn btn-blue" style="font-weight: bold" onclick='AddSchedule()'>
+                           Add Schedule
+                            <br />
+                    </div>
+
+                    <br /> <br /> <br />
+
+                    @using (Html.BeginForm("Addschedule", "Windowservice", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblMeeting">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">
+                                      @Html.LabelFor(m=>m.SNO)
+                                    </th>
+                                    <th style="text-align:left;">
+                                       @Html.Label("Service Name")
+                                    </th>
+                                     <th style="text-align:left;">
+                                       @Html.Label("Service Type")
+                                    </th>
+                                     <th style="text-align:left;">
+                                       @Html.Label("Timing")
+                                     </th>
+                                    <th style="text-align:left;">
+                                       @Html.Label("Start Date")
+                                     </th>
+                                    <th style="text-align:left;">
+                                       @Html.Label("End Date")
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                     <th></th>
+                                    
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              
+                                 <td>
+                                <a>
+                                    <button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditSchedule()'>
+                                        <i class="entypo-pencil"></i>Template
+                                    </button>
+                                </a>
+                             </td>
+                              <td>
+                                <a>
+                                    <button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditSchedule()'>
+                                        <i class="entypo-pencil"></i>Edit
+                                    </button>
+                                </a>
+                             </td>
+                            <td>
+                                <a>
+                                    <button type="button" class="btn btn-danger btn-sm btn-block btn-icon icon-left" onclick='Deleteschedule()'>
+                                        <i class="entypo-cancel"></i>Delete
+                                    </button>
+                                </a>
+                            </td>
+
+                            </tr>
+                          
+                        </table>
+
+                          
+                           
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+  
+
+  <div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+     <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+        <script type="text/javascript">
+
+          
+
+
+            function AddSchedule() {
+                
+                $.ajax({
+                    url: "../../Windowservice/Addnewschedule/",
+                    type: 'GET', cache: false,
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    }
+
+                });
+
+            }
+            function EditSchedule() {
+
+                $.ajax({
+                    url: "../../Windowservice/Editschedule/",
+                    type: 'GET', cache: false,
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    }
+
+                });
+
+            }
+
+
+          
+       
+        </script>
+</body>
+</html>

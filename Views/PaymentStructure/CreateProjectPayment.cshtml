@@ -1,0 +1,3370 @@
+﻿@model DSRCManagementSystem.Models.PaymentStructure
+@{
+    ViewBag.Title = "Create Project Payment";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+     <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+    
+}
+
+<html>
+
+<body class="page-body">
+@*     <ol class="breadcrumb bc-3">
+         <li><a href="@Url.Action("Income","Income")">Finance</a></li>
+         <li><a href="@Url.Action("ProjectPayment","PaymentStructure")">Payment Structure</a></li>
+         <li class="active"><strong>Create Payment Structure</strong> </li>
+    </ol>*@
+    <p>
+        <a href="@Url.Action("Income", "Income")" style="color:black ">
+            Finance
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <a href="@Url.Action("ProjectPayment", "PaymentStructure")" style="color:black ">
+            Payment Structure
+        </a>
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Create Payment Structure</b>
+    </p>
+    <br />
+             
+    <div class="row">
+			<div class="col-md-12">
+				
+				<div class="panel panel-primary" data-collapsed="0">
+				
+					<div class="panel-heading">
+						<div class="panel-title">
+						Create Payment Structure
+						</div>
+						
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+						</div>
+					</div>
+			        <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                     @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+               </div>
+					<div class="panel-body">
+						<div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Customer Name")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.CustomerName, new {@name = "CustomerName", @id = "CustomerName", @class = "form-control", @style = "Height:42Px"})
+                                <span id="span_CustomerName" style="color: Red;"></span>
+                                <span id="span_CustomerError" style="color: Red;"></span>
+                            </div>
+                             
+                            
+
+                        </div>
+                            <br />
+                          <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Payment Type")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownList("PaymentTypeId", ViewBag.PaymentType as SelectList, "--Select--", new { @id = "PaymentTypeId", @name = "PaymentTypeId", @class = "form-control", @style = "height:42px; !important" })
+                                <span id="span_PaymentTerms" style="color: Red;"></span>
+                            </div>
+                          </div>
+                            <br />
+                          <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Total Amount")
+                            </div>
+                              <div class="col-md-4">
+                                  @Html.TextBoxFor(x => x.OverAllAmount, new {@name = "OverAllAmount", @id = "OverAllAmount", @class = "form-control", @style = "Height:42Px", @readonly = "readonly"})
+                                  <span id="span_OverAllAmount" style="color: Red;"></span>
+                              </div>
+                        
+                         </div>
+                         
+                    </div>
+					
+					</div>
+				
+				</div>
+				
+			</div>
+		</div>
+		
+    <div class="row" id="monthlydiv">
+			<div class="col-md-12">
+				
+				<div class="panel panel-primary" data-collapsed="0">
+				
+					<div class="panel-heading">
+						<div class="panel-title">
+							Monthly Payment Details
+						</div>
+						
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+							<a href="#" data-rel="close"><i class="entypo-cancel"></i></a>
+						</div>
+					</div>
+			   <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                     @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+               </div>
+					<div class="panel-body">
+					<div class="form-group">
+                      <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Payment Amount")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x =>x.MonthlyAmount , new { @name = "MonthlyAmount", @id = "MonthlyAmount", @class = "form-control", @style = "Height:42Px" }) 
+                                <span id="span_MonthlyAmount" style="color: Red;"></span>
+                                 <span id="span_MonthlyAmountError" style="color: Red;"></span>
+                            </div>
+                         </div>
+                      <br />
+                      <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Due Date")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.MonthlyDueDate, new { @id = "MonthlyDueDate", @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @style = "height:42px; !important"  })
+                                <span id="span_MonthlyDueDate" style="color: Red;"></span>
+                            </div>
+                         </div>
+                      <br />
+					@*  <div class="row">
+                          <div class="col-md-2">
+                            
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Additional Amount")                           
+                        </div>
+                        <div class="col-md-3">
+                                                    
+                        </div>
+                    </div>*@
+                      <div class="row">
+      @{
+         int TaxCount = Convert.ToInt16(ViewData["TaxType"]);
+
+         for (int i = 0; i < TaxCount; i++)
+        {
+            string MonthlyTaxDivID = "MonthlyTaxDivID_" + i;
+            string MonthlyTaxID = "MonthlyTaxID_" + i;
+            string MonthlyTaxAmount = "MonthlyTaxAmount_" + i;
+            string Span_MonthlyTaxAmount_="Span_MonthlyTaxAmount_"+i;
+            // string Span_MonthlyTaxID_="Span_MonthlyTaxID_"+i;
+             
+               <div class="col-md-2">
+                            
+                        </div>
+             if (i == 0)
+             { 
+                <div class="row MonthlyTaxDiv" id="@MonthlyTaxDivID" style="display:block">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                             @Html.Label("Additional Amount") 
+                           @Html.DropDownList(MonthlyTaxID, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                            <span id="Span_MonthlyTaxID_0" style="color: Red;"></span>
+                        </div>
+                    </div>
+                       
+                    <div class="col-md-4">
+                        <div class="form-group">
+                             @Html.Label("Amount", new { @class = "control-label" })  
+                            @Html.TextBox(MonthlyTaxAmount, string.Empty, new { @id = "MonthlyTaxAmount_" + i, @onchange = "AddMonthlyTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                             <span id="Span_MonthlyTaxAmount_0" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+             }
+             else
+             {
+                <div class="row MonthlyTaxDiv" id="@MonthlyTaxDivID" style="display:none">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                           @Html.DropDownList(MonthlyTaxID, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                            <span id="Span_MonthlyTaxID_1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                       
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            @Html.TextBox(MonthlyTaxAmount, string.Empty, new { @id = "MonthlyTaxAmount_" + i, @onchange = "AddMonthlyTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_MonthlyTaxAmount_1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn_Delete ">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+             }
+        }
+        
+}
+                       
+                    </div>
+                        <div class="col-md-11" id="hideMonthlyAdd">
+                       @* <div class="row" >*@
+                            <label id="lblMonthlyError" style="color:red;"></label>
+                            <button type="button" id="btn_MonthlyTax" class="btn btn-info" style="float:right;">Add</button>
+                        @*</div>*@
+                         </div>
+					</div>
+					
+				</div>
+			
+			</div>
+		</div> 
+      </div>           
+    <div class="row" id="termdiv">
+			<div class="col-md-12">
+				
+				<div class="panel panel-primary" data-collapsed="0">
+				
+					<div class="panel-heading">
+						<div class="panel-title">
+							Term Payment Details
+						</div>
+						
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+							<a href="#" data-rel="close"><i class="entypo-cancel"></i></a>
+						</div>
+					</div>
+					 <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                     @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                   </div>
+					<div class="panel-body">
+                        <div class="form-group">
+				      <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3">
+                            @Html.Label("Payment Amount")
+                             @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Due Date", new { @class = "control-label" })
+                             @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                    </div>
+                      <div class="row">
+      @{
+          for (int i = 0; i <= 6 - 1; i++)
+          {
+              int z = i + 1;
+              string Terms = "Term " + z;
+              string TermAmountDivID = "TermAmountDivID_" + i;
+              string TermDueDate = "TermDueDate_" + i;
+              string TermAmount = "TermAmount_" + i;
+              string Span_TermAmount = "Span_TermAmount_" + i;
+              string Span_TermDueDate = "Span_TermDueDate" + i;
+              if (i == 0)
+              { 
+                <div class="row TermAmountDiv" id="@TermAmountDivID" style="display:block">
+                    <div class="col-md-1" style="margin-left:10px;margin-top: 10px;">
+                        <div class="form-group">
+                            @Html.Label(Terms, new { @class = "control-label", @style = "font-weight:bold;" })
+                        </div>
+                    </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.TextBox(TermAmount, string.Empty, new { @id = "TermAmount_" + i, @onchange = "AddTermTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_TermAmount@(i)" style="color: Red;"></span>
+                            <span id="Span_TermAmountError" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+                   <div class="col-md-3">
+                                @Html.TextBox(TermDueDate, string.Empty, new { @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @style = "height:42px; !important" })
+                       <span id="Span_TermDueDate@(i)" style="color: Red;"></span>
+                   </div>    
+                </div>
+              }
+              else
+              {
+                <div class="row TermAmountDiv" id="@TermAmountDivID" style="display:none">
+                    <div class="col-md-1" style="margin-left:10px;margin-top: 10px;">
+                        <div class="form-group">
+                            @Html.Label(Terms, new { @class = "control-label", @style = "font-weight:bold;" })
+                        </div>
+                    </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+
+                            @Html.TextBox(TermAmount, string.Empty, new { @id = "TermAmount_" + i, @onchange = "AddTermTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_TermAmount@(i)" style="color: Red;"></span>
+                             <span id="Span_TermAmountError" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.TextBox(TermDueDate, string.Empty, new { @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_TermDueDate@(i)" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn_Delete ">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+              }
+          }
+        
+}
+                       <div class="col-md-8">
+                        <div class="row" >
+                            <label id="lblTermAmountError" style="color:red;"></label>
+                            <button type="button" id="btn_TermAmount" class="btn btn-info" style="float:right;">Add</button>
+                        </div>
+                         </div>
+                    </div>
+					
+					</div>
+					<div class="form-group">
+				      @*<div class="row">
+                        <div class="col-md-3">
+                            @Html.Label("Additional Amount")
+                            
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Amount", new { @class = "control-label" })
+                           
+                        </div>
+                    </div>*@
+                      <div class="row">
+      @{
+          for (int i = 0; i < TaxCount; i++)
+          {
+              string TermTaxDivID = "TermTaxDivID_" + i;
+              string TermTaxID = "TermTaxID_" + i;
+              string TermTaxAmount = "TermTaxAmount_" + i;
+              string Span_TermTaxID_ = "Span_TermTaxID_" + i;
+              string Span_TermTaxAmount = "Span_TermTaxAmount" + i;
+               
+              if (i == 0)
+              { 
+                  <div class="col-md-1">
+                            
+                        </div>
+                <div class="row TermTaxDiv" id="@TermTaxDivID" style="display:block">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                             @Html.Label("Additional Amount") 
+                            @Html.DropDownList(TermTaxID, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                            <span id="Span_TermTaxID_0" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+                       
+                    <div class="col-md-3">
+                        <div class="form-group">
+
+                            @Html.Label("Amount", new { @class = "control-label" })
+                            @Html.TextBox("TermTaxAmount", string.Empty, new { @id = "TermTaxAmount_" + i, @onchange = "AddTermTaxs(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                             <span id="Span_TermTaxAmount0" style="color: Red;"></span>
+                          
+
+                        </div>
+                    </div>
+                    @*<div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn_Delete ">
+                                Delete
+                            </button>
+                        </div>
+                    </div>*@
+                </div>
+              }
+             
+              else
+              {      
+                   <div class="col-md-1">
+                            
+                        </div>           
+                <div class="row TermTaxDiv" id="@TermTaxDivID" style="display:none">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.DropDownList(TermTaxID, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                             <span id="Span_TermTaxID_1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                       
+                    <div class="col-md-3">
+                        <div class="form-group">
+
+
+                            @Html.TextBox("TermTaxAmount", string.Empty, new { @id = "TermTaxAmount_" + i, @onchange = "AddTermTaxs(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                             <span id="Span_TermTaxAmount1" style="color: Red;"></span>
+
+                          
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn_Delete ">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+              }
+          }
+        
+}
+                       
+                    </div>
+					<div class="col-md-8" id="HidetermtaxDiv">
+                        <div class="row" >
+                            <label id="lblTermError" style="color:red;"></label>
+                            <button type="button" id="btn_TermTax" class="btn btn-info" style="float:right;">Add</button>
+                        </div>
+                         </div>
+					</div>
+					
+				</div>
+			
+			</div>
+	</div>
+</div>
+    <div class="row" id="yearlydiv">
+			<div class="col-md-12">
+				
+				<div class="panel panel-primary" data-collapsed="0">
+				
+					<div class="panel-heading">
+						<div class="panel-title">
+							Yearly Payment Details
+						</div>
+						
+						<div class="panel-options">
+							<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+							<a href="#" data-rel="close"><i class="entypo-cancel"></i></a>
+						</div>
+					</div>
+					 <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                     @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                   </div>
+					<div class="panel-body">
+					<div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Payment Amount")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.YearlyAmount, new { @name = "YearlyAmount", @id = "YearlyAmount", @class = "form-control", @style = "Height:42Px" }) 
+                                <span id="span_YearlyAmount" style="color: Red;"></span>
+
+                                 <span id="span_YearlyAmountError" style="color: Red;"></span>
+                            </div>
+                         </div>
+                            <br />
+                          <div class="row">
+                            <div class="col-sm-2">
+                                @Html.Label("Due Date")
+                                @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.YearlyDueDate, new { @id = "YearlyDueDate", @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @style = "height:42px; !important" })
+                                <span id="span_YearlyDueDate" style="color: Red;"></span>
+                            </div>
+                         </div>
+                            <br />
+					 @* <div class="row">
+                        <div class="col-md-3">
+                            @Html.Label("Additional Amount")
+                           
+                        </div>
+                        <div class="col-md-3">
+                            @Html.Label("Amount", new { @class = "control-label" })
+                           
+                        </div>
+                    </div>*@
+    <div class="row">
+     @{
+         for (int i = 0; i < TaxCount; i++)
+         {
+             string YearlyTaxDivID = "YearlyTaxDivID_" + i;
+             string YearlyTaxType = "YearlyTaxType_" + i;
+             string YearlyTaxAmount = "YearlyTaxAmount_" + i;
+             string Span_YearlyTaxType_ = "Span_YearlyTaxType_" + i;
+             string Span_YearlyTaxAmount_ = "Span_YearlyTaxAmount_" + i;
+              <div class="col-md-2">
+                            
+                        </div>
+             if (i == 0)
+             { 
+                <div class="row YearlyTaxDiv" id="@YearlyTaxDivID" style="display:block">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.Label("Additional Amount")
+                           @Html.DropDownList(YearlyTaxType, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                              <span id="Span_YearlyTaxType_0" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.Label("Amount", new { @class = "control-label" })
+                            @Html.TextBox(YearlyTaxAmount, string.Empty, new { @id = "YearlyTaxAmount_" + i, @onchange = "AddYearTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_YearlyTaxAmount_0" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+             }
+             else
+             { 
+                <div class="row YearlyTaxDiv" id="@YearlyTaxDivID" style="display:none">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                           @Html.DropDownList(YearlyTaxType, ViewBag.TaxTypes as SelectList, "--Select--", new { @class = "select2-container  select2 visible" })
+                            <span id="Span_YearlyTaxType_1" style="color: Red;"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            @Html.TextBox(YearlyTaxAmount, string.Empty, new { @id = "YearlyTaxAmount_" + i, @onchange = "AddYearTax(" + i + ");", @class = "form-control", @autocomplete = "off", @style = "height:42px; !important" })
+                            <span id="Span_YearlyTaxAmount_1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn_Delete ">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+             }
+         }
+}
+                       
+                    </div>
+                        <div class="col-md-11" id="hideYearlyTaxDiv">
+                        <div class="row" >
+                            <label id="lblYearlyError" style="color:red;"></label>
+                            <button type="button" id="btn_YearlyTax" class="btn btn-info" style="float:right;">Add</button>
+                        </div>
+                         </div>
+					</div>
+						
+					
+					</div>
+					
+				</div>
+			
+			</div>
+	</div>
+     <div class="col-md-12" style="text-align: right">
+                <button type="button" class="btn btn-default" onclick="BackToPayment()">
+                    Cancel
+                </button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="AddPayment()">
+                    Save
+                </button>
+     </div>
+ <div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+      
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+      
+    </div>
+<script type="text/javascript">
+    function GetDepartments() {
+
+        var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+        if (Bid !== "") {
+
+            var url2 = '@Url.Action("GetDepartments","Users")';
+
+                 $.get(url2, { BranchId: Bid }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Iddepartment").html(items.join(' '));
+                     ////$("#Iddepartment").select2();
+                 });
+             }
+         }
+         function GetGroups() {
+
+             var Did = $("#Iddepartment").find("option:selected").prop("value");
+
+             if (Did !== "") {
+
+                 var url2 = '@Url.Action("GetGroups", "Users")';
+
+                 $.get(url2, { DepartmentId: Did }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Idgroup").html(items.join(' '));
+                     //$("#Idgroup").select2();
+                 });
+             }
+         }
+    var opts = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "2000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    $(function () {
+        $("#MonthlyDueDate").val('');
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true,
+            startDate: '1d'
+        });
+        $(".modal-body select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        $("#PaymentTypeId").select2();
+        $("#Idbranchname").select2();
+        $("#TotalTermsId").select2(); 
+        $("#Iddepartment").select2();
+        $("#Idgroup").select2();
+
+        $("#MonthlyAmount").change(function () {
+
+           // $("#OverAllAmount").val(this.value);
+            document.getElementById("span_MonthlyAmount").innerHTML = "This Amount will be calculated for 12 months";
+
+
+        });
+        $("#YearlyAmount").change(function () {
+
+           // $("#OverAllAmount").val(this.value);
+        });
+
+    });
+    
+    $('#MonthlyAmount').keyup(function (e) {
+        
+        var amount = parseInt($("#MonthlyTaxAmount_1").val());
+        var amounts = parseInt($("#MonthlyTaxAmount_0").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+
+    });
+    $('#MonthlyTaxAmount_0').keyup(function (e) {
+
+        var amount = parseInt($("#MonthlyTaxAmount_1").val());
+        var amounts = parseInt($("#MonthlyTaxAmount_0").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN")
+            {
+                $("#OverAllAmount").val( amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+
+        });
+    
+    $('#MonthlyTaxAmount_1').keyup(function (e) {
+
+        var amount = parseInt($("#MonthlyTaxAmount_1").val());
+        var amounts = parseInt($("#MonthlyTaxAmount_0").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#MonthlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        
+    });
+
+
+    $('#YearlyAmount').keyup(function (e) {
+
+        var amount = parseInt($("#YearlyTaxAmount_0").val());
+        var amounts = parseInt($("#YearlyTaxAmount_1").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+
+    });
+
+    $('#YearlyTaxAmount_0').keyup(function (e) {
+
+        var amount = parseInt($("#YearlyTaxAmount_0").val());
+        var amounts = parseInt($("#YearlyTaxAmount_1").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else if (totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount );
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+
+    });
+
+
+
+    $('#YearlyTaxAmount_1').keyup(function (e) {
+
+        var amount = parseInt($("#YearlyTaxAmount_0").val());
+        var amounts = parseInt($("#YearlyTaxAmount_1").val());
+        if (e.keyCode == 8) {
+            // user has pressed backspace
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        else {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+        if (e.keyCode == 46) {
+            var totalamount = parseInt($("#YearlyAmount").val());
+            if (amount.toString() != "NaN" && amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts + amount);
+
+            }
+            else if (amount.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amount);
+
+            } else if (amounts.toString() != "NaN" && totalamount.toString() != "NaN") {
+                $("#OverAllAmount").val(totalamount + amounts);
+            }
+            else if (amount.toString() != "NaN" && amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts + amount);
+            }
+            else if (amount.toString() != "NaN") {
+                $("#OverAllAmount").val(amount);
+            }
+            else if (amounts.toString() != "NaN") {
+                $("#OverAllAmount").val(amounts);
+            }
+            else {
+                $("#OverAllAmount").val("0");
+            }
+        }
+
+    });
+
+   
+        $('#TermTaxAmount_0').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+            
+                for (var i = 0; i < 6; i++) {
+                    var amount = parseInt($("#TermAmount_" + i).val());
+                    if (amount.toString() != "NaN") {
+                        TotalTermAmount += parseInt(amount);
+                    }
+                }
+                if (e.keyCode == 8) {
+                    // user has pressed backspace
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN")
+                        {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                        
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                        
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                        
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                        
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                        
+                    }
+                }
+                if (e.keyCode == 46) {
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN")
+                        {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                        
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                       
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                       
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                        
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                        
+                    }
+                
+
+                
+               
+            }
+        });
+    
+        $('#TermTaxAmount_1').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+           
+                for (var i = 0; i < 6; i++) {
+                    var amount = parseInt($("#TermAmount_" + i).val());
+                    if (amount.toString() != "NaN") {
+                        TotalTermAmount += parseInt(amount);
+                    }
+                }
+                if (e.keyCode == 8) {
+                    // user has pressed backspace
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                           
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                        
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                        
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                        
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                        
+                    }
+                }
+                if (e.keyCode == 46) {
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+
+                        }
+                        
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                           
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                           
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                        
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                       
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                       
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                        
+                    }
+                
+
+                
+                
+            }
+        });
+
+
+        $('#TermAmount_0').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+           
+                for (var i = 0; i < 6; i++) {
+                    var amount = parseInt($("#TermAmount_" + i).val());
+                    if (amount.toString() != "NaN") {
+                        TotalTermAmount += parseInt(amount);
+                    }
+                }
+                if (e.keyCode == 8) {
+                    // user has pressed backspace
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                        
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                        
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                       
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                       
+                    }
+                }
+                if (e.keyCode == 46) {
+                    var totalamount = TotalTermAmount;
+                    if (TotalTermAmount.toString() != "NaN") {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                           
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN")
+                        {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                            
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                            
+                        }
+                        
+
+                    } else {
+                        var totalamount = parseInt($("#TermTaxAmount_0").val());
+                        var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                        if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                            
+                        }
+                        else if (totalamount.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                            
+                        }
+                        else if (totalamount1.toString() != "NaN") {
+                            $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                           
+                        }
+                        else {
+                            $("#OverAllAmount").val(TotalTermAmount);
+                           
+                        }
+                    }
+                }
+                else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+                      
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+                       
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+                       
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+                       
+                    }
+                
+
+                
+                
+            }
+        });
+
+        $('#TermAmount_1').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+        $('#TermAmount_2').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+        $('#TermAmount_3').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+        $('#TermAmount_4').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+        $('#TermAmount_5').keyup(function (e) {
+            
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+        $('#TermAmount_6').keyup(function (e) {
+
+            var TotalTermAmount = 0;
+
+            for (var i = 0; i < 6; i++) {
+                var amount = parseInt($("#TermAmount_" + i).val());
+                if (amount.toString() != "NaN") {
+                    TotalTermAmount += parseInt(amount);
+                }
+            }
+            if (e.keyCode == 8) {
+                // user has pressed backspace
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+            }
+            if (e.keyCode == 46) {
+                var totalamount = TotalTermAmount;
+                if (TotalTermAmount.toString() != "NaN") {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+
+
+                } else {
+                    var totalamount = parseInt($("#TermTaxAmount_0").val());
+                    var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                    if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                    }
+                    else if (totalamount.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                    }
+                    else if (totalamount1.toString() != "NaN") {
+                        $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                    }
+                    else {
+                        $("#OverAllAmount").val(TotalTermAmount);
+
+                    }
+                }
+            }
+            else {
+                var totalamount = parseInt($("#TermTaxAmount_0").val());
+                var totalamount1 = parseInt($("#TermTaxAmount_1").val());
+                if (totalamount.toString() != "NaN" && totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(totalamount + TotalTermAmount + totalamount1);
+
+                }
+                else if (totalamount.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount);
+
+                }
+                else if (totalamount1.toString() != "NaN") {
+                    $("#OverAllAmount").val(TotalTermAmount + totalamount1);
+
+                }
+                else {
+                    $("#OverAllAmount").val(TotalTermAmount);
+
+                }
+
+
+
+
+            }
+        });
+
+   
+   
+
+    
+
+
+    $(document).ready(function () {
+        $("#TotalTerms").hide();
+        $("#monthlydiv").hide();
+        $("#termdiv").hide();
+        $("#yearlydiv").hide();
+        $("#MonthlyAmount").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9.]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+        for (var i = 0; i < 12; i++) {
+            $("#TermAmount_" + i).on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9.]{1,999}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+
+        }
+
+
+        for (var i = 0; i < 12; i++) {
+            $("#MonthlyTaxAmount_" + i).on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9.]{1,999}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+        }
+        for (var i = 0; i < 12; i++) {
+            $("#TermTaxAmount_" + i).on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9.]{1,999}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+        }
+
+
+        $("#YearlyAmount").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9.]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+
+        for (var i = 0; i < 12; i++) {
+            $("#YearlyTaxAmount_" + i).on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9.]{1,999}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+        }
+
+
+
+
+    });
+
+    $("#PaymentTypeId").change(function () {
+
+
+        if ($(this).val() == "1") {
+            $("#monthlydiv").show();
+            $("#termdiv").hide();
+            $("#yearlydiv").hide();
+            $("#TotalTerms").hide();
+            document.getElementById("span_PaymentTerms").innerHTML = "";
+        }
+        if ($(this).val() == "2") {
+            //$("#TotalTerms").show();
+            $("#termdiv").show();
+            $("#monthlydiv").hide();
+            $("#yearlydiv").hide();
+            document.getElementById("span_PaymentTerms").innerHTML = "";
+        }
+
+        if ($(this).val() == "3") {
+            $("#yearlydiv").show();
+            $("#monthlydiv").hide();
+            $("#termdiv").hide();
+            $("#TotalTerms").hide();
+            document.getElementById("span_PaymentTerms").innerHTML = "";
+        }
+        if ($(this).val() != "3" && $(this).val() != "2" && $(this).val() != "1") {
+
+            $("#monthlydiv").hide();
+            $("#termdiv").hide();
+            $("#yearlydiv").hide();
+            $("#TotalTerms").hide();
+            document.getElementById("span_PaymentTerms").innerHTML = "";
+
+        }
+    });
+    $(document).ready(function () {
+        $(".btn_Delete").click(function () {
+                
+            $(this).parent().parent().parent().find($("input")).each(function () {
+                $("#hideMonthlyAdd").show();
+                $("#HidetermtaxDiv").show();
+                $("#hideYearlyTaxDiv").show();
+                var amount = $(this).val();
+                var totalamount = parseInt($("#OverAllAmount").val());
+                $("#OverAllAmount").val(totalamount - amount);
+                $(this).val('');
+
+            });
+            $(this).parent().parent().parent().hide();
+        });
+        $("#btn_MonthlyTax").click(function () {
+            
+            var total = $('.MonthlyTaxDiv').length;
+            $(".MonthlyTaxDiv").each(function (index) {
+                if (this.style.display == "none") {
+                    this.style.display = "block";
+                    if (index === total - 1) {
+                        $("#hideMonthlyAdd").hide();
+                        return false;
+                    }
+                    return false;
+                }
+                    
+                     
+                     
+            });
+        });
+
+        $("#btn_YearlyTax").click(function () {
+            var total = $('.YearlyTaxDiv').length;
+            $(".YearlyTaxDiv").each(function (index) {
+                if (this.style.display == "none") {
+                    this.style.display = "block";
+                    if (index === total - 1) {
+                        $("#hideYearlyTaxDiv").hide();
+                        return false;
+                    }
+                    return false;
+                }
+                     
+            });
+        });
+        $("#btn_TermTax").click(function () {
+            var total = $('.TermTaxDiv').length;
+            $(".TermTaxDiv").each(function (index) {
+                if (this.style.display == "none") {
+                    this.style.display = "block";
+                    if (index === total - 1) {
+                        $("#HidetermtaxDiv").hide();
+                        return false;
+                    }
+                    return false;
+                }
+                    
+                     
+            });
+        });
+        $("#btn_TermAmount").click(function () {
+            $(".TermAmountDiv").each(function () {
+                if (this.style.display == "none") {
+                    this.style.display = "block";                        
+                    return false;
+                }
+                     
+            });
+        });
+    });
+    function BackToPayment() {
+        window.location.href = '@Url.Action("ProjectPayment", "PaymentStructure")';
+    }
+    function AddPayment() {
+
+        var custormerName = $("#CustomerName").val();
+        var PaymentTypeID = $("#PaymentTypeId").val();
+        var Branch = $("#Idbranchname").val();
+        var Department = $("#Iddepartment").val();
+        if (custormerName == "" || PaymentTypeID =="" || Branch=="0"||Department=="0") 
+        {
+            if (custormerName == "") {
+                document.getElementById("span_CustomerName").innerHTML = "Enter the Customer Name";
+            }
+            else {
+                document.getElementById("span_CustomerName").innerHTML = "";
+            }
+            if (PaymentTypeID == "") {
+                document.getElementById("span_PaymentTerms").innerHTML = "Select the Payment Type";
+            }
+            else {
+                document.getElementById("span_PaymentTerms").innerHTML = "";
+            }
+            if (Branch == "0") {
+                document.getElementById("span_Branch").innerHTML = "Select the Branch";
+            }
+            else {
+                document.getElementById("span_Branch").innerHTML = "";
+            }
+            if (Department == "0") {
+                document.getElementById("span_Department").innerHTML = "Select the Department";
+            }
+            else {
+                document.getElementById("span_Department").innerHTML = "";
+            }
+            return false;
+        }
+        else
+        {
+            if (PaymentTypeID == 1)
+            {
+                var MonthlyAmount = $("#MonthlyAmount").val();
+                var MonthlyDueDate = $("#MonthlyDueDate").val();
+
+                if (MonthlyAmount == "" || MonthlyAmount == 0 || MonthlyDueDate == "")
+                {
+                    if (MonthlyAmount == "")
+                    {
+                        document.getElementById("span_MonthlyAmount").innerHTML = "Enter the monthly amount";
+                    }
+                    else
+                    {
+                        document.getElementById("span_MonthlyAmount").innerHTML = "";
+                    }
+                    if (MonthlyAmount != "" && MonthlyAmount==0 )
+                    {
+                        document.getElementById("span_MonthlyAmountError").innerHTML = "Monthly amount can't be 0";
+                    }
+                    else
+                    {
+                        document.getElementById("span_MonthlyAmountError").innerHTML = "";
+                    }
+                    if (MonthlyDueDate == "") 
+                    {
+                        document.getElementById("span_MonthlyDueDate").innerHTML = "Enter the Monthly Due Date";
+                    }
+                    else 
+                    {
+                        document.getElementById("span_MonthlyDueDate").innerHTML = "";
+                    }
+                    return false;
+                }
+                var input = $("input");
+                var container = $(".select2-container");
+                var MonthlyTax = [];
+                var YearlyTax = [];
+                var TermTax = [];
+                var TermAmountArray = [];
+                var MonthlyTaxes = [];
+                var YearlyTaxes = [];
+                var TaxName = [];
+                if (document.getElementById("PaymentTypeId").value == "1") {
+                    $(".MonthlyTaxDiv").each(function () {
+                        //Get the values from only visible items.
+                        if (this.style.display == "block") {
+                            var inputsArray = $(this).find(input);
+                            var selectArray = $(this).find(container);
+
+                            var MonthlyTaxID;
+                            var MonthlyTaxAmount = "";
+
+                            selectArray.each(function () {
+                                var Id = this.id;
+
+                                if (Id.indexOf("s2id_MonthlyTaxID_") >= 0) {
+                                    MonthlyTaxID = $(this).text();
+                                }
+
+                            });
+                            for (var i = 0; i < TaxName.length; i++) {
+
+                                if (TaxName[i].indexOf(MonthlyTaxID) >= 0) {
+                                    if (MonthlyTaxID != "   --Select--   ") {
+                                        document.getElementById("Span_MonthlyTaxID_1").innerHTML = "Same tax type is selected";
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                }
+
+                            }
+                            TaxName.push(MonthlyTaxID);
+
+                            inputsArray.each(function () {
+                                //substring detection for exact ID and values
+                                var Id = this.id;
+
+                           
+                           
+                                    MonthlyTaxAmount = this.value;
+                                if (MonthlyTaxAmount != "") {
+                                    if (MonthlyTaxID == "   --Select--                             ") {
+                                        
+                                        document.getElementById("Span_MonthlyTaxID_0").innerHTML = "Select the Additional amount";
+                                            e.preventDefault();
+                                            return false;
+                                    }
+                                    else if (MonthlyTaxID == "   --Select--   ") {
+                                        document.getElementById("Span_MonthlyTaxID_0").innerHTML = "Select the Additional amount";
+                                        e.preventDefault();
+                                        return false;
+
+                                    }
+                                }
+                            
+                                if (Id.indexOf("MonthlyTaxAmount_0") >= 0) {
+                                    MonthlyTaxAmount = this.value;
+                                    if (MonthlyTaxAmount == "") {
+                                        if (MonthlyTaxID != "   --Select--                             ") {
+                                            if (MonthlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_MonthlyTaxAmount_0").innerHTML = "Enter the monthly Tax Amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (MonthlyTaxAmount == 0) {
+                                        if (MonthlyTaxID != "   --Select--                             ") {
+                                            if (MonthlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_MonthlyTaxAmount_0").innerHTML = "Monthly Tax Amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_MonthlyTaxAmount_0").innerHTML = "";
+                                    }
+
+
+                                }
+                              
+                               
+                                if (Id.indexOf("MonthlyTaxAmount_1") >= 0) {
+                                    MonthlyTaxAmount = this.value;
+                                    if (MonthlyTaxAmount == "") {
+                                        if (MonthlyTaxID != "   --Select--                             ") {
+                                            if (MonthlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_MonthlyTaxAmount_1").innerHTML = "Enter the monthly Tax Amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (MonthlyTaxAmount == 0) {
+                                        if (MonthlyTaxID != "   --Select--                             ") {
+                                            if (MonthlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_MonthlyTaxAmount_1").innerHTML = "Monthly Tax Amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_MonthlyTaxAmount_1").innerHTML = "";
+                                    }
+                                    
+                                }
+                            });
+                            MonthlyTax.push(MonthlyTaxID + "," + MonthlyTaxAmount);
+                        }
+                    });
+                }
+                $.each(MonthlyTax, function (key, value) {
+                    console.log(key, value);
+                });
+
+            }
+            else if (PaymentTypeID == 2) {
+                var input = $("input");
+                var container = $(".select2-container");
+                var MonthlyTax = [];
+                var YearlyTax = [];
+                var TermTax = [];
+                var TaxName = [];
+                var SameDate = [];
+                var TermAmountArray = [];
+                var MonthlyTaxes = [];
+                var YearlyTaxes = [];
+                if (document.getElementById("PaymentTypeId").value == "2") {
+                    $(".TermAmountDiv").each(function () {
+                        //Get the values from only visible items.
+                        if (this.style.display == "block") {
+                            var inputsArray = $(this).find(input);
+                            //var selectArray = $(this).find(input);
+
+                            var TermAmount = "";
+                            var TermDueDate = "";
+                            inputsArray.each(function () {
+                                //substring detection for exact ID and values
+                                var Id = this.id;
+                                for (var i = 0; i <= 5; i++) {
+                                   
+                                    if (Id.indexOf("TermDueDate_"+i) >= 0) {
+                                        TermDueDate = this.value;
+                                        if (TermDueDate == "") {
+                                            document.getElementById("Span_TermDueDate"+i).innerHTML = "Select the Term Due Date";
+                                            e.preventDefault();
+                                            return false;
+
+                                        }
+                                        else {
+                                            document.getElementById("Span_TermDueDate"+i).innerHTML = "";
+                                        }
+                                    }
+                                    if (Id.indexOf("TermAmount_"+i) >= 0) {
+                                        TermAmount = this.value;
+                                        if (TermAmount == "") {
+                                            document.getElementById("Span_TermAmount"+i).innerHTML = "Enter the term amount";
+                                            e.preventDefault();
+                                            return false;
+                                        }
+                                        else if (TermAmount == 0) {
+                                            document.getElementById("Span_TermAmount"+i).innerHTML = "Term amount can't be 0";
+                                            e.preventDefault();
+                                            return false;
+                                        }
+                                        else {
+                                            document.getElementById("Span_TermAmount"+i).innerHTML = "";
+                                        }
+
+                                    }
+                                }
+                                    
+                                    
+                            });
+                            for (var i = 0; i < SameDate.length; i++) {
+
+                                j = i + 1;
+                                if (SameDate[i].indexOf(TermDueDate) >= 0) {
+                                    document.getElementById("Span_TermDueDate" + j).innerHTML = "Same due date is entered more than once";
+                                    e.preventDefault();
+                                    return false;
+                                }
+
+                            }
+                            SameDate.push(TermDueDate);
+                            TermAmountArray.push(TermAmount + "," + TermDueDate);
+                        }
+                    });
+                    $(".TermTaxDiv").each(function () {
+                        //Get the values from only visible items.
+                        if (this.style.display == "block") {
+                            var inputsArray = $(this).find(input);
+                            var selectArray = $(this).find(container);
+
+                            var TermTaxID = "";
+                            var TermTaxAmount = "";
+
+                            selectArray.each(function () {
+                                var Id = this.id;
+                                if (Id.indexOf("s2id_TermTaxID_") >= 0) {
+                                    TermTaxID = $(this).text();
+                                    if (TermTaxID == "   --Select--                             ") {
+                                        //document.getElementById("Span_TermTaxID_").innerHTML = "Select the Term tax type";
+                                        //e.preventDefault();
+                                        //return false;
+
+                                    }
+                                    else {
+                                        document.getElementById("Span_TermTaxID_1").innerHTML = "";
+                                    }
+                                }
+                            });
+
+                            for (var i = 0; i < TaxName.length; i++) {
+
+                                if (TaxName[i].indexOf(TermTaxID) >= 0) {
+                                    if (TermTaxID != "   --Select--   ") {
+                                        document.getElementById("Span_TermTaxID_1").innerHTML = "Same tax type is selected";
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                }
+
+                            }
+                            TaxName.push(TermTaxID);
+                            inputsArray.each(function () {
+                                //substring detection for exact ID and values
+                                var Id = this.id;
+                                TermTaxAmount = this.value;
+                                if (TermTaxAmount != "") {
+                                    if (TermTaxID == "   --Select--                             ") {
+
+                                        document.getElementById("Span_TermTaxID_0").innerHTML = "Select the Month Tax Type";
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                    else if (TermTaxID == "   --Select--   ") {
+                                        document.getElementById("Span_TermTaxID_0").innerHTML = "Select the Month Tax Type";
+                                        e.preventDefault();
+                                        return false;
+
+                                    }
+                                }
+                                if (Id.indexOf("TermTaxAmount_0") >= 0) {
+                                    TermTaxAmount = this.value;
+                                    if (TermTaxAmount == "") {
+                                        if (TermTaxID != "   --Select--                             ") {
+
+
+                                            if (TermTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_TermTaxAmount0").innerHTML = "Enter the term tax amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (TermTaxAmount == 0) {
+                                        if (TermTaxID != "   --Select--                             ") {
+                                            if (TermTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_TermTaxAmount0").innerHTML = "Term tax amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_TermTaxAmount0").innerHTML = "";
+                                    }
+
+
+                                }
+                                if (Id.indexOf("TermTaxAmount_1") >= 0) {
+                                    TermTaxAmount = this.value;
+                                    if (TermTaxAmount == "") {
+                                        if (TermTaxID != "   --Select--                             ") {
+
+
+                                            if (TermTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_TermTaxAmount1").innerHTML = "Enter the term tax amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (TermTaxAmount == 0) {
+                                        if (TermTaxID != "   --Select--                             ") {
+                                            if (TermTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_TermTaxAmount1").innerHTML = "Term tax amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_TermTaxAmount1").innerHTML = "";
+                                    }
+
+                                }
+                            });
+                            TermTax.push(TermTaxID + "," + TermTaxAmount);
+                        }
+                    });
+
+
+                }
+                $.each(MonthlyTax, function (key, value) {
+                    console.log(key, value);
+                });
+            }
+            else if (PaymentTypeID == 3) {
+
+                if (document.getElementById("PaymentTypeId").value == "3") {
+
+                    var YearlyAmount = $("#YearlyAmount").val();
+                    var YearlyDueDate = $("#YearlyDueDate").val();
+
+                    if (YearlyAmount == "" || YearlyAmount == 0 || YearlyDueDate == "") 
+                    {
+                        if (YearlyAmount == "") {
+                            document.getElementById("span_YearlyAmount").innerHTML = "Enter the Yearly Amount";
+                        }
+                        else 
+                        {
+                            document.getElementById("span_YearlyAmount").innerHTML = "";
+                        }
+                        if (YearlyAmount == 0 && YearlyAmount != "") {
+                            document.getElementById("span_YearlyAmountError").innerHTML = "Yearly Amount can't be 0";
+                        }
+                        else {
+                            document.getElementById("span_YearlyAmountError").innerHTML = "";
+                        }
+                        if (YearlyDueDate == "")
+                        {
+                            document.getElementById("span_YearlyDueDate").innerHTML = "Select the Yearly Due Date";
+                        }
+
+                        else
+                        {
+                            document.getElementById("span_YearlyDueDate").innerHTML = "";
+                        }
+
+                        return false;
+                    }
+
+
+                    var input = $("input");
+                    var container = $(".select2-container");
+                    var MonthlyTax = [];
+                    var YearlyTax = [];
+                    var TermTax = [];
+                    var TermAmountArray = [];
+                    var MonthlyTaxes = [];
+                    var YearlyTaxes = [];
+                    $(".YearlyTaxDiv").each(function () {
+                        //Get the values from only visible items.
+                        if (this.style.display == "block") {
+                            var inputsArray = $(this).find(input);
+                            var selectArray = $(this).find(container);
+
+                            var YearlyTaxID = "";
+                            var YearlyTaxAmount = "";
+
+                            selectArray.each(function () {
+                                var Id = this.id;
+                                if (Id.indexOf("s2id_YearlyTaxType_") >= 0) {
+                                    YearlyTaxID = $(this).text();
+                                    if (YearlyTaxID == "   --Select--                             ") {
+
+                                        //document.getElementById("Span_YearlyTaxType_").innerHTML = "Select the Yearly tax type";
+                                        //e.preventDefault();
+                                        //return false;
+
+                                    }
+                                    else {
+                                        document.getElementById("Span_YearlyTaxType_1").innerHTML = "";
+                                    }
+                                }
+                            });
+
+
+                            for (var i = 0; i < YearlyTaxes.length; i++) {
+                                if (YearlyTaxes[i].indexOf(YearlyTaxID) >= 0) {
+                                    if (YearlyTaxID != "   --Select--   ") {
+                                        document.getElementById("Span_YearlyTaxType_1").innerHTML = "Same tax type is selected";
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                }
+
+                            }
+                            YearlyTaxes.push(YearlyTaxID);
+                            inputsArray.each(function () {
+                                //substring detection for exact ID and values
+                                var Id = this.id;
+                                YearlyTaxAmount = this.value;
+                                if (YearlyTaxAmount != "") {
+                                    if (YearlyTaxID == "   --Select--                             ") {
+
+                                        document.getElementById("Span_YearlyTaxType_0").innerHTML = "Select the Month Tax Type";
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                    else if (YearlyTaxID == "   --Select--   ") {
+                                        document.getElementById("Span_YearlyTaxType_0").innerHTML = "Select the Month Tax Type";
+                                        e.preventDefault();
+                                        return false;
+
+                                    }
+                                }
+                                if (Id.indexOf("YearlyTaxAmount_0") >= 0) {                                
+                                    
+
+                                    
+                                    if (YearlyTaxAmount == "") {
+                                        if (YearlyTaxID != "   --Select--                             ") {
+                                            if (YearlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_YearlyTaxAmount_0").innerHTML = "Enter the Yearly tax amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (YearlyTaxAmount == 0) {
+                                        if (YearlyTaxID != "   --Select--                             ") {
+                                            if (YearlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_YearlyTaxAmount_0").innerHTML = "Yearly tax amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_YearlyTaxAmount_0").innerHTML = "";
+                                    }
+
+
+
+                                }
+                                if (Id.indexOf("YearlyTaxAmount_1") >= 0) {
+                                    YearlyTaxAmount = this.value;
+                                    if (YearlyTaxAmount == "") {
+                                        if (YearlyTaxID != "   --Select--                             ") {
+                                            if (YearlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_YearlyTaxAmount_1").innerHTML = "Enter the Yearly tax amount";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else if (YearlyTaxAmount == 0) {
+                                        if (YearlyTaxID != "   --Select--                             ") {
+                                            if (YearlyTaxID != "   --Select--   ") {
+                                                document.getElementById("Span_YearlyTaxAmount_1").innerHTML = "Yearly tax amount can't be 0";
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        document.getElementById("Span_YearlyTaxAmount_1").innerHTML = "";
+                                    }
+
+
+
+                                }
+                            });
+                            YearlyTax.push(YearlyTaxID + "," + YearlyTaxAmount);
+                        }
+                    });
+                }
+                $.each(MonthlyTax, function (key, value) {
+                    console.log(key, value);
+                });
+
+            }
+            else {
+                document.getElementById("span_PaymentTerms").innerHTML = "Select the Payment Type";
+                return false;
+            }
+        
+        }
+
+
+        var values =
+        {
+            "CustomerName": $("#CustomerName").val(),
+            "PaymentTypeID": $("#PaymentTypeId").val(),
+//            "BranchId": $("#Idbranchname").val(),
+//            "DepartmentId": $("#Iddepartment").val(),
+//            "GroupId": $("#Idgroup").val(),
+            "OverAllAmount": $("#OverAllAmount").val(),
+            "MonthlyAmount": $("#MonthlyAmount").val(),
+            "MonthlyDueDate": $("#MonthlyDueDate").val(),
+            "YearlyAmount": $("#YearlyAmount").val(),
+            "YearlyDueDate": $("#YearlyDueDate").val(),
+            "TermAmount": TermAmountArray,
+            "TermAdditionalAmount": TermTax,
+            "YearlyAdditionalAmount": YearlyTax,
+            "MonthlyAdditionalAmount": MonthlyTax
+
+        };
+        $.ajax({
+            url: "../../PaymentStructure/CreateProjectPayment/",
+            type: 'POST', cache: false,
+            data: values,
+            traditional: true,
+            success: function (result) {
+                if (result == "success") {
+                    toastr.success("Project Payment Created Successfully", opts);
+                    setTimeout(function () { window.location.href = '@Url.Action("ProjectPayment", "PaymentStructure")'; }, 1000);
+                }
+                else {
+                    toastr.warning("Project Payment Creation Failed", opts);
+                    setTimeout(function () { location.reload(); }, 1000);
+                }
+
+            }
+
+        });
+
+
+    }
+</script>    
+</body>
+</html>

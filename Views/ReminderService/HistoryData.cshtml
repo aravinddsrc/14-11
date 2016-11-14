@@ -1,0 +1,458 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.RemainderPurpose>
+@{
+    ViewBag.Title = "HistoryData";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*<h2>HistoryData</h2>*@
+
+
+@section AddToHead
+{
+    <style type="text/css">
+        textarea {
+            resize: none;
+        }
+    </style>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+    }
+@{
+    int SNO = 1;
+}
+<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ReminderSetup", "ReminderService")">Administration Setup </a></li>
+    <li class="active"><strong>Reminder Service Settings / History Data</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Reminder History Data
+                </div>
+            </div>
+            <div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <br />
+
+                @using (Html.BeginForm("HistoryData", "ReminderService", FormMethod.Post, new { @id = "form" }))
+                {
+                   
+                    @*<div class="btn-group" style="float: right" id="AddNewProject">
+                        <button type="button" class="btn btn-blue" style="font-weight: bold" onclick='IsValid(this.value)' />
+                        Go Back
+                        <br />
+                    </div>*@
+                    <br /> 
+                    <br />
+                    
+                    <table class="table table-bordered datatable" id="tblMeeting">
+
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">S.No
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Service Name")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Service Type")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Selected Date")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Selected Days")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Start Time")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Service Status")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Email Status")
+                                </th>
+
+                                @*<th style="text-align: left;">
+                                    @Html.DisplayName("View History")
+                                </th>*@
+                                @*<th style="text-align: center;">Edit
+                                </th>
+                                <th style="text-align: center;">Delete
+                                </th>
+                                <th style="text-align: center;">Start/Stop
+                                </th>*@
+                                @*<th style="text-align: center;">Stop
+                                </th>*@
+
+                            </tr>
+                        </thead>
+                        @{
+
+                    foreach (var item in Model)
+                    {
+                            <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                    @Html.HiddenFor(modelitem => item.Id)
+                                </td>
+                                <td style="width: 3800px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    @Html.DisplayFor(modelItem => item.ServiceName)
+
+                                </td>
+                                <td style="width: 3800px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    @Html.DisplayFor(modelItem => item.ServiceType)
+
+                                </td>
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    @item.SelectDate.ToString("ddd, MMM d, yyyy")
+                                </td>
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    @*@Html.DisplayFor(modelItem => item.Days)       *@
+
+                                    @{
+                                        
+                        var days = item.Days;
+
+                        if (days != null)
+                        {
+                            if (days.Contains("Mon"))
+                            { 
+                                        @Html.CheckBoxFor(m => item.checkMonday, new { @disabled = "disabled" })@Html.Label("mon")
+                            }
+                            else
+                            {
+
+                            }
+                            if (days.Contains("Tue"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkTuesday, new { @disabled = "disabled" }) @Html.Label("tue")
+                            }
+                            else
+                            {
+
+                            }
+                            if (days.Contains("Wed"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkWednesday, new { @disabled = "disabled" })@Html.Label("wed")
+                            }
+                            else
+                            {
+
+                            }  <br />
+                            if (days.Contains("Thu"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkThursday, new { @disabled = "disabled" })@Html.Label("thu")
+                            }
+                            else
+                            {
+
+                            }
+
+                            if (days.Contains("Fri"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkFriday, new { @disabled = "disabled" })@Html.Label("fri")
+                            }
+                            else
+                            {
+
+                            }
+                            if (days.Contains("Sat"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkSaturday, new { @disabled = "disabled" })@Html.Label("sat")
+                            }
+                            else
+                            {
+
+                            }  <br />
+                            if (days.Contains("Sun"))
+                            {
+                                        @Html.CheckBoxFor(m => item.checkSunday, new { @disabled = "disabled" })@Html.Label("sun")
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        else
+                        {
+                            // @Html.DisplayFor(modelItem => item.Days)
+                                        @Html.Label("-")
+                        }
+                                                                                          
+                                    }
+                                </td>
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    @Html.DisplayFor(modelItem => item.ServiceStartTime)
+                                </td>
+
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: center;">
+
+                                    @{
+                        var status = item.ServiceStatus;
+                        if (status != "")
+                        {
+                                        
+                                        @Html.DisplayFor(modelItem => item.ServiceStatus)
+                        }
+                        else
+                        { 
+                                        @Html.Label("-")
+                        }
+                                    
+                                
+                                    }
+
+                                </td>
+
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: center;">
+                                    <a data-toggle="tooltip" title="Email Status" class="btn btn-info" onclick='EmailStatus("@item.Id","@item.ServiceType","@item.SelectDate")'>
+                                        <i class="entypo-mail"></i>
+                                    </a>
+                                </td>
+                                
+
+
+                                @*<td>
+                                    @{
+                        var history = item.CheckHistory;
+                        if (history == false)
+                        {
+                                        <a class="btn btn-info" data-toggle="tooltip" title="View History" onclick='ViewHistory("@item.Id")'>
+                                            <i class="entypo-suitcase"></i>
+                                        </a>
+                        }
+                        else if (history == true)
+                        {
+                                        <a data-toggle="tooltip" title="Close History" class="btn btn-danger" onclick='CloseHistory("@item.Id")'>
+                                            <i class="entypo-briefcase"></i>
+                                        </a>
+                        }
+                                    }
+                                </td>*@
+                               @* <td>
+                                    <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditMail("@item.Id","@item.ServiceType","@item.SelectDate")'>
+                                        <i class="entypo-pencil"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.Id")'>
+                                        <i class="entypo-cancel"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    @{
+                                        
+                        if (item.OnServiceStatus == true)
+                        {  
+                                        <a class="btn btn-danger" data-toggle="tooltip" title="Stop" onclick='StartStop("@item.Id")'>
+                                            <i class="entypo-stop"></i>
+                                        </a>
+                                        
+                        }
+                        else if (item.OnServiceStatus == false)
+                        {
+                                        <a href="#" data-toggle="tooltip" title="Start" class="btn btn-green" onclick='StartStop("@item.Id")'>
+                                            <i class="entypo-right-circled"></i>
+                                        </a>
+                        }               
+                                        
+                                    }
+                                </td>*@
+                                @*<td>
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Stop" onclick='Stop("@item.Id")'>
+                                        <i class="entypo-block"></i>
+                                    </a>
+                                </td>*@
+
+                                
+                            </tr>
+                        
+                    }                       
+                        }
+
+
+                    </table>
+                }
+
+            </div>
+            <div class="col-md-12" style="text-align: right">
+                    <button type="reset" id="btnAdd" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("ReminderSetup", "ReminderService") + "'")    ;">
+                        Back
+                    </button>
+                </div>
+            <br />
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        var columnDefs;
+        //        if ($("aTargets")[6]) {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6]}];
+        //        } else {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5]}];
+        //        }
+
+        var table = $("#tblMeeting").dataTable({
+
+
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+            //"lengthMenu": [[leave, project, HwSw, -1], [leave, project, HwSw, "All"]],
+            "sPaginationType": "bootstrap",
+            "aaSorting": [],
+            //"columnDefs": [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }],
+            "columnDefs": columnDefs,
+            stateSave: true,
+            stateSaveCallback: function (settings, data) {
+                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+
+            }
+
+        });
+
+
+
+        //$("#tblMeeting").dataTable({
+        //    "sPaginationType": "bootstrap",
+        //    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]]
+        //    //            "bStateSave": false,
+        //    //            "columnDefs": columnDefs
+        //});
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+
+
+
+
+    function IsValid(date) {
+
+        $("#form").submit();
+
+    }
+
+    function AddRemainder() {
+
+        $.ajax({
+            url: "../../ReminderService/ReminderSetup/",
+            type: 'GET', cache: false,
+            success: function (result) {
+                
+            }
+
+        });
+
+    }
+
+
+    function EditMail(Id, ServiceType, SelectDate) {
+
+        $.ajax({
+            url: "../../ReminderService/AddNewEdit/",
+            type: 'GET',
+            cache: false,
+            data: { "Id": Id, "ServiceType1": ServiceType, "SelectedDate1": SelectDate },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+
+        });
+
+    }
+
+
+    function EmailStatus(Id, ServiceType, SelectDate) {
+        var StatusUrl = "../../ReminderService/EmailStatus";
+        var EmailPageUrl = "../../ReminderService/EmailHistory";
+
+        $.ajax({
+            url: StatusUrl,
+            type: 'GET', cache: false,
+            data: { "Id": Id, "ServiceType1": ServiceType, "SelectedDate1": SelectDate },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+            
+        });
+    }
+
+    function Delete(Id) {
+        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+            if (conform) {
+                $.ajax({
+                    url: "../../ReminderService/DeleteReminderService/",
+                    type: 'POST', cache: false,
+                    data: { Id: Id },
+                    success: function (result) {
+                        if (result.Result == "Success") {
+                            toastr.success("Reminder Service deleted successfully");
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    function StartStop(Id) {
+        $.ajax({
+            url: "../../ReminderService/StartStop/",
+            type: 'POST',
+            cache: false,
+            data: { "Id": Id },
+            success: function (result) {
+                if (result.Result == "Start") {
+                    toastr.success("Reminder Service Activated");
+                    setTimeout(function () { location.reload(); }, 1000);
+                }
+                else if (result.Result == "Stop") {
+                    toastr.success("Reminder Service De - Activated");
+                    setTimeout(function () { location.reload(); }, 1000);
+                }
+            }
+
+        });
+
+
+    }
+
+
+
+</script>
+

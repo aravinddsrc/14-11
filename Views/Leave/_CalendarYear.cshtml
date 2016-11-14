@@ -1,0 +1,21 @@
+﻿@using DSRCManagementSystem.DSRCLogic
+@model IEnumerable<DSRCManagementSystem.CalendarYear>
+
+@{          
+     
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+@{
+    Func<DateTime, string> dateTimeFunc = delegate(DateTime dateTime)
+    {
+        return String.Format("{0:D}", dateTime);
+    };
+}
+
+@grid.GetHtml(tableStyle: "table table-bordered", headerStyle: "head",
+                columns: grid.Columns(
+                grid.Column("S.No", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                grid.Column("StartingMonth", header: "Starting Month", format: @<text> @Enum.GetName(typeof(Month), item.StartingMonth) </text>),
+                grid.Column("EndingMonth", header: "Ending Month", format: @<text> @Enum.GetName(typeof(Month), item.EndingMonth) </text>),
+                grid.Column("", format: @<text><button type="button" class="btn btn-info btn-icon icon-left" onclick="EditCalendar('@item.CalendarYearId')"><i class="fa fa-edit"></i>Edit</button></text>)),
+                htmlAttributes: new { @id = "tblCalendarYear" })

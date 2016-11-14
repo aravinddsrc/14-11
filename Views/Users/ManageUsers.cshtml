@@ -1,0 +1,1031 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.UserModel>
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead{
+     
+
+    <style>
+        tr td:nth-child(6) {
+            text-align: center;
+        }
+         .dropdown-menu {
+    background-color: white;
+          }  
+
+        tr td:nth-child(7) {
+            text-align: center;
+        }
+
+        tr td:nth-child(8) {
+            text-align: center;
+        }
+
+        tr td:nth-child(9) {
+            text-align: center;
+        }
+
+        .switch {
+            position: relative;
+            display: block;
+            vertical-align: top;
+            width: 100px;
+            height: 30px;
+            padding: 3px;
+            margin: 0 10px 10px 0;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+            border-radius: 18px;
+            box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .switch-label {
+            position: relative;
+            display: block;
+            height: inherit;
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #eceeef;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        }
+
+            .switch-label:before, .switch-label:after {
+                position: absolute;
+                top: 50%;
+                margin-top: -.5em;
+                line-height: 1;
+                -webkit-transition: inherit;
+                -moz-transition: inherit;
+                -o-transition: inherit;
+                transition: inherit;
+            }
+
+            .switch-label:before {
+                content: attr(data-off);
+                right: 11px;
+                color: #aaaaaa;
+                text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .switch-label:after {
+                content: attr(data-on);
+                left: 11px;
+                color: #FFFFFF;
+                text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+            }
+
+        .switch-input:checked ~ .switch-label {
+            background: #E1B42B;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-input:checked ~ .switch-label:before {
+                opacity: 0;
+            }
+
+            .switch-input:checked ~ .switch-label:after {
+                opacity: 1;
+            }
+
+        .switch-handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+            background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+            border-radius: 100%;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-handle:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -6px 0 0 -6px;
+                width: 12px;
+                height: 12px;
+                background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+                background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+                border-radius: 6px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            }
+
+        .switch-input:checked ~ .switch-handle {
+            left: 74px;
+            box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-label, .switch-handle {
+            transition: All 0.3s ease;
+            -webkit-transition: All 0.3s ease;
+            -moz-transition: All 0.3s ease;
+            -o-transition: All 0.3s ease;
+        }
+
+        .entypo-play {
+            border: none;
+            font-size: 1em;
+            color: white;
+            background-color:  @Session["Background"].ToString();
+            border-radius: 50%;
+            width: 27px;
+            height: 27px;
+            margin: auto;
+            -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+            -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+            box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+        }
+
+            .entypo-play:hover {
+                background-color: @Session["Background"].ToString();
+            }
+    </style>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            localStorage.clear();
+            if ('@TempData["message"]' == "Added") {
+                toastr.success('Employee Added Successfully');
+            }
+            else if ('@TempData["message"]' == "Edited") {
+                toastr.success("Employee Details Updated Successfully");
+            }
+            fnUserchange();
+            $("#DepartmentName").change(function () { fnUserchange() });
+        });
+    </script>
+}
+@{
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+   var branchcnt= db.Master_Branches.ToList().Count;
+   var branchId = db.Master_Branches.ToList();
+    }
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ManageUsers", "Users")">Employee Management</a></li>
+    <li class="active"><strong>Manage Employees</strong></li>
+    <li>
+        <a href="#" data-toggle="tooltip" title="Tour">
+            <button class="entypo-play" id="startTourBtn"></button>
+        </a>
+    </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageUsers","Users")"style="color:black ">
+            Manage Employees
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Employees</b>
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <a href="#" data-toggle="tooltip" title="Tour">
+            <button class="entypo-play" id="startTourBtn"></button>
+        </a>
+    </p>
+    <br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Employees
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                @using (Html.BeginForm("ManageUsers", "Users", FormMethod.Post, new { @id = "form" }))
+                {
+
+                    <div class="row">
+                        <div class="btn-group" style="float: right" id="AddNewUser">
+                            <button id="Add" type="button" class="btn btn-blue" style="font-weight: bold; margin-right: 8px; border-radius: 2px" onclick='AddUser()'>
+                                Add Employee
+                            </button>
+                            <br />
+                        </div>
+                    </div>
+                    if (Convert.ToInt32(Session["UserID"]) != 73)
+                    {
+                    <div class="row">
+                        @if (branchcnt==1)
+                        {
+                            
+                        <div class="visible-md" style="width:0px;visibility:hidden ;">
+                            @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                            @Html.DropDownList("BranchID", ViewBag.BranchList as System.Web.Mvc.SelectList, new { @id = "BranchID", @name = "BranchID", @class = "form-control select2", @style="visibility:hidden;"})
+                        </div>
+                        }
+                        else
+                        {
+                         <div class="col-md-2" style="width: 200px">
+                            @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                            @Html.DropDownList("BranchID", ViewBag.BranchList as SelectList, new { @id = "BranchID", @name = "BranchID", @class = "form-control select2", @onchange = "GetDepartments()" })
+                        </div>
+                        }
+                        <div class="col-md-2" style="width: 200px">
+                            @Html.Label("Status", new { @class = "control-label" })
+                            @Html.DropDownList("SearchedUserStatusid", ViewBag.MemberTypes as SelectList, "---Select---", new { @id = "EmployeeId", @name = "EmployeeId", @class = "form-control select2" })
+                        </div>
+                        <div class="col-md-2" style="width: 200px">
+                            @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                            @Html.DropDownList("DepartmentName", ViewBag.DepartmentIdList as SelectList, "--Select--", new { @id = "DepartmentName", @class = "form-control select2", @onchange = "change()" })
+                            <span id="StartDateTime_ID" style="color: Red;"></span>
+                        </div>
+                        <div class="col-md-2" style="width: 200px">
+                            @Html.Label("Group", (string)ViewBag.Lbl_group, new { @class = "control-label" })
+                            @Html.DropDownList("Groupname", ViewBag.Group as SelectList, "--Select--", new { @id = "GroupName", @class = "select2-container select2-container-multi select2 visible", @onchange = "fnUserchange() " })
+                        </div>
+                   
+                        
+                    
+                    @*<table style="float:right;margin-top:20px">
+                        <tr>
+                            <td>*@
+                            @*</td>
+                            <td>*@
+                          @*</td>
+                            <td>&#160;*@
+                         @*</td>
+                        </tr>
+                    </table>*@
+                        </div>
+                    <div class="row" style="float:right;margin-top:30px;padding-left :500px;margin-right:-60px;">
+
+                         <div style="float:left;padding-left :10px;">
+                                <label class="switch" >
+                                @Html.CheckBox("Block", new { @id = "switch-input", @class = "switch-input" })
+                                <span class="switch-label" data-on="Blocked" data-off="UnBlocked" style="width: 100px"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                            </div>
+                        
+                         <div class="col-md-4" style="float:left;width: 200px;padding-left :0px">
+                                <button id="Search" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                Search<i class="entypo-search"></i>
+                            </button>
+                          
+                                <button type="button" id="btnAdd" class="btn btn-default" onclick="Clears()">
+                                Reset@*<i class="entypo-search"></i>*@
+                            </button>
+                             </div>
+                            
+                           </div>
+                         
+                    }
+                    <div class="clear">
+                    </div>
+                    <br />
+                   
+                    <div id="UserProfileGrid">
+                        @Html.Partial("_ManageUsers", Model)
+                        @*@(!ViewBag.Inactive ? Html.Partial("_ManageUsers", Model) : Html.Partial("_InActiveUsers", Model))*@
+                    </div>
+                      
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <
+    <script src="~/Content/Plugins/hopscotch-0.1.1.js"></script>
+    <link href="~/Content/css/hopscotch-0.1.1.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        jQuery(document).ready(function () {
+
+            GridHeaderStructure();
+
+            $('.img-circle').click(function () {
+                $('.img-circle').parent().parent().toggleClass('open');
+            });
+
+            $('#leftusers').change(function () {
+                $('#newusers').prop('checked', false);
+                $('#notice').prop('checked', false);
+                $('#form').submit();
+            });
+
+            $('#newusers').change(function () {
+                $('#leftusers').prop('checked', false);
+                $('#notice').prop('checked', false);
+                $('#form').submit();
+            });
+
+            $('#notice').change(function () {
+                $('#leftusers').prop('checked', false);
+                $('#newusers').prop('checked', false);
+                $('#form').submit();
+            });
+
+            if ($('#leftusers').prop('checked') || $('#newusers').prop('checked') || $('#notice').prop('checked')) {
+                $('#AddNewUser').hide();
+            }
+            else {
+                $('#AddNewUser').show();
+            }
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $("td > div").select2('destroy');
+
+        });
+
+        function AddUser() {
+            window.location.href = '@Url.Action("AddUser", "Users")';
+        }
+    </script>
+    <script type="text/javascript">
+        function EditUser(uid) {
+            $.ajax({
+                url: "../../User/EditUser/" + uid,
+                type: 'GET', cache: false,
+                success: function (result) {
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal('show');
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    $(".datetimepicker").datepicker({
+                        format: 'dd-mm-yyyy',
+                        showTodayButton: true,
+                        collapse: true
+                    });
+                }
+            });
+        }
+
+        function EditUser(uid) {
+
+            window.location.href = '@Url.Action("EditUser", "Users")' + '?Id=' + uid;
+        }
+        function Clears() {
+
+            window.location.href = '@Url.Action("ManageUsers", "Users")';
+
+        }
+
+        function ViewUser(uid) {
+            window.location.href = '@Url.Action("ViewUser", "Users")' + '?Id=' + uid;
+        }
+
+        function DeleteUser(uid) {
+
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                var toastrOptions = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+                toastr.clear("", toastrOptions);
+                if (result) {
+                    var opts = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "3000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    //Logic to delete the item
+                    $.ajax({
+                        url: "../../Users/DeleteUser/" + uid,
+                        type: 'GET', cache: false,
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                toastr.success("Employee has been deleted successfully", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+
+
+                        }
+                    });
+                }
+            });
+        }
+
+        function GridHeaderStructure() {
+            var table = $("#tblUsers").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [ { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }],
+                //"scrollX": "200px",
+                //"scrollCollapse": true,
+
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+
+
+            });
+
+            $("#tblInactiveUsers").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                //"columnDefs": [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }],
+                "columnDefs": [{ bSortable: false, 'aTargets': [0] }, { bSortable: false, 'aTargets': [4] }],
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+
+            });
+
+            $('thead>tr>th').css('text-align', 'center');
+        }
+
+        function ReloadGrid() {
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+
+            });
+            $.ajax({
+                url: "../../User/UserProfile/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#UserProfileGrid').html(result);
+                    GridHeaderStructure();
+                }
+            });
+        }
+
+        function ResetPassword(uid, add) {
+
+            var toastrOptions = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            $.ajax({
+                url: "../../Users/ResetPassword?UserID=" + uid + "&EmailAddress=" + add,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+    </script>
+    <script type="text/javascript">
+        function UserStatus(statusid, userid) {
+
+            var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+            if (statusid != "" && statusid != 2) {
+                if (statusid == 6) {
+                    bootbox.confirm("Are you sure want to Terminate Employee ?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "../../Users/StatusChange/",
+                                type: 'POST',
+                                cache: false,
+                                data: { statusid: statusid, userid: userid },
+                                global: false,
+                                success: function (result) {
+                                    if (result == "Alert") {
+                                        toastr.warning("Employee Is Under Notice Period", opts);
+                                        setTimeout(function () { location.reload(); }, 1000);
+                                    }
+                                    if (result == "Success") {
+                                        toastr.success("Status Changed Successfully", opts);
+                                        //setTimeout(function () { location.reload(); }, 1000);
+                                    }
+                                },
+                            });
+                        }
+                        else {
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: "../../Users/StatusChange/",
+                        type: 'POST',
+                        cache: false,
+                        data: { statusid: statusid, userid: userid },
+                        global: false,
+                        success: function (result) {
+                            if (result == "Alert") {
+                                toastr.warning("Employee Is Under Notice Period", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+                            if (result == "Success") {
+                                toastr.success("Status Changed Successfully", opts);
+                                //setTimeout(function () { location.reload(); }, 1000);
+                            }
+                        },
+                    });
+                }
+            }
+        }
+        function NoticePeriod(statusid, userid) {
+            if (statusid == 2) {
+                $.ajax({
+                    url: "../../Users/NoticePeriod/",
+                    type: 'GET',
+                    cache: false,
+                    data: { usersid: userid, statusid: statusid },
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        $(".datetimepicker").datepicker({
+                            format: 'dd-mm-yyyy',
+                            showTodayButton: true,
+                            collapse: true,
+                            autoclose: true
+                        });
+                        $("#Iduserstatus").select2();
+
+                        if ($("#Iduserstatus_popup").val() != 2) {
+                            $("#Idresignedon").removeAttr("disabled");
+                            $("#Idlastworkingdate").removeAttr("disabled");
+                        }
+                        if ($("#Iduserstatus").val() != 2 && $("#Iduserstatus_popup").val() != 2) {
+                            $("#Idresignedon").attr("disabled", "disabled");
+                            $("#Idlastworkingdate").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            }
+           else if (statusid == 11) {
+                $.ajax({
+                    url: "../../Users/NotPerformingGood/",
+                    type: 'GET',
+                    cache: false,
+                    data: { usersid: userid, statusid: statusid },
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        $(".datetimepicker").datepicker({
+                            format: 'dd-mm-yyyy',
+                            showTodayButton: true,
+                            collapse: true,
+                            autoclose: true
+                        });
+                        $("#Iduserstatus").select2();
+
+                        if ($("#Iduserstatus_popup").val() != 11) {
+                            $("#Idresignedon").removeAttr("disabled");
+                            $("#Idlastworkingdate").removeAttr("disabled");
+                        }
+                        if ($("#Iduserstatus").val() != 11 && $("#Iduserstatus_popup").val() != 11) {
+                            $("#Idresignedon").attr("disabled", "disabled");
+                            $("#Idlastworkingdate").attr("disabled", "disabled");
+                        }
+                    }
+                });
+            }
+        }
+      
+
+        function change() {
+
+
+            var DepartmentName = $('#DepartmentName').find("option:selected").prop("value");
+
+            if (DepartmentName == "") {
+                DepartmentName = 0;
+            }
+
+            var url2 = '@Url.Action("GetAvailEmployees")';
+
+            $.get(url2, { DepartmentName: DepartmentName }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#GroupName").html(items.join(' '));
+                $("#GroupName").select2();
+            });
+        }
+
+
+        function GetDepartments() {
+            $('#DepartmentName').empty();
+            $('#DepartmentName').select2();
+            var Bid = $("#BranchID").find("option:selected").prop("value");
+
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetDepartments", "Users")';
+
+                $.get(url2, { BranchId: Bid }, function (data) {
+
+                    var items = [];
+                    var itemsGroup = [];
+                    items.push("");
+                    itemsGroup.push("");
+                    itemsGroup.push("<option value=0>---Select---</option>");
+                    items.push("<option value=0>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+
+
+
+                    $("#DepartmentName").html(items.join(' '));
+                    $("#DepartmentName").select2();
+                    $("#GroupName").html(itemsGroup.join(' '));
+                    $("#GroupName").select2();
+
+                });
+
+
+
+
+
+            }
+
+        }
+
+
+
+
+        function fnUserchange() {
+
+            var selectedId = $('#DepartmentName').val();
+            //var date = $('#Date').val();
+            if (selectedId == 0) {
+
+                $('#Group').hide();
+            }
+            else {
+                $('#Group').show();
+            }
+        }
+
+        var UID = @Session["UserId"];
+
+
+        var tour = {
+            id: 'hello-hopscotch',
+            steps: [
+                {
+                    //-----1-----//
+                    target: 's2id_autogen1',
+                    title: '',
+                    content: 'Click To Change Branch!',
+                    placement: 'top',
+                    arrowOffset: 1,
+                    yOffset: -20,
+                  
+                    onNext: function () {
+
+                        $("#BranchID").prop('selectedIndex', 0);
+                        $("#BranchID").select2(); 
+                        $("#BranchID").slideDown();
+                        $("#BranchID").delay(1000)
+                        $("#BranchID").slideUp();
+                       
+                        
+                    }
+                },
+
+                {
+                    //-----2-----//
+                    target: 's2id_EmployeeId',
+                    title: '',
+                    content: 'Click To Change Status!',
+                    placement: 'top',
+                    arrowOffset: 1,
+                    yOffset: -20,
+                  
+                    onNext: function () {
+
+
+                    
+                        $("#EmployeeId").prop('selectedIndex', 1);
+                        $("#EmployeeId").select2();
+                        $("#EmployeeId").slideDown();
+                        $("#EmployeeId").delay(1000)
+                        $("#EmployeeId").slideUp();
+                       
+
+                    }
+
+                },
+
+
+                 {
+                     //-----3-----//
+                     target: 's2id_DepartmentName',
+                     title: '',
+                     content: 'Click To Change Deapartment!',
+                     placement: 'top',
+                     arrowOffset: 1,
+                     yOffset: -20,
+                  
+                     onNext: function () {
+                      
+                         $("#DepartmentName").prop('selectedIndex', 2);
+                         $("#DepartmentName").select2();
+                         $("#DepartmentName").slideDown();
+                         $("#DepartmentName").delay(1000)
+                         $("#DepartmentName").slideUp();
+                        
+                     }
+
+                 },
+                  {
+                      //-----4-----//
+                      target: 's2id_GroupName',
+                      title: '',
+                      content: 'Click To Change Group!',
+                      placement: 'top',
+                      arrowOffset: 1,
+                      yOffset: -20,
+                  
+                      onNext: function () {
+
+                   
+                           
+                      }
+
+                  },
+                  {
+                      //-----5-----//
+                      target: 'switch-input',
+                      title: '',
+                      content: 'Click To Change!',
+                      placement: 'top',
+                      arrowOffset: 1,
+                      yOffset: -20,
+                  
+                      onNext: function () {
+
+
+                          $("#switch-input").click(); 
+
+                      }
+
+                  },
+
+
+                  
+
+
+                     {
+                         //-----6-----//
+                         target: 'Search',
+                         title: '',
+                         content: 'Click To Search!',
+                         placement: 'top',
+                         arrowOffset: 1,
+                         yOffset: -20,
+                         onNext: function () {
+
+                             $("#Search").click(); 
+                         }
+
+                     },
+
+
+
+
+              {
+                  //-----7-----//
+                  target: 'Add',
+                  title: '',
+                  content: 'Click To Add Employee!',
+                  placement: 'left',
+                  arrowOffset: 1,
+                  yOffset: -20,
+                  multipage: true,
+                  onNext: function () {
+                      window.location.href = '@Url.Action("AddUser", "Users")';
+                  }
+
+              },
+              {
+                  //-----8-----//
+
+
+              },
+              {
+                  //-----9-----//
+                  width: 160,
+                  target: 'View',
+                  placement: 'top',
+                  title: '',
+                  content: 'Click To View!',
+                  multipage: true,
+                  onNext: function () {
+                      window.location.href = '@Url.Action("ViewUser", "Users")' + '?Id=' + UID;
+                  }
+
+
+
+              },
+             {
+                 //-----10-----//
+             
+             },
+
+
+             {
+                 //----11-----//
+                 width: 160,
+                 target: 'Edit',
+                 placement: 'top',
+                 title: '',
+                 content: 'Click To Edit!',
+                 multipage: true,
+                 onNext: function () {
+                     window.location.href = '@Url.Action("EditUser", "Users")' + '?Id=' + UID;
+                 }
+
+             
+             
+             },
+             {
+                 //----12-----//
+             },
+             {
+
+
+                 //----13-----//
+             
+                 target: 'Delete',
+                 placement: 'left',
+                 title: '',
+                 content: 'Click To Delete!',
+                 xOffset: 30,
+             
+                
+
+
+             },
+             {
+                 //----14-----//
+                 target: 'startTourBtn',
+                 placement: 'bottom',
+                 title: '',
+                 content: 'You\'re all set!',
+                 yOffset: -25,
+                 arrowOffset: 10,
+             }
+            ],
+            showPrevButton: true,
+            scrollTopMargin: 100
+        },
+
+/* ========== */
+/* TOUR SETUP */
+/* ========== */
+addClickListener = function (el, fn) {
+    if (el.addEventListener) {
+        el.addEventListener('click', fn, false);
+    }
+    else {
+        el.attachEvent('onclick', fn);
+    }
+},
+
+init = function () {
+    var startBtnId = 'startTourBtn',
+        calloutId = 'startTourCallout',
+        mgr = hopscotch.getCalloutManager(),
+        state = hopscotch.getState();
+
+    if (state && state.indexOf('hello-hopscotch:') === 0) {
+        // Already started the tour at some point!
+        hopscotch.startTour(tour);
+    }
+    else {
+        // Looking at the page for the first(?) time.
+        //setTimeout(function () {
+        //    mgr.createCallout({
+        //        id: calloutId,
+        //        target: startBtnId,
+        //        placement: 'right',
+        //        title: 'Welcome to Manage Level',
+        //        content: '',
+        //        yOffset: -25,
+        //        arrowOffset:10,
+        //        width: 240
+        //    });
+        //}, 100);
+    }
+
+    addClickListener(document.getElementById(startBtnId), function () {
+        if (!hopscotch.isActive) {
+            mgr.removeAllCallouts();
+            hopscotch.startTour(tour);
+
+        }
+    });
+};
+
+         init();
+
+       
+
+    </script>
+}

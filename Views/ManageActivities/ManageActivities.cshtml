@@ -1,0 +1,274 @@
+﻿@model   IEnumerable<DSRCManagementSystem.Models.ManageActivities>
+@{
+    ViewBag.Title = "Manage Activities";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+}
+@{
+    int SNO = 1;
+
+}
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageActivities","ManageActivities")">
+            <i class="fa-home"></i>Activity Management
+        </a>
+    </li>
+    <li class="active"><strong>Manage Activities</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageActivities","ManageActivities")"style="color:black ">
+            Activity Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Activities</b>
+    </p>
+<br />
+<div class="row" style="height: 500px;">
+
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Activities
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" style="overflow: auto">
+
+                <div class="btn-group" style="float: right">
+                    <button type="button" class="btn btn-blue" style="font-weight: bold" onclick='AddActivity()' />
+                    Add Activity
+                </div>
+                <div class="clear">
+                </div>
+                <br />
+                <table class="table table-bordered datatable" id="tblRoles">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">
+                                S.No
+                            </th>
+
+
+                            <th style="text-align: center;">
+                                @Html.DisplayName("Activity Name")
+                        </th>
+
+                        <th style="text-align: center;">
+                            @Html.DisplayName("Activity Description")
+                    </th>
+
+                    <th style="text-align: center;">
+                        @Html.DisplayName("Edit")
+
+                </th>
+                <th style="text-align: center;">
+                    @Html.DisplayName("Delete")
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @(SNO++)
+                </td>
+                <td>
+                    @Html.HiddenFor(modelitem => item.ActivityId)
+                    @Html.DisplayFor(modelitem => item.ActivityName)
+                </td>
+                <td>
+
+                    @Html.DisplayFor(modelitem => item.ActivityDescription)
+                </td>
+
+
+                <td style="text-align: center;">
+                    <a href="#" data-toggle="tooltip" title="Edit">
+                        <button type="button" class="btn btn-info" onclick='Edit(@item.ActivityId,"@item.ActivityName","@item.ActivityDescription")'>
+                            <i class="entypo-pencil"></i>
+                        </button>
+                    </a>
+                </td>
+                <td style="text-align: center;">
+
+                    <a href="#" data-toggle="tooltip" title="Delete">
+                        <button type="button" class="btn btn-red" onclick='Delete(@item.ActivityId)'>
+                            <i class="entypo-cancel"></i>
+                        </button>
+                    </a>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+
+
+
+</div>
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+            $("#tblRoles").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [3] }]
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+
+
+        });
+
+        function AddActivity() {
+
+            $.ajax({
+                url: "../../ManageActivities/AddActivity/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+
+            });
+        }
+
+        function Edit(uId, pName, pname1) {
+
+            $.ajax({
+                url: "../../ManageActivities/EditActivities/",
+                type: 'GET',
+                cache: false,
+                data: { ActivityId: uId, ActivityName: pName, ActivityDescription: pname1 },
+                success: function (result) {
+                    if (result == "DeleteWarning") {
+
+                        $("#portlet-config").modal('hide');
+                        toastr.warning("Cannot Edit Unassigned Role", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    }
+                }
+            });
+        }
+
+        function Delete(uid) {
+            var opts =
+           {
+               "closeButton": true,
+               "debug": false,
+               "positionClass": "toast-top-right",
+               "toastClass": "White",
+               "onclick": null,
+               "showDuration": "3000",
+               "hideDuration": "1000",
+               "timeOut": "2000",
+               "extendedTimeOut": "1000",
+               "showEasing": "swing",
+               "hideEasing": "linear",
+               "showMethod": "fadeIn",
+               "hideMethod": "fadeOut"
+           }
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "../../ManageActivities/Delete/",
+                        type: 'GET',
+                        cache: false,
+                        data: { ID: uid },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.success(" Activity Deleted successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else if (result == "Warning") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete ", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+
+                                   }, 1500);
+                               }
+                               else if (result == "Warning1") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete  ", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+                                   }, 1500);
+                               }
+                           }
+                    });
+                }
+            });
+        }
+
+    </script>
+}

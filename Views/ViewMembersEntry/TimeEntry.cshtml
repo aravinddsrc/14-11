@@ -1,0 +1,215 @@
+﻿@model DSRCManagementSystem.Models.TeamEntryData
+@{
+    ViewBag.Title = "Time Entry";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+<style>
+
+.dropdown-menu {
+    background-color: white;
+}  
+
+   </style>      
+
+
+@section AddToHead{
+<script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    
+<link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+    type="text/css" />
+<script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+    type="text/javascript"></script>
+    }
+
+
+
+<script type="text/javascript">
+    $(function () {
+        var dateFrom = $('.datepickerFrom').datepicker(
+        {
+            format: 'dd/mm/yyyy',
+            endDate: new Date(),
+            autoclose: true
+        }
+        ).on('changeDate', function (e) {
+            dateTo.datepicker('setStartDate', e.date);
+            var parts = dateTo[0].value.split("/");
+            var toDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            if (toDate < e.date)
+                $('#dateTo').val($('#dateFrom').val());
+            var toDate = new Date(dateTo[0].value);
+        });
+        var dateTo = $('.datepickerTo').datepicker(
+        {
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        }
+        ).on('changeDate', function (e) {
+
+        });
+        $('.chart').horizBarChart({
+            selector: '.bar',
+            speed: 1000
+        });
+    });
+    function sub() {
+    
+        var dateFrom = $('.datepickerFrom').val();
+        var dateTo = $('.datepickerTo').val();
+        var dateFromParts = dateFrom.split("/");
+        var fromDate = new Date(dateFromParts[2], dateFromParts[1] - 1, dateFromParts[0]);
+        var dateToParts = dateTo.split("/");
+        var toDate = new Date(dateToParts[2], dateToParts[1] - 1, dateToParts[0]);
+        var labelText = $("#lblValidFrom").text();
+        if (dateFrom != "" && dateTo != "") {
+        if(fromDate <= toDate) {
+            $("#form").submit();
+            }
+            else{
+            $("#StartDateTime_ID").text('To date must be greater than the From date');
+            $("#time").hide();
+            $("#chart3").hide();
+            $("#work").hide();
+            $("#asd").hide();
+            }
+        }
+        else if (dateFrom == "" && dateTo == "") {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('Select To Date');
+        }
+        else if (dateTo == "") {
+            $("#StartDateTime_ID").text('Select To Date');
+            $("#Startdate_Valid").text('');
+        }
+        else {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('');
+        }
+    }
+    function PageReady() {
+           @{
+               bool Isnull = Model.EmployeeData == null;
+               bool IsTeamData = Model.IsTeamData;
+           }
+           var IsNull ='@Isnull' == 'False' ? false : true;
+           var IsTeamData = '@IsTeamData' == 'False' ? false : true;
+           if(!IsNull)
+           {
+             var JsonLeaveData = @Html.Raw(Json.Encode(Model.EmployeeData));
+
+             var xKey = IsTeamData ? 'empName' : 'Date';
+             var yKeys = ['hoursWorked'];
+             var Labels = ['Date','Day','In Time','Out Time'];
+             
+             if ($('#chart3').length > 0) {
+
+                Morris.Bar({
+                element: 'chart3',
+                axes: true,
+                data: JsonLeaveData,
+                hideHover:'true',
+                resize: true,
+                xkey:xKey ,
+                ykeys:yKeys ,
+                labels:Labels ,
+                vertical: true,
+                hideHover: true,
+                hoverCallback: function(index, options, content) {
+                this.xlabelAngle = 50;
+                $(".morris-hover").html("<div>" + "<p style='color:Green;'> Hours worked: " + options.data[index].hoursWorked.toFixed(2) + "</p>" + "<p style='color:Blue;'> Date: " + options.data[index].Date + "</p>" + "<p style='color:Grey;'>"+ options.labels[1] + ": " + options.data[index].Day + "</p>" + "<p style='color:brown;'>" + options.labels[2] + ": " + options.data[index].InTime + "</p>" + "<p style='color:Navy;'>" + options.labels[3] + ": " + options.data[index].OutTime + "</p>" + "</div>");
+                },
+                barColors: function (row, series, type) {
+                    var valWorked = row.y;
+                    if(JsonLeaveData[row.x]["Day"]=="Sunday"||JsonLeaveData[row.x]["Day"]=="Saturday")
+                    return "gray";
+                    if(valWorked == undefined)
+                    return "green";
+                    if(valWorked >= 8) 
+                    return "green";
+                    if(valWorked >= 7) 
+                    return "orange";
+                    if(valWorked < 7) 
+                    return "red";
+               }
+               });
+            }
+        }
+      }
+      $(PageReady);
+</script>
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("TimeEntry","ViewMembersEntry")">TimeEntry</a></li>
+    <li class="active"><strong>My Time Entry</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("TimeEntry","ViewMembersEntry")"style="color:black ">
+            Time Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Time Entry</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+@using (Html.BeginForm("TimeEntry", "ViewMembersEntry", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered", @id = "form" }))
+{
+    <div class="row" style="margin-right:0px;">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Name @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+            <div class="col-sm-3">
+                @Html.TextBox("Name", (string)Session["FirstName"] + " " + (string)Session["LastName"], new { @id = "EmpName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                @Html.HiddenFor(x => x.MemberId)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" id="lblValidFrom">
+                From Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(m => m.DateFrom, "{0:dd/MM/yyyy}", new { @class = "form-control datepickerFrom", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+                <span id="Startdate_Valid" style="color: Red;"></span>
+            </div>
+            <label class="col-sm-2 control-label" id="lblValidTo">
+                To Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(m => m.DateTo, "{0:dd/MM/yyyy}", new { @class = "form-control datepickerTo", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+                <span id="StartDateTime_ID" style="color: Red;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+        <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <button id="btnSubmit" type="button" class="btn btn-success center-block" onclick="sub()">
+                    Show</button>
+            </div>
+        </div>
+    </div>
+    if (Model.EmployeeData != null && Model.EmployeeData.Count > 0)
+    {
+        <div>
+       <h3 align="center" id="asd">Total Hours Worked @ViewBag.TotalHoursWorked / @ViewBag.WorkingHoursInMonth</h3>
+        
+        </div>
+    <strong id="work">Work hours</strong>
+    <div id="chart3" style="height: 250px; width: 100%">
+    </div>   
+    }
+    else if (Model.EmployeeData != null && Model.EmployeeData.Count == 0)
+    {
+    <div class="chart-horiz clearfix" style="width: 75%;" id="time">
+        <ul class="chart">
+            <li class="current" style="margin-top: 20px;" title="Time Entry Records not Found"><span
+                class="bar" style="background-color: red; height: 20px;" data-number="10"></span>
+            </li>
+        </ul>
+    </div>
+    }
+}

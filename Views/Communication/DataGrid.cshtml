@@ -1,0 +1,118 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.ViewMessage>
+@{
+    ViewBag.Title = "View Projects";
+   // Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+}
+@{
+    int SNO = 1;
+}
+
+           
+                    <table class="table table-bordered datatable" id="tblProjects">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>@Html.DisplayName("Employee Name")
+                                </th>
+                                <th>@Html.DisplayName("Message")
+                                </th>
+                                <th>@Html.DisplayName("Reply")
+                                </th>
+                                <th>@Html.DisplayName("Message Initiated Date")
+                                </th>
+                                <th>@Html.DisplayName("Message Expired Date ")
+                                </th>
+                                <th>@Html.DisplayName("Is Accepted")
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td align="center">
+                                    @(SNO++)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelitem => item.UserName)
+                                </td>
+                                <td style=" width: 100px; word-wrap: break-word; word-break: break-all;">
+                                    @Html.DisplayFor(modelitem => item.Message)
+                                </td>
+                                @if (item.Isreplyable)
+                                {
+                                    if (item.Comment != null)
+                                    {
+                                    <td>
+                                        @Html.DisplayFor(modelitem => item.Comment)
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                    <td>
+                                        @Html.DisplayName("Not yet replied")
+                                    </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Html.DisplayName("Can't able to reply")
+                                    </td>
+                                }
+                                <td> 
+                                   <center>
+                                    @Html.Label(item.MessageinitiatesDate.Value.Date.ToString("dd-MM-yyyy"))
+                                    </center>
+                                </td>
+                                <td>
+                                <center>
+                                    @Html.Label( item.MessageValidUpto.Value.Date.ToString("dd-MM-yyyy"))
+                                    </center>
+                                </td>
+                                @if (item.IsYesOrNo != null)
+                                {
+
+                                    if (item.IsYesOrNo.Value == true)
+                                    {
+                                    <td>
+                                      <center>
+                                        @Html.Label("yes ", new { @style = "color:green;font-weight: bold;text-align: center;" })
+                                        </center>
+                                    </td>
+                                    }
+                                    else if (item.IsYesOrNo.Value == false)
+                                    {
+                                    <td>
+                                    <center>
+                                        @Html.Label("No", new { @style = "color:red;font-weight: bold;text-align: center;" })
+                                    </center>
+                                    </td>
+                                    
+                                    }
+
+                                }
+                                else if (item.MessageType == 2)
+                                {
+                                    <td>
+                                        @Html.Label("yet Not recived", new { @style = "font-weight: bold;text-align: center;" })
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @Html.Label("Not appllicable", new { @style = "font-weight: bold;text-align: center;" })
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+           

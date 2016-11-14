@@ -1,0 +1,118 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Gallery>
+@{
+    ViewBag.Title = "Tagged Albums";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .gallery-env article.album header img {
+            height: 220px;
+        }
+        /*#tooltip:hover::alternate {
+            content: "SlideShow";
+
+        }
+                #CountImage:hover {
+            content: "ImageCount";
+
+        }
+                #DeleteImage:hover {
+            content: "DeleteAlbum";
+
+        }*/
+    </style>
+
+}
+
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<div class="gallery-env">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4">
+                <article class="album">
+                    <header>
+                        <a href="../../Gallery/SingleAlbum/?AlbumID=@item.AlbumID">
+                            <img src="@Url.Content(item.CoverPhotoPath)" />
+                        </a>
+                        @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                        {
+                            if (@item.Photocount > 1)
+                            {
+                                <button type="button" class="album-options" style="border:hidden;margin-right: 88px;" onclick='SlideShow(@item.AlbumID)'><i class="entypo-cog"></i>Slide Show</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="album-options" style="border:hidden;margin-right: 88px;"><i class="entypo-cog"></i>Slide Show</button>
+                            }
+                            <button type="button" class="album-options" style="border:hidden;" onclick='EditAlbum(@item.AlbumID)'><i class="entypo-cog"></i>Edit Album</button>
+
+                        }
+                    </header>
+
+                    <section class="album-info">
+                        <h3><a href="../../Gallery/SingleAlbum/?AlbumID=@item.AlbumID">@item.AlbumTitle</a></h3>
+                        @if (item.AlbumDescription != null)
+                        {
+                            if (item.AlbumDescription.Length > 48)
+                            {
+                                <p>@item.AlbumDescription </p>
+                            }
+                            else
+                            {
+                                <p>@item.AlbumDescription </p>
+                                <br />
+                            }
+                        }
+                        @if (item.AlbumDescription == null)
+                        {
+                            <p style="visibility:hidden">Welcome</p>
+                            <br />
+                        }
+                    </section>
+
+                    <footer>
+
+                        <div class="album-images-count">
+                            <i class="entypo-camera" data-tooltip aria-haspopup="true" class="has-tip" title="Image Count!"></i>
+                            @item.Photocount
+                        </div>
+
+                        <div class="album-options">
+                            <a><i aria-disabled="true" class="entypo entypo-calendar" data-tooltip aria-haspopup="true" class="has-tip" title="@item.EventDate.ToShortDateString()"></i></a>
+                            @if (@item.Photocount > 1)
+                            {
+                                <a onclick='SlideShow(@item.AlbumID)'><i style="cursor:pointer" class="entypo entypo-picture" data-tooltip aria-haspopup="true" class="has-tip" title="Slide Show!"></i></a>
+                            }
+                            else
+                            {
+                                <a><i aria-disabled="true" class="entypo entypo-picture" data-tooltip aria-haspopup="true" class="has-tip" title="Slide Show!"></i></a>
+                            }
+                            <a><i class="entypo-user" data-tooltip aria-haspopup="true" class="has-tip" title="@item.CreatedBy"></i></a>
+                            @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                            {
+                                <a onclick='DeleteAlbum(@item.AlbumID)'><i style="cursor:pointer" class="entypo-trash" data-tooltip aria-haspopup="true" class="has-tip" title="Delete Album"></i></a>
+                            }
+                        </div>
+                    </footer>
+                </article>
+            </div>
+        }
+    </div>
+</div>
+

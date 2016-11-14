@@ -1,0 +1,181 @@
+﻿@using MvcPaging;
+
+@model IPagedList<DSRCManagementSystem.Models.LoginStatus>
+@{
+    ViewBag.Title = "LoginStatus";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("LoginStatus", "LoginStatus")">Login Status</a></li>
+    <li class="active"><strong>LoginStatus List</strong></li>
+</ol>*@
+     <p>
+        <a href="@Url.Action("LoginStatus","LoginStatus")"style="color:black ">
+            Login Status
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Login Status</b>
+    </p>
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Login Status
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+
+                @using (Html.BeginForm("LoginStatus", "LoginStatus", FormMethod.Get))
+                {
+                    
+                    @*
+                    <button class="btn" type="submit">
+                        <i class="icon-search"></i>&nbsp;Search</button>
+                    <div class="input-append" style="text-align: right">*@
+@*     <input class="span2" id="appendedInputButton" type="text" name="PageSize" placeholder="PageSize" />*@
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "10", 10 }, { "20", 20 }, { "50", 50 }, { "100", 100 } }, "Key", "Value"), new { @class = "pro_pag_tf1", id = "pagesizelist" })
+                         <label class="span2" id="idRecord" name="records per page" />
+                        </div>
+                         <div class="col-md-6">
+                             <label  id="idSearch" style="float: right;"  name="Search" />
+                             <input class="span2" id="appendedInputButton" type="text" name="Search" placeholder="Search" value="@(ViewBag.Search ?? String.Empty)" onkeypress="getSearch(this);" />
+
+                             </div>
+                    </div>
+                   
+                    <table class="table table-bordered datatable1" id="LoginStatus">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">IPAddress</th>
+                                <th style="text-align:center;">LogedInDate</th>
+                                <th style="text-align:center;">LoginStatus</th>
+                                <th style="text-align:center;">BrowserVersion</th>
+                                <th style="text-align:center;">BrowserIcon</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(Item => item.IPAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(Item => item.LogedInDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(Item => item.LoginStatuss)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(Item => item.BrowserVersion)
+                                </td>
+
+                                @if (item.BrowserVersion.ToString().Contains("Chrome"))
+                                {
+                                    <td align="center">
+                                        <img height="20" width="20" src="../../Content/Template/images/Chrome.png" />
+                                    </td>
+                                }
+                                else
+                                    if (item.BrowserVersion.ToString().Contains("Firefox"))
+                                    {
+                                    <td align="center">
+                                        <img height="20" width="20" src="../../Content/Template/images/firefox.png" />
+                                    </td>
+                                    }
+                                    else
+                                        if (item.BrowserVersion.ToString().Contains("IE") || item.BrowserVersion.ToString().Contains("InternetExplorer"))
+                                        {
+                                    <td align="center">
+                                        <img height="20" width="20" src="../../Content/Template/images/IE.png" />
+                                    </td>
+                                        }
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+     .pager1 li{
+    margin-top: 10px;
+    margin-left:10px;
+   
+            }
+
+
+      .pager1 ul,
+ol {
+  margin-top: 0;
+  margin-bottom: 8.5px;
+   list-style-type: none;
+           display: -webkit-box; 
+}
+
+    </style>
+
+
+    <div class="pager1" style="    margin-right: 16px;
+    margin-top: -31px;float: right;">
+        @Html.Raw(Ajax.Pager(
+            new Options
+            {
+                PageSize = Model.PageSize,
+                TotalItemCount = Model.TotalItemCount,
+                CurrentPage = Model.PageNumber,
+                ItemTexts = new ItemTexts() { Next = "Next", Previous = "Previous" },
+                ItemIcon = new ItemIcon() { First = "icon-backward", Previous = "icon-chevron-left", Next = "icon-chevron-right", Last = "icon-forward" },
+                TooltipTitles = new TooltipTitles() { Next = "Next page", Previous = "Previous page", Page = "Page {0}." },
+                Size = Size.normal,
+                Alignment = Alignment.centered,
+                IsShowControls = true,
+                IsShowFirstLast = true,
+                CssClass = ""
+            },
+            new AjaxOptions
+            {
+                UpdateTargetId = "LoginStatus",
+                OnBegin = "beginPaging",
+                OnSuccess = "successPaging",
+                OnFailure = "failurePaging"
+            }, new { controller = "LoginStatus", action = "LoginStatus", Search = ViewBag.Search, PageSize = ViewBag.PageSize }))
+    </div>
+
+
+
+    @section scripts {
+        <script type="text/javascript">
+            //function getlocation(element) {
+                
+            $('#pagesizelist').change(function (element) {
+
+                    var form = $(element.target).parents('form');
+                    form.submit();
+                });
+            //}
+
+            function getSearch(element) {
+                $('#appendedInputButton').keydown(function (element) {
+                    var form = $(element.target).parents('form');
+                    form.submit();
+                });
+            }
+
+        </script>
+    }
+</div>
+

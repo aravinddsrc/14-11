@@ -1,0 +1,838 @@
+﻿@model DSRCManagementSystem.Models.FeedbackModel
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<html>
+<head>
+    <title>FeedBack</title>
+
+    <style type="text/css">           
+        
+        .txt-control
+        {
+            height: 41px !important;
+        }  
+        
+        .lft-spacing
+        {
+            padding-left: 50px !important;
+        }
+        
+    </style>
+
+
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>  
+    
+          
+</head>
+<body>
+    <ol class="breadcrumb bc-3" >
+        <li><a>Training Management</a> </li>
+        <img src="~/Images/righ-arrow.png" />
+        <li class="active"><strong>Training Feedback</strong> </li>
+    </ol>
+    <br />      
+
+    <div class="row">
+    <div class="col-md-12">
+    <div class="panel panel-default panel-shadow" data-collapsed="0">
+    <div class="panel-heading">
+    <div class="panel-title" color="White">Training Feedback</div>
+    </div>
+
+     <div class="panel-body">
+
+     @using (Html.BeginForm("Feedback", "LDTraining", FormMethod.Post))
+     {
+         <div class="lft-spacing">
+
+            <div class="row">
+               <div class="col-md-12" style="text-align: right">
+                  @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+               </div>
+            </div>  
+          
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.HiddenFor(x => x.TrainingId, new { @id = "TrainingId"})
+                        @Html.LabelFor(x => x.CourseName, new { @class = "control-label" })                    
+                        @Html.TextBoxFor(x => x.CourseName, new { @id = "CourseName", @name = "CourseName", @disabled="disabled", @class = "form-control" 
+
+})                                                
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Instructor, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Instructor, new { @id = "Instructor", @name = "Instructor", @disabled = "disabled", @class = "form-control" 
+
+})                                                                        
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="form-group">
+                        @Html.LabelFor(x => x.CourseType, new { @class = "control-label" })                    
+                        @Html.TextBoxFor(x => x.CourseType, new { @id = "CourseType", @name = "CourseType", @disabled = "disabled", @class = "form-control" 
+
+})                                                
+                  </div>
+               </div>
+            </div>
+         
+        <div style="padding-right:250px;">        
+
+         <div class="row">
+               <div class="col-md-12" >
+                  @Html.Label("Rating", new { @class = "control-label" })
+               </div>
+          </div>  
+
+          <div class="panel panel-default panel-shadow" style=" padding-right:20px !important; padding-left :10px; " data-collapsed="0">
+           <br /> 
+
+         <div class="row">             
+               <div class="col-md-2">
+                  <div class="form-group">
+                        @Html.Label("1 - Poor", new { @class = "control-label" })                             
+                  </div>
+               </div>        
+                   
+               <div class="col-md-2">
+                  <div class="form-group">
+                        @Html.Label("2 - Not Bad", new { @class = "control-label" })                                                                    
+                  </div>
+               </div>
+                   
+               <div class="col-md-2">
+                  <div class="form-group">
+                        @Html.Label("3 - Good", new { @class = "control-label" })                                                                  
+                  </div>
+               </div>
+                    
+               <div class="col-md-2">
+                  <div class="form-group">
+                        @Html.Label("4 - Very Good", new { @class = "control-label" })                                                      
+                  </div>
+               </div>
+                 
+               <div class="col-md-2">
+                  <div class="form-group">
+                        @Html.Label("5 - Excellent", new { @class = "control-label" })                       
+                  </div>
+               </div>   
+         </div>                           
+            
+         </div>
+          <div class="row">
+               <div class="col-md-12" >
+                  @Html.Label("About Training Content", new { @class = "control-label" })
+               </div>
+          </div>  
+                   
+         <div class="panel panel-default panel-shadow" style="padding-left:10px; " data-collapsed="0">
+
+         <br />
+         
+           <div class="row">
+
+               <div class="col-md-6">
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.Label("1", new { @class = "control-label" })                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.Label("2", new { @class = "control-label" })                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.Label("3", new { @class = "control-label" })                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.Label("4", new { @class = "control-label" })                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.Label("5", new { @class = "control-label" })                                            
+                  </div>
+               </div>               
+            </div>
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">                    
+                     @Html.Label("Choice of Topic", new { @class = "control-label" })       
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Communication_ID" style="color: Red;"></span>
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Choice of Topic", "1")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Choice of Topic", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Choice of Topic", "3")
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Choice of Topic", "4")
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Choice of Topic", "5")
+                  </div>
+               </div>
+           </div>
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Relevance of Program", new { @class = "control-label" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Tm_ID" style="color: Red;"></span>     
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Relevance of Program", "1")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Relevance of Program", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Relevance of Program", "3")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Relevance of Program", "4")                                              
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Relevance of Program", "5")                                                                                         
+                  </div>
+               </div>
+           </div>         
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Amount of Training Content was Relevant & Understandable", new { @class = "control-label" }) 
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Interaction_ID" style="color: Red;"></span>      
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Amount of Training Content was Relevant & Understandable", "1")                                             
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Amount of Training Content was Relevant & Understandable", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Amount of Training Content was Relevant & Understandable", "3")                                      
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Amount of Training Content was Relevant & Understandable", "4")                               
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Amount of Training Content was Relevant & Understandable", "5")                 
+                  </div>
+               </div>
+           </div>                  
+
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+
+                     @Html.Label("Adequacy of learning Opportunity from the Training Content", new { @class = "control-label" })   
+
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Kc_ID" style="color: Red;"></span>          
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of learning Opportunity from the Training Content", "1")                                          
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of learning Opportunity from the Training Content", "2")                                                  
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of learning Opportunity from the Training Content", "3")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Adequacy of learning Opportunity from the Training Content", "4")                                                
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Adequacy of learning Opportunity from the Training Content", "5")               
+                  </div>
+               </div>
+           </div>          
+         
+     
+           
+           <br /> 
+         
+         </div>
+         <div class="row">
+               <div class="col-md-12" >
+                  @Html.Label("Training Presentation", new { @class = "control-label" })
+               </div>
+          </div>  
+                   
+         <div class="panel panel-default panel-shadow" style="padding-left:10px; " data-collapsed="0">
+
+         <br />
+         
+          
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">                    
+                     @Html.Label("Adequacy of Preparation and Presentation", new { @class = "control-label" })       
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Adequacy" style="color: Red;"></span>
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of Preparation and Presentation", "1")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of Preparation and Presentation", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of Preparation and Presentation", "3")
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Adequacy of Preparation and Presentation", "4")
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Adequacy of Preparation and Presentation", "5")
+                  </div>
+               </div>
+           </div>
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Explanation of Concepts and Demonstration with Examples", new { @class = "control-label" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Explanation" style="color: Red;"></span>     
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Explanation of Concepts and Demonstration with Examples", "1")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Explanation of Concepts and Demonstration with Examples", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Explanation of Concepts and Demonstration with Examples", "3")                                            
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Explanation of Concepts and Demonstration with Examples", "4")                                              
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Explanation of Concepts and Demonstration with Examples", "5")                       
+                  </div>
+               </div>
+           </div>         
+         
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+
+                     @Html.Label("Content Presented with respect to Training", new { @class = "control-label" }) 
+
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Content" style="color: Red;"></span>      
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Content Presented with respect to Training", "1")                                             
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Content Presented with respect to Training", "2")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Content Presented with respect to Training", "3")                                      
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Content Presented with respect to Training", "4")                               
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Content Presented with respect to Training", "5")                 
+                  </div>
+               </div>
+           </div>                  
+
+           <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Time Maintenance", new { @class = "control-label" })   
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Time" style="color: Red;"></span>          
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Time Maintenance", "1")                                          
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Time Maintenance", "2")                                                  
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Time Maintenance", "3")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Time Maintenance", "4")                                                
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Time Maintenance", "5")               
+                  </div>
+               </div>
+           </div>          
+         
+      
+           
+           <br /> 
+         
+         </div>
+
+       
+          
+         
+         <div style="padding-left:10px">
+           <div class="row">
+               <div class="col-md-12" >
+                  @Html.Label("About Faculty", new { @class = "control-label" })
+               </div>
+          </div>  
+                 
+
+          <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Quality & Pace of the Faculty", new { @class = "control-label" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Overall_ID" style="color: Red;"></span>              
+                  </div>
+               </div>
+
+               <div class="col-md-1">
+                  <div class="form-group">
+                        @Html.RadioButton("Quality & Pace of the Faculty", "1")               
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                         @Html.RadioButton("Quality & Pace of the Faculty", "2")                                        
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                         @Html.RadioButton("Quality & Pace of the Faculty", "3")                                           
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                         @Html.RadioButton("Quality & Pace of the Faculty", "4")                                              
+                  </div>
+               </div>
+               <div class="col-md-1">
+                  <div class="form-group">
+                       @Html.RadioButton("Quality & Pace of the Faculty", "5")                       
+                  </div>
+               </div>
+           </div>   
+         
+         <div class="row" >
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Was the training useful to you?", new { @class = "control-label" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="FutureSession_ID" style="color: Red;"></span>         
+                  </div>
+               </div>
+
+               <div class="col-md-2" >
+                  <div class="form-group">
+                        @Html.RadioButton("Was the Program useful to you?", "1") 
+                        @Html.Label("Yes")                  
+                  </div>
+               </div>
+              
+               <div class="col-md-2">
+                  <div class="form-group">
+                         @Html.RadioButton("Was the Program useful to you?", "0")   
+                         @Html.Label("No")                                 
+                  </div>
+               </div>  
+                                   
+         </div> 
+          <div class="row" >
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("What did you learn from this training?", new { @class = "control-label" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="learn" style="color: Red;"></span>         
+                  </div>
+               </div>
+                </div>
+           
+            <div class="row" >
+               <div class="col-md-12">
+                  <div class="form-group">
+                  @Html.TextArea("What did you learn from this Program?", "", new { @class = "form-control", @id = "Program", @name = "Program",@maxlength="150"})
+                  @*   @Html.TextBox("What did you learn from this Program?", "", new { @id = "Program", @name = "Program"})*@
+                     <span id="Program1" style="color: Red;"></span>         
+                  </div>
+               </div>
+        
+
+         </div>
+         <div class="row" >
+               <div class="col-md-6">
+                  <div class="form-group">
+                     @Html.Label("Overall Suggestions/Comments", new { @class = "control-label", @maxlength = "500" })  
+                     <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                     <span id="Overall" style="color: Red;"></span>         
+                  </div>
+               </div>
+           
+         </div>
+            <div class="row" >
+               <div class="col-md-12">
+                  <div class="form-group">
+                     @Html.TextArea("Overall Suggestions/Comments", "", new { @class = "form-control", @id = "Suggestions", @name = "Suggestions", @maxlength = "150" })
+                     <span id="Suggestions1" style="color: Red;"></span>         
+                  </div>
+               </div>
+         </div>
+           </div>
+
+         </div>
+         
+           <div class="modal-footer"> 
+             <button type="button" class="btn btn-default" style="float:left"  onclick="@("window.location.href='" + @Url.Action("Mylearning", "LDHome") + "'");" ) >
+              Back
+            </button>   
+               <button type="button" id="btnReset" class="btn btn-default" onclick="Clear()" >
+                Reset
+               </button>
+               <button type="button" id="btnSubmit" class="btn btn-info" onclick="AddFeedback()" >
+                Submit
+               </button>              
+            </div>
+            </div>
+     }
+     </div>
+   </div>
+</div>
+</div>
+
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+<script type="text/javascript">
+
+    var toastrOptions = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "toastClass": "White",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    function Clear() {
+//        $('input[name="Choice of Topic"]').prop('checked', false);
+//        $('input[name="Relevance of Program"]').prop('checked', false);
+//        $('input[name="Amount of Course Content was Relevant & Understandable"]').prop('checked', false);
+//        $('input[name="Adequacy of learning Opportunity from the Course Content"]').prop('checked', false);
+//        $('input[name="Adequacy of Preparation and Presentation"]').prop('checked', false);
+//        $('input[name="Explanation of Concepts and Demonstration with Examples"]').prop('checked', false);
+//        $('input[name="Content Presented with respect to Course"]').prop('checked', false);
+//        $('input[name="Time Maintenance"]').prop('checked', false);
+//       
+//        $('input[name="Quality & Pace of the Faculty"]').prop('checked', false);
+        //        $('input[name="Was the Program useful to you?"]').prop('checked', false);
+      
+        $('input').prop('checked', false);
+        $("#Program").val('');
+        $("#Suggestions").val('');
+
+    }
+
+    function AddFeedback() {
+
+        var errorsCount = 0;
+
+        if ($('input[name="Choice of Topic"]:checked').val() == undefined) {
+            $("#Communication_ID").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Communication_ID").html("");
+        }       
+
+        if ($('input[name="Relevance of Program"]:checked').val() == undefined) {
+            $("#Tm_ID").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Tm_ID").html("");
+        }
+
+
+        if ($('input[name="Amount of Training Content was Relevant & Understandable"]:checked').val() == undefined) {
+            $("#Interaction_ID").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Interaction_ID").html("");
+        }
+
+
+     
+        if ($('input[name="Adequacy of learning Opportunity from the Training Content"]:checked').val() == undefined) {
+            $("#Kc_ID").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Kc_ID").html("");
+        }
+        if ($('input[name="Adequacy of Preparation and Presentation"]:checked').val() == undefined) {
+            $("#Adequacy").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Adequacy").html("");
+        }
+
+
+        if ($('input[name="Explanation of Concepts and Demonstration with Examples"]:checked').val() == undefined) {
+            $("#Explanation").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Explanation").html("");
+        }
+
+        if ($('input[name="Content Presented with respect to Training"]:checked').val() == undefined) {
+            $("#Content").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Content").html("");
+        }
+        if ($('input[name="Time Maintenance"]:checked').val() == undefined) {
+            $("#Time").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Time").html("");
+        }
+
+
+     
+
+        if ($('input[name="Quality & Pace of the Faculty"]:checked').val() == undefined) {
+            $("#Overall_ID").html("Choose Rating");
+            errorsCount++;
+        }
+        else {
+            $("#Overall_ID").html("");
+        }
+
+        if ($('input[name="Was the Program useful to you?"]:checked').val() == undefined) {
+            $("#FutureSession_ID").html("Choose Yes/No");
+            errorsCount++;
+        }
+        else {
+            $("#FutureSession_ID").html("");
+        }
+
+        if ($("#Program").val()==''){
+            $("#Program1").html("Enter your Learned aspects ");
+            errorsCount++;
+        }
+        else {
+            $("#Program1").html("");
+        }
+
+        if ($("#Suggestions").val() == '') {
+            $("#Suggestions1").html("Enter your Suggestions/Comments");
+            errorsCount++;
+        }
+        else {
+            $("#Suggestions1").html("");
+        }
+        if (errorsCount == 0) {
+
+        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+          
+         
+            var values = {
+                "TrainingId" : $('#TrainingId').val(),
+                "Choice": $('input[name="Choice of Topic"]:checked').val(),
+                "Relevance": $('input[name="Relevance of Program"]:checked').val(),
+                "AmountofCourse": $('input[name="Amount of Training Content was Relevant & Understandable"]:checked').val(),
+                "AdeqofLearning": $('input[name="Adequacy of learning Opportunity from the Training Content"]:checked').val(),
+                "AdeqofPreparation": $('input[name="Adequacy of Preparation and Presentation"]:checked').val(),
+                "EXpofConcepts": $('input[name="Explanation of Concepts and Demonstration with Examples"]:checked').val(),
+                "contentPres": $('input[name="Content Presented with respect to Training"]:checked').val(),
+                "Timemain": $('input[name="Time Maintenance"]:checked').val(),
+                "Quality": $('input[name="Quality & Pace of the Faculty"]:checked').val(),
+                "PrgUseful": $('input[name="Was the Program useful to you?"]:checked').val(),
+                "Learn":$('#Program').val(),
+                "Suggestions":$('#Suggestions').val()
+
+            };
+
+            $.ajax({
+                url: "../../LDTraining/Feedback/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    if (result == "success") {
+                        toastr.success("Feedback submitted successfully.", toastrOptions);
+                        
+                        setTimeout(function () {
+                        $('#portlet-config').appendTo("body").modal('hide');
+                            window.location.href = '@Url.Action("Mylearning", "LDHome")';
+                        }, 500);
+                    }
+                }
+            });
+        }
+    }
+
+</script>
+</body>
+</html>  
+
+
+

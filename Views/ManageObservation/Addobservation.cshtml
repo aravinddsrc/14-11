@@ -1,0 +1,1373 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.Department>
+@{
+    ViewBag.Title = "Assign Activity";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+}
+
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+@{
+    int SNO = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+    
+}
+
+<style type="text/css">
+
+  /*.dataTables_wrapper .col-right
+ {
+      visibility:hidden;
+}*/
+   #tblRoles_paginate {
+         visibility:hidden;
+    }
+
+
+    .sNo {
+        text-align: center;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #aaaaaa;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #E1B42B;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+        border: 0px solid #ebebeb;
+    }
+    .dataTables_info {
+        visibility:collapse;
+        height: 1px;
+    }
+    #tblUsers_paginate{
+        visibility: collapse;
+        height: 1px;
+}
+
+
+
+    
+</style>   
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageActivities", "ManageActivities")">
+            <i class="fa-home1"></i>Activity Management
+        </a>
+    </li>
+    <li class="active"><strong>Assign Activity</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageActivities", "ManageActivities")"style="color:black ">
+            Activity Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Assign Activity</b>
+    </p>
+<br />
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Assign Activity
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" style="overflow: auto">
+                <div class="form-group">
+                    <div class="panel-body">
+
+                        <div class="form-group">
+
+                            @using (Html.BeginForm("AddObservation", "ManageObservation", FormMethod.Get, new { @id = "form" }))
+                            {
+                                <div class="row">
+                                    @if (branchcnt == 1)
+                                    {
+                                    <div class="visible-md">
+                                        @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                        @Html.DropDownList("Idbranchname1", ViewBag.BranchList as SelectList, "", new { @id = "Idbranchname1", @name = "BranchName", @class = "select2-container select2-container-multi select2 visible", @onchange = "GetDepartments()" })
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-2 col-lg-3" style="padding-top: 7px;">
+                                        @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                        @Html.DropDownList("Idbranchname1", ViewBag.BranchList as SelectList, "", new { @id = "Idbranchname1", @name = "BranchName", @class = "select2-container select2-container-multi select2 visible", @onchange = "GetDepartments()" })
+                                    </div>
+                                    }
+                                    <div class="col-md-2 col-lg-3" style="padding-top: 7px;">
+                                        @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                        @Html.DropDownList("DepartmentID", ViewBag.Department as SelectList, "--Select--", new { @id = "DepartmentID", @class = "select2-container select2-container-multi select2 visible", @onchange = "change()" })
+                                        <span id="StartDateTime_ID" style="color: Red;"></span>
+                                    </div>
+                                    <div class="col-md-2 col-lg-3" style="padding-top: 7px;" id="Group">
+                                        @Html.Label("Group", (string)ViewBag.Lbl_depgroup, new { @class = "control-label" })
+                                        @Html.DropDownList("UID", ViewBag.Group as SelectList, "--Select--", new { @id = "UID", @class = "select2-container select2-container-multi select2 visible", @onchange = "fnUserchange() " })
+                                    </div>
+                                    <div class="col-md-4" style="width:200px;margin-top: 30px;  padding-top: 5px;">
+                                        <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                            Search<i class="entypo-search"></i>
+                                        </button>
+                                        <button type="reset" id="btnAdd" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("AddObservation", "ManageObservation") + "'")    ;">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            
+                            <br />
+                                    if (ViewBag.DepartmentID != null && ViewBag.UID == null)
+                                    {
+                                @Html.Hidden("DepartmentID", (int)@ViewBag.DepartmentID, new { @id = "DepartmentID" })
+                                    }
+                                    if (ViewBag.DepartmentID == null && ViewBag.UID != null)
+                                    {
+                                @Html.Hidden("UID", (int)@ViewBag.UID, new { @id = "UID" })
+                                    }
+                                    if (ViewBag.DepartmentID != null && ViewBag.UID != null)
+                                    {
+                                @Html.Hidden("DepartmentID", (int)@ViewBag.DepartmentID, new { @id = "DepartmentID" })
+                                @Html.Hidden("UID", (int)@ViewBag.UID, new { @id = "UID" })
+                                    }
+
+
+
+                            <div class="row">
+                                <div class="col-md-2" style="width: 250px; padding-top: 7px;" id="Group">
+                                    @Html.Label("Activity Date", new { @class = "control-label", @style = "padding-top: 12px" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                    @Html.TextBox("ActivityDate", "", new { @id = "ActivityDate", @name = "ActivityDate", @class = "form-control datetimepicker", @placeholder = "Activity Date", @autocomplete = "off", @style = "Width:230Px;Height:42px", @onchange = "GetData()" }) @* , @onchange = "GetData()"*@
+                                    <span id="span_ActivityDate" style="color: Red;"></span>
+                                </div>
+                            </div>
+                            }
+                            <br />
+                            <div style="overflow: auto">
+                                <table class="table table-bordered datatable" id="tblRoles">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">@Html.DisplayName("User")
+                                            </th>
+                                            <th style="text-align: center;">@Html.DisplayName("Activity")
+                                            </th>
+                                            <th style="text-align: center;">@Html.DisplayName("Level")
+                                            </th>
+                                            <th style="text-align: center;">@Html.DisplayName("Comments")
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    @if (Model != null)
+                                    {
+                                        int j = 0;
+                                        foreach (var item in Model)
+                                        {
+                                            if (item.Activity == null)
+                                            {
+                                        <tr class="@Html.Raw((item.SelectedUserStatusid == 2) ? "danger" : "")">
+
+                                            <td style="text-align: center">
+                                                @Html.HiddenFor(modelitem => item.Users, new { @id = "USERID" + j })
+                                                @Html.DisplayFor(modelitem => item.OBUserName)
+                                             @*   @Html.HiddenFor(modelitem=>item.Users, new {@id = "DPID" + j })*@
+
+
+                                                <span id="span_OBUserName" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+                                                
+                                                @Html.DropDownList("Activity", ViewBag.Activity as SelectList, "--Select--",
+                                                    new
+                                                    {
+                                                        @id = "Activity" + j,
+                                                        @class = "form-control",
+
+                                                        @onchange = string.Format("Activity(this.value, {0})", j)
+                                                        ,
+                                                        @style = "Width:200Px"
+                                                    })
+
+
+
+                                                <span id="span_Activity@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center" >
+                                                @Html.DropDownList("ActivityLevel", ViewBag.ActivityLevel as SelectList, "--Select--", new { @id = "ActivityLevel" + j, @class = "form-control", @style = "Width:200Px" })
+                                                <span id="span_ActivityLevel@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+                                               @* @Html.TextBoxFor(modelitem => item.Comment, new { @id = "Comment" + j, @name = "Comment", @class = "form-control", @style = "Width:250Px;Height:90px;",  @maxlength = "200"  })*@
+                                               
+                                                 @Html.TextAreaFor(modelitem => item.Comment, new { @id = "Comment" + j, @name = "Comment", @class = "form-control", @autocomplete = "off", @style = "Width:250Px;Height:60px", @maxlength = 200 })                        
+                                                                         <span id="span_Comment@(j)" style="color: Red;"></span>
+                                            </td>
+
+                                        </tr>
+                                            }
+                                           
+                                            j++;
+                                        }
+                                    }
+
+
+
+                                    @*---------------------------------------*@
+
+
+                                    @if (Model != null)
+                                     {
+                                         int j = 0;
+                                         foreach (var item in Model)
+                                         {
+
+
+                                             if (item.Activity != null)
+                                            {
+                                        <tr class="@Html.Raw((item.SelectedUserStatusid == 2) ? "danger" : "")">
+
+                                            <td style="text-align: center">
+                                                @Html.HiddenFor(modelitem =>item.Users, new { @id = "USERID" + j })
+                                                @Html.DisplayFor(modelitem => item.OBUserName)
+                                                @* @Html.HiddenFor(modelitem=>item.Users, new {@id= "DPID" + j })*@
+
+                                                <span id="span_OBUserName" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+
+                                            @*    @Html.DisplayFor(modelitem => item.Activity)*@
+                                                  @Html.DropDownListFor(modelitem=>item.Activity ,(IEnumerable<SelectListItem>) ViewBag.Activity  ,item.Activity  , new { @id = "Activity" + j, @class = "form-control",  @style = " Width:200Px", @autocomplete = "off", @disabled = "disabled" })  @*@placeholder = Resources.Resource.DN_ProfileModel_EmailAddress,   , ViewBag.Activity as SelectList*@                                                  
+
+
+                                                
+                                                <span id="span_Activity@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+                                               @* @Html.DisplayFor(modelitem => item.ActivityLevel)*@
+                                                 @*@Html.DropDownListFor(modelitem=>item.ActivityLevel  , ViewBag.Activitylevel as SelectList, new { @id = "ActivityLevel" + j, @class = "form-control",  @style = "Width:200Px", @autocomplete = "off", @disabled = "disabled" }) *@ @*@placeholder = Resources.Resource.DN_ProfileModel_EmailAddress,*@
+
+                                                   @Html.DropDownListFor(modelitem=>item.ActivityLevel  , ViewBag.Activitylevel as SelectList,item.ActivityLevel , new { @id = "ActivityLevel" + j, @class = "form-control",  @style = "Width:200Px", @autocomplete = "off", @disabled = "disabled"})  @*@placeholder = Resources.Resource.DN_ProfileModel_EmailAddress,*@
+                                                <span id="span_ActivityLevel@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+                                               @* @Html.DisplayFor(modelitem => item.Comment)*@
+                                                  @Html.TextAreaFor(modelitem => item.Comment, new { @id = "Comment" + j, @name = "Comment", @class = "form-control", @autocomplete = "off", @style = "Width:250Px;Height:60px", @maxlength = 200,@disabled = "disabled" })
+                                                <span id="span_Comment@(j)" style="color: Red;"></span>
+                                            </td>
+
+                                        </tr>
+                                            }
+                                            
+                                            
+                                            @* if (item.Activity != null)
+                                             {
+                                        <tr class="@Html.Raw((item.SelectedUserStatusid == 2) ? "danger" : "")">
+
+                                            <td>
+                                                @Html.HiddenFor(modelitem => item.DPID, new { @id = "DPID" + j })
+                                                @Html.DisplayFor(modelitem => item.OBUserName)
+
+
+                                                <span id="span_OBUserName" style="color: Red;"></span>
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelitem => item.Activity)
+                                                  
+
+
+
+                                                <span id="span_Activity@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: center">
+                                                @Html.DisplayFor(modelitem => item.ActivityLevel)
+                                                <span id="span_ActivityLevel@(j)" style="color: Red;"></span>
+                                            </td>
+                                            <td style="text-align: left">
+                                                @Html.DisplayFor(modelitem => item.Comment)
+                                                <span id="span_Comment@(j)" style="color: Red;"></span>
+                                            </td>
+
+                                        </tr>
+                                             }*@
+                                             j++;
+                                         }
+                                     }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Count() != 0)
+                {
+                <div class="col-md-12" style="text-align: right">
+                    <button type="reset" id="btnAdd" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("AddObservation", "ManageObservation") + "'")    ;">
+                        Cancel
+                    </button>
+                  @*  @if (ViewBag.ActivityDate == null)
+                    {
+                    <button type="button" id="btnAdd" class="btn btn-info" onclick="Save(@Model.Count())">
+                        Save
+                    </button>
+                    }
+                    else
+                    {
+                         <button type="button" id="btnAdd" class="btn btn-info"  disabled="disabled">
+                        Save
+                    </button>
+              
+                    }*@
+
+                     
+                    <button type="button" id="btnAdd" class="btn btn-info" onclick="Save(@Model.Count())">
+                        Save
+                    </button>
+                    
+                  
+              
+                   
+                </div>
+                }
+            </div>
+            @*<button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;"   onclick="@("window.location.href='" + @Url.Action("Observation", "ManageObservation") + "'")    ;">
+                Back
+            </button>*@
+        </div>
+    </div>
+</div>
+ <div class="modal fade in" id="Loader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+      
+        debugger;     
+        function Save(t) {
+                   
+            for (var j = 0; j < t; j++) {
+                
+
+
+                if (document.getElementById('Idbranchname1').value == "") {
+                    document.getElementById('span_Idbranchname1').innerHTML = "Select Branch ";
+                    return;
+                }
+                if (document.getElementById('ActivityDate').value == "") {
+                    document.getElementById('span_ActivityDate').innerHTML = "Select Activity Date";
+                    return;
+                }
+                else
+                {
+                    document.getElementById('span_ActivityDate').innerHTML = "";
+                }
+                if ((document.getElementById('Activity'+j).value == "") && (document.getElementById('Activity'+j).disabled == false )) {
+                    document.getElementById('span_Activity'+j).innerHTML = "Select Activity";
+                    return;
+                }
+                else {
+                    document.getElementById('span_Activity'+j).innerHTML = "";
+                }
+                
+                if ((document.getElementById('ActivityLevel' + j).value == "") && (document.getElementById('ActivityLevel'+j).disabled == false )) {
+                    document.getElementById('span_ActivityLevel' + j).innerHTML = "Select Level";
+                    return;
+                }
+                else {
+                    document.getElementById('span_ActivityLevel' + j).innerHTML = "";
+                }
+
+                if (document.getElementById('Comment' + j).value == "") {
+                    document.getElementById('span_Comment' + j).innerHTML = "";
+                }
+                else {
+                    document.getElementById('span_Comment' + j).innerHTML = "";
+                }
+               
+            }
+
+       
+            var value = 0;
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var listOfObjects = [];
+            var list = [];
+
+            var value3 = 0;
+            var listOfObjects3 = [];
+            var list3 = [];
+
+            
+
+            for (var k = 0; k < t; k++) {
+                if($("#Activity" + k).prop('disabled') == false)
+                {
+                   // alert("Hai" + k +"    " + $("#Activity" + k).val() + "              " + $("#USERID" + k).val() );
+                    
+                    value = $("#Activity" + k).val();
+                    listOfObjects.push(value);
+
+                    value3 = $("#USERID" + k).val();
+                    listOfObjects3.push(value3);
+                   
+                }
+                              
+            }
+         
+            if (value == '') {
+               
+                document.getElementById("value").innerHTML = "Enter ";
+            }
+            var str = listOfObjects.toString();
+            var str_array = str.split(',');
+
+            for (var i = 0; i < str_array.length; i++) {
+
+                str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list.push(str_array[i].split(','))
+               // alert("Hai" + i );
+            }
+
+            var str3= listOfObjects3.toString();
+            var str_array3 = str3.split(',');
+
+            for (var i = 0; i < str_array3.length; i++) {
+
+                str_array3[i] = str_array3[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list3.push(str_array3[i].split(','))
+            }
+
+
+            //var value4 = 0;
+            //var listOfObjects = [];
+            //var list4 = [];
+
+            //value4 = $("#USERID" + k).val();
+            //listOfObjects4.push(value4);
+            //var str4= listOfObjects4.toString();
+            //var str_array4 = str4.split(',');
+
+            //for (var i = 0; i < str_array4.length; i++) {
+
+            //    str_array4[i] = str_array4[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+            //    list4.push(str_array4[i].split(','));
+            //}
+
+            ////////////////////////////////////
+            var value1 = 0;
+            var listOfObjects1 = [];
+            var list1 = [];
+            for (var k = 0; k < t; k++) {
+                if($("#ActivityLevel" + k).prop('disabled') == false)
+                {
+                    value1 = $("#ActivityLevel" + k).val();
+                    listOfObjects1.push(value1);
+                }
+            }
+            if (value1 == '') {
+                document.getElementById("value1").innerHTML = "Enter ";
+            }
+            var str1 = listOfObjects1.toString();
+            var str_array1 = str1.split(',');
+
+            for (var i = 0; i < str_array1.length; i++) {
+
+                str_array1[i] = str_array1[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list1.push(str_array1[i].split(','))
+            }
+            ////////////////////////////////////
+            var value2 = 0;
+            var listOfObjects2 = [];
+            var list2 = [];
+            for (var k = 0; k < t; k++) {
+                if($("#Comment" + k).prop('disabled') == false)
+                {
+                    value2 = $("#Comment" + k).val();
+                    listOfObjects2.push(value2);
+                }
+            }
+            //if (value2 == '') {
+            //    document.getElementById("value2").innerHTML = "";
+            //}
+            var str2= listOfObjects2.toString();
+            var str_array2 = str2.split(',');
+
+            for (var i = 0; i < str_array2.length; i++) {
+
+                str_array2[i] = str_array2[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list2.push(str_array2[i].split(','))
+            }
+
+            //var value3 = 0;
+            //var listOfObjects3 = [];
+            //var list3 = [];
+            //for (var k = 0; k < t; k++) {
+               
+            //        value3 = $("#DPID" + k).val();
+            //        listOfObjects3.push(value3);
+               
+            //}
+            ////if (value2 == '') {
+            ////    document.getElementById("value2").innerHTML = "";
+            ////}
+            //var str3= listOfObjects3.toString();
+            //var str_array3 = str3.split(',');
+
+            //for (var i = 0; i < str_array3.length; i++) {
+
+            //    str_array3[i] = str_array3[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+            //    list3.push(str_array3[i].split(','))
+            //}
+
+            var values =
+                          {
+                              "Column": list.toString(),
+                              "Column1": list1.toString(),
+                              "Column2": list2.toString(),
+                              "Column3": list3.toString(),
+                              "ActivityDate": $("#ActivityDate").val(),
+                              "objmodel": $("#objmodel").val(),
+                              "DepartmentID": $("#DepartmentID").val(),
+                              "UID": $("#UID").val(),
+                              "Idbranchname1":$("#Idbranchname1").val()
+                          }
+            var opts =
+                   {
+                       "closeButton": true,
+                       "debug": false,
+                       "positionClass": "toast-top-right",
+                       "toastClass": "White",
+                       "onclick": null,
+                       "showDuration": "300",
+                       "hideDuration": "1000",
+                       "timeOut": "2000",
+                       "extendedTimeOut": "1000",
+                       "showEasing": "swing",
+                       "hideEasing": "linear",
+                       "showMethod": "fadeIn",
+                       "hideMethod": "fadeOut"
+                   }
+           // $('#Loader').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+           
+            $.ajax({
+
+                url: "../../ManageObservation/Addobservation/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result == "Success") {
+                        $("#portlet-config1").modal("hide");
+                        toastr.success(" Users Activitie Added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                        
+                    }
+                    if (result == "Warning") {
+                        $("#portlet-config1").modal("hide");
+                        toastr.warning(" Activity Date Already Exist ", opts);
+                        
+                    }
+                    
+                }
+            });
+        }
+
+        //function Save(t) {
+           
+
+        //    for (var j = 0; j < t; j++) {
+        //        if (document.getElementById('Idbranchname1').value == "") {
+        //            document.getElementById('span_Idbranchname1').innerHTML = "Select Branch ";
+        //            return;
+        //        }
+        //        if (document.getElementById('ActivityDate').value == "") {
+        //            document.getElementById('span_ActivityDate').innerHTML = "Select Activity Date";
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            document.getElementById('span_ActivityDate').innerHTML = "";
+        //        }
+        //        if (document.getElementById('Activity'+j).value == "") {
+        //            document.getElementById('span_Activity'+j).innerHTML = "Select Activity";
+        //            return;
+        //        }
+        //        else {
+        //            document.getElementById('span_Activity'+j).innerHTML = "";
+        //        }
+                
+        //        if (document.getElementById('ActivityLevel' + j).value == "") {
+        //            document.getElementById('span_ActivityLevel' + j).innerHTML = "Select Level";
+        //            return;
+        //        }
+        //        else {
+        //            document.getElementById('span_ActivityLevel' + j).innerHTML = "";
+        //        }
+
+        //        if (document.getElementById('Comment' + j).value == "") {
+        //            document.getElementById('span_Comment' + j).innerHTML = "";
+        //        }
+        //        else {
+        //            document.getElementById('span_Comment' + j).innerHTML = "";
+        //        }
+               
+        //    }
+
+            
+        //    var value = 0;
+        //   $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+        //    var listOfObjects = [];
+        //    var list = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value = $("#Activity" + k).val();
+        //        listOfObjects.push(value);
+        //    }
+        //    if (value == '') {
+        //        document.getElementById("value").innerHTML = "Enter ";
+        //    }
+        //    var str = listOfObjects.toString();
+        //    var str_array = str.split(',');
+
+        //    for (var i = 0; i < str_array.length; i++) {
+
+        //        str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list.push(str_array[i].split(','))
+        //    }
+        //    ////////////////////////////////////
+        //    var value1 = 0;
+        //    var listOfObjects1 = [];
+        //    var list1 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value1 = $("#ActivityLevel" + k).val();
+        //        listOfObjects1.push(value1);
+        //    }
+        //    if (value1 == '') {
+        //        document.getElementById("value1").innerHTML = "Enter ";
+        //    }
+        //    var str1 = listOfObjects1.toString();
+        //    var str_array1 = str1.split(',');
+
+        //    for (var i = 0; i < str_array1.length; i++) {
+
+        //        str_array1[i] = str_array1[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list1.push(str_array1[i].split(','))
+        //    }
+        //    ////////////////////////////////////
+        //    var value2 = 0;
+        //    var listOfObjects2 = [];
+        //    var list2 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value2 = $("#Comment" + k).val();
+        //        listOfObjects2.push(value2);
+        //    }
+        //    //if (value2 == '') {
+        //    //    document.getElementById("value2").innerHTML = "";
+        //    //}
+        //    var str2= listOfObjects2.toString();
+        //    var str_array2 = str2.split(',');
+
+        //    for (var i = 0; i < str_array2.length; i++) {
+
+        //        str_array2[i] = str_array2[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list2.push(str_array2[i].split(','))
+        //    }
+
+        //    var value3 = 0;
+        //    var listOfObjects3 = [];
+        //    var list3 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value3 = $("#DPID" + k).val();
+        //        listOfObjects3.push(value3);
+        //    }
+        //    //if (value2 == '') {
+        //    //    document.getElementById("value2").innerHTML = "";
+        //    //}
+        //    var str3= listOfObjects3.toString();
+        //    var str_array3 = str3.split(',');
+
+        //    for (var i = 0; i < str_array3.length; i++) {
+
+        //        str_array3[i] = str_array3[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list3.push(str_array3[i].split(','))
+        //    }
+
+        //    var values =
+        //                  {
+        //                      "Column": list.toString(),
+        //                      "Column1": list1.toString(),
+        //                      "Column2": list2.toString(),
+        //                      "Column3": list3.toString(),
+        //                      "ActivityDate": $("#ActivityDate").val(),
+        //                      "objmodel": $("#objmodel").val(),
+        //                      "DepartmentID": $("#DepartmentID").val(),
+        //                      "UID": $("#UID").val(),
+        //                      "Idbranchname1":$("#Idbranchname1").val()
+        //                  }
+        //    var opts =
+        //           {
+        //               "closeButton": true,
+        //               "debug": false,
+        //               "positionClass": "toast-top-right",
+        //               "toastClass": "White",
+        //               "onclick": null,
+        //               "showDuration": "300",
+        //               "hideDuration": "1000",
+        //               "timeOut": "2000",
+        //               "extendedTimeOut": "1000",
+        //               "showEasing": "swing",
+        //               "hideEasing": "linear",
+        //               "showMethod": "fadeIn",
+        //               "hideMethod": "fadeOut"
+        //           }
+        //    $('#Loader').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+        //    $.ajax({
+
+        //        url: "../../ManageObservation/Addobservation/",
+        //        type: 'POST',
+        //        cache: false,
+        //        data: values,
+        //        traditional: true,
+        //        global: false,
+        //        success: function (result) {
+        //            if (result == "Success") {
+        //                $("#portlet-config1").modal("hide");
+        //                toastr.success(" Users Activitie Added successfully", opts);
+        //                setTimeout(function () { location.reload(); }, 1000);
+                        
+        //            }
+        //            if (result == "Warning") {
+        //              toastr.warning(" Activity Date Already Exist ", opts);
+                        
+        //            }
+                    
+        //        }
+        //    });
+        //}
+
+
+
+
+
+        //function Save(t) {                        //Original Source
+           
+
+        //    for (var j = 0; j < t; j++) {
+        //        if (document.getElementById('Idbranchname1').value == "") {
+        //            document.getElementById('span_Idbranchname1').innerHTML = "Select Branch ";
+        //            return;
+        //        }
+        //        if (document.getElementById('ActivityDate').value == "") {
+        //            document.getElementById('span_ActivityDate').innerHTML = "Select Activity Date";
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            document.getElementById('span_ActivityDate').innerHTML = "";
+        //        }
+        //        if (document.getElementById('Activity'+j).value == "") {
+        //            document.getElementById('span_Activity'+j).innerHTML = "Select Activity";
+        //            return;
+        //        }
+        //        else {
+        //            document.getElementById('span_Activity'+j).innerHTML = "";
+        //        }
+                
+        //        if (document.getElementById('ActivityLevel' + j).value == "") {
+        //            document.getElementById('span_ActivityLevel' + j).innerHTML = "Select Level";
+        //            return;
+        //        }
+        //        else {
+        //            document.getElementById('span_ActivityLevel' + j).innerHTML = "";
+        //        }
+
+        //        if (document.getElementById('Comment' + j).value == "") {
+        //            document.getElementById('span_Comment' + j).innerHTML = "";
+        //        }
+        //        else {
+        //            document.getElementById('span_Comment' + j).innerHTML = "";
+        //        }
+               
+        //    }
+
+            
+        //    var value = 0;
+        //    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+        //    var listOfObjects = [];
+        //    var list = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value = $("#Activity" + k).val();
+        //        listOfObjects.push(value);
+        //    }
+        //    if (value == '') {
+        //        document.getElementById("value").innerHTML = "Enter ";
+        //    }
+        //    var str = listOfObjects.toString();
+        //    var str_array = str.split(',');
+
+        //    for (var i = 0; i < str_array.length; i++) {
+
+        //        str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list.push(str_array[i].split(','))
+        //    }
+        //    ////////////////////////////////////
+        //    var value1 = 0;
+        //    var listOfObjects1 = [];
+        //    var list1 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value1 = $("#ActivityLevel" + k).val();
+        //        listOfObjects1.push(value1);
+        //    }
+        //    if (value1 == '') {
+        //        document.getElementById("value1").innerHTML = "Enter ";
+        //    }
+        //    var str1 = listOfObjects1.toString();
+        //    var str_array1 = str1.split(',');
+
+        //    for (var i = 0; i < str_array1.length; i++) {
+
+        //        str_array1[i] = str_array1[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list1.push(str_array1[i].split(','))
+        //    }
+        //    ////////////////////////////////////
+        //    var value2 = 0;
+        //    var listOfObjects2 = [];
+        //    var list2 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value2 = $("#Comment" + k).val();
+        //        listOfObjects2.push(value2);
+        //    }
+        //    //if (value2 == '') {
+        //    //    document.getElementById("value2").innerHTML = "";
+        //    //}
+        //    var str2= listOfObjects2.toString();
+        //    var str_array2 = str2.split(',');
+
+        //    for (var i = 0; i < str_array2.length; i++) {
+
+        //        str_array2[i] = str_array2[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list2.push(str_array2[i].split(','))
+        //    }
+
+        //    var value3 = 0;
+        //    var listOfObjects3 = [];
+        //    var list3 = [];
+        //    for (var k = 0; k < t; k++) {
+        //        value3 = $("#DPID" + k).val();
+        //        listOfObjects3.push(value3);
+        //    }
+        //    //if (value2 == '') {
+        //    //    document.getElementById("value2").innerHTML = "";
+        //    //}
+        //    var str3= listOfObjects3.toString();
+        //    var str_array3 = str3.split(',');
+
+        //    for (var i = 0; i < str_array3.length; i++) {
+
+        //        str_array3[i] = str_array3[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+        //        list3.push(str_array3[i].split(','))
+        //    }
+
+        //    var values =
+        //                  {
+        //                      "Column": list.toString(),
+        //                      "Column1": list1.toString(),
+        //                      "Column2": list2.toString(),
+        //                      "Column3": list3.toString(),
+        //                      "ActivityDate": $("#ActivityDate").val(),
+        //                      "objmodel": $("#objmodel").val(),
+        //                      "DepartmentID": $("#DepartmentID").val(),
+        //                      "UID": $("#UID").val(),
+        //                      "Idbranchname1":$("#Idbranchname1").val()
+        //                  }
+        //    var opts =
+        //           {
+        //               "closeButton": true,
+        //               "debug": false,
+        //               "positionClass": "toast-top-right",
+        //               "toastClass": "White",
+        //               "onclick": null,
+        //               "showDuration": "300",
+        //               "hideDuration": "1000",
+        //               "timeOut": "2000",
+        //               "extendedTimeOut": "1000",
+        //               "showEasing": "swing",
+        //               "hideEasing": "linear",
+        //               "showMethod": "fadeIn",
+        //               "hideMethod": "fadeOut"
+        //           }
+        //    $('#Loader').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+        //    $.ajax({
+
+        //        url: "../../ManageObservation/Addobservation/",
+        //        type: 'POST',
+        //        cache: false,
+        //        data: values,
+        //        traditional: true,
+        //        global: false,
+        //        success: function (result) {
+        //            if (result == "Success") {
+        //                toastr.success(" Users Activitie Added successfully", opts);
+        //                setTimeout(function () { location.reload(); }, 1000);
+                        
+        //            }
+        //            if (result == "Warning") {
+        //                $("#portlet-config").modal("hide");
+        //                toastr.warning(" Activity Date Already Exist ", opts);
+                        
+        //            }
+                    
+        //        }
+        //    });
+        //}
+
+        $(document).ready(function () {
+
+
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                //startDate: '1d',
+                todayHighlight: true,
+                autoclose: true,
+                //endDate: '1d'
+
+            });
+        });
+        function Activity(id,start) {
+
+
+                
+            var x=@Model.Count();        
+
+            for (var n = start+1; n < x ; n++)
+            {             
+                //$("#Activity"+n).prop('selectedIndex', id);
+                $("#Activity"+n).val(id);
+                $("#Activity"+n).select2();
+            }
+             
+        }
+        function change() {
+       
+
+            var Bid = "";
+            value = $("#Idbranchname1").val();
+            if (value == "") {
+                Bid = 0;
+            }
+            else {
+
+                Bid = $('#Idbranchname1').find("option:selected").prop("value");
+            }
+            var DepartmentName = $('#DepartmentID').find("option:selected").prop("value");
+
+            var url2 = '@Url.Action("GetAvailEmployees")';
+
+            $.get(url2, { DepartmentName: DepartmentName,BranchID: Bid}, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                });
+                $("#UID").html(items.join(' '));
+                $("#UID").select2();
+            });
+        }
+
+
+        $(document).ready(function () {
+            fnUserchange();
+            $("#DepartmentID").change(function () { fnUserchange() });
+        });
+
+        function fnUserchange() {
+
+            var selectedId = $('#DepartmentID').val();
+            //var date = $('#Date').val();
+          
+        }
+
+        function GetDepartments() {
+            var Bid = $("#Idbranchname1").find("option:selected").prop("value");
+            if (Bid !== "") {
+                var url2 = '@Url.Action("GetDepartments")';
+                $.get(url2, { BranchId: Bid }, function (data) {
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#DepartmentID").html(items.join(' '));
+                    $("#DepartmentID").select2();
+                });
+               
+
+            }
+        }
+
+
+
+        function GetData() {
+
+            var GetData = $("#ActivityDate").val();
+
+            var Branch = $("#Idbranchname1").val();
+            var Department = $('#DepartmentID').val();
+            var Group = $("#UID").val();
+            
+           
+         
+            //window.location.href = '@Url.Action("AddObservation", "ManageObservation")' + '?ActivityDate=' + GetData + '?Branch1=' + Branch + '?Department1=' + Department + '?Group1=' + Group;
+            window.location.href = '@Url.Action("AddObservation", "ManageObservation")' + '?ActivityDate=' + GetData ;
+            $("#form").submit();
+            
+        }
+        $(document)
+                   .ready(function() {
+                       $("#tblRoles").dataTable({
+                           "sPaginationType": "bootstrap",
+                           "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                           "aaSorting": [],
+                           "iDisplayLength": 50000,
+                           //"sDom":true,
+                           // "searching": false,
+                           "lengthChange": false,
+                           "columnDefs": [{ bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] } , { bSortable: false, 'aTargets': [3] }],
+
+                           "bProcessing": true
+                       });
+                       $(".dataTables_wrapper select")
+                           .select2({
+                               minimumResultsForSearch: -1
+                           });
+                       $('thead>tr>th').css('text-align', 'center');
+
+                   });
+
+ 
+
+
+       
+
+
+        /* Set the defaults for DataTables initialisation */
+        jQuery.extend(true, jQuery.fn.dataTable.defaults, {
+            "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page"
+            }
+        });
+
+
+
+
+        /* Default class modification */
+        jQuery.extend(jQuery.fn.dataTableExt.oStdClasses, {
+            //"Wrapper": "dataTables_wrapper form-inline",
+            "sFilterInput": "form-control input-sm",
+            "sLengthSelect": "form-control input-sm"
+        });
+
+
+        /* API method to get paging information */
+        jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+            return {
+                "iStart": oSettings._iDisplayStart,
+                "iEnd": oSettings.fnDisplayEnd(),
+                "iLength": oSettings._iDisplayLength,
+                "iTotal": oSettings.fnRecordsTotal(),
+                "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                "iPage": oSettings._iDisplayLength === -1 ?
+                    0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                "iTotalPages": oSettings._iDisplayLength === -1 ?
+                    0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+            };
+        };
+
+
+        /* Bootstrap style pagination control */
+        jQuery.extend(jQuery.fn.dataTableExt.oPagination, {
+            "bootstrap": {
+                "fnInit": function (oSettings, nPaging, fnDraw) {
+                    var oLang = oSettings.oLanguage.oPaginate;
+                    var fnClickHandler = function (e) {
+                        e.preventDefault();
+                        if (oSettings.oApi._fnPageChange(oSettings, e.data.action)) {
+                            fnDraw(oSettings);
+                        }
+                    };
+
+                    //jQuery(nPaging).append(
+                    //    '<ul class="pagination pagination-sm">' +
+                    //        '<li class="prev disabled"><a href="#"><i class="entypo-left-open"></i></a></li>' +
+                    //        '<li class="next disabled"><a href="#"><i class="entypo-right-open"></i></a></li>' +
+                    //    '</ul>'
+                    //);
+                    var els = jQuery('a', nPaging);
+                    jQuery(els[0]).bind('click.DT', { action: "previous" }, fnClickHandler);
+                    jQuery(els[1]).bind('click.DT', { action: "next" }, fnClickHandler);
+                },
+
+                "fnUpdate": function (oSettings, fnDraw) {
+                    var iListLength = 5;
+                    var oPaging = oSettings.oInstance.fnPagingInfo();
+                    var an = oSettings.aanFeatures.p;
+                    var i, ien, j, sClass, iStart, iEnd, iHalf = Math.floor(iListLength / 2);
+
+                    if (oPaging.iTotalPages < iListLength) {
+                        iStart = 1;
+                        iEnd = oPaging.iTotalPages;
+                    }
+                    else if (oPaging.iPage <= iHalf) {
+                        iStart = 1;
+                        iEnd = iListLength;
+                    } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
+                        iStart = oPaging.iTotalPages - iListLength + 1;
+                        iEnd = oPaging.iTotalPages;
+                    } else {
+                        iStart = oPaging.iPage - iHalf + 1;
+                        iEnd = iStart + iListLength - 1;
+                    }
+
+                    for (i = 0, ien = an.length ; i < ien ; i++) {
+                        // Remove the middle elements
+                        jQuery('li:gt(0)', an[i]).filter(':not(:last)').remove();
+
+                        // Add the new list items and their event handlers
+                        for (j = iStart ; j <= iEnd ; j++) {
+                            sClass = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                            jQuery()
+                                .insertBefore(jQuery('li:last', an[i])[0])
+                                .bind('click', function (e) {
+                                    e.preventDefault();
+                                    oSettings._iDisplayStart = (parseInt(jQuery('a', this).text(), 10) - 1) * oPaging.iLength;
+                                    fnDraw(oSettings);
+                                });
+                        }
+
+                        // Add / remove disabled classes from the static elements
+                        if (oPaging.iPage === 0) {
+                            jQuery('li:first', an[i]).addClass('disabled');
+                        } else {
+                            jQuery('li:first', an[i]).removeClass('disabled');
+                        }
+
+                        if (oPaging.iPage === oPaging.iTotalPages - 1 || oPaging.iTotalPages === 0) {
+                            jQuery('li:last', an[i]).addClass('disabled');
+                        } else {
+                            jQuery('li:last', an[i]).removeClass('disabled');
+                        }
+                    }
+                }
+            }
+        });
+
+
+        /*
+         * TableTools Bootstrap compatibility
+         * Required TableTools 2.1+
+         */
+        if (jQuery.fn.DataTable.TableTools) {
+            // Set the classes that TableTools uses to something suitable for Bootstrap
+            jQuery.extend(true, jQuery.fn.DataTable.TableTools.classes, {
+                "container": "DTTT btn-group",
+                "buttons": {
+                    "normal": "btn btn-white",
+                    "disabled": "disabled"
+                },
+                "collection": {
+                    "container": "DTTT_dropdown dropdown-menu",
+                    "buttons": {
+                        "normal": "",
+                        "disabled": "disabled"
+                    }
+                },
+                "print": {
+                    "info": "DTTT_print_info modal"
+                },
+                "select": {
+                    "row": "active"
+                }
+            });
+
+            // Have the collection use a bootstrap compatible dropdown
+            jQuery.extend(true, jQuery.fn.DataTable.TableTools.DEFAULTS.oTags, {
+                "collection": {
+                    "container": "ul",
+                    "button": "li",
+                    "liner": "a"
+                }
+            });
+        }
+
+    </script>
+}

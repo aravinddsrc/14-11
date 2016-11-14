@@ -1,0 +1,210 @@
+﻿@model DSRCManagementSystem.Models.EditUser
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditUser</title>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+    
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Edit Resource</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6" style="text-align: right">
+                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    @Html.HiddenFor(x => x.UserProjectId, new { @id = "UserProjectId" })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.ProjectName, new { @id = "Project", @class = "form-control", @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.ProjectId, new { @id = "ProjectId" })
+                    </div>
+                </div>
+               <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.EmployeeName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.EmployeeName, new { @id = "Employee", @class = "form-control", @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.UserId, new { @id = "UserId" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Resource Type", new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.DropDownListFor(x => x.MemberType, new SelectList(Model.RoleList, "Value", "Text", Model.MemberTypeID), new { @id = "MemberType", @class = "form-control" })
+                        <span id="rolevalue"></span>
+                    </div>
+                </div>
+@*                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.IsBillableResource, new { @class = "control-label" })
+                        <div class="checkbox">
+                            <label class="checkbox-inline">
+                                @Html.CheckBoxFor(x => x.IsBillableResource, new { @id = "Bill", @class = "cb-wrapper" })
+                            </label>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+            @*<div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>*@ @*<div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>*@
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel</button>
+            <button type="submit" id="btnUpdate" class="btn btn-info" onclick="UpdateUser()">
+                Save</button>
+        </div>
+    </div>
+   @* <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>*@
+    <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <script type="text/javascript">
+        function UpdateUser() {
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var values = {
+                "UserProjectId": $("#UserProjectId").val(),
+                "ProjectId": $("#ProjectId").val(),
+                "UserId": $("#UserId").val(),
+                "MemberTypeID": $("#MemberType").find("option:selected").prop("value")
+//                "IsBillableResource": $("#Bill").prop("checked")
+            };
+            if (values.MemberTypeID == 0) {
+                $("#rolevalue").text("Select Role Name.").css("color", "red");
+            }
+            else {
+                $("#rolevalue").text('');
+                $.ajax({ url: "../../ProjectMapping/EditUser/",
+                    type: 'POST', cache: false,
+                    data: values,
+                    success: function (result) {
+
+                    if(result=="Success")
+                    {                        
+                        //$('#PartialSection').html(result);
+                        $('#portlet-config').modal("hide");
+                        var Message = 'Resource Updated Successfully..!';
+                        //var Title = 'Message';
+                        PopUp(Message);
+                        setTimeout(function () { location.reload(); }, 1000);
+                      }
+                      else if(result=="Already") {
+                          $('#portlet-config1').modal("hide");
+                          var Message = 'Resource Type Already Exist';
+                          WarningPopUp(Message);
+                      }
+                    }
+                });
+            }
+        }
+        function PopUp(message) {
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success(message, opts);
+            setTimeout(function () { // wait 2 seconds and reload
+                window.location.reload(true);
+            }, 1000);
+        }
+
+        function WarningPopUp(message) {
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.warning(message, null, opts);
+        }
+    </script>
+</body>
+</html>

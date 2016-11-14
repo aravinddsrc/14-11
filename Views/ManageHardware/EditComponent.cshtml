@@ -1,0 +1,233 @@
+﻿@model DSRCManagementSystem.Models.HardwareList
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Details</title>
+
+    <style>
+        .dropdown-menu {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascript:window.location.reload()">
+                ×</button>
+            <h4 class="modal-title">Edit Hardware Details </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6" style="text-align: right">
+                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.HiddenFor(x => x.Id, new { @id = "Id" })
+                        @Html.LabelFor(x => x.Hardware, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Hardware, new { @id = "Hardware", @class = "form-control", @disabled = "disabled" })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Floor, new { @class = "control-label" })
+                        @*@Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                        @Html.DropDownList("locationid", ViewBag.Detail1 as SelectList, "--Select--", new { @class = "form-control", @id = "Floor" })
+                        @Html.HiddenFor(x => x.Floor, new { @id = "Floor" })
+                        <span id="floor" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Component, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.ValidationMessageFor(x => x.Component)
+                        @Html.TextBoxFor(x => x.Component, new { @id = "Comp", @class = "form-control", @style = "height:42px", @maxlength = "30" })
+                        <span id="component" style="color: Red"></span>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Model, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Model, new { @id = "DDLModel", @class = "form-control", @style = "height:42px", @maxlength = "20" })
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.AssignedTo, new { @class = "control-label" })
+                        @*@Html.Label("  *", new { @style = "color:red;font-weight:;" })*@
+                        @Html.DropDownList("managementid", ViewBag.ManagementIdList as SelectList, "--Select--", new { @id = "AssignedTo", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.AssignedTo, " ", new { @style = "color:red" })
+                        <span id="assi" style="color: Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Quantity, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.Quantity, new { @id = "Quantity", @class = "form-control", @style = "height:42px" })
+                        <span id="quantity" style="color: Red"></span>
+                        <span id="errmsg" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Ip, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Ip, new { @id = "DDLIp", @class = "form-control", @style = "height:42px" })
+                        <span id="ip" style="color: Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.InUse, new { @class = "control-label" })
+                        @Html.DropDownList("HardwareList", ViewBag.InUse as SelectList, new { @class = "form-control", @id = "HardwareList2" })
+                        <span id="inuse"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:window.location.reload()">
+                Cancel</button>
+            <button type="button" id="btnUpdate" class="btn btn-info" onclick="EditComponents()">
+                Save</button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(function () {
+            $(".modal-body select").select2({
+                //minimumResultsForSearch: -1
+            });
+        });
+        $(document).ready(function () {
+            $("#Quantity").keypress(function (e) {
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    $("#quan").html("Digits Only").show();
+                    return false;
+                }
+            });
+
+            $('#Comp').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#component").html("Enter Valid Component Name").show();
+                return false;
+            });
+
+            $('#DDLIp').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\.]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#ip").html("Enter Valid IP").show();
+                return false;
+            });
+
+        });
+
+        function EditComponents() {
+
+            if (document.getElementById('Floor').value == '0' || document.getElementById('Comp').value == '' || document.getElementById('Quantity').value == '' || document.getElementById('AssignedTo').value == '0') {
+
+                if (document.getElementById('Floor').value == 0) {
+
+                    document.getElementById("Floor").innerHTML = "Select Floor";
+                }
+                else {
+                    document.getElementById("Floor").innerHTML = "";
+                }
+                if (document.getElementById('Comp').value == '') {
+
+                    document.getElementById("component").innerHTML = " Enter Component Name";
+
+                }
+                else {
+                    document.getElementById("component").innerHTML = "";
+                }
+                if (document.getElementById('Quantity').value == '') {
+                    document.getElementById("quantity").innerHTML = " Enter Quantity ";
+                }
+                else {
+                    document.getElementById("quantity").innerHTML = "";
+                }
+                if (document.getElementById('managementid').value == 0) {
+                    document.getElementById("assi").innerHTML = "Select Computer Name";
+                }
+                else {
+                    document.getElementById("assi").innerHTML = "";
+                }
+
+            }
+
+
+            else {
+                $.ajax({
+                    url: "../../ManageHardware/EditComponent/",
+                    type: 'POST', cache: false,
+                    data: { "Id": $("#Id").val(), "Floor": $("#Floor").val(), "Component": $("#Comp").val(), "Model": $("#DDLModel").val(), "AssignedTo": $("#AssignedTo").val(), "Quantity": $("#Quantity").val(), "Ip": $("#DDLIp").val(), "InUse": $("#HardwareList2").val() },
+                    success: function (result) {
+                        var opts = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.success("Hardware Details Updated Successfully!", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                });
+
+            }
+        }
+
+    </script>
+</body>
+</html>
+

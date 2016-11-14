@@ -1,0 +1,95 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.AssignComputers>
+@{
+    Layout = null;
+    ViewBag.Title = "Computer Details";
+}
+
+@{
+   int SNo = 1;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ComputersDetails</title>
+    <style>
+        th
+        {
+             font-weight: bold;
+             text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Computers Details</h4>
+             
+        </div>
+        <div class="modal-body">
+        <div style="overflow:scroll; height: 400px">
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered datatable" id="tblUsers">
+                <thead>
+                    <tr>
+                        <th>
+                         S.No
+                        </th>
+                        <th>
+                            @Html.Label("EmpId")
+                        </th>
+                        <th>
+                            @Html.Label("Employee Name")
+                        </th>  
+                        <th style="text-align:center">
+                            @Html.Label("Computer Assigned")
+                        </th>  
+                       
+                    </tr>
+                </thead>
+                
+                @foreach (var item in Model)
+                {
+                   
+                    <tr>
+                        <td style="width:30px;">
+                            @(SNo++)
+                        </td>
+                        <td style="width:30px;" >
+                            @Html.DisplayFor(x => item.Empid)
+                        </td>
+                        <td style="width:30px;">
+                         @Html.DisplayFor(x => item.name)
+                        </td>
+                         <td style="width:30px;">
+                         @Html.DisplayFor(x => item.ComputerName)
+                        </td>
+                     
+
+                    </tr>
+                }
+               
+            </table>
+            }
+            else
+            {
+                <div style="text-align: center">
+                    <h4>
+                        No Data Found</h4>
+                </div>
+                   
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
+

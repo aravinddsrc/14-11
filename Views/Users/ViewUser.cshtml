@@ -1,0 +1,1355 @@
+﻿@model DSRCManagementSystem.Models.UserModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead{
+
+ 
+    <link href="~/Content/css/hopscotch-0.1.1.css" rel="stylesheet" />
+   
+    <script src="~/Content/Plugins/hopscotch-0.1.1.js"></script>
+
+    <style>
+        .switch {
+            position: relative;
+            display: block;
+            vertical-align: top;
+            width: 100px;
+            height: 30px;
+            padding: 3px;
+            margin: 0 10px 10px 0;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+            border-radius: 18px;
+            box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .switch-label {
+            position: relative;
+            display: block;
+            height: inherit;
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #eceeef;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        }
+
+            .switch-label:before, .switch-label:after {
+                position: absolute;
+                top: 50%;
+                margin-top: -.5em;
+                line-height: 1;
+                -webkit-transition: inherit;
+                -moz-transition: inherit;
+                -o-transition: inherit;
+                transition: inherit;
+            }
+
+            .switch-label:before {
+                content: attr(data-off);
+                right: 11px;
+                color: #aaaaaa;
+                text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .switch-label:after {
+                content: attr(data-on);
+                left: 11px;
+                color: #FFFFFF;
+                text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+            }
+
+        .switch-input:checked ~ .switch-label {
+            background: #E1B42B;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-input:checked ~ .switch-label:before {
+                opacity: 0;
+            }
+
+            .switch-input:checked ~ .switch-label:after {
+                opacity: 1;
+            }
+
+        .switch-handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+            background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+            border-radius: 100%;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-handle:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -6px 0 0 -6px;
+                width: 12px;
+                height: 12px;
+                background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+                background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+                border-radius: 6px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            }
+
+        .switch-input:checked ~ .switch-handle {
+            left: 74px;
+            box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-label, .switch-handle {
+            transition: All 0.3s ease;
+            -webkit-transition: All 0.3s ease;
+            -moz-transition: All 0.3s ease;
+            -o-transition: All 0.3s ease;
+        }
+
+           .dropdown-menu {
+    background-color: white;
+          }  
+
+    </style>
+}
+@{
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+    }
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageUsers", "Users")">
+            <i class="fa-home"></i>Manage Employees
+        </a>
+    </li>
+    <li class="active">
+        <strong>View Employee</strong>
+    </li>
+</ol>*@
+ <p>
+        <a href="@Url.Action("ManageUsers","Users")"style="color:black ">
+            Manage Employees
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>View Employees</b>      
+    </p>
+@using (Html.BeginForm("EditUser", "Users", FormMethod.Post, new { @id = "edituser", @class = "form-wizard" }))
+{
+    //Genral Information
+    
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        General Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                 <div class="row">
+                     <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                               
+                                @Html.TextBoxFor(x => x.EmpID, new
+                           {
+                               @id = "Idempid",
+                               @name = "EmpID",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_EmpID,
+                               @autocomplete = "off",
+                               @Value = ViewBag.EmpID,
+                               disabled = "disabled",
+                               @maxlength = "10",
+                               @Style = "height: 43px;"
+                           })
+                                @Html.HiddenFor(x => x.UserId)
+                                <span id="span_empid" style="color: Red;"></span>
+                            </div>
+                        </div>
+                     @if (branchcnt == 1)
+                     {
+                        <div class="visible-md">
+                            <div class="form-group ">
+                                @Html.LabelFor(u => u.BranchName, (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                              
+                                @Html.DropDownList("Branch", ViewBag.BranchList as SelectList, new
+                           {
+                               @id = "Idbranchname",
+                               @name = "BranchName",
+                               @class = "form-control",
+                               @onchange = "GetDepartments()",
+                               disabled = "disabled",
+                           })
+                                
+                            </div>
+                        </div>
+                     }
+                     else
+                     {
+                               <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(u => u.BranchName, (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("Branch", ViewBag.BranchList as SelectList, new
+                           {
+                               @id = "Idbranchname",
+                               @name = "BranchName",
+                               @class = "form-control",
+                               @onchange = "GetDepartments()",
+                               disabled = "disabled",
+                           })
+                                <span id="span_branch" style="color: Red;"></span>
+                            </div>
+                        </div>
+                     }
+                        </div>
+                    
+                     <div class="row">
+                     
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.FirstName, new
+                           {
+                               @id = "Idfirstname",
+                               @name = "FirstName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_FirstName,
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_firstname" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.MiddleName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.MiddleName, new
+                           {
+                               @id = "Idmiddlename",
+                               @name = "Middlename",
+                               @class = "form-control",
+                               @placeholder ="Middle Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_middlename" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                         </div>
+
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.LastName, new
+                           {
+                               @id = "Idlastname",
+                               @name = "LastName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_LastName,
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_lastname" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.ContactNo, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.ContactNo, new
+                           {
+                               @id = "Idcontactno",
+                               @name = "ContactNo",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_ContactNo,
+                               @autocomplete = "off",
+                               @maxlength = 15,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_contactno" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         </div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.EmailAddress, new
+                           {
+                               @id = "Idemailaddress",
+                               @name = "EmailAddress",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress,
+                               @autocomplete = "off",
+                               @type = "email",
+                               @maxlength = "40",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                @*<span id="span_emailaddress" style="color: Red;"></span>*@
+                            </div>
+                        </div>
+                                             
+                       <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.Label("Gender", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownListFor(x => x.GenderID, ViewBag.GenderList as SelectList, "---Select---",
+                                                            new { @id = "Idgender", @name = "GenderID", @class = "form-control",disabled = "disabled" })
+                                <span id="span_gender" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+  </div>
+                </div>
+            </div>
+        </div>
+   
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Office Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+                <div class="panel-body" style="display: block;">
+                   
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                               @Html.Label("Group",(string)ViewBag.Lbl_Group,new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("DepartmentId", ViewBag.Department as SelectList, "--Select--", new
+                           {
+                               @id = "Iddepartment",
+                               @name = "DepartmentId",
+                               @class = "form-control",
+                               @onchange = "GetGroups()",
+                               disabled = "disabled",
+                           })
+                                <span id="span_department" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                     @Html.Label("Department",(string)ViewBag.Lbl_department,new { @class = "control-label" })
+                                
+                                @Html.DropDownListFor(u => u.GroupName, ViewBag.Groups as SelectList, new
+                           {
+                               @id = "Idgroup",
+                               @name = "Group",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                <span id="span_group" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.WorkplaceId, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownListFor(x=>x.WorkplaceId, ViewBag.WorkPlaceList as SelectList, "--Select--", new
+                           {
+                               @id = "Idworkplace",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                <span id="span_workplace" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("DesignationID", ViewBag.DesignationList as SelectList, new
+                           {
+                               @id = "Iddesignation",
+                               @name = "DesignationID",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                <span id="span_designation" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.UserName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.UserName, new
+                           {
+                               @id = "Idusername",
+                               @name = "UserName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_UserName,
+                               @autocomplete = "off",
+                               @maxlength = "40",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_username" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.DateOfJoin, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.DateOfJoin, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "Iddateofjoin",
+                               @name = "DateOfJoin",
+                               @class = "form-control datetimepicker",
+                               @placeholder = Resources.Resource.DN_ProfileModel_DateofJoin,
+                               @autocomplete = "off",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_dateofjoin" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.Label("Reporting Person", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("Id1", ViewBag.ReportingPerson as MultiSelectList, new
+                           {
+                               @id = "Idreportingperson",
+                               @class = "select2-container select2-container-multi select2 visible ",
+                               @multiple = "multiple",
+                               disabled = "disabled",
+                           })
+                                <span id="span_reportingperson" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.Label("Role Name", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("RollName", ViewBag.Roles as SelectList, new
+                           {
+                               @id = "RollName",
+                               @class = "form-control",
+                               disabled = "disabled",
+
+                           })
+                                <span id="RollName" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Region", new { @class = "control-label" })
+                                @Html.DropDownListFor(x => x.RegionId, ViewBag.Region as SelectList, new
+                           {
+                               @id = "Idregion",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                <span id="span_region" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+                     //Personal Information
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Personal Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                      
+                    </div>
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.DateOfBirth, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.DateOfBirth, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "Iddateofbirth",
+                               @name = "DateOfBirth",
+                               @class = "form-control datetimepicker",
+                               @placeholder = Resources.Resource.DN_ProfileModel_DateofBirth,
+                               @autocomplete = "off",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_dateofbirth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BloodGroup, new { @class = "control-label" })
+
+                                 @Html.DropDownList("Blood Group", ViewBag.BloogGroup as SelectList, "--Select--", new
+                            {
+                                @id = "BloodGroup",
+                                @name = "BloodGroup",
+                                @class = "form-control",
+                                @placeholder = "Blood Group",
+                                @autocomplete = "off",
+                                @maxlength = "5",
+                                @Style = "height: 43px;",
+                                disabled = "disabled",
+                            })
+                                 <span id="span_blood" style="color: Red;"></span>
+
+                                
+                            </div>
+
+                        </div>
+                       
+                    </div>
+
+                     <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.MotherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.MotherName, new
+                           {
+                               @id = "MotherName",
+                               @name = "MotherName",
+                               @class = "form-control",
+                               @placeholder = "Mother Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_mother" style="color: Red;"></span>
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.FatherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.FatherName, new
+                           {
+                               @id = "FatherName",
+                               @name = "FatherName",
+                               @class = "form-control",
+                               @placeholder = "Father Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_father" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                        </div>
+                    <div class="row">
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BirthPlace, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.BirthPlace, new
+                           {
+                               @id = "BirthPlace",
+                               @name = "BirthPlace",
+                               @class = "form-control",
+                               @placeholder = "Birth Place",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_birth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Nationality, new { @class = "control-label" })
+                                @Html.DropDownListFor(x => x.NationalityID, ViewBag.Nationality as MultiSelectList, "--Select--", new
+                           {
+                               @id = "Nationality",
+                               @name = "Nationality",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                <span id="span_nationality" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                         </div>
+
+                    <div class="row">
+                        
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Religious, new { @class = "control-label" })
+                                @Html.DropDownListFor(x=>x.ReligiousID, ViewBag.Religious as MultiSelectList, "--Select--", new
+                           {
+                               @id = "Religious",
+                               @name = "Religious",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_religious" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Marital, new { @class = "control-label" })
+                                @Html.DropDownList("MaritalStatusId", ViewBag.Marital as SelectList,"--Select--", new
+                           {
+                               @id = "Marital",
+                               @name = "NoOfChild",
+                               @class = "form-control",
+                               disabled = "disabled",
+                              
+                               
+                           })
+                                <span id="span_Marital" style="color: Red;"></span>
+                            </div>
+                        </div>     
+                         
+
+                        </div>
+
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Spouse / Husband Name", new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.SpouseName, new
+                           {
+                               @id = "SpouseName",
+                               @name = "SpouseName",
+                               @class = "form-control",
+                               @placeholder = "Spouse / Husband Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.NoOfChild, new { @class = "control-label" })
+                                @Html.DropDownList("NoOfChild", ViewBag.Child as MultiSelectList, "--Select--", new
+                           {
+                               @id = "NoOfChild",
+                               @name = "NoOfChild",
+                               @class = "form-control",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+
+                          </div>    
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.AnniversaryDate, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.AnniversaryDate, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "AnniversaryDate",
+                               @name = "AnniversaryDate",
+                               @class = "form-control datetimepicker",
+                               @placeholder = "Anniversary Date",
+                               @autocomplete = "off",
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="AnniversaryDate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>              
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+                     //Contact Information
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Contact Information 
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentAddress1, new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.PresentAddress1, new
+                           {
+                               @id = "PresentAddress1",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 1",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_address1" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress2)
+                                @Html.TextAreaFor(x => x.PresentAddress2, new
+                           {
+                               @id = "PresentAddress2",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 2",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+
+                        </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress3)
+                                @Html.TextAreaFor(x => x.PresentAddress3, new
+                           {
+                               @id = "PresentAddress3",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 3",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentCountry, new { @class = "control-label" })
+                                @Html.DropDownList("Present Country", ViewBag.PresentCountry as SelectList, "--Select--", new
+                           {
+                               @id = "PresentCountry",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Country",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               @onchange = "GetDepartments()",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_presentcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                     <div class="row">
+                         
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Presentstate, new { @class = "control-label" })
+                                @Html.DropDownList("Present state", ViewBag.Presentstate as SelectList, "--Select--", new
+                           {
+                               @id = "Presentstate",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present state",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               @onchange = "GetCity()",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_presentstate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentCity, new { @class = "control-label" })
+                                @Html.DropDownList("Present City", ViewBag.Presentcity as SelectList, "--Select--", new
+                           {
+                               @id = "PresentCity",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present City",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_presentcity" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        </div>
+
+                    
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentPinCode, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PresentPinCode, new
+                           {
+                               @id = "PresentPinCode",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Pin Code",
+                               @maxlength = 6,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_pincode" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+                     //Permanent Address
+    
+     <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Premanent Address 
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentAddress1, new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.PermanentAddress1, new
+                           {
+                               @id = "PermanentAddress1",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 1",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+
+                           })
+                                 <span id="span_permenant" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress2)
+                                @Html.TextAreaFor(x => x.PermanentAddress2, new
+                           {
+                               @id = "PermanentAddress2",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 2",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+
+                        </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress3)
+                                @Html.TextAreaFor(x => x.PermanentAddress3, new
+                           {
+                               @id = "PermanentAddress3",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 3",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentCountry, new { @class = "control-label" })
+                                @Html.DropDownList("Permanent Country", ViewBag.PermanentCountry as SelectList, "--Select--", new
+                           {
+                               @id = "PermanentCountry",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Country",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               @onchange = "GetDepartments()",
+                               disabled = "disabled",
+                           })
+                                <span id="span_permenantcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         </div>
+                     <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Permanentstate, new { @class = "control-label" })
+                                @Html.DropDownList("Permanent state", ViewBag.Permanentstate as SelectList, "--Select--", new
+                           {
+                               @id = "Permanentstate",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present state",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               @onchange = "GetCity()",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_permenantstate" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                          
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentCity, new { @class = "control-label" })
+                                @Html.DropDownList("Permanent City", ViewBag.Permanentcity as SelectList, "--Select--", new
+                           {
+                               @id = "PermanentCity",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present City",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                <span id="span_permenantcity" style="color: Red;"></span> 
+                            </div>
+                        </div>
+
+                        </div>
+
+                    
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentPinCode, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PermanentPinCode, new
+                           {
+                               @id = "PermanentPinCode",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Pin Code",
+                               @maxlength = 6,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                  <span id="span_permenantpincode" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    
+                     //Work Experience
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Work Experience
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Experience, new { @class = "control-label" })
+                                @Html.Label("Year", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("YearId", ViewBag.YearsList as SelectList, new { @id = "Idexpyear", @name = "YearId", @class = "form-control",disabled = "disabled" })
+                                <span id="span_expyear" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Experience Month", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("MonthId", ViewBag.MonthList as SelectList, new { @id = "Idexpmonth", @name = "MonthId", @class = "form-control",disabled = "disabled" })
+                                <span id="span_expmonth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+                     //Skills
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Skills
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.Label("Skills", new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.Tecnology, new
+                           {
+                               @id = "Idskills",
+                               @name = "ID",
+                               @class = "form-control",
+                               @placeholder = "Skills",
+                               @autocomplete = "off",
+                               @style = "height:70px;resize:vertical;",
+                               @maxlength = 1000,
+                               disabled = "disabled",
+                           })
+                                <span id="span_skills" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Emergency Contact
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.EmergencyContactName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.EmergencyContactName, new
+                           {
+                               @id = "EmergencyContactName",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Name",
+                               @maxlength = 100,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_emer" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                       
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.RelationShipName, new { @class = "control-label" })
+                                 @Html.DropDownListFor(x => x.RelationShipID, ViewBag.RelationShip as SelectList, "--Select--", new { @id = "RelationShip",disabled = "disabled", @name = "RelationShip", @class = "form-control" })
+                                 <span id="span_emerrel" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Emergency, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.Emergency, new
+                           {
+                               @id = "EmergencyContactNo",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Number",
+                               @maxlength = 15,
+                               @Style = "height: 43px;",
+                               disabled = "disabled",
+                           })
+                                 <span id="span_emercontactno" style="color: Red;"></span> 
+                               
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.Label("Employee Status", new { @style = "font-weight:bold;" })
+                @Html.DropDownListFor(model => model.SelectedUserStatusid, ViewBag.Status as SelectList, new
+           {
+               @id = "Iduserstatus",
+               @class = "form-control",
+               @disabled = "disabled",
+               @style = "width:auto",
+               
+           })
+                @Html.HiddenFor(x => x.SelectedUserStatusid, new { @id = "Iduserstatusid" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2" style="padding-top: 0.5em; font-size: small; font-weight: bold;float:right">
+                IsBlocked
+                <label class="switch">
+                    @Html.CheckBoxFor(x => x.Block, new { @id = "switch-input", @class = "switch-input", @disabled = "disabled" })
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle">
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="fornoticeperiod">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(x => x.ResignedOn, new { @class = "control-label" })
+                <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                @Html.TextBoxFor(x => x.ResignedOn, "{0:dd/MM/yyyy}", new { @id = "Resignedon", @class = "form-control datetimepicker", @placeholder = "Resigned On", @autocomplete = "off", @disabled = "disabled" })
+                <span id="ResignedOn_Error" style="color: Red;"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(x => x.LastworkingDate, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.LastworkingDate, "{0:dd/MM/yyyy}", new { @id = "lastworkingdate", @class = "form-control datetimepicker", @placeholder = "Last Working Date", @autocomplete = "off", @disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+}
+<div class="modal-footer">
+  
+   @if (Model.SearchString != null)
+   {
+    <button id="Close"  type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location='@Url.Action("SearchResults", "GlobalSearch", new { id = Model.UserId, Model.SearchString })'">
+        Close
+    </button>
+   }
+   else
+   { 
+    <button id="Close" class="btn btn-default" data-dismiss="modal" onclick="window.location='@Url.Action("ManageUsers", "Users")'">
+        Close
+    </button>
+   }
+        
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Idreportingperson").select2({
+            minimumResultsForSearch: -1
+        });
+    });
+
+    $(".datetimepicker").datepicker({
+        format: 'dd-mm-yyyy',
+        todayHighlight: true,
+        autoclose: true
+    });
+    if ($("#Iduserstatusid").val() == 2 || $("#Iduserstatusid").val() == 6) {
+        $("#fornoticeperiod").show();
+    }
+    else {
+        $("#fornoticeperiod").hide();
+    }
+</script>
+
+@section scripts
+{
+
+
+    <script type="text/javascript">
+
+          
+        var tour = {
+            id: "hello-hopscotch",
+            steps: [
+                {
+                    //-----1-----//
+
+                },
+
+                {
+                    //-----2-----//
+
+
+                },
+
+
+                 {
+                     //-----3-----//
+
+
+                 },
+                  {
+                      //-----4-----//
+
+
+                  },
+                  {
+                      //-----5-----//
+
+
+                  },
+                     {
+                         //-----6-----//
+
+
+                     },
+              {
+                  //-----7-----//
+
+              },
+              {
+                  //-----8-----//
+          
+               },
+               {
+               //-----9-----//
+               },
+               {
+                //-----10-----//
+                 target: 'Close',
+                 title: '',
+                 content: 'Hit Close!',
+                 placement: 'left',
+                 arrowOffset: 1,
+                 yOffset: -20,
+                 multipage: true,
+                 onNext: function () {
+                    
+                  window.location.href = '@Url.Action("ManageUsers", "Users")';
+                 }
+                 },
+                 {
+                     //-----11-----//
+
+                 },
+                 {
+                     //-----12-----//
+
+                 },
+
+            ]
+
+
+        };
+
+
+   if (hopscotch.getState() === "hello-hopscotch:9") {
+       hopscotch.startTour(tour);
+   }
+
+    </script>
+
+    <style>
+
+        .form-control {
+            height:41px;
+            
+        }
+
+    </style>
+}

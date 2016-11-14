@@ -1,0 +1,499 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.CustomReports>
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js" type="text/javascript"></script>
+}
+@{
+    int SNO = 1;
+}
+<style>
+    #tblRoles thead 
+    {   
+          visibility: hidden;
+    display: table-footer-group;
+    }
+
+</style>
+@*<ol class="breadcrumb bc-3">
+   <li>
+        <a href="@Url.Action("Dashboard","CustomReports")">
+            <i class="fa-home"></i>Custom Reports
+        </a>
+    </li>
+    <li class="active"><strong>Reports</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Dashboard","CustomReports")"style="color:black ">
+            Custom Reports
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Reports</b>
+    </p>
+<br />
+<div class="row" style="height: 500px;">
+    @Html.Hidden("ReportName", (string)ViewBag.ReportName, new { @id = "ReportName" })
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Reports
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                @using (Html.BeginForm("DashBoard", "CustomReports", FormMethod.Post, new { @id = "form" }))
+                {
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: right">
+                                @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                            </div>
+                            <div class="col-md-2" style="width: 250px;">
+                                @Html.Label("Report Name")
+                                @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.DropDownList("Id3", ViewBag.Purpose as SelectList, "--Select--", new { @id = "TimeZone", @class = "select2-container select2-container-multi select2 visible" })
+                                @Html.ValidationMessage("RoleName", "", new { @class = "editor-validator", @style = "color:red;" })
+                                <span id="span_TimeZone" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 30px;margin-left: 0px;">
+                                <button type="submit" id="btn"class="btn btn-success" style="font-weight: bold;" onclick='return validateMyForm()';>
+                                    Show
+                                </button>
+                                <button type="button" id="btnAdd" class="btn btn-default" onclick="Clear()">
+                                    Reset
+                                </button>
+                            </div>
+                            @if (@ViewBag.permission == @ViewBag.UserID)
+                            {
+                               
+                                
+                                <div class="col-md-3" style="float: right;padding-top: 30px;" id="btnAdd2" >
+                                    <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick=" location.href = '@Url.Action("ManageRoll", "CustomReports")' ">
+                                        Manage Report
+                                    </button>
+                                </div>
+                                
+                                @* <div class="col-md-3" style="float: right;padding-top: 30px;" id="btnAdd2" >     
+                                    <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddRoll()'>
+                                        Add Report
+                                    </button>
+                                </div>*@
+                               @* <div class="col-md-3" style="float: right;padding-top: 30px;" id="btnAdd2" >
+                                    <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='ManageRoll()'>
+                                        Manage Report
+                                    </button>
+                                </div>*@
+                                
+                            }
+
+                        </div>
+                    </div>
+
+                }
+                @if (Model != null && ViewBag.data == null && ViewBag.List == null && ViewBag.select == null && Model.Count() != 0)
+                {
+                    int j = 0;
+                    foreach (var item in Model)
+                    {
+
+                    <div class="form-group">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                @Html.Label(item.CustomName)
+                                @Html.TextBoxFor(x => item.ReportName, new { @id = "ID" + j, @name = "ID", @class = "form-control", @style = "Height:42px;Width:220px" })
+                                <span id="span_ID@(j)" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                        j++;
+                    }
+                    <div class="col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-1" style="text-align: center">
+                                <button type="submit" id="btnAdd1" class="btn btn-info" style="font-weight: bold;" onclick='Submit(@Model.Count())'>
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("DashBoard", "CustomReports", FormMethod.Post))
+                {
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                @if (ViewBag.data != null || ViewBag.List != null)
+                                {
+                                    <table class="table table-bordered datatable" id="tblRoles">
+                                        @if (ViewBag.data != null)
+                                        {
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: center;">S.No
+                                                    </th>
+                                                    @foreach (var o in @ViewBag.Val)
+                                                    {
+                                                        <th>
+                                                            @o
+                                                        </th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                        }
+                                        @if (ViewBag.data != null)
+                                        {
+                                            foreach (var item1 in Model)
+                                            {
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    @(SNO++)
+                                                </td>
+                                                @foreach (var column in item1.ReportName1)
+                                                {
+                                                    <td>
+                                                        @column
+                                                    </td>
+                                                }
+                                            </tr>
+                                            }
+                                        }
+                                        @if (ViewBag.List != null)
+                                        {
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: center;">S.No
+                                                    </th>
+                                                    @foreach (var o in @ViewBag.Val)
+                                                    {
+                                                        <th>
+                                                            @o
+                                                        </th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                        }
+
+                                        @if (ViewBag.List != null)
+                                        {
+                                            foreach (var item1 in ViewBag.List)
+                                            {
+
+                                            <tr>
+
+                                                <td style="text-align: center;">
+                                                    @(SNO++)
+                                                </td>
+
+                                                @foreach (var column in item1.ReportName1)
+                                                {
+                                                    <td>
+                                                        @column
+                                                    </td>
+                                                }
+                                            </tr>
+
+                                            }
+                                        }
+                                    </table>
+                                }
+
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                }
+                @*<div class="row">
+                    <div style="color: Red;">
+                    </div>
+                    <div class="col-md-12">
+                        <form class="text-right" method="get" action="/CustomReports/DashBoard">
+                            <div class="btn-group" style="float: right; padding-right: 10px !important">
+                                <button type="submit" class="btn btn-default">
+                                    <i></i>Back
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.0/js/buttons.print.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.0/js/buttons.colVis.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var exportTitle = $('#ReportName').val();
+        $(document).ready(function() {
+            $('#tblRoles')
+                .DataTable({
+                    "scrollX": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            title: exportTitle,
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            title: exportTitle,
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            title: exportTitle,
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ],
+                    columnDefs: [
+                        {
+
+                        }
+                    ]
+                });
+        });
+        jQuery(document)
+            .ready(function($) {
+                var columnDefs;
+                $(".dataTables_wrapper select")
+                    .select2({
+                        minimumResultsForSearch: -1
+                    });
+                $('thead>tr>th').css('text-align', 'center');
+                if (document.getElementById('tblRoles')!=null) {
+                    var oTable = document.getElementById('tblRoles');
+
+                    var table = $('#tblRoles').DataTable();
+                    var rowLength =table.data().count()
+                    if (rowLength <1) {
+                        var table = $('#tblRoles').DataTable();
+
+                        table.buttons().disable();
+                    }
+                }
+            });
+
+
+        $(function() {
+            CreateDatatable();
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        function CreateDatatable() {
+            $("#tblMeeting")
+                .dataTable({
+                    "bDestroy": true,
+                    "sClass": "table table-bordered datatable",
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "bStateSave": false,
+                    "bAutoWidth": false,
+                    "pageLength": 10,
+                    "aaSorting": [],
+                    stateSave: true,
+                    stateSaveCallback: function (settings, data) {
+                        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                    },
+                    stateLoadCallback: function (settings) {
+                        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                    }
+
+                });
+        }
+
+        
+        function Clear() {
+
+            window.location.href = '@Url.Action("DashBoard", "CustomReports")';
+
+        }
+
+
+        function Submit(t) {
+
+            var data = @Html.Raw(Json.Encode(ViewData["Parameter"]));
+            for (var j = 0; j < t; j++) {
+                if (document.getElementById('ID' + j).value == "") {
+                    document.getElementById('span_ID' + j).innerHTML =  data[j];
+                    return;
+                } else {
+                    document.getElementById('span_ID' + j).innerHTML = "";
+                }
+            }
+            var value = 0;
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var listOfObjects = [];
+            var list = [];
+            for (var k = 0; k < t; k++) {
+                value = $("#ID" + k).val();
+                listOfObjects.push(value);
+            }
+            if (value == '') {
+                document.getElementById("value").innerHTML = "Enter ";
+            }
+            var str = listOfObjects.toString();
+            var str_array = str.split(',');
+
+            for (var i = 0; i < str_array.length; i++) {
+
+                str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list.push(str_array[i].split(','))
+            }
+            var values =
+            {
+                "Column": list.toString(),
+            }
+            var opts =
+            {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            $.ajax({
+                url: "../../CustomReports/DashBoard/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function(result) {
+                    if (result == "Warning") {
+                        $("#portlet-config").modal("hide");
+                        toastr.warning(" Invalid Parameters ", opts);
+                        setTimeout(function() { location.reload(); }, 1000);
+                    } else
+                        window.location.href = '@Url.Action("DashBoard", "CustomReports")';
+                }
+            });
+        }
+
+       @* function AddRoll() {
+
+            $.ajax({
+                url: "../../CustomReports/Report/",
+                type: 'GET',
+                cache: false,
+                success: function(result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }*@
+
+        function ManageRoll() {
+
+            $.ajax({
+                url: "../../CustomReports/ManageRoll/",
+                type: 'GET',
+                cache: false,
+                success: function(result) {
+                    @*$('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });*@
+                }
+            });
+        }
+
+        function Show(t) {
+
+
+
+            if (document.getElementById('TimeZone').value == '') {
+                document.getElementById("span_TimeZone").innerHTML = "Select Report Name";
+                
+            } else {
+                document.getElementById("span_TimeZone").innerHTML = "";
+                return true;
+            }
+        }
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+           
+            $("#TimeZone").select2();
+        
+
+
+
+
+        });
+
+        
+        function validateMyForm()
+        {
+
+            if(document.getElementById('TimeZone').value == '')
+            { 
+                document.getElementById("span_TimeZone").innerHTML = "Select Report Name";
+                //returnToPreviousPage();
+                return false;
+            }
+
+           
+           // alert("validations passed");
+            return true;
+        }
+
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿
+@model IEnumerable<DSRCManagementSystem.Models.Inbox>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    
+</head>
+<body>
+  <ol class="breadcrumb bc-3">
+    <li>Communication</li>
+        <li class="active"><strong>View Mail</strong></li>
+    </ol>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">           
+            <h4 class="modal-title">
+           View Mail</h4>
+             <button type="button" class="close" style="margin-top: -21px;" data-dismiss="modal" aria-hidden="true"><a style="color:black" href="/Communication/Inbox">x</a></button>
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("Add", "AddExpenditure", FormMethod.Post))
+            {
+                foreach (var item in Model)
+                {
+<div class="mail-body">  <div class="mail-info" style="background-color: lightgray;margin-left: -20px;    margin-right: -20px;"> <div class="mail-sender dropdown"> <a href="#" class="dropdown-toggle" style="font-size: x-large;" data-toggle="dropdown"> <img src="/User/RetrieveImage/1" class="img-circle"style="    height: 119px;width: 140px;"> <span>@item.UserName</span>
+ to <span>(@item.to)</span> </a> <div class="mail-date" style="font-size: large;float:right;">
+@item.senton
+</div> </div>  </div><br /> <br /><div class="mail-text"> <p style="font-size: x-large;    margin-left: 20px;" id="textarea"> @Html.Raw(Html.Encode(@item.message ?? string.Empty).Replace("\n", "<br /><br />"))</p> </div> <div class="mail-reply" style="font-size: medium;
+    font-weight: bolder;
+    margin-left: 22px;    margin-top: 87px;"> <div class="fake-form"> <div> <a href=  "@Url.Action("ComposeMail", "Communication", new { myParams =@item.Touserid, memberid =@item.Fromusereid,message =@item.message })">Reply</a> or <a href="@Url.Action("ForwardMail", "Communication", new { myParams =@item.Touserid, memberid =@item.Fromusereid ,message =@item.message})">Forward</a> this message...
+</div> </div> </div> </div>
+                }
+            }
+         </div>
+        </div>
+              <br /> 
+       <div class="col-md-12">
+                        <form class="text-right" method="get" action="/Communication/Inbox">
+                        <div class="btn-group" style="float: right; padding-right: 10px !important">
+                            <button type="submit" class="btn btn-default">
+                          
+                                <i></i>Back</button>
+                        </div>
+                        </form>
+                    </div>
+
+  
+
+   
+            
+                
+       </body>
+             </html>
+

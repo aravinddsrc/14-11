@@ -1,0 +1,352 @@
+﻿@model DSRCManagementSystem.Models.TeamEntryData
+@{
+    ViewBag.Title = "Team Time Entry";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{   <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+        type="text/javascript"></script>
+<style>
+    #ProjectID {
+        min-width: 200px;
+        width: 25%;
+    }
+   
+
+    #MemberId {
+        min-width: 200px;
+        width: 25%;
+    }
+</style>
+
+}
+
+<style>
+
+.dropdown-menu {
+    background-color: white;
+}  
+
+   </style>      
+
+
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("TimeEntry","ViewMembersEntry")">TimeEntry</a></li>
+    <li class="active"><strong>Team Time Entry</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("TimeEntry","ViewMembersEntry")"style="color:black ">
+            Time Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Team Time Entry</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+@using (Html.BeginForm("TeamTimeEntry", "ViewMembersEntry", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered", @id = "form" }))
+{                 
+    <script type="text/javascript">  
+    
+     $(function () {
+        var dateFrom = $('.datepickerFrom').datepicker(
+        {
+            format: 'dd/mm/yyyy',
+            endDate: new Date(),
+            autoclose: true
+        }
+        ).on('changeDate', function (e) {
+            dateTo.datepicker('setStartDate', e.date);
+            var parts = dateTo[0].value.split("/");
+            var toDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            if (toDate < e.date)
+                $('#dateTo').val($('#dateFrom').val());
+            var toDate = new Date(dateTo[0].value);
+        });
+        var dateTo = $('.datepickerTo').datepicker(
+        {
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        }
+        ).on('changeDate', function (e) {
+
+        });
+        $('.chart').horizBarChart({
+            selector: '.bar',
+            speed: 1000
+        });
+    });
+    
+    
+    
+          
+        function PageReady() {       
+            @{
+    bool Isnull = Model.EmployeeData == null;
+    bool IsTeamData = Model.IsTeamData;
+             }
+                 var IsNull ='@Isnull'=='False'?false:true;
+                 var IsTeamData = '@IsTeamData'=='False'?false:true;
+                 if(!IsNull)
+            {
+                var JsonLeaveData = @Html.Raw(Json.Encode(Model.EmployeeData));
+                var xKey=IsTeamData? 'empName':'Date';
+                var yKeys=['hoursWorked'];
+               var Labels=['Date','Day','In Time','Out Time'];
+                         
+          if ($('#chart3').length > 0) 
+          {
+
+                Morris.Bar({
+                element: 'chart3',
+                axes: true,
+                data: JsonLeaveData,
+                //xLabelAngle:60,
+                hideHover:'true',
+                resize: true,
+                xkey:xKey ,
+                ykeys:yKeys ,
+                labels:Labels ,
+                vertical: true,
+                hideHover: true,
+                hoverCallback: function(index, options, content) {
+                this.xlabelAngle = 50;
+                $(".morris-hover").html("<div>" + "<p style='color:Green;'> Hours worked: " + options.data[index].hoursWorked.toFixed(2) + "</p>" + "<p style='color:Blue;'> Date: " + options.data[index].Date + "</p>" + "<p style='color:Grey;'>"+ options.labels[1] + ": " + options.data[index].Day + "</p>" + "<p style='color:brown;'>" + options.labels[2] + ": " + options.data[index].InTime + "</p>" + "<p style='color:Navy;'>" + options.labels[3] + ": " + options.data[index].OutTime + "</p>" + "</div>");
+                },
+                barColors: function (row, series, type) {
+                var valWorked = row.y;
+                if(JsonLeaveData[row.x]["Day"]=="Sunday"||JsonLeaveData[row.x]["Day"]=="Saturday")
+               return "gray";
+
+
+         if(valWorked==undefined)
+            return "green";
+        if(valWorked >=8) 
+            return "green";
+        if(valWorked >=7) 
+            return "orange";
+
+        if(valWorked<7) 
+            return "red";
+
+        }
+          });
+            }
+              }
+
+            var startDateTime = $('#Date1').val();
+            var endDateTime = $('#Date2').val();
+            var startDate = startDateTime.substring(0, 2);
+            var startMonth = startDateTime.substring(3, 5);
+            var startYear = startDateTime.substring(6, 10);
+            var endDate = endDateTime.substring(0, 2);
+            var endMonth = endDateTime.substring(3, 5);
+            var endYear = endDateTime.substring(6, 10);
+            }
+$(PageReady);
+ 
+ 
+ function getData() 
+       {
+            $("#form").submit();
+        }
+
+ function Getdatamonth() 
+      {
+          var projects = $('#Project').val();
+          var dateFrom = $('.datepickerFrom').val();
+          var dateTo = $('.datepickerTo').val();
+          var dateFromParts = dateFrom.split("/");
+          var fromDate = new Date(dateFromParts[2], dateFromParts[1] - 1, dateFromParts[0]);
+          var dateToParts = dateTo.split("/");
+          var toDate = new Date(dateToParts[2], dateToParts[1] - 1, dateToParts[0]);
+          var labelText = $("#lblValidFrom").text();
+         if (dateFrom != "" && dateTo != "") 
+         {
+            if(fromDate <= toDate) {
+            $("#form").submit();
+         }
+            else
+         {
+            $("#StartDateTime_ID").html('To date must be greater than the From date');
+            $("#time").hide();
+            $("#chart3").hide();
+           // $("#work").hide();
+           // $("#asd").hide();
+            $("#chart").hide();
+          
+         }
+      
+        }
+        else if (dateFrom == "" && dateTo == "") 
+        {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('Select To Date');
+        }
+        else if (dateTo == "")
+         {
+            $("#StartDateTime_ID").text('Select To Date');
+            $("#Startdate_Valid").text('');
+        }
+        else {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('');
+        }
+        }      
+    function changeProject()
+        {
+           $("#MemberId").val("0");
+        }
+        
+        function changeuser()
+        {
+          $("#Project").val("");
+        }
+</script>          
+   
+ <div class="row">
+     <div class="col-md-3">
+        <label>
+            Projects</label>
+            @Html.DropDownList("ProjectList", ViewBag.Projects as SelectList, "Select Project", new { @id = "Project", @name = "Project", @class = "form-control", @Onchange = "changeProject()" })
+            <span id="span_ID13" style="color: Red;"></span>
+       </div>
+
+        <div class="col-md-1" style="padding-top:30px; ">
+       <label>
+       (Or)
+       </label>
+       </div>
+       
+        <div class="col-md-3" >
+        <label >
+            Users</label>
+           @Html.DropDownListFor(m => m.MemberId, Model.MemberList.Select(f => new SelectListItem
+      {
+          Text = f.MemberName,
+          Value = f.MemberId,
+      }), new { @class = "form-control", @id = "MemberId", @Onchange = "changeuser()" })
+         <span id="usr" style="color: Red;"></span>
+         </div>
+         
+         <div class="col-md-2">
+        <label id="lblValidFrom">
+             From Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>     
+            @Html.TextBoxFor(m => m.DateFrom, "{0:dd/MM/yyyy}", new { @id = "Date1", @class = "form-control datepickerFrom", @style="height:41px", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+            <span id="Startdate_Valid" style="color: Red;"></span>
+        </div>
+
+        <div class="col-md-2" >
+        <label id="lblValidTo">
+            To Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+            @Html.TextBoxFor(m => m.DateTo, "{0:dd/MM/yyyy}", new { @id = "Date2", @class = "form-control datepickerTo", @style="height:41px", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+            <span id="StartDateTime_ID" style="color: Red;"></span>
+        </div>
+       
+     
+        <div class="col-md-1" style="padding-top:25px;" >
+            <button type="button" id="btnSubmit" class="btn btn-success center-block" onclick='Getdatamonth()'>
+                Show
+            </button>
+         </div>
+
+       </div>   
+  <br />
+    <br />
+    
+    if (Model.ProjectMembersDetails != null)
+    {
+     <div class="chart-horiz clearfix">
+        <!-- Actual bar chart -->
+        <ul class="chart" id="chart">
+          
+                @foreach (var item in Model.ProjectMembersDetails)
+                {
+
+                    var days = @ViewData["totaldays"];
+                    var a = Convert.ToDouble(days);
+                    var total = Convert.ToDouble(@item.TotalWorkingHours);
+                    var result = total / a;        
+                    double businessDays = ViewBag.businessDays;
+                    double greenHrs = businessDays * 8;
+                    double orangeHrs = businessDays * 7;
+
+                    string Bgcolor = result >= greenHrs ? "green" : result >= orangeHrs? "orange" : "red";
+                             
+                <li class="current" style="margin-top: 20px;"><span class="bar" style="background-color:@Bgcolor;"  data-number="@item.TotalWorkingHours" >
+                </span><span class="number">@item.TotalWorkingHours </span></li>@Html.DisplayFor(modelitem => item.EmployeeName)  
+                }
+           
+        </ul>
+    </div>   
+    }
+
+    else if (Model.EmployeeData != null && Model.IsTeamData && Model.EmployeeData.Count > 0)
+    {
+        string Date = Model.EmployeeData[0].Date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    <div id="chart3" style="height: 250px; width: 100%">
+        <ul class="chart" id="chart">
+            <li class="title" title='Team Entry @Date'></li>
+                @foreach (var item in Model.EmployeeData)
+                {
+                    double businessDays = ViewBag.businessDays;
+                    double greenHrs = businessDays * 8;
+                    double orangeHrs = businessDays * 7;
+                    string Bgcolor = item.hoursWorked >= greenHrs ? "green" : item.hoursWorked >= orangeHrs ? "orange" : "red";                             
+                <li class="current" style="margin-top: 20px;"><span class="bar" style="background-color:@Bgcolor;"  data-number="@item.hoursWorked" >
+                </span><span class="number">@item.hoursWorked </span></li>@Html.DisplayFor(modelitem => item.empName)  
+                }
+        </ul>
+    </div>
+    }
+
+    else if (Model.EmployeeData.Count > 0)
+    {
+    <strong>Work hours</strong>
+    <span>L-Leave OEM-Out Entry</span>
+    <div id="chart3" style="height: 250px; width: 100%">
+    </div>            
+    }
+
+    else
+    {
+        string BG = "Red";
+    <div class="chart-horiz clearfix" id="time">
+        <ul class="chart">
+            <li class="current" style="margin-top: 20px;" title="Time Entry Records not Found">
+                <span class="bar" style="background-color: @BG; height:20px;" data-number="10"></span>
+            </li>
+        </ul>
+    </div>
+    }
+}
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+        $("#MemberId").select2();
+        $("#Project").select2();
+
+        jQuery(document).ready(function ($) {
+          
+            $(".dataTables_wrapper select").select2();
+
+            $('.chart').horizBarChart({
+                selector: '.bar',
+                speed: 1000
+            });
+//            $('input[type=radio][name=IsSorting]').change(function () {
+//                Getdatamonth();
+//            });
+        });                    
+    </script>
+}

@@ -1,0 +1,501 @@
+﻿@model IEnumerable<DSRCManagementSystem.LeaveRequest>
+
+@{
+    ViewBag.Title = "Leave Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+   
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    
+}
+
+
+  <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+@{
+    int SNO = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+}
+<style>
+    
+    .sNo
+    {
+        text-align: center;
+    }
+</style>
+@*<ol class="breadcrumb bc-3">    
+    <li><a href="@Url.Action("ApplyLeave", "Leave")">Leave Management</a></li>
+    <li><strong>Employee Leave Details</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ApplyLeave","Leave")"style="color:black ">
+            Leave Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Employee Leave Details</b>
+    </p>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Employee Leave Details</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+@*                <div class="btn-group" style="float: right">
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='AddNewLeaveRequest()'>
+                        New Leave Request <i class="fa fa-plus"></i>
+                    </button>
+                    <br />
+                </div>*@
+                
+                 
+              <div class="row">
+              <div class="col-md-2" style="float:right">
+                <div class="btn-group" style="float: right">
+                   
+                  @if (Convert.ToInt32(Session["UserID"].ToString()) == 22)
+                  {
+                          <button class="btn btn-blue" style="font-weight: bold" onclick='AddEmpLeaveEntry()'>
+                        Employee Leave Entry
+                    </button>
+                 }                
+                </div>
+              </div>
+            </div>
+                @using (Html.BeginForm("EmployeeLeaveDetails", "Leave", FormMethod.Post))
+                {
+                    var value = "";
+                    var value1 ="";
+
+                    if (@Session["Start"] !="")
+                    {
+                        value = Session["Start"].ToString();
+                    }
+                    
+                    if (@Session["End"] != "")
+                    {
+                        value1 = Session["End"].ToString();
+                    }
+                    
+                    //int userID = Convert.ToInt32(Session["UserID"].ToString());
+                    @*<div class="row">*@
+                    
+                    @*<div class="form-group">*@
+                        
+                       @*  <div class="col-md-1" style="margin-top: 6px">
+                         
+                        </div>*@
+                      <div class="row">
+                            @if (branchcnt==1)
+                        
+                        {
+                          <div class="visible-md">
+                                @Html.Label("Branches",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+
+                              
+
+                                @Html.DropDownList("BranchID", ViewBag.BranchList as SelectList,new { @id = "BranchID", @name = "Branch", @class = "form-control",@onchange = "GetDepartments()" })
+                            </div>
+                            }
+                            else{
+                                <div class="col-md-2" style="width: 220px; padding-top: 5px;">
+                                @Html.Label("Branches",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+
+                              
+
+                                @Html.DropDownList("BranchID", ViewBag.BranchList as SelectList,new { @id = "BranchID", @name = "Branch", @class = "form-control",@onchange = "GetDepartments()" })
+                            </div>
+                            }
+                      @*  <div class="col-md-2">
+                       Branch
+                            @Html.DropDownList("Id", ViewBag.User as SelectList, "--Select--", new { @id = "userid", @name = "user", @class = "form-control", @Onchange = "changeProject()" })
+                        </div>**@
+
+                        <div class="col-md-2" style="width: 220px; padding-top: 5px;">
+                          @Html.Label( "Department",(string)ViewBag.Lbl_department )
+                            @Html.DropDownList("DepartmentId", ViewBag.DepartmentList as SelectList,"All Department", new { @id = "departmentType", @name = "Department", @class = "form-control", @onchange = "GetGroups()"})
+                        </div>
+                          @if (ViewBag.Group != null)
+                          {
+                          <div class="col-md-2" style="width: 220px; padding-top: 5px;">
+                         @Html.Label( "Group")
+                            @Html.DropDownList("GroupID", ViewBag.Group as SelectList,"All Groups", new { @id = "GroupID", @name = "group", @class = "form-control"})
+                        </div>
+                          }
+                          else{
+                               <div class="col-md-2" style="width: 220px; padding-top: 5px;">
+                         @Html.Label( "Group")
+                            @Html.DropDownList("GroupID", ViewBag.Group as SelectList,"All Groups", new { @id = "GroupID", @name = "group", @class = "form-control"})
+                        </div>
+                          }
+                     
+                        <div class="col-md-2" style="width: 220px; padding-top: 5px;">
+                         @Html.Label( "Leave Type")
+                            @Html.DropDownList("LeaveType", ViewBag.LeaveTypeList as SelectList,"All LeaveType", new { @id = "leaveType", @name = "leaveType", @class = "form-control"})
+                        </div>
+                        </div>
+                    <br />
+                    
+                      <div class="row">
+                        <div class="col-md-2" style="width: 220px">
+                                @Html.Label( "Start Date")
+                                @*@Html.Label("Start Date", new { @class = "control-label", @style = "margin-top: 6px" })*@
+                                @Html.TextBox("StartDateTime", value, new { @id = "StartDateTime", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_LeaveRequest_StartDateTime,@style="height:41px"})
+                                <span id="StartDateTime_ID" style="color: Red;"></span>
+                        </div>
+                  
+                        <div class="col-md-3" style="width: 220px">
+                            @Html.Label( "End Date")
+                                @*@Html.Label("End Date", new { @class = "control-label", @style = "margin-top: 6px" })*@
+                                @Html.TextBox("EndDateTime",value1,  new { @id = "EndDateTime", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_LeaveRequest_EndDateTime,@style="height:41px",@onchange = "DateValidation()"})
+                                <span id="EndDateTime_ID" style="color: Red;"></span>
+                        </div> 
+                          
+                         
+                          
+
+                          <div class="col-md-4" style="width: 300px;margin-top: 30px;">
+                                      <button type="submit" name="btn_Submit" class="btn btn-info btn-icon" >
+                                            Search<i class="entypo-search"></i>
+                                        </button>
+                               
+                                      <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()" >
+                                        Reset
+                                    </button>
+                             </div>
+                          </div>
+                         @* <table class="row" style="margin-top:28px; margin-left:50px"
+                              <tr>
+                                  <td>*@
+                                         @*</td><td>&nbsp;&nbsp;&nbsp;</td>
+                                  <td>*@
+                                 @* </td>
+                              </tr>
+                          </table>*@ 
+                       @* <button type="submit" name="btn_Submit" class="btn btn-info btn-icon" style="float:right">
+                            Search<i class="entypo-search"></i>
+                        </button>*@
+                    
+                   @* <div class="col-md-1" style="margin-top: 30px; padding-left:750px; padding-top: 7px;">
+                                <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                    Search<i class="entypo-search"></i>
+                                </button>
+                            </div>
+                            <div class="col-md-1" style="margin-top: 30px; padding-left:78px; padding-top: 7px;">
+                                 <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                            </div>*@
+                    
+
+
+                         
+                       
+                            
+                    
+
+                }
+                    
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div id="leaveRequestsGrid">
+                        @{
+                            Func<DateTime, string> dateTimeFunc = dateTime => String.Format("{0:ddd, MMM d, yyyy}", dateTime);
+                        }
+                        @{
+                            var grid = new WebGrid(
+                                source: Model,
+                                canPage: false,
+                                canSort: false
+                                );
+                              
+                        }
+                               @grid.GetHtml(tableStyle: "table table-bordered datatable", headerStyle: "head",
+                                 columns: grid.Columns(
+                                 grid.Column("S.No", format: item => item.WebGrid.Rows.IndexOf(item) + 1, style: "sNo"),
+                                grid.Column("", header: "Employee ID", format: @<text>@item.User1.EmpID</text>),
+                                grid.Column("", header: "Employee Name", format: @<text>@item.User1.FirstName @item.User1.LastName</text>),
+                                grid.Column("LeaveType", header: "Leave Type", format: @<text>@item.leavetype.Name</text>),
+                               grid.Column("StartDateTime", header: "Start Date", format: item => Html.Raw(dateTimeFunc(item.StartDateTime))),
+                                grid.Column("EndDateTime", header: "End Date", format: item => Html.Raw(dateTimeFunc(item.EndDateTime))),
+                                grid.Column("LeaveDays", header: "Leave Days", style: "sNo")),
+                                htmlAttributes: new { @id = "tblLeaveDetails" })
+                    </div>
+            
+                
+            </div>
+        </div>
+    </div>
+</div>
+                    
+<div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("div select").select2();
+     //var table = $("#tblLeaveDetails").dataTable({
+     //           "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+     //           "sPaginationType": "bootstrap",
+     //           "columnDefs": [
+     //               { "width": "8%", "targets": 0 }, { "width": "10%", "targets": 1 }, { "width": "20%", "targets": 2 }, { "width": "15%", "targets": 3 },
+     //               { "width": "20%", "targets": 4 }, { "width": "20%", "targets": 5 }, { "width": "12%", "targets": 6 }
+     //           ]
+     //       }).api();
+
+
+        jQuery(document).ready(function ($) {
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            //$('.chart').horizBarChart({
+            //    selector: '.bar',
+            //    speed: 1000
+            //});
+            //            $('input[type=radio][name=IsSorting]').change(function () {
+            //                Getdatamonth();
+            //            });
+        });
+        jQuery(document).ready(function ($) {
+            SetupGrid();
+            $(".inputDate").datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+        });
+
+        $(".datetimepicker").datepicker({
+
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        });
+
+
+        function changeProject() {
+
+
+            var UserId = $("#userid").val();
+
+
+            window.location.href = '@Url.Action("EmployeeLeaveDetails", "Leave")' + '?UserId=' + UserId;
+        }
+
+
+        function LeaveRequestDetail(leaveRequestId) {
+            $.ajax({
+                url: "../../Leave/UpdateLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function ReloadGrid() {
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+
+            $.ajax({
+                url: "../../Leave/LeaveRequests/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#leaveRequestsGrid').html(result);
+                    SetupGrid();
+                }
+            });
+        }
+
+        function SetupGrid() {
+            var table = $("#tblLeaveDetails").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                "columnDefs": [
+                    { "width": "8%", "targets": 0 }, { "width": "10%", "targets": 1 }, { "width": "20%", "targets": 2 }, { "width": "15%", "targets": 3 },
+                    { "width": "20%", "targets": 4 }, { "width": "20%", "targets": 5 }, { "width": "12%", "targets": 6 }
+                ]
+            }).api();
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        }
+
+        function AddEmpLeaveEntry() {
+
+            $.ajax({
+                url: "../../Leave/EmployeeLeaveEntry/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+
+        }
+        var errorsCount = 0;
+        var startDate = $("#StartDateTime").val();
+        var splitedStartDate = startDate.split("/");
+        var endDate = $("#EndDateTime").val();
+        var splitedEndDate = endDate.split("/");
+        var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+        var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+        if (errorsCount === 0) {
+            if (startDateTime > endDateTime) {
+                errorsCount++;
+                $("#EndDateTime_ID").html("End Date should be greater than the Start Date");
+            } else {
+                errorsCount = 0;
+            }
+        }
+        function Cancel() {
+            var url = '@Url.Action("EmployeeLeaveDetails", "Leave")';
+               window.location.href = url;
+        }
+
+        
+
+            function GetDepartments() {
+            
+
+
+                var Bid = $("#BranchID").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDepartments")';
+
+                $.get(url2,
+                    { BranchId: Bid },
+                    function(data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#departmentType").html(items.join(' '));
+                        $("#departmentType").select2();
+                    });
+
+                var url4 = '@Url.Action("GetGroups")';
+
+                $.get(url4,
+                    { DepartmentId: 0 },
+                    function (data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function () {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#GroupID").html(items.join(' '));
+                        $("#GroupID").select2();
+                    });
+            }
+        }
+
+        function GetGroups() {
+            
+            var Did = $("#departmentType").find("option:selected").prop("value");
+            if (Did  == "" || Did == null)
+            {
+                Did="0";
+            }
+                var url4 = '@Url.Action("GetGroups")';
+
+                $.get(url4,
+                    { DepartmentId: Did },
+                    function (data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function () {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#GroupID").html(items.join(' '));
+                        $("#GroupID").select2();
+                    });
+            
+            
+        }
+        
+
+        function DateValidation() {
+           
+            var startDate = $("#StartDateTime").val();
+            var splitedStartDate = startDate.split("-");
+
+            var endDate = $("#EndDateTime").val();
+            var splitedEndDate = endDate.split("-");
+
+
+            //var splitedEndDate = endDate.split("/");
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (startDateTime > endDateTime) {
+                //document.getElementById("date").innerHTML = "From date is greater";
+                document.getElementById("EndDateTime_ID").innerHTML = "Ending Date Must be Greaterthan Starting Date";
+                return false;
+            }
+            else {
+                document.getElementById("EndDateTime_ID").innerHTML = "";
+            }
+        }
+
+    </script>
+}
+            

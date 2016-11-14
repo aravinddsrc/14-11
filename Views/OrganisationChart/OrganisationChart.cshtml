@@ -1,0 +1,142 @@
+﻿@model DSRCManagementSystem.Models.AgandaForProject
+@{
+     ViewBag.Title = "Organisation Chart";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProjectAgenda</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+ @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+@*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+
+    <link href="../../Content/OrgChart-master/examples/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/OrgChart-master/examples/css/jquery.orgchart.css" rel="stylesheet"
+        type="text/css" />
+
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+</head>
+<body>
+     
+
+
+    <div id="chart-container">
+    
+    {
+    'name': 'Lao Lao',
+    'title': 'general manager',
+    'relationship': { 'children_num': 8 },
+
+    'children': [
+
+      { 'name': 'Bo Miao', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+      { 'name': 'Su Miao', 'title': 'department manager', 'relationship': { 'children_num': 2, 'parent_num': 1,'sibling_num': 7 },
+
+        'children': [
+
+          { 'name': 'Tie Hua', 'title': 'senior engineer', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 1 }},
+
+          { 'name': 'Hei Hei', 'title': 'senior engineer', 'relationship': { 'children_num': 2, 'parent_num': 1,'sibling_num': 1 },
+
+            'children': [
+
+              { 'name': 'Pang Pang', 'title': 'engineer', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 1 }},
+
+              { 'name': 'Xiang Xiang', 'title': 'UE engineer', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 1 }}
+
+            ]
+
+          }
+
+        ]
+
+      },
+
+      { 'name': 'Yu Jie', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+      { 'name': 'Yu Li', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+
+      { 'name': 'Hong Miao', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+
+      { 'name': 'Yu Wei', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+
+      { 'name': 'Chun Miao', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }},
+
+      { 'name': 'Yu Tie', 'title': 'department manager', 'relationship': { 'children_num': 0, 'parent_num': 1,'sibling_num': 7 }}
+
+    ]
+
+ 
+    </div>
+
+    
+    <script src="../../Content/OrgChart-master/examples/js/html2canvas.min.js" type="text/javascript"></script>
+    <script src="../../Content/OrgChart-master/examples/js/jquery.orgchart.js" type="text/javascript"></script>
+             <script type="text/javascript">
+                 $('#chart-container').orgchart({
+                     'data': datascource,
+                     'depth': 2,
+                     'nodeTitle': 'name',
+                     'nodeContent': 'title'
+
+                 });
+
+
+
+
+                 var ajaxURLs = {
+
+                     'children': '/path/to/children/',
+
+                     'parent': '/path/to/parent/',
+
+                     'siblings': '/path/to/siblings/',
+
+                     'families': '/path/to/families/'
+
+                 };
+
+
+
+                 $('#chart-container').orgchart({
+
+                     'data': datascource,
+
+                     'ajaxURL': ajaxURLs,
+
+                     'nodeTitle': 'name',
+
+                     'nodeContent': 'title',
+
+                     'nodeId': 'id'
+
+                 });
+    
+    
+    
+               
+
+             </script>
+                
+            </body>
+</html>
+

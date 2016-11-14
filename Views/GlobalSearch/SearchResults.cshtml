@@ -1,0 +1,94 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.SearchListItemModel>
+@{
+    ViewBag.Title = "Search Results";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="search-string">
+    <b>Search Results for "@ViewBag.SearchString"</b>
+</div>
+<br />
+@if (Model == null)
+{
+    <div class="col-md-4" style="margin-left:30em">
+        <div class="form-group">
+            <b style="font-size:medium">No Results Found</b>
+        </div>
+    </div>
+}
+else if (Model.Count() == 0)
+{
+    <div class="col-md-4" style="margin-left:30em">
+        <div class="form-group">
+            <b style="font-size:medium">No Results Found</b>
+        </div>
+    </div>
+}
+else
+{
+    foreach (var result in Model)
+    {
+        <div class="col-sm-6">
+            <div class="tile-stats tile-white tile-white-primary" style="height:200px;overflow:auto">
+                <div class="num">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="/User/RetrieveImage/@(result.UserId)" class="img-circle" height="100" width="100" />
+                        </div>
+                        <div class="col-md-7">
+                            <h4><b>@Html.DisplayFor(modelitem => result.FirstName)</b></h4>
+                            <p>
+                                <b>Role:</b> @Html.DisplayFor(modelitem => result.Role)
+                            </p>
+                            <p>
+                                <b>Designation:</b> @Html.DisplayFor(modelitem => result.DesignationName)
+                            </p>
+                            @*<p>
+                                    <b>UserName:</b> @Html.DisplayFor(modelitem => result.UserName)
+                                </p>*@
+                            <p>
+                                <b>Skills:</b> @Html.DisplayFor(modelitem => result.Skills)
+                            </p>
+                            <p>
+                                <b>Project Name:</b> @Html.DisplayFor(modelitem => result.ProjectName)
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:right;">
+                    <a href="@Url.Action("ViewUser", "Users", new { id = result.UserId, ViewBag.SearchString })" class='my-tool-tip' data-toggle="tooltip" title="Profile"><i class="entypo-user"></i></a>
+                    <a href="#" class='my-tool-tip' data-toggle="tooltip" title="Projects" onclick="ProjectDetails(@result.UserId, '@result.ProjectId')"><i class="entypo-doc-text-inv"></i></a>
+                           <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="tools">
+                                <div id="PartialSection">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+<script src="~/Content/Template/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        function ProjectDetails(userid,projectid) {
+
+            $.ajax({
+                url: "@Url.Action("SearchedProjectsDetails", "GlobalSearch")",
+                type: 'GET', cache: false,
+                data:{Userid:userid,Projectid:projectid},
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+    </script>
+
+

@@ -1,0 +1,172 @@
+﻿@using Microsoft.SqlServer.Server
+@model IEnumerable<DSRCManagementSystem.Models.UserModel>
+@{
+
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+    int i = 1;
+}
+<table class="table table-bordered datatable" id="tblUsers"  >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayName("Designation")
+            </th>
+            <th>
+                @Html.DisplayName("User Status")
+            </th>
+            <th id="View">
+                @Html.DisplayName("View")
+            </th>
+            <th id="Edit">
+                @Html.DisplayName("Edit")
+            </th>
+            <th>
+                @Html.DisplayName("Reset")
+            </th>
+            <th id="Delete">
+                @Html.DisplayName("Delete")
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr class="@Html.Raw((item.SelectedUserStatusid==2) ? "danger" : "")">
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpID)
+                @Html.HiddenFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+             <td >
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            @if (item.SelectedUserStatusid == 6)
+            {
+                <td id="status" style="text-align:center">
+                    @Html.DropDownListFor(modelItem => item.SelectedUserStatusid, new SelectList(ViewBag.Status, "userstatusid", "userstatusname", item.SelectedUserStatusid), new
+                {
+                    @id = "Iduserstatus",
+                    @class = "form-control",
+                    @onclick = "NoticePeriod(this.value," + item.UserId + ")",
+                    @style = "width:185px",
+                    @onchange = "UserStatus(this.value," + item.UserId + ")",
+                    @disabled = "disabled"
+                })
+                </td>
+            }
+            else
+            {
+                <td id="status" style="text-align:center">
+                    @Html.DropDownListFor(modelItem => item.SelectedUserStatusid, new SelectList(ViewBag.Status, "userstatusid", "userstatusname", item.SelectedUserStatusid), new
+                {
+                    @id = "Iduserstatus",
+                    @class = "form-control",
+                    @onclick = "NoticePeriod(this.value," + item.UserId + ")",
+                    @style = "width:185px",
+                    @onchange = "UserStatus(this.value," + item.UserId + ")"
+                })
+                </td>
+            }
+            <td>
+                <a class='my-tool-tip' data-toggle="tooltip" title="View">
+                    <button type="button" class="btn btn-info" onclick='ViewUser("@item.UserId")'>
+                        <i class="entypo-info"></i>
+                    </button>
+                </a>
+            </td>
+            @if (item.SelectedUserStatusid == 6)
+            {
+                <td>
+                    <a class='my-tool-tip' style="cursor:default">
+                        <button type="button" class="btn btn-info" onclick='EditUser("@item.UserId")' disabled>
+                            <i class="entypo-pencil"></i>
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a class='my-tool-tip' style="cursor:default">
+                        <button type="button" class="btn btn-info" onclick='ResetPassword("@item.UserId","@item.EmailAddress")' disabled>
+                            <i class="entypo-key"></i>
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a class='my-tool-tip' style="cursor:default">
+                        <button type="button" class="btn btn-red" onclick='DeleteUser("@item.UserId")' disabled>
+                            <i class="entypo-cancel"></i>
+                        </button>
+                    </a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a class='my-tool-tip' data-toggle="tooltip" title="Edit">
+                        <button type="button" class="btn btn-info" onclick='EditUser("@item.UserId")'>
+                            <i class="entypo-pencil"></i>
+                        </button>
+                    </a>
+                </td>
+                if (item.Block == true)
+                {
+                    <td>
+                        <a class='my-tool-tip' style="cursor:default">
+                            <button type="button" class="btn btn-info" onclick='ResetPassword("@item.UserId","@item.EmailAddress")' disabled>
+                                <i class="entypo-key"></i>
+                            </button>
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a class='my-tool-tip' data-toggle="tooltip" title="Reset Password">
+                            <button type="button" class="btn btn-info" onclick='ResetPassword("@item.UserId","@item.EmailAddress")'>
+                                <i class="entypo-key"></i>
+                            </button>
+                        </a>
+                    </td>
+                }
+                //if (item.Block == true)
+                //{
+                <td>
+                    <a class='my-tool-tip' data-toggle="tooltip" title="Delete">
+                        <button type="button" class="btn btn-red" onclick='DeleteUser("@item.UserId")'>
+                            <i class="entypo-cancel"></i>
+                        </button>
+                    </a>
+                </td>
+               @* }
+                else
+                {
+                    <td>
+                        <a class='my-tool-tip' style="cursor:default">
+                            <button type="button" class="btn btn-red" onclick='DeleteUser("@item.UserId")' disabled>
+                                <i class="entypo-cancel"></i>
+                            </button>
+                        </a>
+                    </td>
+                }*@
+            }
+        </tr>
+    }
+</table>

@@ -1,0 +1,268 @@
+﻿@model DSRCManagementSystem.Models.Nomination
+@{
+    ViewBag.Title = "Nomination";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";    
+}
+<html>
+<head>
+    <title>Nomination</title>
+    <style type="text/css">
+        .txt-control
+        {
+            height: 41px !important;
+        }
+        
+        .lft-spacing
+        {
+            padding-left: 130px !important;
+        }
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+</head>
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <ol class="breadcrumb bc-3">
+        <li><a>L&D Training</a> </li>
+        <li class="active"><strong>Nomination</strong> </li>
+    </ol>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Nomination</div>
+                </div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("Nomination", "LDTraining", FormMethod.Post))
+                    {
+         
+                        <div class="lft-spacing">
+                            <div id="SeatAvailability" style="display: none;">
+                                @Html.HiddenFor(x => x.AvaliableSeats, new { @id = "AvaliableSeats" })
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right">
+                                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                                    @Html.HiddenFor(x => x.TrainingID, new { @id = "TrainingID" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.CourseName, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.CourseName, new { @id = "CourseName", @disabled = "disabled", @name = "CourseName", @class = "form-control txt-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.Technology, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.Technology, new { @id = "Technology", @name = "Technology", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.EmpId, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.EmpId, new { @id = "EmpId", @name = "EmpId", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off", @maxlength = 100 })
+                                        <span id="Emp_ID" style="color: Red;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.EmpName, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.EmpName, new { @id = "EmpName", @name = "EmpName", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off", @maxlength = 100 })
+                                        <span id="EmpName_ID" style="color: Red;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        Start Time
+                                        @Html.TextBoxFor(x => x.starttime, new { @id = "start", @name = "time", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off", @maxlength = 100 })
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        End Time
+                                        @Html.TextBoxFor(x => x.endtime, new { @id = "end", @name = "time1", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off", @maxlength = 100 })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.InstructorName, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.InstructorName, new { @id = "EmpName", @name = "EmpName", @disabled = "disabled", @class = "form-control txt-control", @autocomplete = "off", @maxlength = 100 })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>       
+                 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onclick="detailshow()">
+                                Check Availability</button>
+                            <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("CalendarEvents", "LDR") + "'");" ) >
+                                Back
+                            </button>
+                            <button type="button" id="btnSubmit" class="btn btn-info" onclick="AddNomination()">
+                                Nominate
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+
+            $(".panel-body select").select2({
+                minimumResultsForSearch: -1
+            });
+
+
+        });
+
+        function detailshow() {
+            var availSeats = $("#AvaliableSeats").val();
+
+            if (availSeats < 0)
+                availSeats = 0;
+
+            bootbox.alert(availSeats + " Nomination Seats are available.", function (r) { });
+
+            //toastr.success(message, toastrOptions);
+        }
+
+        function Clear() {
+            $("input:text").val('');
+            $("#Purpose").val('0');
+            $(".panel-body select").select2("val", "0");
+        }
+
+        function IsEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([dsrc])+\.)+(([co])+\.)+([in])+$/;
+            return regex.test(email);
+        }
+
+        var toastrOptions = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        function AddNomination() {
+
+            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+            var values =
+          {
+              "Coursename": $("#Coursename").val(),
+              "Technology": $("#Technology").val(),
+              "TrainingID": $("#TrainingID").val(),
+              "EmpId": $("#EmpId").val(),
+              "EmpName": $("#EmpName").val(),
+              "ProjectWon": $("#ProjectWon").val(),
+              "ProjectName": $("#ProjectName").val(),
+              "SupervisorId": $("#SupervisorId").val(),
+              "SupervisorName": $("#SupervisorName").val(),
+              "Email": $("#EmailId").val(),
+              "ContactNo": $("#ContactNo").val(),
+              "Purpose": $("#Purpose").find("option:selected").prop("text")
+          };
+
+            $.ajax({
+                url: "../../LDTraining/Nomination/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    if (result == "success") {
+
+                        toastr.success("You have successfully Nominated.", toastrOptions);
+
+                        setTimeout(function () {
+                            $('#portlet-config').appendTo("body").modal('hide');
+                            window.location.href = '@Url.Action("Mylearning", "LDHome")';
+                        }, 500);
+                    }
+                }
+            });           
+        }
+
+        $("#ContactNo").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,10}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        $("#EmpId").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+
+            if (!/^[0-9]{1,100}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+    </script>
+</body>
+</html>

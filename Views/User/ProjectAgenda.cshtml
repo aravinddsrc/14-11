@@ -1,0 +1,172 @@
+﻿@model DSRCManagementSystem.Models.AgandaForProject
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProjectAgenda</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+ @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+@*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+          }  
+        </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+            Add Project Agenda</h4>
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("ProjectAgenda", "User", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                 <div class="row">
+                   
+                    <div class="col-md-3">  
+                     <div class="form-group">
+                      @Html.Label("Project Agenda", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })                    
+                     <span id="span_ID8" style="color: Red;"></span>
+                      </div>
+                      </div>
+
+                        <div class="col-md-12">  
+                     <div class="form-group">                    
+                     @Html.TextAreaFor(m => m.ProjectAganda, new { @class = "form-control", @id = "ProjectAganda", @maxlength = 1500, @cols = 120, @rows = 12, @wrap = "hard" })
+                     <span id="span_ID10" style="color: Red;"></span>
+                      </div>
+                      </div>
+
+                    </div>
+                
+                   }
+                    
+                </div>  
+                                 
+               
+
+            
+           
+             <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='Agenda()' >
+                Save
+            </button>
+        </div>
+     
+              </div>     
+                
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+           <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+             <script type="text/javascript">
+
+                 function Agenda() {
+
+                     if (document.getElementById('ProjectAganda').value == '') {
+
+                         document.getElementById("span_ID10").innerHTML = "Enter Project Agenda";
+                     }
+                     else {
+                         $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                         $("#ProjectAganda").val();
+                         var submitForm = true;
+
+                         if (submitForm == true) {
+
+                             var values =
+                        {
+                            "ProjectAganda": $("#ProjectAganda").val()
+
+                        }
+                             var opts =
+                      {
+                          "closeButton": true,
+                          "debug": false,
+                          "positionClass": "toast-top-right",
+                          "toastClass": "White",
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "2000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
+
+                             $.ajax({
+                                 url: "../../User/ProjectAgenda/",
+                                 type: 'POST',
+                                 cache: false,
+                                 data: values,
+                                 global: false,
+                                 success: function (result) {
+                                     if (result.Result === "Success") {
+
+                                         $("#portlet-config").modal("hide");
+
+                                         toastr.success("Project Agenda added successfully", opts);
+                                         setTimeout(function () { location.reload(); }, 1000);
+                                     }
+                                 }
+
+                             });
+                         }
+                     }
+                 }
+
+             </script>
+                
+            </body>
+</html>
+

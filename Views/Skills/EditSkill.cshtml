@@ -1,0 +1,300 @@
+﻿@model DSRCManagementSystem.Models.Skills
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    @section AddToHead
+{
+        <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+            type="text/css" />
+        <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+        <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+            rel="stylesheet" type="text/css" />
+        <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+            rel="stylesheet" type="text/css" />
+        <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+            rel="stylesheet" type="text/css" />
+
+    }
+      <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Edit Skill</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12" style="text-align: right">
+                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Technology", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownList("TechnologyID", ViewBag.TechnologyIDList as SelectList, new { @class = "selectSearch", @id = "Tech", @style = "height:42px;width: 175px;", @onchange = "SelectLoad($(this).val())" })
+                        @Html.HiddenFor(x => x.Id, new { @id = "Tech" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Specialization", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("SpecificationId", ViewBag.specdrop as SelectList, new { @id = "Specialization", @class = "selectSearch", @style = "height:42px;width: 162px;" })
+                            <span id="specification" style="color: Red"></span>
+                            <span id="spelisation" style="color: Red"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Level", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownList("LevelId", ViewBag.Level as SelectList, new { @class = "selectSearch", @id = "level", @style = "height:42px;width: 175px;margin-left: 35px;" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Date Assessed", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.TextBoxFor(x => x.DateAssessed, "{0:MM/dd/yyyy}", new { @id = "dates", @name = "date", @class = "form-control datetimepicker", @style = "height:42px" })
+                        <span id="dat" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Last Used", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownList("year", ViewBag.year2 as SelectList, new { @class = "selectSearch", @id = "Last", @style = "height:42px;width: 175px;    margin-left: 8px;" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Experience")
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.TextBoxFor(x => x.experiance, new { @id = "experiancee", @class = "form-control", @maxlength = 3 })
+                        <span id="exprr" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Primary", new { @class = "control-label" })
+                        @Html.CheckBoxFor(x => x.Primary, new { @id = "primary", @class = "form-control", @style = "height:15px;margin-top: -20px;margin-left: 8px;" })
+                    </div>
+                </div>
+                @*  <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Secondary", new { @class = "control-label" })
+                        @Html.CheckBoxFor(x => x.Secondary, new { @id = "secondary", @class = "form-control", @style = "height:15px" })
+                    </div>
+                </div>
+            </div>*@
+            </div>
+       
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel</button>
+                <button type="button" id="btnAdd1" class="btn btn-info" onclick="edit1()">
+                    Save</button>
+            </div>
+          </div>
+       </div>
+
+        @section scripts
+    {
+            <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+            <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+            <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+            <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+            <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+            <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+            <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+        }
+        <script type="text/javascript">
+        
+            $(function () {
+                $(".modal-body select").select2({
+                    //minimumResultsForSearch: -1
+                });
+            });
+
+            $(document).ready(function () {
+                $('#experiancee').keypress(function (e) {
+                    var regex = new RegExp("^[0-9\\.\\s]+$");
+                    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                    if (regex.test(str)) {
+
+                        return true;
+                    }
+
+                    $("#exprr").html("Enter Valid Experience").show();
+                    return false;
+                });
+            });
+
+            $(".datetimepicker").datepicker({
+                format: 'dd/mm/yyyy',
+                startDate: 'd',
+                todayHighlight: true,
+                autoclose: true
+            });
+
+            $(function () {
+                SelectLoad($('#Tech').val())
+                $(".modal-body select").select2({
+                    //minimumResultsForSearch: -1
+                });
+            });
+
+
+
+
+            $("#Specialization").on("change", function () {
+
+
+
+                $.ajax({
+                    url: "../../Skills/schedule/",
+                    dataType: 'json',
+                    data: { 'Specialization': $("#Specialization").val() },
+                    success: function (data) {
+                      
+                        if (data.Name == "available") {
+                            $("#spelisation").html("Specialization already exists").show();
+                            
+                            document.getElementById("btnAdd1").disabled = true;
+                            Submitform = false;
+
+                        }
+
+                        else {
+
+                            $("#spelisation").text("").hide();
+                            document.getElementById("btnAdd1").disabled = false;
+                            Submitform = true;
+
+                        }
+
+                    }
+
+                });
+            });
+
+//            function SelectLoad(val) {
+//                $.ajax({ url: "../../Skills/DropDown/" + (val == "" ? 0 : val),
+//                    type: 'GET', cache: false,
+//                    success: function (result) {
+
+//                        if (result != null) {
+//                            $("#Specialization").empty();
+//                            for (i = 0; i < result.length; i++) {
+//                                $("#Specialization").append($('<option>', {
+//                                    value: result[i].Item1,
+//                                    text: result[i].Item2
+//                                }));
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+
+            function edit1() {
+
+                if (document.getElementById('experiancee').value == 0 || document.getElementById('dates').value == 0) {
+                    if (document.getElementById('experiancee').value == '') {
+                        document.getElementById("exprr").innerHTML = "Enter Experience";
+                    }
+                    else {
+                        document.getElementById("exprr").innerHTML = "";
+                    }
+
+                    if (document.getElementById('dates').value == '') {
+                        document.getElementById("dat").innerHTML = "Select Date";
+                    }
+                    else {
+                        document.getElementById("dat").innerHTML = "";
+                    }
+                }
+
+                else {
+                    //$('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    var DateAssessed = $('#dates').val();
+                    var parts = DateAssessed.split("/");
+                    var dt = new Date(parseInt(parts[2], 10),
+                    parseInt(parts[1], 10) - 1,
+                    parseInt(parts[0], 10));
+
+                    var model =
+            {
+                "Id": $("#Tech").find("option:selected").val(),
+                "Technology": $("#Tech").find("option:selected").text(),
+                "SpecificationId": $("#Specialization").find("option:selected").val(),
+                "Specification": $("#Specialization").find("option:selected").text(),
+                "LevelId": $("#level").find("option:selected").val(),
+                "Level": $("#level").find("option:selected").text(),
+                "yearid": $("#Last").find("option:selected").val(),
+                "LastUsed": $("#Last").find("option:selected").text(),
+                "DateAssessed": DateAssessed,
+                "primary": $("#primary:checked").val(),
+                "Secondary": $("#secondary:checked").val(),
+                "experiance": $("#experiancee").val()
+            }
+
+                    var opts = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+                    $.ajax({
+                        url: "../../Skills/EditSkill/",
+                        type: 'POST',
+                        cache: false,
+                        data: model,
+                        traditional: true,
+                        global: false,
+                        success: function (result) {
+                            if (result === "Success") {
+                                $("#portlet-config").modal("hide");
+                                toastr.success("Skill detail has been updated successfully", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+                        }
+                    });
+                }
+            }                     
+        </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+﻿@model DSRCManagementSystem.Models.AgandaForProject
+@{
+    ViewBag.Title = "Timesheet Management";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProjectAgenda</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+ @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+@*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/ckeditor_4.5.7_standard/ckeditor/ckeditor.js" type="text/javascript"></script>
+      <script src="../../Content/ckeditor_4.5.7_standard/ckeditor/adapters/jquery.js" type="text/javascript"></script>
+   <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+</head>
+@*<ol class="breadcrumb bc-3">
+    <li><a>Email Template Modules</a> </li>
+    <li class="active"><strong>CKEditor</strong> </li>
+</ol>*@
+    <p>
+        Email Template Modules
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>CKEditor</b>
+    </p>
+    <br />
+<body>
+   
+
+            @using (Html.BeginForm("CKEditor", "Templates", FormMethod.Post))
+            {
+                 @Html.HiddenFor(x => x.id ,new {@id="Id"})                         
+              @Html.TextAreaFor(m => m.ProjectAganda, new {  @id = "ProjectAganda"})
+                             
+             }
+                    
+            
+                                 
+               
+
+            
+           
+             <div class="modal-footer">
+         
+                 <button type="button" id="btnCls" class="btn btn-default" onclick='Close()'  >
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='Agenda()' >
+                Save
+            </button>
+        </div>
+     
+           <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+             <script type="text/javascript">
+
+                 $(function () {
+                      $('#ProjectAganda').ckeditor();
+                     CKEDITOR.config.allowedContent = true;
+                 });
+
+                 function Agenda()  
+                 {  
+                     var Text = CKEDITOR.instances.ProjectAganda.getData();
+                     var TemplateId = $("#Id").val();
+                //     alert(Text);
+                     var opts =
+                      {
+                          "closeButton": true,
+                          "debug": false,
+                          "positionClass": "toast-top-right",
+                          "toastClass": "White",
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "2000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
+
+
+                     $.ajax({
+                         url: "../../Templates/CKEditor/",
+                         type: 'POST',
+                         cache: false,
+                         global: false,
+                         data :{commentText: Text ,Tid:TemplateId},
+                         success: function (result) {
+                             if (result.Result === "Success") {
+
+                                 toastr.success("Email Templates updated successfully", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+                             }
+                         }
+
+                     });
+                       
+                     
+                 }
+                 function Close()
+                 {
+                         history.go(-1);
+                 }
+
+             </script>
+                
+            </body>
+</html>
+
+

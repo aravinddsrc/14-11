@@ -1,0 +1,162 @@
+﻿@model DSRCManagementSystem.Models.Assets
+@{
+    ViewBag.Title = "HwSwRequest Detail";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Approve Request</title>
+
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        
+        #ComputerID,#Networkheadname,#FirstStageApproveDate,#RequestedDate
+        {
+            height: 42px;
+        }
+        
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>    
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+</head>
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+
+<div class="modal-content">        
+        
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Hardware/Software Request Details</h4>
+        </div>
+
+        <div class="modal-body">      
+
+      @using (Html.BeginForm("HarwareSoftwareRequest", "HwSwRequestDetail", FormMethod.Post))
+      {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">   
+                        @Html.HiddenFor(x => x.RequestedId, new { @id = "RequestedId" })                  
+                        @Html.LabelFor(x => x.Description, new { @class = "control-label" })
+                        @Html.TextAreaFor(x => x.Description, new { @id = "Description", @disabled = "disabled", @name = "Description", @class = "form-control", @placeholder = "Request Description", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.DepartmentName,(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                        @Html.DropDownList("DepartmentName", ViewBag.DeptList as SelectList, new { @id = "DepartmentName", @name = "DepartmentName", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Location, new { @class = "control-label" })                        
+                        @Html.DropDownList("Location", ViewBag.LocList as SelectList, new { @id = "Location", @name = "Location", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.EmpName, new { @class = "control-label" })                        
+                        @Html.DropDownList("EmpID", ViewBag.EmpList as SelectList, new { @id = "EmpID", @name = "EmpID", @class = "select2 visible", @disabled = "disabled" })                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ComputerID, new { @class = "control-label" })                        
+                        @Html.TextBoxFor(x => x.ComputerID, new { @id = "ComputerID", @name = "ComputerID", @class = "form-control", @placeholder = "Computer Name", @disabled = "disabled", @autocomplete = "off", @maxlength = 100 })                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Category, new { @class = "control-label" })
+                        @Html.DropDownList("Category", ViewBag.CatList as SelectList, new { @id = "Category", @name = "Category", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Status, new { @class = "control-label" })                        
+                        @Html.DropDownList("Status", ViewBag.StatusList as SelectList, new { @id = "Status", @name = "Status", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                </div>
+            </div>
+          
+          
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">                           
+                        @Html.LabelFor(x => x.RequestedDate, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.RequestedDate, new { @id = "RequestedDate", @disabled = "disabled", @name = "RequestedDate", @class = "form-control", @autocomplete = "off" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">                           
+                        @Html.LabelFor(x => x.FirstStageApproveDate, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.FirstStageApproveDate, new { @id = "FirstStageApproveDate", @disabled = "disabled", @name = "FirstStageApproveDate", @class = "form-control", @autocomplete = "off" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Priority, new { @class = "control-label" })
+                        @Html.DropDownList("Priority", ViewBag.PriorList as SelectList, new { @id = "Priority", @name = "Priority", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">                           
+                        @Html.Label("Manager Approval Status", new { @class = "control-label" })
+                        @Html.DropDownList("ApprovalStatus", ViewBag.ApprovalStatusList as SelectList, new { @id = "ApprovalStatus", @disabled = "disabled", @name = "ApprovalStatus"})
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal" >
+                Close
+               </button>
+              
+            </div>
+      }
+   </div>
+</div>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+    </script>  
+</body>
+</html>
+

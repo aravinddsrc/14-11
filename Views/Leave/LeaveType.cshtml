@@ -1,0 +1,230 @@
+﻿@model IEnumerable<DSRCManagementSystem.LeaveType>
+@{
+    ViewBag.Title = "Leave Types";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+          type="text/css"/>
+          
+<link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+}
+<style>
+    .dropdown-menu {
+    background-color: white;
+}
+</style>
+
+
+@{
+    int SNO = 1;
+}
+<ol class="breadcrumb bc-3">   
+    <li><a >Leave Management</a> </li>
+    <li><b>Leave Types</b></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Leave Types</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="btn-group" style="float: right">
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='AddNew()'>
+                        Add Leave Type @*<i class="entypo-user-add"></i>*@
+                    </button>
+                    <br />
+                </div>
+                @using (Html.BeginForm("LeaveType", "Leave", FormMethod.Post))
+                {
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div id="leaveTypeGrid">
+                        @Html.Partial("_LeaveType", Model)
+                    </div>
+          
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            SetupGrid();
+            
+        });
+        function AddNew() {
+        var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+            $.ajax({
+                url: "../../Leave/CreateLeaveType/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+        function EditLeaveType(leaveTypeId) {
+        var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+            $.ajax({
+                url: "../../Leave/EditLeaveType/",
+                type: 'GET',
+                cache: false,
+                data: { LeaveTypeId: leaveTypeId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function DeleteLeaveType(leaveTypeId) {
+        var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+            bootbox.confirm("Are you sure you want to delete the leave type?", function (result) {
+                if (result) {
+                    var toastrOptions = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    var values =
+                    {
+                        "leaveTypeId": leaveTypeId,
+                        "submittingUserId": @Session["UserId"],
+                    };
+                    $.ajax({
+                        url: "../../Leave/DeleteLeaveType/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        success: function (result) {
+                            if (result.Result === "Success") {                              
+                                ReloadGrid();
+                                toastr.success("The leave type has been deleted successfully", toastrOptions);
+                            }
+                            if (result.Result === "Failure") {                              
+                                toastr.success(result.Message, toastrOptions);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function ReloadGrid() {
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+
+            $.ajax({
+                url: "../../Leave/LeaveType/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#leaveTypeGrid').html(result);
+                    SetupGrid();
+                }
+            });
+        }
+
+        function SetupGrid() {
+            $("#tblLeaveType").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "aoColumns": [{ sWidth: "7%" }, { sWidth: "20%" }, { sWidth: "17%" }, { sWidth: "15%" },{ sWidth: "12%" }, { sWidth: "6%", bSortable: false},{ sWidth: "7%", bSortable: false }]
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+            $('tbody>tr>td').css('text-align', 'center');
+
+            $('tbody > tr').each(function(){ $(this).find('td:eq(1)').css('text-align','left')});
+        }
+
+    </script>
+}

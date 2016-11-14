@@ -1,0 +1,169 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.MileStone>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="https://raw.github.com/oesmith/morris.js/0.3.3/morris.js"></script>
+    <title>BarChart</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        
+        .modal-body
+        {
+            max-height: 1000px;
+        }
+        .modal-dialog
+        {
+            width: 900px;
+        }
+        .progress-bar-blank
+        {
+            background-color: White;
+        }
+        .progress-bar
+        {
+            border-radius: 0px 0px;
+        }
+
+        .dropdown-menu {
+    background-color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Project Status Bar</h4>
+        </div>
+        <div class="modal-body">
+            @foreach (var x in Model)
+            {
+                ViewBag.Sd = x.ProjectStartDate;
+                ViewBag.Ed = x.ProjectEndDate;
+            }
+            @*<table width="1200px">
+                <tr>
+                    <td style="text-align: left; font-size: 15px; font-weight: bold">@Convert.ToDateTime(ViewBag.Sd).ToString("dd-MMM-yyyy")
+                    </td>
+                    <td style="text-align: right; font-size: 15px; font-weight: bold">@Convert.ToDateTime(ViewBag.Ed).ToString("dd-MMM-yyyy")
+                    </td>
+                </tr>
+            </table>*@
+            @if (ViewBag.Numberofdays > 0)
+            {
+                <p style="font-size: 15px; font-weight: bold">
+                    MileStone:</p>
+                <div class="progress" style="height: 20px;">
+                    @{
+                var TotalNum = Model.Sum(x => x.Numberofdays);
+                foreach (var Phase in Model)
+                {
+                    var width = Phase.Numberofdays * 100 / TotalNum;
+                        <div class="progress-bar progress-bar-blank progress" style="width:@width%">
+                            <div style="text-align: left; color: black">
+                                @Convert.ToDateTime(Phase.PhaseStartDate).ToString("dd-MM-yyyy")
+                            </div>
+                        </div> 
+                }
+                    }
+                </div>
+                <div class="progress" style="height: 20px;">
+                    @{
+               
+                string[] colors = new string[] { "success", "info", "warning", "success", "info", "warning" };
+                int count = 0;
+
+                foreach (var Phase in Model)
+                {
+                    var width = Phase.Numberofdays * 100 / TotalNum;
+                                    
+                        <div class="progress-bar progress-bar-@colors[count] progress" style="width:@width%">
+                            <div>
+                                <p>
+                                    @Phase.MileStoneValue
+                                </p>
+                            </div>
+                        </div> 
+                    if (count > 4) { count = 0; } else { count++; }
+                }
+                    }
+                </div>
+                <div class="progress" style="height: 20px;">
+                    @{
+                var TotalNum2 = Model.Sum(x => x.Numberofdays);
+                foreach (var Phase in Model)
+                {
+                    var originalBarWidth = Phase.Numberofdays * 100 / TotalNum2;
+                        <div class="progress-bar progress-bar-blank progress" style="width:@originalBarWidth%">
+                            <div style="text-align: right; color: black">
+                                @Convert.ToDateTime(@Phase.PhaseEndDate).ToString("dd-MM-yyyy")
+                            </div>
+                        </div> 
+                }
+                    }
+                </div>
+                <p style="font-size: 15px; font-weight: bold">
+                    CurrentProgress:</p>
+                <div class="progress " style="height: 20px;">
+                    @{
+                var TotalNum1 = Model.Sum(x => x.ActualNumberofdays);
+                string[] colors1 = new string[] { "success", "info", "warning", "success", "info", "warning" };
+                int count1 = 0;
+                foreach (var Phase1 in Model)
+                {
+
+                    //var CompareBarwidth = 10 * Phase1.ActualNumberofdays;
+                    var CompareBarwidth = Phase1.ActualNumberofdays * 100 / TotalNum1;
+                   
+                        <div class="progress-bar progress-bar-@colors1[count1] progress" style="width:@CompareBarwidth%">
+                            <div style="font-size: 10px">
+                                <div>
+                                    <p>
+                                        @Phase1.MileStoneValue
+                                    </p>
+                                </div>
+                            </div>
+                        </div>                    
+                    if (count1 > 4) { count1 = 0; } else { count1++; }
+                }
+                    }
+                </div>
+            }
+            else
+            { 
+                <div style="text-align: center">
+                    <h4>
+                        No Data Found</h4>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal" onclick='myFun()'>
+                Close
+            </button>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        function myFun() {
+            location.reload();
+        }
+ 
+    </script>    
+</body>
+</html>

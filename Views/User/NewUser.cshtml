@@ -1,0 +1,799 @@
+﻿ @model DSRCManagementSystem.Models.UserModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewUser</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic" id="style-resource-4" />    
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+          }  
+        </style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add Employee</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("NewUser", "User", FormMethod.Post))
+            { 
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(a => a.IsBoarding, new { @id = "IsOnBoarding", @name = "IsBoarding" })
+                                    On Boarding
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-6">
+                    <div class="checkbox" >
+                                <label >
+                                    @Html.CheckBoxFor(a => a.IsUnderProbation, new { @id = "IsUnderProbation", @name = "IsUnderProbation" })Under
+                                    Probationary Period</label>
+                            </div>
+                
+                </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        @Html.Label("Branch",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownList("BranchID", ViewBag.BranchList as SelectList, new { @id = "BranchName", @name = "BranchName", @class = "form-control", @onchange = "GetLeaveTypes()" })
+                        <span id="span_Branch" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+
+   
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.EmpID, new { @id = "EmpID", @name = "EmpID", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmpID, @autocomplete = "off", @maxlength = "10" })
+                            @Html.HiddenFor(x => x.UserId)
+                            <span id="span_ID" style="color: Red;"></span>
+                            <span id="span_ID6" style="color: Red;"></span>
+                            <span id="span_SelectBranch" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Gender", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownListFor(x => x.GenderID, ViewBag.GenderList as SelectList,"---Select---", new { @id = "GenderID", @name = "GenderID", @class = "form-control" })
+                            <span id="span_Gender" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Department",(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("DepartmentId", ViewBag.DepartmentIdList as SelectList,"---Select---", new { @id = "DepartmentId", @name = "DepartmentId", @class = "form-control" })
+                            <span id="span_Department" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Designation",new {@class="control-label"})
+                            @*@Html.LabelFor(x=>x.DesignationName, new { @class = "control-label" })*@
+                            @Html.Label("*", new { @style = "color:#FF0000" })                         
+                            @Html.DropDownList("DesignationID", ViewBag.Designation  as SelectList,new { @id = "DesignationID", @name = "Designation", @class = "form-control" })
+                            <span id="span_Role" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @name = "FirstName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_FirstName, @autocomplete = "off", @maxlength = "50" })
+                            <span id="span_ID1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+                             @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @name = "LastName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_LastName, @autocomplete = "off", @maxlength = "50" })
+                            <span id="span_LastName" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DateOfJoin, new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.DateOfJoin, new { @id = "DateOfJoin", @name = "DateOfJoin", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_ProfileModel_DateofJoin, @autocomplete = "off" })
+                            <span id="span_ID2" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.EmailAddress, new { @id = "EmailAddress", @name = "EmailAddress", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off", @type = "email", @maxlength = "40" })
+                            <span id="span_ID3" style="color: Red;"></span><span id="span_ID4" style="color: Red;">
+                            </span><span id="span_EmailDomain" style="color: Red;"></span>
+                        </div>
+                    </div>
+                   
+                </div>
+               
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Experience, new { @class = "control-label" })                           
+                            @Html.Label("Year", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("YearId", ViewBag.YearsList as SelectList, new { @id = "YearId", @name = "YearId", @class = "form-control" })
+                            <span id="ExperienceYearError" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Experience Month", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("MonthId", ViewBag.MonthList as SelectList, new { @id = "MonthId", @name = "MonthId", @class = "form-control" })
+                             <span id="ExperienceMonthError" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+        <div class="row">
+                <div class="col-md-6">
+                        <div class="form-group">
+                        @Html.LabelFor(x=>x.WorkplaceId, new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownListFor(x => x.WorkplaceId, ViewBag.WorkPlaceList as SelectList,"---Select---", new { @id = "WorkplaceId", @class = "form-control" })
+                        <span id="workplace" style="color: Red;"></span>
+                </div>
+                </div>
+                <div class="col-md-6">
+                        <div class="form-group">
+                        @Html.Label("Marital Status", new { @class = "control-label" })                      
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.DropDownListFor(x => x.MaritalStatusId, ViewBag.Marital as SelectList, "---Select---", new { @id = "MaritalStatusId", @class = "form-control" })
+                        <span id="marital" style="color: Red;"></span>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.Label("Skills", new { @class = "control-label" })                        
+                        @Html.TextAreaFor(x => x.Tecnology, new { @id = "ID", @name = "ID", @class = "form-control", @placeholder = "Skills", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })     
+                         <span id="span_ID12" style="color: Red;"></span>                   
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                <div class="form-group">
+          @Html.Label("Assign Reporting Person", new { @class = "control-label" })
+             @Html.Label("*", new { @style = "color:#FF0000" })
+            @Html.DropDownList("Id1", ViewBag.Email1 as MultiSelectList, new {@id="CC", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+             <span id="span_ID14" style="color: Red;"></span>  
+                </div>
+                </div>
+                <div class="col-md-6">
+              @Html.Label("Region", new { @class = "control-label" })
+            @Html.DropDownListFor(x => x.RegionId, ViewBag.Region as SelectList, new
+                               {
+                                   @id = "Idregion",
+                                   @class = "form-control"
+                               })
+                               <span id="span_region" style="color: Red;"></span>
+                <div class="form-group">
+
+                </div>
+                </div>
+                </div>
+                
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="AddUserNew()">
+                Save
+            </button>
+
+        </div>
+    </div>
+    
+      <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+     
+        $(document).ready(function () {
+            if ($('#IsOnBoarding').is(':checked') == true) {
+                $("#EmpID").attr("disabled", true);
+                $("#EmailAddress").attr("disabled", true);
+            }
+        });
+        $('#IsOnBoarding').click(function () {
+
+        if($('#IsOnBoarding').is(':checked') == true)
+        {
+         $('#IsUnderProbation').prop('checked', false);
+         $("#EmpID").attr("disabled", true);
+         $("#EmailAddress").attr("disabled", true);
+
+        }
+
+        else if($('#IsOnBoarding').is(':checked') ==false)
+        {
+         $('#IsUnderProbation').prop('checked', true);
+         $("#EmpID").attr("disabled", false);
+         $("#EmailAddress").attr("disabled", false);
+
+        }
+
+    
+});
+
+       $('#IsUnderProbation').click(function () {
+
+        if($('#IsUnderProbation').is(':checked') == true)
+        {
+         $('#IsOnBoarding').prop('checked', false);
+         $("#EmpID").attr("disabled", false);
+         $("#EmailAddress").attr("disabled", false);
+
+        }
+        else if($('#IsUnderProbation').is(':checked') == false)
+        {
+           $('#IsOnBoarding').prop('checked', true);
+           $("#EmpID").attr("disabled", true);
+           $("#EmailAddress").attr("disabled", true);
+         }
+
+    
+});
+
+       $('#btnAdd').click(function () {
+           if ($('#IsOnBoarding').is(':checked')==true) {
+               //$('#IsOnBoarding').prop('checked', true);
+               //$('#IsUnderProbation').prop('checked', false);
+               $("#EmpID").attr("disabled", true);
+               $("#EmailAddress").attr("disabled", true);
+           }
+           if ($('#IsUnderProbation').is(':checked')==true)
+           {
+               //$('#IsOnBoarding').prop('checked', false);
+               //$('#IsUnderProbation').prop('checked', true);
+               if (document.getElementById('EmpID').value == "")
+               {
+                   document.getElementById("span_ID").innerHTML = "Enter Employee ID";
+               }
+               else
+               {
+                   document.getElementById("span_ID").innerHTML ="";
+               }
+               if (document.getElementById('EmailAddress').value == "")
+               {
+                   document.getElementById("span_ID3").innerHTML = "Enter Email Address";
+               }
+               else
+               {
+                   document.getElementById("span_ID3").innerHTML = "";
+               }
+           }
+       });
+        function AddUserNew() {     
+
+            var emp = $("#EmpID").val();
+                   var  email=$("#EmailAddress").val();              
+                 
+                   var FirstName = $("#FirstName").val();
+
+                   var FirstNametrim = FirstName.replace(/\s/g, "").length;
+
+                   var LastName = $("#LastName").val();
+
+                   var LastNametrim = jQuery.trim(LastName).length;
+                   if ((FirstNametrim == "" || LastNametrim == ""
+                || document.getElementById('DateOfJoin').value == '' || document.getElementById('DesignationID').value == '0'
+                || document.getElementById('GenderID').value == '0' || document.getElementById('DepartmentId').value == '0'
+                || $("#YearId").find("option:selected").val() == '-1' || $("#MonthId").find("option:selected").val() == '-1'
+                || document.getElementById('WorkplaceId').value == '0' || document.getElementById('Marital') == '0'
+                || document.getElementById('BranchID') == '0') || document.getElementById('MaritalStatusId').value=="") {
+                    
+                   
+
+
+
+
+                   if (emp == "" && email == "")
+                    
+                           $("#span_EmailDomain").html("");               
+                    else
+                   
+                        $("#span_EmailDomain").html("Enter Email Address");
+                    
+                   if (FirstNametrim == "") 
+                       document.getElementById("span_ID1").innerHTML = "Enter First Name ";
+                       
+                   
+                   else
+                       document.getElementById("span_ID1").innerHTML = "";
+                   if (LastNametrim == "") 
+                       document.getElementById("span_LastName").innerHTML = "Enter Last Name ";
+                       
+                   
+                   else
+                       document.getElementById("span_LastName").innerHTML = "";
+                    if (document.getElementById('DateOfJoin').value == '')
+                        document.getElementById("span_ID2").innerHTML = "Enter Date Of Join";
+                    else
+                        document.getElementById("span_ID2").innerHTML = "";
+                    if (document.getElementById('DesignationID').value == '0')
+                        document.getElementById("span_Role").innerHTML = "Select Designation";
+                    else
+                        document.getElementById("span_Role").innerHTML = "";
+
+                    if (document.getElementById('GenderID').value == "")
+                        document.getElementById("span_Gender").innerHTML = "Select Gender";
+                    else
+                        document.getElementById("span_Gender").innerHTML = "";
+                    if (document.getElementById('DepartmentId').value == "0")
+                        document.getElementById("span_Department").innerHTML = "Select Department";
+                    else
+                        document.getElementById("span_Department").innerHTML = "";
+                                  
+                    if (document.getElementById('BranchName').value == "0")
+                        document.getElementById("span_Branch").innerHTML = "Select Branch";
+                    else
+                        document.getElementById("span_Branch").innerHTML = "";
+
+                    if (document.getElementById('MaritalStatusId').value == "")
+                        document.getElementById("marital").innerHTML = "Select Marital Status";
+                    else
+                        document.getElementById("marital").innerHTML = "";
+
+                          if ($("#CC").val() == null) {
+
+                document.getElementById("span_ID14").innerHTML = "Select Reporting Person";
+            }
+
+            else
+            {
+             document.getElementById("span_ID14").innerHTML = "";
+            }
+
+                    
+                    
+                        if ($("#YearId").find("option:selected").val() == '-1')
+                            document.getElementById("ExperienceYearError").innerHTML = "Select Experience Year";
+                        else
+                            document.getElementById("ExperienceYearError").innerHTML = "";
+                        if ($("#MonthId").find("option:selected").val() == '-1')
+                            document.getElementById("ExperienceMonthError").innerHTML = "Select Experience Month";
+                        else
+                            document.getElementById("ExperienceMonthError").innerHTML = "";
+
+                        if (document.getElementById('WorkplaceId').value == '0')
+                            document.getElementById("workplace").innerHTML = "Select Workplace";
+                        else
+                            document.getElementById("workplace").innerHTML = "";
+                }
+                    else {
+
+                    
+                    var submitForm = true;
+                    
+                 
+                       var value =$("#DateOfJoin").val();
+
+                       var today = new Date();
+
+                       var dd = today.getDate();
+                       var mm = today.getMonth()+1; //January is 0!
+
+                      var yyyy = today.getFullYear();
+                          if(dd<10){
+                         dd='0'+dd
+                          } 
+                              if(mm<10){
+                       mm='0'+mm
+                          } 
+           
+                var today = dd+'/'+mm+'/'+yyyy;
+                var startDate = $("#DateOfJoin").val();
+                var splitedStartDate = startDate.split("/");
+                var endDate =today;
+                var splitedEndDate = endDate.split("/");
+
+                 var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+                  var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+                     if (startDateTime > endDateTime) 
+                    {
+                    if($('#IsUnderProbation').is(':checked')  == true && $('#IsOnBoarding').is(':checked') == false)
+                    {
+                    submitForm=false;
+                    document.getElementById("span_ID2").innerHTML = "Joining date is greater than todays date please check onboarding";
+                    }
+                    else if($('#IsUnderProbation').is(':checked')==false && $('#IsOnBoarding').is(':checked')==true)
+                    {
+                    submitForm =true;
+                    document.getElementById("span_ID2").innerHTML = "";
+
+                    }
+                }
+
+                 if(endDateTime > startDateTime)
+                 {
+                  if($('#IsUnderProbation').is(':checked')  == false && $('#IsOnBoarding').is(':checked') == true)
+                   {
+                   submitForm=false;
+                   document.getElementById("span_ID2").innerHTML = "Joining date is less than todays date please check under propation";
+                   }
+                   else if($('#IsUnderProbation').is(':checked')==true && $('#IsOnBoarding').is(':checked')==false)
+                    {
+                    submitForm =true;
+                    document.getElementById("span_ID2").innerHTML = "";
+                    }
+
+                 }
+
+
+                   if( !(document.getElementById('EmpID').value)=='0')
+                       if(document.getElementById('EmailAddress').value=='' )
+                       {
+                       submitForm = false;
+                         $("#span_EmailDomain").html("Enter Email Address");
+                       }
+
+                if (submitForm === true) {
+                    var DateOfJoin = $('#DateOfJoin').val();
+                    var parts = DateOfJoin.split("/");
+                    var dt = new Date(parseInt(parts[2], 10),
+                        parseInt(parts[1], 10) - 1,
+                        parseInt(parts[0], 10));
+                    var temp = new Date(dt).toJSON();
+                    
+
+                    
+                    if ($('#IsUnderProbation').is(':checked') == true) {
+                        var values =
+                        {
+
+                            "EmpID": $("#EmpID").val(),
+                            "DesignationID": $("#DesignationID").find("option:selected").val(),
+                            "RoleName": $("#DesignationID").find("option:selected").text(),
+                            "DepartmentId": $("#DepartmentId").find("option:selected").val(),
+                            "DepartmentName": $("#DepartmentId").find("option:selected").text(),
+                            "GenderID": $("#GenderID").find("option:selected").val(),
+                            "GenderName": $("#GenderID").find("option:Selected").text(),
+                            "FirstName": $("#FirstName").val(),
+                            "LastName": $("#LastName").val(),
+                            "DateOfJoin": $('#DateOfJoin').val(),
+                            "EmailAddress": $("#EmailAddress").val(),
+                            "IsBoarding": $('#IsOnBoarding').is(':checked'),
+                            "Experience": $("#Experience").val(),
+                            "ExperienceMonth": $("#MonthId").find("option:selected").val(),
+                            "ExperienceYear": $("#YearId").find("option:selected").val(),
+                            "Tecnology": $("#ID").val(),
+                            "WorkplaceId": $("#WorkplaceId").find("option:selected").val(),
+                            "WorkPlace": $("#WorkPlace").find("option:selected").text(),
+                            "MaritalStatusId": $("#MaritalStatusId").find("option:selected").val(),
+                            "Marital": $("#Marital").find("option:selected").text(),
+                            "IsUnderProbation": $('#IsUnderProbation').is(':checked'),
+                            "BranchID": $("#BranchName").find("option:selected").val(),
+                            "BranchName": $("#BranchName").find("option:selected").prop("value"),
+                            "userid": $("#CC").val(),
+                            "RegionId":$("#Idregion").val(),
+                            "multiselectemployees": $("#CC").val().toString(),
+                            "SelectedEmpList": $("#CC").val()
+
+
+                        }
+                    }
+                    else {
+                        var values =
+                        {
+
+                            "EmpID": $("#EmpID").val(),
+                            "DesignationID": $("#DesignationID").find("option:selected").val(),
+                            "RoleName": $("#DesignationID").find("option:selected").text(),
+                            "DepartmentId": $("#DepartmentId").find("option:selected").val(),
+                            "DepartmentName": $("#DepartmentId").find("option:selected").text(),
+                            "GenderID": $("#GenderID").find("option:selected").val(),
+                            "GenderName": $("#GenderID").find("option:Selected").text(),
+                            "FirstName": $("#FirstName").val(),
+                            "LastName": $("#LastName").val(),
+                            "DateOfJoin": $('#DateOfJoin').val(),
+                            "EmailAddress": $("#EmailAddress").val(),
+                            "IsBoarding": $('#IsOnBoarding').is(':checked'),
+                            "Experience": $("#Experience").val(),
+                            "ExperienceMonth": $("#MonthId").find("option:selected").val(),
+                            "ExperienceYear": $("#YearId").find("option:selected").val(),
+                            "Tecnology": $("#ID").val(),
+                            "WorkplaceId": $("#WorkplaceId").find("option:selected").val(),
+                            "WorkPlace": $("#WorkPlace").find("option:selected").text(),
+                            "MaritalStatusId": $("#MaritalStatusId").find("option:selected").val(),
+                            "Marital": $("#Marital").find("option:selected").text(),
+                            "IsUnderProbation": $('#IsUnderProbation').is(':checked'),
+                            "BranchID": $("#BranchName").find("option:selected").val(),
+                            "BranchName": $("#BranchName").find("option:selected").prop("value"),
+                            "userid": $("#CC").val(),
+                            "RegionId":$("#Idregion").val(),
+                            "multiselectemployees": $("#CC").val().toString(),
+                            "SelectedEmpList": $("#CC").val()
+
+
+                        }
+                    }
+                    var opts = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    $.ajax({
+                        url: "../../User/UserValidation/",
+                        type: 'GET',
+                        cache: false,
+                        data: values,
+                        global: false,
+                        success: function (result) {
+
+                            if (result === "EmailAddressExisting") {
+                                toastr.warning("Email Address is already existing..!", opts);
+                            }
+                            if (result === "MailProcessingFailed") {
+                                $('#portlet-config1').modal("hide");
+                                document.getElementById("span_ID6").innerHTML = "";
+                                document.getElementById("span_ID3").innerHTML = "";
+                                document.getElementById("span_ID4").innerHTML = "";
+                                
+                                document.getElementById("span_ID").innerHTML = "";
+                                if (document.getElementById('DesignationID').value == '0')
+                                    document.getElementById("span_Role").innerHTML = "Select Role Name";
+                                else
+                                    document.getElementById("span_Role").innerHTML = "";
+                                if (document.getElementById('FirstName').value == '')
+                                    document.getElementById("span_ID1").innerHTML = "Enter First Name ";
+                                else
+                                    document.getElementById("span_ID1").innerHTML = "";
+                                if (document.getElementById('LastName').value == '')
+                                    document.getElementById("span_LastName").innerHTML = "Enter Last Name ";
+                                else
+                                    document.getElementById("span_LastName").innerHTML = "";
+                                if (document.getElementById('DateOfJoin').value == '')
+                                    document.getElementById("span_ID2").innerHTML = "Enter Date Of Join";
+                                else
+                                    document.getElementById("span_ID2").innerHTML = "";
+                                if (document.getElementById('GenderID').value == '0')
+                                    document.getElementById("span_Gender").innerHTML = "Select Gender";
+                                else
+                                    document.getElementById("span_Gender").innerHTML = "";
+                                if (document.getElementById('DepartmentId').value == '0')
+                                    document.getElementById("span_Department").innerHTML = "Select Department";
+                                else
+                                    document.getElementById("span_Department").innerHTML = "";
+                                                                                          
+                                document.getElementById("span_EmailDomain").innerHTML = "Email cannot be send to other than dsrc.co.in";
+                            }
+                            if (result === "EmpIDExisting" || result === "EmailAddress") {
+                                if (result === "EmpIDExisting") {
+                                    document.getElementById("span_ID").innerHTML = "";
+                                    document.getElementById("span_ID6").innerHTML = "Employee ID is already existing..!";
+                                }
+                                if (result === "EmailAddress") {
+                                    document.getElementById("span_ID6").innerHTML = "";
+                                }
+                            }
+                            if (result === "EmailAddress") {
+                                document.getElementById("span_ID3").innerHTML = "";
+                                document.getElementById("span_ID4").innerHTML = "*Enter valid email address";
+                            }
+                            if (result === "EmpIDCharc") {
+                                document.getElementById("span_ID6").innerHTML = "*Numbers accepts only upto five digits";
+                            }                            
+                            if (result === "Success" || result === "EmpIDNULL" || result === "EmailAddressNULL") {
+                               
+                                $.ajax({
+                                    url: "../../User/NewUser/",
+                                    type: 'POST',
+                                    cache: false,
+                                    data: values,                                    
+                                    global: false,
+                                    success: function (result) {
+                                        if (result.Result === "Success") {
+                                            
+                                            $("#portlet-config").modal("hide");
+                                            setTimeout(function () { location.reload(); }, 1000);
+                                            toastr.success("New Employee added successfully", opts);
+                                           
+                                        }
+                                        else {
+                                            if (result.Result === "EmpIDCharc") {
+                                                document.getElementById("span_ID6").innerHTML = "*Numbers accepts only upto five digits";
+
+                                            }
+                                            
+                                            
+                                            if (result.Result === "EmailAddress") {
+                                                document.getElementById("span_ID4").innerHTML = "*Enter valid email address";
+                                            }
+                                        }
+                                    },
+
+
+                                });
+                            }
+                        }
+                    });
+                }
+              }
+           
+
+           
+        }
+ 
+    </script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            $("#DepartmentId").select2();
+            $("#RoleID").select2();
+
+        });
+
+        $("#EmpID").click(function () {
+            $('#IsUnderProbation').prop('checked', true);
+            $('#IsOnBoarding').prop('checked', false);
+        });
+
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+
+       
+<script type="text/javascript">
+    function IsValidNumber(value) {
+        if (/^[0-9]{1,2}(\.([1][0-1]|[0-9])?)?$/.test(value)) {
+            return true;
+        }
+        return false;
+    }
+
+    $("#Experience").on('paste keypress', (function (e) {
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!IsValidNumber(value)) {
+            e.preventDefault();
+        }
+    }));
+
+
+    $("#EmpID").on('change', (function (e) {
+
+        if ($("#BranchID").find("option:selected").val() == '0') {
+           
+            document.getElementById("span_SelectBranch").innerHTML = "*First select branch";
+        }
+        else {
+            document.getElementById("span_SelectBranch").innerHTML = "";
+        }
+    }));
+
+    $("#EmpID").on('paste keypress', (function (e) {
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!/^[0-9a-zA-Z]{1,9}$/.test(value)) {
+            e.preventDefault();
+        }
+    }));
+
+    function GetLeaveTypes() {
+
+        var Bid = $("#BranchName").find("option:selected").prop("value")
+       
+        if (Bid !== "") {
+
+            var url2 = '@Url.Action("GetDepartments")';
+
+            $.get(url2, { BranchId: Bid }, function (data) {
+
+                var items = [];
+                    items.push("");
+                    items.push("<option value=0>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#DepartmentId").html(items.join(' '));
+                    $("#DepartmentId").select2();
+            });
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+﻿@model DSRCManagementSystem.Models.TeamEntryData
+@{
+    ViewBag.Title = "Members Time Entry";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead{
+<script src="../../Content/Template/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+<link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+    type="text/css" />
+<script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+    type="text/javascript"></script>
+<style>
+    #MemberId {
+        min-width: 200px !important;
+        width: 15% !important;
+    }
+
+  
+</style>
+   
+
+    }
+
+
+
+<style>
+
+.dropdown-menu {
+    background-color: white;
+}  
+
+   </style>      
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.chart').horizBarChart({
+            selector: '.bar',
+            speed: 1000
+        });
+        $('input[type=radio][name=IsSorting]').change(function () {
+            sub();
+            //$("#form").submit();
+
+            //                        if (this.value == 'true') {
+            //                            alert("ASC");
+            //                        }
+            //                        else if (this.value == 'false') {
+            //                            alert("DESC");
+            //                        }
+        });
+
+    });
+</script>
+
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("TimeEntry","ViewMembersEntry")">TimeEntry</a></li>
+    <li class="active"><strong>Employees Time Entry</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("TimeEntry","ViewMembersEntry")"style="color:black ">
+            Time Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Employees Time Entry</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+@using (Html.BeginForm("MembersTimeEntry", "ViewMembersEntry", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered", @id = "form" }))
+{  
+    <script type="text/javascript">  
+
+        function toggleDateField()
+        {
+        var selectedId = $('#MemberId').val();
+         if (selectedId == "0") {
+                   // $('#DateTo').val('');
+                    $('#DateTo,#lblValidTo').hide();
+                    $('#lblValidFrom').text('Entry Date');
+                    $('#lblValidFrom').append('<span style="color: red; font-weight: bold"> *</span>');
+                }
+                else
+                {
+                 //$('#DateTo').val('');
+                    $('#DateTo,#lblValidTo').show();
+                    $('#lblValidFrom').text('From Date');
+                    $('#lblValidFrom').append('<span style="color: red; font-weight: bold"> *</span>');
+                }
+        }
+
+        function PageReady() {
+       
+
+       
+            @{
+    bool Isnull = Model.EmployeeData == null;
+    bool IsTeamData = Model.IsTeamData;
+}
+           var IsNull ='@Isnull'=='False'?false:true;
+           var IsTeamData = '@IsTeamData'=='False'?false:true;
+           if(!IsNull)
+           {
+             var JsonLeaveData = @Html.Raw(Json.Encode(Model.EmployeeData));
+             var xKey=IsTeamData? 'empName':'Date';
+             var yKeys=['hoursWorked'];
+             var Labels=['Date','Day','In Time','Out Time'];
+                         
+             
+             if ($('#chart3').length > 0) {
+
+                Morris.Bar({
+                element: 'chart3',
+                axes: true,
+                data: JsonLeaveData,
+                //xLabelAngle:60,
+                hideHover:'true',
+                resize: true,
+                xkey:xKey ,
+                ykeys:yKeys ,
+                labels:Labels ,
+                vertical: true,
+                hideHover: true,
+                hoverCallback: function(index, options, content) {
+            this.xlabelAngle = 50;
+            $(".morris-hover").html("<div>" + "<p style='color:Green;'> Hours worked: " + options.data[index].hoursWorked.toFixed(2) + "</p>" + "<p style='color:Blue;'> Date: " + options.data[index].Date + "</p>" + "<p style='color:Grey;'>"+ options.labels[1] + ": " + options.data[index].Day + "</p>" + "<p style='color:brown;'>" + options.labels[2] + ": " + options.data[index].InTime + "</p>" + "<p style='color:Navy;'>" + options.labels[3] + ": " + options.data[index].OutTime + "</p>" + "</div>");
+            },
+         barColors: function (row, series, type) {
+         var valWorked = row.y;
+
+          if(JsonLeaveData[row.x]["Day"]=="Sunday"||JsonLeaveData[row.x]["Day"]=="Saturday")
+          return "gray";
+
+
+
+         if(valWorked==undefined)
+            return "green";
+        if(valWorked >=8) 
+            return "green";
+        if(valWorked >=7) 
+            return "orange";
+
+        if(valWorked<7) 
+            return "red";
+
+                }
+            });
+            }
+        }
+
+         toggleDateField();
+          var startDateTime = document.getElementById('DateFrom').value;
+            var endDateTime = document.getElementById('DateTo').value;
+            var startDate = startDateTime.substring(0, 2);
+            var startMonth = startDateTime.substring(3, 5);
+            var startYear = startDateTime.substring(6, 10);
+            var endDate = endDateTime.substring(0, 2);
+            var endMonth = endDateTime.substring(3, 5);
+            var endYear = endDateTime.substring(6, 10);
+
+            var startDateParsed = new Date(startYear, startMonth - 1, startDate);
+            var endDateParsed = new Date(endYear, endMonth - 1, endDate);
+          
+            if (startDateParsed > endDateParsed) {
+                if (endDateTime == "") {
+                    var Message = "Please select the End Date";                    
+                    document.getElementById("StartDateTime_ID").innerHTML = "";                    
+                }
+                else {
+                    if ($('#MemberId').val() === "0") {
+                        document.getElementById("Startdate_Valid").innerHTML = "";
+                    }
+                    else {
+                        document.getElementById("enddate_Valid").innerHTML = "To date must greater than the from date";
+                        $("#time").hide();
+                       $("#chart3").hide();
+                    }
+                }
+            }
+            else {
+                document.getElementById("StartDateTime_ID").innerHTML = "";
+            }
+            var dateTo = $('.datepickerTo').datepicker(
+        {
+           format: 'dd/mm/yyyy',
+           // startDate: 'd',
+            autoclose: true
+
+        }
+        ).on('changeDate', function (e) {
+
+        });
+
+            var dateFrom = $('.datepickerFrom').datepicker(
+        {
+            format: 'dd/mm/yyyy',
+            //startDate: 'd',
+            endDate:new Date(),
+            autoclose: true
+        }
+        ).on('changeDate', function (e) {
+            dateTo.datepicker('setStartDate', e.date);
+            var parts = dateTo[0].value.split("/");
+            var toDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            if (toDate < e.date)
+                $('#dateTo').val($('#dateFrom').val());
+            var toDate = new Date(dateTo[0].value);
+        });
+
+
+
+            $('#dateFrom').change(function () {
+                //alert($(this).val());
+                $('#dateTo').attr('data-end-date', $(this).val());
+            });
+
+            $('#MemberId').change(function () {
+           
+              var selectedId = $(this).val();
+              if(selectedId==0)
+              {
+              $("#Type1").prop('disabled', false);
+            $("#Type2").prop('disabled', false);
+            
+              }
+              else
+              {
+               $("#Type1").prop('disabled', true);
+        $("#Type2").prop('disabled', true);
+              }
+         toggleDateField();
+           $("#Startdate_Valid").text('');
+              $("#StartDateTime_ID").text('');
+//              var today=new Date();
+//              var day = today.getDate();
+//              var monthIndex = today.getMonth()+1;
+//              var year = today.getFullYear();
+//              $(".datepickerFrom").val((day-1) +'/0'+monthIndex+'/'+year);
+//              $(".datepickerTo").val(day+'/0'+monthIndex+'/'+year);
+            });
+         }
+
+        $(PageReady);
+        
+        function sub() {
+    
+        var dateFrom = $('.datepickerFrom').val();
+        var dateTo = $('.datepickerTo').val();
+        var dateFromParts = dateFrom.split("/");
+        var fromDate = new Date(dateFromParts[2], dateFromParts[1] - 1, dateFromParts[0]);
+        var dateToParts = dateTo.split("/");
+        var toDate = new Date(dateToParts[2], dateToParts[1] - 1, dateToParts[0]);
+        var labelText = $("#lblValidFrom").text();
+        if (dateFrom != "" && dateTo != "") {
+        if(fromDate <= toDate) {
+            $("#form").submit();
+            }
+            else{
+            $("#StartDateTime_ID").text('To date must be greater than the From date');
+            $("#time").hide();
+            $("#chart3").hide();
+            $("#work").hide();
+             $("#chart").hide();
+            }
+        }
+        else if (dateFrom == "" && dateTo == "") {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('Select To Date');
+        }
+        else if (dateTo == "") {
+            $("#StartDateTime_ID").text('Select To Date');
+            $("#Startdate_Valid").text('');
+        }
+        else {
+            $("#Startdate_Valid").text('Select' + ' ' + labelText.slice(0, -1));
+            $("#StartDateTime_ID").text('');
+        }
+    }
+    </script>
+
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label"  >
+            Users @Html.Label("  *", new { @style = "color:red;font-weight:bold;"  })</label>
+        <div class="col-sm-3" id="dropUser" onclick="fnUserchange()">
+            @Html.DropDownListFor(m => m.MemberId, Model.MemberList.Select(f => new SelectListItem
+       {
+           Text = f.MemberName,
+           Value = f.MemberId,
+       }), new { @class = "form-control", @id = "MemberId" })
+
+           
+      <script type="text/javascript">
+
+          $("#MemberId").select2();           
+
+          function fnUserchange() 
+           {
+               var selectedId = $('#MemberId').val();
+               if (selectedId == 0) {
+                   $('#asc,#desc').show();
+               }
+               else {
+                   $("#asc,#desc").css("visibility", "hidden");
+                }
+           }
+
+           $(document).ready(function () {
+               fnUserchange();
+               $("#MemberId").change(function () { fnUserchange() });
+           });
+       </Script>
+      
+      </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" id="lblValidFrom">
+            From Date</label>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.DateFrom, "{0:dd/MM/yyyy}", new { @class = "form-control datepickerFrom", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+            <span id="Startdate_Valid" style="color: Red;"></span>
+        </div>
+        <label class="col-sm-2 control-label" id="lblValidTo">
+            To Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.DateTo, "{0:dd/MM/yyyy}", new { @class = "form-control datepickerTo", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+            <span id="StartDateTime_ID" style="color: Red;"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" id="spaceLabel">
+        </label>
+       
+        <div class="col-sm-2" id="asc">
+
+             @Html.RadioButtonFor(o => o.IsSorting, "true", new { @checked = "checked", @id = "Type1" })
+            <label >
+                Ascending </label>
+        </div>
+        <div class="col-sm-2" id="desc">
+            @Html.RadioButtonFor(o => o.IsSorting, "false", new { @id = "Type2" })
+            <label >
+                Descending
+            </label>
+        </div>
+        <div class="col-sm-1">
+            <button id="btnSubmit" type="button" class="btn btn-success center-block" style="float: left;"
+                onclick="sub()">
+                Show</button>
+        </div>
+
+    </div>        
+              
+    //table table-bordered col-centered
+
+    if (Model.EmployeeData != null && Model.IsTeamData && Model.EmployeeData.Count > 0)
+    {
+        string Date = Model.EmployeeData[0].Date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    <div class="chart-horiz clearfix">
+        <!-- Actual bar chart -->
+        <ul class="chart" id="chart">
+            <li class="title" title='Team Entry @Date'></li>
+            @foreach (var Employee in Model.EmployeeData)
+            {
+                string Bgcolor = Employee.hoursWorked >= 8 ? "green" : Employee.hoursWorked >= 7 ? "orange" : "red";
+                <li class="current" style="margin-top:20px;" title="@Employee.empName"><span class="bar" style="background-color:@Bgcolor;" data-number="@Employee.hoursWorked">
+                </span><span class="number">@Employee.hoursWorked</span></li>
+               
+            }
+        </ul>
+    </div>
+    }
+
+    else if (Model.EmployeeData.Count > 0)
+    {
+    <strong>Work hours</strong>
+    <span>L-Leave OEM-Out Entry</span>
+    <div id="chart3" style="height: 250px; width: 100%">
+    </div>            
+    }
+    else
+    {
+        string BG = "Red";
+    <div class="chart-horiz clearfix" id="time">
+        <ul class="chart">
+            <li class="current" style="margin-top: 20px;" title="Time Entry Records not Found">
+                <span class="bar" style="background-color: @BG; height:20px;" data-number="10"></span>
+            </li>
+        </ul>
+    </div>
+    }
+
+    
+    
+    
+   }

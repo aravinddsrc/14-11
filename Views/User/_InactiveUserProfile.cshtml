@@ -1,0 +1,89 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.UserModel>
+@{          
+     
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+<table class="table table-bordered datatable" id="tblInactiveUsers">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </th>
+            <th></th>
+
+            @if (!ViewBag.IsResigned)
+            {
+                <th></th>
+                <th></th>
+                <th></th>
+            }
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpID)
+                @Html.HiddenFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAddress)
+            </td>
+            <td>
+              
+                <a>
+              
+                    <button type="button" class="btn btn-info btn-icon icon-left" onclick='ViewUser("@item.UserId")'>
+                        <i class="entypo-info"></i>View
+                    </button>
+                </a>
+            </td>
+           @if (!ViewBag.IsResigned)
+           {
+                <td>
+                    <a>
+                        <button type="button" class="btn btn-info btn-icon icon-left" onclick='ResetPassword("@item.UserId","@item.EmailAddress")'>
+                            <i  class="entypo-key"></i>Reset
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a>
+                        <button type="button" class="btn btn-info btn-icon icon-left" onclick='UserDetails("@item.UserId")'>
+                            <i class="entypo-info"></i>Edit
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a>
+                        <button type="button" class="btn btn-red btn-icon icon-left" onclick='DeleteUser("@item.UserId")'>
+                            <i class="entypo-cancel"></i>Delete
+                        </button>
+                    </a>
+                </td>            
+           }
+        </tr>
+            
+    }
+</table>

@@ -1,0 +1,246 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style>
+        .abc {
+            background-color: #ffb3b3;
+        }
+    </style>
+    <style type="text/css">
+        table td:nth-child(2) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        table td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        
+        .dropdown-menu {
+    background-color: white;
+}
+
+        body {
+            overflow-y: auto;
+        }
+    </style>
+
+     
+        
+}
+@*<ol class="breadcrumb bc-3">
+    <li>Calendar</li>
+    <li class="active"><strong>Event Permission</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("mycalendar","mycalendar")"style="color:black ">
+            Calendar
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Calendar Permission</b>
+    </p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Calendar Permission
+                </div>
+            </div>
+
+            <div class="panel-body">
+                @using (Html.BeginForm("CreateEventPermission", "MyCalendarEventPermission", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: right">
+                            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.Label("User Name", new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                @Html.DropDownList("from", (MultiSelectList)ViewBag.UnAuthorizedUsers, new { @name = "from", @class = "form-control", @id = "multiselect", @multiple = "multiple", @size = "8", @style = "height:200px" })
+                                <span id="spanmultiselect" style="color:Red"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" style="text-align: center">
+                            <br /><br /><br /><br /><br />
+                            <button type="button" id="multiselect_rightSelected" class="btn btn-block">
+                                <i class="glyphicon glyphicon-chevron-right"></i>
+                            </button>
+                            <button type="button" id="multiselect_leftSelected" class="btn btn-block">
+                                <i class="glyphicon glyphicon-chevron-left"></i>
+                            </button>
+                        </div>
+                        <div class="col-xs-4"> 
+                            <div class="form-group">
+                                @Html.Label("Authorized Users", new { @class = "control-label" })
+                                @Html.Label(" *", new { @style = "color:#FF0000" })
+                                <select name="to" id="multiselect_to" class="form-control" multiple="multiple"  style="height:200px">
+                                    @if (ViewBag.AuthorizedUsers != null)
+                                    {
+                                        foreach (var user in ViewBag.AuthorizedUsers)
+                                        {
+                                            <option value="@user.Value">@user.Text</option>
+                                        }
+                                    }
+                                </select>
+                                <span id="spanmultiselect_to" style="color:Red"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div style="float:right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ClearSelection()">
+                        Clear
+                    </button>
+                    <button type="submit" id="btnAdd" class="btn btn-info" onclick="Access()">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+    <script src="../../Completion/3.34.js" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        
+        $(document).ready(function () {
+            $('#multiselect').multiselect();
+        });
+        
+        $('#multiselect').multiselect({
+
+
+                startUp: function ($left, $right) {
+
+                    $right.find('option').each(function (index, option) {
+                        $left.find('option[value="' + option.value + '"]').remove();
+                    });
+                },
+                beforeMoveToRight: function ($left, $right, options) { return true; },
+                afterMoveToRight: function ($left, $right, options) { },
+                beforeMoveToLeft: function ($left, $right, option) { return true; },
+                afterMoveToLeft: function ($left, $right, option) { },
+                sort: function (a, b) {
+
+                    if (a.innerHTML == 'NA') {
+                        return 1;
+                    } else if (b.innerHTML == 'NA') {
+                        return -1;
+                    }
+                    return (a.innerHTML > b.innerHTML) ? 1 : -1;
+                }
+            });
+
+    </script>
+    <script type="text/javascript">
+        function Access() {
+           
+           
+
+
+
+            $("#multiselect_to option").prop("selected", "selected");
+
+            var from = $("#multiselect").val();
+            var to = $("#multiselect_to").val();
+
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            if (document.getElementById('multiselect_to').value == '') {
+                document.getElementById("spanmultiselect_to").innerHTML = "Assign User";
+            }
+            else {
+
+                document.getElementById("spanmultiselect_to").innerHTML = "";
+
+                $("#multiselect_to option").prop("selected", "selected");
+                
+                    var from = $("#multiselect").val();
+                    var to = $("#multiselect_to").val();
+                    
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+                $.ajax({
+                    url: "@Url.Action("CreateEventPermission", "MyCalendarEventPermission")",
+                    type: "POST",
+                    data: { From: from, To: to },
+                    traditional: true,
+                    //global: false,
+                    success: function (result) {
+                        if (result == "Authorize") {
+                            toastr.success("Users Authorized", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                        else if (result == "UnAuthorize") {
+                            toastr.success("Users UnAuthorized", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                });
+
+            }
+
+
+            //added on 9/7
+            //  var ausers = document.getElementById('multiselect_to').value;    //$("#multiselect_to").val();
+    
+                if (document.getElementById('multiselect_to').value == null || document.getElementById('multiselect_to').value == "")
+                             
+                document.getElementById('spanmultiselect_to').innerText = "Select Authorized Users";
+                 else
+                document.getElementById("spanmultiselect_to").innerText = "";
+            //ends
+
+        }
+        function ClearSelection() {
+            $("#multiselect option:selected").removeAttr("selected");
+            $("#multiselect_to option:selected").removeAttr("selected");
+        }
+
+    </script>
+}

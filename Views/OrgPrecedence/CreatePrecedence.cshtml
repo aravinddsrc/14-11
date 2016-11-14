@@ -1,0 +1,196 @@
+﻿@model  DSRCManagementSystem.Models.OrgPrecedence
+@{
+    ViewBag.Title = "Create Precedence";
+    Layout = null;
+}
+<! DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create New Precedence</title>
+    <link href="../../Content/Template/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+     <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Create Precedence</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("CreatePrecedence", "OrgPrecedence", FormMethod.Post))
+            {   
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DepartmentID, (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.DropDownList("DepartmentId", ViewBag.DepartmentIdList as SelectList, new { @id = "DepartmentId", @name = "DepartmentName", @class = "form-control", @onchange = "CallChangefunc(this.value)" })
+                            <span id="span_Department" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div id="dpdw_UserName" class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.DropDownList("UserName", ViewBag.FirstNameList as SelectList, new { @id = "UserID", @name = "FirstName", @class = "form-control" })
+                            <span id="span_UserName" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>               
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.PrecedenceOrder, new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.PrecedenceOrder, new { @id = "PrecedenceOrder", @name = "PrecedenceOrder", @class = "form-control", @placeholder = Resources.Resource.DN_PrecedenceModel_PrecedenceOrder, @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @maxlength = "10" })
+                            <span id="span_Precedence" style="color: Red;"></span><span id="span_PrecedenceEmployeeCheck" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="AddNewPrecedence()">
+                Save
+            </button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function CallChangefunc(val) {
+            $.ajax({ url: "../../OrgPrecedence/DropDownFilter/" + val,
+                type: 'POST',
+                dataType: "json",
+                success: function (result) {
+                    $("#UserID").html("");
+                    var obj = jQuery.parseJSON(result);
+                    $.each(obj, function (key, value) {
+                        $("#UserID").append($("<option></option>").val(value.dataValue).html(value.dataText));
+                    });
+                }
+            });
+        }
+
+        function AddNewPrecedence() {
+            if (document.getElementById('UserID').value == '0') {
+                document.getElementById('span_UserName').innerHTML = "Select Employee"
+            }
+            else {
+                document.getElementById('span_UserName').innerHTML = ""
+            }
+            if (document.getElementById('DepartmentId').value == '0') {
+                document.getElementById('span_Department').innerHTML = "Select Department Name"
+            }
+            else {
+                document.getElementById('span_Department').innerHTML = ""
+            }
+            if (document.getElementById('PrecedenceOrder').value == '') {
+                document.getElementById('span_PrecedenceEmployeeCheck').innerHTML = "";
+                document.getElementById('span_Precedence').innerHTML = "Enter Precedence Order"
+            }
+            else {
+                var values =
+                {
+                    "DepartmentName": $("#DepartmentId").find("option:selected").text(),
+                    "DepartmentId": $("#DepartmentId").find("option:selected").prop("value"),
+                    "UserID": $("#UserID").find("option:selected").prop("value"),
+                    "FirstName": $("#FirstName").find("option:selected").prop("value"),
+                    "PrecedenceOrder": $("#PrecedenceOrder").val()
+                }
+                var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                $.ajax({
+                    url: "../../OrgPrecedence/CreatePrecedence/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        if (result.Result === "Success") {
+                            $("#portlet-config").modal("hide");
+                            ReloadGrid();
+                            toastr.success("Precedence order has been created successfully", opts);
+                        }
+                        if (result === "ExistingPrecedenceOrder") {
+                            //                            bootbox.alert('This Precedence order is already provided to this User..!');
+                            toastr.warning("This Precedence order is already provided to this user..!", opts);
+                        }
+                        if (result === "ExistingDepartmentPrecedenceCheck") {
+                            toastr.warning("This Precedence order is already provided to this department..!", opts);
+                        }
+                        if (result === "EmployeeCheck") {
+                            //toastr.warning("safdsf", opts);
+                            document.getElementById('span_Precedence').innerHTML = ""
+                            document.getElementById('span_UserName').innerHTML = "Please select the employee before assigning the precedence order";
+                        }
+                        if (result === "UserNameCheck") {
+                            toastr.warning("This user already got precedence order ", opts);
+                        }
+                    }
+                });
+            }
+        }
+        var specialKeys = new Array();
+        specialKeys.push(8); //Backspace
+        function IsNumeric(e) {
+            var keyCode = e.which ? e.which : e.keyCode
+            var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
+            return ret;
+        }
+    </script>
+</body>
+</html>

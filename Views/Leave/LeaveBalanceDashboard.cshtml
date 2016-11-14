@@ -1,0 +1,151 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.LeaveBalance>
+@{
+    Layout = null;
+}
+
+<style>
+    .num a
+    {
+        text-decoration: underline;
+        
+    }
+    .num {
+    height:30px;
+    
+    }
+    .tile-stats {
+        border-radius: 20px;
+        display: block;
+        margin-bottom: 20px;
+        overflow: hidden;
+        padding: 20px;
+        position: relative;
+        transition: all 300ms ease-in-out 0s;
+    }
+
+     
+      .dropdown-menu {
+    background-color: white;
+}   
+       
+   
+</style>
+    
+<div class="row" >
+    @{
+        Random r = new Random();
+        Dictionary<int, string> colorsList = new Dictionary<int, string>()
+        {
+            {1, "red"},
+            {2, "green"},
+            {3, "blue"},
+            {4, "aqua"},
+            {5, "purple"},
+            {6, "pink"},
+            {7, "cyan"},
+            {8, "pink"},
+            {9, "plum"},
+            {10, "orange"},
+            {11, "gray"}            
+        };
+        var count = 1;
+    }
+    @foreach (var item in Model)
+    {
+        if (@item.LeaveTypeId < 4)
+        {
+           <div class="col-md-2 col-lg-3">
+                <div class="tile-stats tile-@colorsList[count++]">    
+                  <div class="num" style="font-size:30px;height:80px">
+                        @if (item.RemainingDays != item.DaysAllowed)
+                        {
+                            if (item.RemainingDays <= 0)
+                            {
+                                <a style="color: White; cursor:pointer;font-size:30px" onclick="LeaveDetails('@Session["UserID"]',@item.LeaveTypeId)">0</a>
+                            }
+                            else
+                            {
+                              <a style="color: White; cursor:pointer;font-size:30px" onclick="LeaveDetails('@Session["UserID"]',@item.LeaveTypeId)">@item.RemainingDays</a>
+                            }
+                        }
+                        else
+                        {
+                           @item.RemainingDays.ToString()
+                        }
+                        /@item.DaysAllowed
+                   
+                    
+                    <h3 style="height:30px;font-size:16px;text-align:left">
+                    Days available in @item.LeaveType</h3>
+                       </div>
+                    
+            </div>
+        </div>
+
+        }
+    }
+
+    <div class="col-md-2 col-lg-3">
+                <div class="tile-stats tile-@colorsList[count++]">    
+                  <div class="num" style="font-size:30px;height:80px">
+                  
+                @ViewBag.TotalHoursWorked / @ViewBag.WorkingHoursInMonth 
+                       
+           
+                    
+                <h3 style="height:30px;font-size:16px;text-align: left">Total / Actual working Hours for @DateTime.Today.AddMonths(-1).ToString("MMMM")</h3>
+                       </div>
+        </div>
+        </div>
+    
+    @foreach (var item in Model)
+    {
+        if (@item.LeaveTypeId == 5 || @item.LeaveTypeId == 6)
+        {
+            if (@item.UsedDays > 0)
+            {
+                    <div class="col-md-2 col-lg-3">
+                      <div class="tile-stats tile-@colorsList[count++]">            
+                        <div class="num" style="font-size:30px;height:80px">                   
+                           <a style="color: White; cursor:pointer;font-size:30px" onclick="LeaveDetails('@Session["UserID"]',@item.LeaveTypeId)">@item.UsedDays</a>
+                            <h3 style="height: 30px;font-size:16px;text-align: left">Days used in @item.LeaveType</h3>
+                         </div>
+                            
+                        </div>
+                    </div>
+            }
+        }
+    }
+
+    @if (ViewBag.YearlyLOP > 0)
+    {
+
+       <div class="col-md-2 col-lg-3">
+         <div class="tile-stats tile-@colorsList[count++]">
+            <div class="num" style="font-size:30px;height:80px">
+             @if (ViewBag.MonthlyLOP > 0)
+              { 
+               <a style="color: White; cursor:pointer;font-size:30px" onclick="LOPLeaveDetails('@Session["UserID"]',true)">@ViewBag.MonthlyLOP</a>
+              }
+              else
+              {
+                 @ViewBag.MonthlyLOP
+              }
+             /
+               @if (ViewBag.YearlyLOP > 0)
+                { 
+                   <a style="color: White; cursor:pointer;font-size:30px" onclick="LOPLeaveDetails('@Session["UserID"]',false)">@ViewBag.YearlyLOP</a>
+                }
+                else
+                {
+                   @ViewBag.YearlyLOP
+                }
+               <h3 style="height: 30px;font-size:16px;text-align: left">
+                Monthly / Yearly LOP for @ViewBag.year</h3>
+            </div>
+              
+         </div>
+        </div>
+    }
+
+</div>

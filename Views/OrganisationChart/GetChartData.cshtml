@@ -1,0 +1,123 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Organisationchart>
+@{
+    ViewBag.Title = "Organisation Chart";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead
+{
+ }
+<script type="text/javascript" src="../../Content/JS/1.8.3jquery.min.js" ></script>
+
+<script  type="text/javascript" src="../../Content/JS/Jsapi.js" ></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+    });
+        function changecolor() {
+            var values = {
+                "UserId": $("#User").val()
+            }
+            $.ajax({
+                url: "../../OrganisationChart/ChangeUser/",
+                type: 'GET', cache: false, data: values,
+                success: function (result) {
+                    //  window.location.href = '@Url.Action("NewLogin", "User")' + '?ColorId=' + result;
+                    window.location.href = '@Url.Action("GetChartData","OrganisationChart")' + '?UserId=' + result;
+                }
+            });
+        }
+</script>
+<style>
+
+    .google-visualization-orgchart-noderow-small  {
+        font-size:large;
+    }
+</style>
+
+<script type="text/javascript">
+
+    google.load("visualization", "1", { packages: ["orgchart"] });
+    google.setOnLoadCallback(drawChart);
+
+    function drawChart() 
+    {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Entity');
+        data.addColumn('string', 'ParentEntity');
+        data.addColumn('string', 'ToolTip');
+
+        var jsList = @Html.Raw(Json.Encode(ViewBag.orgChart));
+        //var jsList = JSON.parse(jsonList);  
+
+       for(var i = 0; i < jsList.length; i++) 
+         {
+        // var UserId = jsList[i][5] == true ? jsList[i][0].toString() : "DefaultImage";
+            var UserId =jsList[i][0].toString();
+            var Image =jsList[i][5];
+           // var UserId = jsList[i][5] == true ? jsList[i][0].toString() : "DefaultImage";
+            var UserName = jsList[i][1];
+            var Designation =jsList[i][2];
+            var ReportingUserID = jsList[i][3] != null ? jsList[i][3].toString() : '';
+            var ReporterName = jsList[i][4] != null ? jsList[i][4].toString() : '' ;
+            if(Image == false)
+            {
+            data.addRows([[{ v: UserId ,
+
+                f: UserName + '<div>(<span>' +Designation + '</span>)</div><img width="50px" height="50px"  src  = "../../UsersData/Logo/Images/' +  "DefaultImage" + '.jpg" />'
+                            
+            },ReporterName , ReporterName]]);
+
+            }
+            else
+            {
+                 data.addRows([[{ v: UserId,
+
+                f: UserName + '<div>(<span>' +Designation + '</span>)</div><img width="50px" height="50px"  src  = "../../UsersData/Logo/Images/' + UserId + '.jpg" />'
+                            
+            },ReporterName, ReporterName]]);
+
+            }
+
+        }
+       
+        var chart = new google.visualization.OrgChart($("#chart")[0]);
+        chart.draw(data ,{ allowHtml: true,size:'small',width:'100%'});
+        
+     }
+</script>
+
+
+    
+
+ 
+<ol class="breadcrumb bc-3">
+    <li><b>Organisation Chart</b> </li>
+</ol>
+<br />
+<br />
+ <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                  <div class="col-md-1" style=" padding-top:13px;padding-left:50px;">
+              Users
+            </div>
+
+             <div class="col-md-3" >                   
+            @*  @Html.DropDownList("UserId", ViewBag.ReportingPersons as SelectList, new { @id = "Users", @class = "form-control select2", @style = "height:42px;" })*@
+               @*  @Html.DropDownList("UserId", ViewBag.ReportingPersons as SelectList, "Select", new { @id = "Project", @name = "Project",@class = "form-control", @Onchange = "changeProject()", @style = "Height:42Px" })*@
+                   @Html.DropDownList("UserId", ViewBag.ReportingPersons as SelectList, "All Users", new { @id = "User", @name = "User", @class = "form-control", @style = "Height:42Px" ,@Onchange="changecolor()"})
+            </div>                                              
+                                                                               <div id="chart" style="overflow: auto;
+    margin-top: 78px;">
+
+                </div>
+                
+                            <br />
+                           
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+

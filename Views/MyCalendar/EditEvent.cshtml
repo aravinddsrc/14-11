@@ -1,0 +1,307 @@
+﻿@model DSRCManagementSystem.Models.CalendarEventModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditEvent</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/ColorPicker/spectrum.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="~/Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="~/Content/ColorPicker/spectrum.js" type="text/javascript"></script>
+    <script src="~/Content/moment.js" type="text/javascript"></script>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}    
+</style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(function() {
+                $('div > .sp-preview').css({ 'width': '229px' })
+            });
+            $("#IdUsers").select2();
+            var date = new Date();
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            $('#IdStartDate').datepicker({
+                format: 'dd-mm-yyyy',
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true,
+                todayHighlight: true,
+                startDate: today
+            });
+            $('#IdEndDate').datepicker({
+                format: 'dd-mm-yyyy',
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true,
+                todayHighlight: true,
+                startDate: today
+            });
+            $(".StartTime").datetimepicker({
+                pickDate: false,
+                format: 'HH:mm',
+            });
+            $(".EndTime").datetimepicker({
+                pickDate: false,
+                format: 'HH:mm',
+            });
+            $("#IdColorCode").spectrum({
+                color: document.getElementById('IdColorCode').value
+            });
+            $(function () {
+                $('div > .sp-preview').css({ 'width': '229px' })
+                $('div > .sp-picker-container').css({ 'width': '230px' })
+            })
+        });
+
+        function UpdateEvent() {
+           
+            var d = new Date();
+            d.getHours();
+            d.getMinutes();
+            d.getSeconds();
+            //if (document.getElementById('IdEventName').value == "" /*|| document.getElementById('IdEventDesc').value == ""*/
+            //    || document.getElementById('IdStartDate').value == "" || document.getElementById('IdEndDate').value == ""
+            //    || document.getElementById('IdStartTime').value == "" || document.getElementById('IdEndTime').value == ""
+            //     || document.getElementById('IdColorCode').value == "" || document.getElementById('IdUsers').value == ""
+            //    || $("#IdEndDate").datepicker("getDate") < $("#IdStartDate").datepicker("getDate")
+            //    || $("#IdEndTime").val() < $("#IdStartTime").val()
+            //    || document.getElementById('IdStartDate').value == document.getElementById('IdEndDate').value) {
+
+            if (document.getElementById('IdEventName').value == "") {
+                document.getElementById("spanEventName").innerHTML = "Enter Event Name";
+            }
+                //else if (document.getElementById('IdEventDesc').value == "")
+                //    document.getElementById("spanEventDesc").innerHTML = "Enter Event Description";
+            else if (document.getElementById('IdStartDate').value == "") {
+                document.getElementById("spanstartdate").innerHTML = "Select Start Date";
+            }
+            else if (document.getElementById('IdEndDate').value == "")
+                document.getElementById("spanenddate").innerHTML = "Select End Date";
+            else if (document.getElementById('IdStartTime').value == "") {
+                document.getElementById("spanstarttime").innerHTML = "Select Start Time";
+            }
+            else if (document.getElementById('IdEndTime').value == "")
+                document.getElementById("spanendtime").innerHTML = "Select End Time";
+            else if (document.getElementById('IdUsers').value == "")
+                document.getElementById("spanusers").innerHTML = "Select Users";
+            
+            else if ($("#IdEndDate").datepicker("getDate") < $("#IdStartDate").datepicker("getDate")) {
+                document.getElementById("spanenddate").innerHTML = "EndDate Should Not be Lesser Than StartDate";
+            }
+            //else if (document.getElementById('IdStartDate').value == document.getElementById('IdEndDate').value) {
+            //    document.getElementById("spanenddate").innerHTML = "End Date Should Not be Same as Start Date"
+            //}
+            else if ($("#IdEndTime").val() < $("#IdStartTime").val()) {
+                document.getElementById("spanendtime").innerHTML = "EndTime Should Not be Lesser Than StartTime";
+            }
+            else if ($("#IdEndTime").val() == $("#IdStartTime").val()) {
+                document.getElementById("spanendtime").innerHTML = "EndTime Should Not be Same as StartTime";
+            }
+            else if (document.getElementById('IdColorCode').value == "")
+                document.getElementById("spancolorcode").innerHTML = "Select Event Color";
+            else if (document.getElementById('IdUsers').value == "") {
+                document.getElementById("spanusers").innerHTML = "Select Event Members";
+            }
+            //else if ($("#IdStartDate").val().split(' ').slice(0, 1).join(' ') == moment().format("DD-MM-YYYY")
+            //    && document.getElementById('IdStartTime').value < d.getHours() + ":" + d.getMinutes()) {
+
+            //    if ($("#IdStartDate").val().split(' ').slice(0, 1).join(' ') == moment().format("DD-MM-YYYY")) {
+            //        if (document.getElementById('IdStartTime').value < d.getHours() + ":" + d.getMinutes()) {
+            //            document.getElementById("spanstartdate").innerHTML = "StartTime Should Not be Less Than Current Time"
+            //        }
+            //        else {
+            //            document.getElementById("spanstartdate").innerHTML = ""
+            //        }
+            //    }
+            //}
+            //else if ($("#IdEndDate").val().split(' ').slice(0, 1).join(' ') == moment().format("DD-MM-YYYY")
+            //    && document.getElementById('IdEndTime').value < d.getHours() + ":" + d.getMinutes()) {
+            //    if ($("#IdEndDate").val().split(' ').slice(0, 1).join(' ') == moment().format("DD-MM-YYYY")) {
+            //        if (document.getElementById('IdEndTime').value < d.getHours() + ":" + d.getMinutes()) {
+            //            document.getElementById("spanenddate").innerHTML = "EndTime Should Not be Less Than Current Time"
+            //        }
+            //        else {
+            //            document.getElementById("spanenddate").innerHTML = ""
+            //        }
+            //    }
+            //}
+            else {
+                var values =
+             {
+                 "EventId": $("#EventId").val(),
+                 "EventName": $("#IdEventName").val(),
+                 "EventDescription": $("#IdEventDesc").val(),
+                 "StartDate": $("#IdStartDate").val() + " " + $("#IdStartTime").val(),
+                 "EndDate": $("#IdEndDate").val() + " " + $("#IdEndTime").val(),
+                 "StartTime": $("#IdStartTime").val(),
+                 "EndTime": $("#IdEndTime").val(),
+                 "Members": $("#IdUsers").val().toString(),
+                 "ColorCode": $("#IdColorCode").spectrum('get').toHexString()
+             }
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                $.ajax({
+                    url: "@Url.Action("EditEvent", "MyCalendar")",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        if (result == "Success") {
+                            $("#portlet-config").modal("hide");
+                            toastr.success("Event Updated Successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h4 class="modal-title">
+                Edit Event
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.EventName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(e => e.EventName, new { @class = "form-control", @id = "IdEventName", @maxlength = "50" })
+                        @Html.HiddenFor(e => e.EventId, new { @id = "EventId" })
+                        @Html.ValidationMessageFor(e => e.EventName, " ", new { @style = "color:red" })
+                        <span id="spanEventName" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.EventDescription, new { @class = "control-label" })
+                        @*@Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                        @Html.TextAreaFor(e => e.EventDescription, new { @class = "form-control", @id = "IdEventDesc", @maxlength = "50",@style="resize:vertical;" })
+                        @Html.ValidationMessageFor(e => e.EventDescription, " ", new { @style = "color:red" })
+                        <span id="spanEventDesc" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.StartDate, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(e => e.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker", @id = "IdStartDate", @data_start_date = "d", @autocomplete = "off",@disabled="disabled" })
+                        @Html.ValidationMessageFor(e => e.StartDate, " ", new { @style = "color:red" })
+                        <span id="spanstartdate" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.EndDate, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(e => e.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker", @id = "IdEndDate", @autocomplete = "off", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(e => e.EndDate, " ", new { @style = "color:red" })
+                        <span id="spanenddate" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group StartTime">
+                        @Html.LabelFor(e => e.StartTime, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(e => e.StartTime, new { @class = "form-control", @id = "IdStartTime", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(e => e.StartTime, " ", new { @style = "color:red" })
+                        <span id="spanstarttime" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group EndTime">
+                        @Html.LabelFor(e => e.EndTime, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(e => e.EndTime, new { @class = "form-control", @id = "IdEndTime", @autocomplete = "off" })
+                        @Html.ValidationMessageFor(e => e.EndTime, " ", new { @style = "color:red" })
+                        <span id="spanendtime" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.ColorCode, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })<br />
+                        @Html.TextBoxFor(e => e.ColorCode, new { @class = "form-control", @id = "IdColorCode" })
+                        @Html.ValidationMessageFor(e => e.ColorCode, " ", new { @style = "color:red" })
+                        <span id="spancolorcode" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(e => e.Members, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.DropDownList("Userid", ViewBag.Members as MultiSelectList, new { @id = "IdUsers", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                        @Html.ValidationMessageFor(e => e.Members, " ", new { @style = "color:red" })
+                        <span id="spanusers" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Recurring Type", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+
+                        @Html.DropDownListFor(x=>x.RecurringID, ViewBag.Recurring as SelectList, "--Select--", new { @id = "RecurringType", @name = "ProjectType", @class = "form-control", @maxlength = 50, @style = "height:42px; !important",@disabled="disabled" })
+
+                     @*   @Html.DropDownListFor(e=>e.RecurringType,ViewBag.Recurring as SelectList, "--Select--", new { @id = "RecurringType", @name = "ProjectType", @class = "form-control", @maxlength = 50, @style = "height:42px; !important" })*@
+
+                        <span id="span_Recurring" style="color: Red;"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="UpdateEvent()">
+                Save
+            </button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

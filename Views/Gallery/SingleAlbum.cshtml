@@ -1,0 +1,246 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.Gallery>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Single Album</title>
+    @section AddToHead
+{
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" />
+    <link href="~/Content/Template/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/Template/css/neon-forms.css" rel="stylesheet" />
+    <link href="~/Content/Template/css/neon-theme.css" rel="stylesheet" />
+    <link href="~/Content/Template/css/neon-core.css" rel="stylesheet" />
+    <link href="~/Content/Template/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Template/js/dropzone/dropzone.css" rel="stylesheet" />
+   @* <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>*@
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+   @* <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>*@
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="~/Content/Template/js/jquery-1.11.0.min.js"></script>
+    <script src="~/Content/Template/js/dropzone/dropzone.js"></script>
+    <script src="~/Content/Template/js/gsap/main-gsap.js"></script>
+    <script src="~/Content/Template/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+  
+    <script src="~/Content/Template/js/joinable.js"></script>
+ 
+    <script src="~/Content/Template/js/neon-api.js"></script>
+ 
+    <script src="~/Content/Template/js/dropzone/dropzone.js"></script>
+    <script src="~/Content/Template/js/neon-demo.js"></script>
+	<script>$.noConflict();</script>
+        <style>
+            .gallery-env article.image-thumb .image img {
+                height:112px;
+            }
+        </style>
+}
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+<body>
+    <ol class="breadcrumb bc-3">
+        
+        <li><a>Gallery</a> </li>
+        <li class="active"><strong>EditAlbum</strong> </li>
+    </ol>
+    <br />
+
+<div class="page-container">
+	<div class="main-content">	
+	<script type="text/javascript">
+	    var opts = {
+	        "closeButton": true,
+	        "debug": false,
+	        "positionClass": "toast-top-right",
+	        "onclick": null,
+	        "showDuration": "300",
+	        "hideDuration": "1000",
+	        "timeOut": "2000",
+	        "extendedTimeOut": "1000",
+	        "showEasing": "swing",
+	        "hideEasing": "linear",
+	        "showMethod": "fadeIn",
+	        "hideMethod": "fadeOut"
+	    };
+	    function EditAlbum(AlbumID) {
+
+	        
+	        $.ajax({
+	            url: "../../Gallery/EditAlbum/" + AlbumID,
+	            type: 'GET', cache: false,
+	            success: function (result) {
+	                $('#PartialSection').html(result);
+	                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+	            }
+
+	        });
+
+	    }
+	    function EditSingleAlbum(AlbumID,AlbumPhotoID) {
+	        
+	        
+	        $.ajax({
+	            url: "../../Gallery/EditSingleAlbum/",
+	            type: 'GET', cache: false,
+	            data:{AlbumID:AlbumID,AlbumPhotoID:AlbumPhotoID},
+	            success: function (result) {
+	                $('#PartialSection').html(result);
+	                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+	            }
+
+	        });
+
+	    }
+	    function DeleteSingleAlbum(AlbumID, AlbumPhotoID) {
+	        bootbox.confirm("Are you sure want to delete ?", function (result) {
+	            if (result) {
+	                $.ajax({
+	                    url: "../../Gallery/DeleteSingleAlbum/",
+	                    type: 'POST', cache: false,
+	                    data: { AlbumID: AlbumID, AlbumPhotoID: AlbumPhotoID },
+	                    success: function (result) {
+	                        if (result == "success") {
+	                            toastr.success("Album Photo Deleted Successfully", opts);
+	                            setTimeout(function () { location.reload(); }, 1000);
+
+	                        }
+	                        else {
+	                            toastr.error("Album Photo Deletion Failed", opts);
+	                            setTimeout(function () { location.reload(); }, 1000);
+	                        }
+
+	                    }
+
+	                });
+	            }
+	        });
+	    }
+	    function BackToAlbum() {
+	        window.location.href = '@Url.Action("Album", "Gallery")';
+         }
+
+		</script>		
+       <div class="gallery-env">
+		
+			<div class="row">
+			
+				<div class="col-sm-12">
+                    <button class="btn btn-Default" style="font-weight: bold;float:right" onclick='BackToAlbum()'> Back </button>
+                    <button class="btn btn-Default" style="font-weight: bold;float:right;margin-right: 3px;" onclick="javascript:window.location.reload()"> Refresh </button>	
+					<h3>
+						@ViewBag.AlbumTitle
+						&nbsp;
+                        @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                        {
+						 <button class="btn btn-blue" style="font-weight: bold" onclick='EditAlbum(@ViewBag.AlbumID)'>
+                               <i class="entypo-pencil"></i> Edit Album
+                         </button>
+                        }
+					</h3>
+					
+					<hr />
+				</div>
+			
+			</div>
+		
+			<div class="row">
+			
+             @foreach (var image in Model)
+             {
+        
+				<div class="col-sm-2 col-xs-4" data-tag="1d">
+					
+					<article class="image-thumb">
+						
+						<a href="#" class="image" >
+                            <img src="@Url.Content(image.CoverPhotoPath)" />            
+						</a>
+                        @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                        {
+						<div class="image-options">
+							@*<a class="edit" onclick='EditSingleAlbum(@ViewBag.AlbumID,"@image.AlbumPhotoID")'><i class="entypo-pencil"></i></a>*@
+							<a class="delete" onclick='DeleteSingleAlbum(@ViewBag.AlbumID,"@image.AlbumPhotoID")'><i class="entypo-cancel"></i></a>
+						</div>
+						}
+					</article>
+				
+				</div>
+           }
+			</div>
+		
+		</div>	
+		<hr />
+		 @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+        {
+		<h3>
+			Upload More Images
+			<br />
+			<small>The upload script will generate random response status (error or success), files are not uploaded.</small>
+		</h3>
+		
+		<br />
+		<br />
+       
+         <form action="~/Gallery/AddPhotos/?AlbumID=@ViewBag.AlbumID" method="post" enctype="multipart/form-data" class="dropzone dz-min" id="dropzone_example">
+         <div class="fallback">
+                     @Html.Hidden("AlbumID",(int)@ViewBag.AlbumID, new { @id="AlbumID"})
+                    <input name="file" type="file" multiple />
+                    <input type="submit" value="Upload" />
+                </div>
+         </form>
+        }
+     	<div id="dze_info" class="hidden">
+			
+			<br />
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="panel-title">Dropzone Uploaded Images Info</div>
+				</div>
+				
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th width="40%">File name</th>
+							<th width="15%">Size</th>
+							<th width="15%">Type</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4"></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>    
+    </div>
+    </div>
+    <div class="modal fade in" id="portlet-config1"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

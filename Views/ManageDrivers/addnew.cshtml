@@ -1,0 +1,582 @@
+﻿@model DSRCManagementSystem.Models.ManageDrivers
+@{
+    Layout = null; 
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Driver</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+   
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add New Driver</h4>
+        </div>
+       @* @using (Html.BeginForm("addnew", "ManageDrivers", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+        *@<div class="modal-body">
+            
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>    
+                
+                  <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("First Name", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.First_Name,new
+                                            {
+                                                @id = "firstname",
+                                                @name = "firstname",
+                                                @class = "form-control",
+                                                @placeholder = "First Name",
+                                                @Style = "height: 43px;"
+                                            })
+                            <span id="fnameid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @* </div>
+                
+                <div class="row"> *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Last Name", new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.Last_Name, new
+                       {
+                           @id = "lastname",
+                           @name = "lastname",
+                           @class = "form-control",
+                           @placeholder = "Last Name",
+                           @Style = "height: 43px;"
+                       })
+                        </div>
+                    </div>
+                </div>   
+
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Gender", new { @class = "control-label" })
+                            @Html.DropDownListFor(x => x.Gender, ViewBag.GenderList as SelectList, "--Select--", new
+                       {
+                           @id = "gender",
+                           @name = "gender",
+                           @class = "form-control",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="genderid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @* </div>
+                
+                
+                <div class="row">*@
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("DOB", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.DOB, "{0:dd/MM/yyyy}", new
+                       {
+                           @id = "dob",
+                           @name = "dob",
+                           @class = "form-control datetimepicker",
+                           @placeholder = "DateOfBirth",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="dobid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>                             
+
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Driving License Number", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.Driver_Licence_No, new
+                       {
+                           @id = "drivinglicensenumber",
+                           @name = "drivinglicensenumber",
+                           @class = "form-control",
+                           @placeholder = "Driving License Number",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="drivinglicensenumberid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @* </div>
+                
+                <div class="row">*@
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Driving License Expiry", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.Driver_Licence_Expire_Date, "{0:dd/MM/yyyy}", new
+                       {
+                           @id = "drivinglicenseexpiry",
+                           @name = "drivinglicenseexpiry",
+                           @class = "form-control datetimepicker",
+                           @placeholder = "Driving License Expiry",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="drivinglicenseexpiryid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Email ID", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.Email_Id, new
+                       {
+                           @id = "emailid",
+                           @name = "emailid",
+                           @class = "form-control",
+                           @placeholder = "Email ID",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="emailidid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @* </div>
+                
+                <div class="row">*@
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Contact Number", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.Contact_No, new
+                       {
+                           @id = "contactnumber",
+                           @name = "contactnumber",
+                           @class = "form-control",
+                           @placeholder = "Contact Number",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="contactnumberid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Communication Address", new { @class = "control-label" })
+                          @*  @Html.Label("*", new { @style = "color:#FF0000" })*@
+                            @Html.TextAreaFor(x => x.Communication_Address, new
+                       {
+                           @id = "communicationaddress",
+                           @name = "communicationaddress",
+                           @class = "form-control",
+                           @placeholder = "Communication Address",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="span_ID14" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @*</div>
+                
+                <div class="row">*@
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Blood Group", new { @class = "control-label" })
+                             @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownListFor(x => x.Blood_Group, ViewBag.BloodGroupList as SelectList, "--Select--", new
+                       {
+                           @id = "bloodgroup",
+                           @name = "bloodgroup",
+                           @class = "form-control",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="bloodgroupid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Driver Batch No", new { @class = "control-label" })
+                           
+                            @Html.TextAreaFor(x => x.Driver_Batch_No, new
+                       {
+                           @id = "driverbatchno",
+                           @name = "driverbatchno",
+                           @class = "form-control",
+                           @placeholder = "Driver Batch No",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="driverbatchnoid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    @*</div>
+                
+                <div class="row">*@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Driver Type", new { @class = "control-label" })
+                              @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownListFor(x => x.DriverType_Id, ViewBag.DriverTypeList as SelectList, "--Select--", new
+                       {
+                           @id = "drivertype",
+                           @name = "drivertype",
+                           @class = "form-control",
+                           @Style = "height: 43px;"
+                       })
+                            <span id="drivertypeid" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Document(Proof)", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                             @Html.TextBoxFor(i => i.Documents, new { @id = "fileid", @name= "fileid", @class = "form-control", @type = "file" })
+
+                            @* <input type="file" name="Photo" id="file" accept=".gif,.jpg,.jpeg,.png" style="width: 100%;" />
+                           @Html.ValidationMessageFor(x => x.Photo, "", new { @style = "color:red; height: 43px;" })  *@
+                            <span id="fileid1" style="color: Red;"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            @Html.Label("Photo", new { @class = "control-label" })  
+                              @Html.Label("*", new { @style = "color:#FF0000" })  
+
+                              @Html.TextBoxFor(i => i.Pictures, new { @id = "photoid", @name = "photoid", @class = "form-control", @type = "file" })
+                              @* <input type="file" name="Picture" id="pictureid" accept=".gif,.jpg,.jpeg,.png" />
+                          @Html.ValidationMessageFor(x => x.Picture, "", new { @style = "color:red; height: 43px;" })    *@
+                            <span id="photoid1" style="color: Red;"></span>
+                        </div>
+                    </div>
+
+                </div>
+               
+                
+            </div>
+     
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+    
+              <input type="submit" id="btnAdd" class="btn btn-info" onclick="return add()" value="Save" />            
+             </div>
+            @*}*@ 
+    </div>
+    <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $("#gender").select2();
+        $("#bloodgroup").select2();
+        $("#drivertype").select2();
+        //$("#gender").select2();
+        //$("#gender").select2();
+        //$("#gender").select2();
+
+      $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            orientation: 'auto top',
+            autoclose: true,
+
+        }).on('hide', function () {
+            if (!this.firstHide) {
+                if (!$(this).is(":focus")) {
+                    this.firstHide = true;
+                    // this will inadvertently call show (we're trying to hide!)
+                    this.focus();
+                }
+            } else {
+                this.firstHide = false;
+            }
+        }).on('show', function () {
+            if (this.firstHide) {
+                // careful, we have an infinite loop!
+                $(this).datepicker('hide');
+            }
+        });
+
+     
+        function add() {
+            var submitForm = true;
+        
+            debugger;
+       
+
+          var emailfilter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+         var FirstName = $("#firstname").val();
+         var FirstNametrim = FirstName.replace(/\s/g, "").length;
+         var LastName = $("#lastname").val();
+         var LastNametrim = LastName.replace(/\s/g, "").length;
+         var DOB = $("#dob").val()
+         var drivinglicensenumber = $("#drivinglicensenumber").val();
+         var drivinglicensenumbertrim = drivinglicensenumber.replace(/\s/g, "").length;
+         var drivinglicenseexpiry = $("#drivinglicenseexpiry").val();
+         var Empid = $("#emailid").val();
+         var EmpidTrim = Empid.replace(/\s/g, "").length;
+         var contactnumber = $("#contactnumber").val();
+         var contactnumbertrim = contactnumber.replace(/\s/g, "").length;
+         var bloodgroup = $("#bloodgroup").val();
+         var driverbatchno = $("#driverbatchno").val();
+         var driverbatchnotrim = driverbatchno.replace(/\s/g, "").length;
+         var drivertype = $("#drivertype").val();
+         var documents = $("#fileid").val();
+         var photo = $("#photoid").val();
+
+
+         
+
+                    if (FirstName== '' || FirstNametrim=='' ) 
+                    {
+                         document.getElementById("fnameid").innerHTML = "Enter valid name";
+                         submitForm = false;
+                     }
+                     else 
+                     {
+                      document.getElementById("fnameid").innerHTML = "";
+                     }
+                     if(DOB == '')
+                     {
+                        document.getElementById("dobid").innerHTML = "Enter valid DOB";
+                        submitForm = false;
+                     }
+                     else 
+                     {
+                        document.getElementById("dobid").innerHTML = "";
+                     }
+                     if(drivinglicensenumber == '' ||drivinglicensenumbertrim =='')
+                     {
+                        document.getElementById("drivinglicensenumberid").innerHTML = "Enter valid Driving License Number";
+                        submitForm = false;
+                     }
+                     else if (isNaN(drivinglicensenumber)|| isNaN(drivinglicensenumbertrim))
+                     {
+                     document.getElementById("drivinglicensenumberid").innerHTML = "Enter valid Driving License Number";
+                     submitForm = false;
+                     }
+                      else 
+                      {
+                      document.getElementById("drivinglicensenumberid").innerHTML = "";
+                      }
+                      if(drivinglicenseexpiry == '' )
+                     {
+                        document.getElementById("drivinglicenseexpiryid").innerHTML = "Enter valid Driving License Expiry date";
+                        submitForm = false;
+                     }
+                     else 
+                     {
+                     document.getElementById("drivinglicenseexpiryid").innerHTML = "";
+                     }
+                     if(Empid == '' ||EmpidTrim =='' || !emailfilter.test(Empid) )
+                     {
+                        document.getElementById("emailidid").innerHTML = "Enter valid Email ID";
+                        submitForm = false;
+                     }
+                     else 
+                     {
+                        document.getElementById("emailidid").innerHTML = "";
+                     }
+                     if(contactnumber == '' ||contactnumbertrim =='')
+                     {
+                        document.getElementById("contactnumberid").innerHTML = "Enter valid contact no";
+                        submitForm = false;
+                     }
+                     else 
+                     if (isNaN(contactnumber)|| isNaN(contactnumbertrim))
+                     {
+                        document.getElementById("contactnumberid").innerHTML = "Enter valid contact no";
+                        submitForm = false;
+                     }
+                     else if(contactnumbertrim > 10 || contactnumbertrim < 10)
+                     {
+                        document.getElementById("contactnumberid").innerHTML = "Enter valid contact no";
+                        submitForm = false;
+                     }
+                     else 
+                     {
+                        document.getElementById("contactnumberid").innerHTML = "";
+                     }
+                     if(bloodgroup == '')
+                     {
+                        document.getElementById("bloodgroupid").innerHTML = "Select Blood Group";
+                        submitForm = false;
+                     }
+                     else 
+                     {
+                        document.getElementById("bloodgroupid").innerHTML = "";
+                     }
+                     if(driverbatchno == '' || driverbatchnotrim == '')
+                     {
+                        document.getElementById("driverbatchnoid").innerHTML = "Enter Valid Driver Batch No";
+                        submitForm = false;
+                     }
+                      else if (isNaN(driverbatchno)|| isNaN(driverbatchnotrim))
+                      {
+                      document.getElementById("driverbatchnoid").innerHTML = "Enter Valid Driver Batch No";
+                      submitForm = false;
+                      }
+                      else 
+                      {
+                      document.getElementById("driverbatchnoid").innerHTML = "";
+                      }
+                      if(drivertype == '')
+                      {
+                      document.getElementById("drivertypeid").innerHTML = "Select Driver Type";
+                      submitForm = false;
+                      }
+                      else{
+                        document.getElementById("drivertypeid").innerHTML = "";   
+                      }
+                      if(documents == '')
+                     {
+                        document.getElementById("fileid1").innerHTML = "Choose Document Proof File";
+                        submitForm = false;
+                     }
+                      else
+                     {
+                        document.getElementById("fileid1").innerHTML = "";                         
+                     }
+
+                      if(photo == '')
+                     {
+                        document.getElementById("photoid1").innerHTML = "Choose Photo";
+                        submitForm = false;
+                     }
+                      else
+                     {
+                        document.getElementById("photoid1").innerHTML = "";                         
+                     }
+
+                      if (submitForm == true)
+                      {
+                          var values =
+                       {
+                           "First_Name": $("#firstname").val(),
+                           "Last_Name": $("#lastname").val(),
+                           "Gender": $("#gender").val(),
+                           "DOB": $("#dob").val(),
+                           "Driver_Licence_No": $("#drivinglicensenumber").val(),
+                           "Driver_Licence_Expire_Date": $("#drivinglicenseexpiry").val(),
+                           "Email_Id": $("#emailid").val(),
+                           "Contact_No": $("#contactnumber").val(),
+                           "Communication_Address": $("#communicationaddress").val(),
+                           "Blood_Group": $("#bloodgroup").val(),
+                           "Driver_Batch_No": $("#driverbatchno").val(),
+                           "DriverType_Id": $("#drivertype").val(),
+                           "Documents": $("#fileid").val(),
+                           "Pictures": $("#photoid").val(),
+
+
+
+
+
+
+
+                       }
+                          var opts =
+                                 {
+                                     "closeButton": true,
+                                     "debug": false,
+                                     "positionClass": "toast-top-right",
+                                     "toastClass": "White",
+                                     "onclick": null,
+                                     "showDuration": "300",
+                                     "hideDuration": "1000",
+                                     "timeOut": "2000",
+                                     "extendedTimeOut": "1000",
+                                     "showEasing": "swing",
+                                     "hideEasing": "linear",
+                                     "showMethod": "fadeIn",
+                                     "hideMethod": "fadeOut"
+                                 }
+
+                          $.ajax({
+                              url: "../../ManageDrivers/addnew/",
+                              type: 'POST',
+                              cache: false,
+                              data: values,
+                              traditional: true,
+                              global: false,
+                              success: function (result) {
+                                  debugger;
+                                  if (result == "Success") {
+                                      $("#portlet-config").modal("hide");
+                                      toastr.success(" Driver added successfully", opts);
+                                      setTimeout(function () { location.reload(); }, 1000);
+
+                                  }
+
+                              }
+
+                          });
+                      }
+
+
+                     }
+     
+        
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

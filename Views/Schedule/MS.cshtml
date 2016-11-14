@@ -1,0 +1,328 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.ProjectMom>
+@{
+    ViewBag.Title = "ScheduleAttendees";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead {
+
+   <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+}
+@{
+    int SNO = 1;
+}  
+ <p>
+     <a style="color:black ">
+            Administration Setup
+        </a>
+    @*      &#160;<img src="~/Images/righ-arrow.png" />&#160;
+       <a href="@Url.Action("MeetingSchedule","MeetingSchedule")"style="color:black ">
+        Meeting Schedule
+           </a>*@
+     &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b> Meeting Schedule Attendees</b>
+    </p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                   Meeting Schedule Attendees
+                </div>
+
+            </div>
+           
+                <!-- panel body -->                   
+                  
+                <div class="panel-body" style="overflow: auto">  
+                     <div class="form-group">
+                                    <div class="row">
+                                      
+                                    <div class="col-md-3" style="float: right" id="btnAdd2">
+                                            <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddNew()'>
+                                            Add Attendees 
+                                                </button>
+                                        </div>                                          
+                   
+                                        </div>
+                                       
+                          
+                                        
+                                                  
+                                    </div>
+                                    <br />              
+                         
+
+                    @using (Html.BeginForm("administrationsetup","manage", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblRoles">
+                            <thead>
+                                <tr>
+                                     <th style="text-align:center;">
+                                       @Html.DisplayName("SNo")
+                                    </th>
+                                    <th style="text-align:center;">
+                                       @Html.DisplayName("Attendees Name")
+                                    </th>
+                                  
+                                    @* <th style="text-align:center;">
+                                     @Html.DisplayName("Schedule")
+                                    </th>*@
+                                  
+                                     <th style="text-align:center;">
+                                         @Html.DisplayName("Delete")
+                                    </th>
+                                </tr>
+                            </thead>
+                    @foreach (var item in Model)
+                                   {
+                                        <tr>
+                                           <td style="text-align: center;">
+                                               @(SNO++)
+                                            
+                                           </td>
+                                          <td>                                                          
+                                             @Html.DisplayFor(modelitem => item.Name)
+                                           </td>                                                             
+                                          @*  <td>                                            
+                                              @Html.DisplayFor(modelitem => item.ProjectName)                                               
+                                              
+                                            </td>*@
+                                            
+                                       
+                                            
+                                             <td style="text-align: center">                                                 
+
+                                                   <a href="#" data-toggle="tooltip" title="Delete">
+                                                        <button type="button"  class="btn btn-red" onclick='Delete(@item.UserId)'>
+                                                            <i class="entypo-cancel"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>  
+                                            </tr>
+                                            }
+                                        
+                          
+
+                            </table>
+                    }
+                         </div>
+                    </div>
+            </div>
+        </div>
+
+    
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+ <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+   
+        $(document).ready(function () {
+
+            localStorage.clear();
+            var table = $("#tblRoles").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [2] }],
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+    
+        function AddNew() {
+           
+            debugger;
+            $.ajax({
+                url: "../../MeetingSchedule/ScheduleAttendees",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "500",
+            "hideDuration": "1000",
+            "timeOut": "1500",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+       
+
+        function Delete(id) {
+
+            debugger;
+            var a = -1;
+         
+            var data = @Html.Raw(Json.Encode(ViewData["list"]));
+
+        
+            var arrayLength = data.length;
+            for (var i = 0; i < arrayLength; i++) {
+                if(data[i]==id)
+                    {
+                
+                        a=1;
+                    }
+      
+            }
+            //for (var i = 0; i < data; i++) {
+
+            //    var t= parseInt(data[i]);
+            //    //if(data[i]==id)
+            //    //{
+                
+            //    //    a=1;
+            //    //}
+      
+            //}
+            
+
+            
+            //if(a==1)
+           
+            //{
+            //    bootbox.confirm("Are you sure want to Delete  ?", function (conform) {
+            //        if (conform) {
+            //            //$.ajax({
+            //            //    url: "../../Schedule/Delete/",
+            //            //    type: 'POST', cache: false,
+            //            //    data: { Id: id },
+            //            //    success: function (result) {
+            //            toastr.warning(" This Attendee Can't be Deleted because This Attendee is already in a Schedule !", opts);
+            //            setTimeout(function () { location.reload(); }, 4000);
+
+            //            //    }
+            //            //});
+            //        }
+            //    });
+            //}
+
+            //else
+            //{
+      
+            //    bootbox.confirm(" Are you sure want to Delete  ?", function (conform) {
+            //        if (conform) {
+            //            $.ajax({
+            //                url: "../../Schedule/Delete/",
+            //                type: 'POST', cache: false,
+            //                data: { Id: id },
+            //                success: function (result) {
+            //                    toastr.success(" Attendee deleted successfully!", opts);
+            //                    setTimeout(function () { location.reload(); }, 1000);
+
+            //                }
+            //            });
+            //        }
+            //    });
+            //}
+            //var json = null;
+            var ids1 = [];
+           
+            
+            
+            var json = (function () {
+                var json = null;
+
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    url: "../../Schedule/Data/",
+                    data: { Id: id },
+                    'dataType': "json",
+                    'success': function (data) {
+                        debugger;
+                        json = data;
+                    }
+                });
+                    return json;
+                })
+    ();
+           
+           
+
+
+@*           var url2 = '@Url.Action("Data")';
+            $.get(url2, { Id: id }, function (data) {
+                var items = [];
+                $.each(data, function () {
+                    debugger;
+                    items.push( this.Value);
+                });
+              
+            });*@
+
+
+
+            if (a==1) 
+            {
+                bootbox.confirm("This Attendee is already in <b style='color:red'>"+json+" </b> Schedule. Are you sure want to Delete ?", function (conform) {
+                    if (conform) {
+                        $.ajax({
+                            url: "../../Schedule/Delete/",
+                            type: 'POST', cache: false,
+                            data: { Id: id },
+                            success: function (result) {
+                                toastr.success(" Attendee deleted successfully and removed from all schedule!", opts);
+                                setTimeout(function () { location.reload(); }, 4000);
+
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                $.ajax({
+                    url: "../../Schedule/Delete/",
+                    type: 'POST', cache: false,
+                    data: { Id: id },
+                    success: function (result) {
+                        toastr.success(" Attendee deleted successfully!", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+                });
+            }
+            
+        
+        }
+        </script>

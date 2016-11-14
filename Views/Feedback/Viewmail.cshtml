@@ -1,0 +1,59 @@
+﻿@model DSRCManagementSystem.Models.Feedback
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    @{
+    int SNO = 1;
+}
+
+<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ShowFeedback","Feedback")">Feedback</a> </li>
+    <li class="active"><strong>View Feedback</strong> </li>
+</ol>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a href="@Url.Action("ShowFeedback", "Feedback")">x</a></button>
+            <h4 class="modal-title">View Feedback</h4>
+        </div>
+
+        <div class="modal-body">
+      <div class="mail-body">
+                    <div class="mail-info" style="background-color: lightgray; margin-left: -20px; margin-right: -20px;">
+                        <div class="mail-sender dropdown">
+                            <a href="#" class="dropdown-toggle" style="font-size: x-large;" data-toggle="dropdown">
+                                <img src="/User/RetrieveImage/@Session["ProfileId"]" class="img-circle" style="height: 119px; width: 140px;">
+                                @Html.DisplayFor(x=>x.UserName) to <span>me</span> </a>
+                              
+                            <div class="mail-date" style="font-size: large; float: right;">
+                                @Html.DisplayFor(x=>x.FeedbackDate)
+                                 
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="mail-text">
+                        <p style="font-size:medium ; margin-left: 20px;" id="textarea">  @Html.Raw(Html.Encode(@Model.Feedbacks ?? string.Empty).Replace("\n", "<br />"))</p>
+                    </div>
+           
+
+                </div>
+        
+        </div> 
+    <br />   
+     <div style="text-align: right">
+        <button type="button" class="btn btn-default" onclick="window.location.href='/Feedback/ShowFeedback'" )>
+                Back
+            </button>
+  
+           </div>     
+</body>
+</html>

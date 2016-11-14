@@ -1,0 +1,124 @@
+﻿@model DSRCManagementSystem.Models.Error
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+      <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+              ErrorLogDetails</h4>
+        </div>
+        <div class="modal-body">
+        @using (Html.BeginForm("ErrorLogPageDetails", "ErrorLog", FormMethod.Post, new { @id = "ViewDetails" }))
+        {
+            
+           
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Username, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.Username, new { @id = "UserName", @name = "UserName", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled" })
+                            @Html.HiddenFor(x => x.userid)
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ExecptionDate, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.ExecptionDate, new { @id = "Date", @name = "Date", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled" })
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+            <div class="row">
+
+             <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.source, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.source, new { @id = "Source", @name = "Source", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled" })
+                           
+                           
+                        </div>
+                    </div>
+                        <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Method, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.Method, new { @id = "Method", @name = "Method", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled" })
+                            
+                        </div>
+                    </div>
+
+
+            </div>
+          <div style="overflow:scroll; height: 60px;  overflow: auto;">
+               <div class="row">               
+                     
+                <div class="col-md-4">
+                
+                        <div class="form-group">
+
+                            
+                            @Html.LabelFor(x => x.Message, new { @class = "control-label" }) 
+                            @Html.DisplayTextFor(x => x.Message)
+                           @* @Html.TextAreaFor(x => x.Message, new { @id = "Msg", @name = "Msg", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled", @maxlength = "2000", @cols = "42", @rows = "16" })*@
+                        </div>
+                    </div>
+                   
+                </div>
+                </div><br /><br /><br />
+             <div style="overflow:scroll; height: 400px;overflow: auto;  ">
+                 
+              <div class="row">
+                 <div class="col-md-4">
+                        <div class="form-group">
+                      
+
+                              @Html.LabelFor(x => x.strck, new { @class = "control-label" }) 
+                              @Html.DisplayTextFor(x => x.strck)
+                            @*@Html.TextAreaFor(x => x.strck, new { @id = "Strack", @name = "Strack", @class = "form-control", @autocomplete = "off", onkeypress = "return IsNumeric(event);", ondrop = "return false;", onpaste = "return false;", @readonly = "readonly", @disabled = "disabled", @maxlength = "2000", @cols = "42", @rows = "16" })*@
+                        </div>
+                        </div>
+           
+
+              </div>
+        
+             </div>
+       
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close</button>
+                </div>
+            
+            }
+        </div>
+        </div>
+        </body>
+        </html>
+   

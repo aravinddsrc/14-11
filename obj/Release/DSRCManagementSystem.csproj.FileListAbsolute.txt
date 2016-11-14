@@ -1,0 +1,16 @@
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Resource.resx
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Resource.Designer.cs
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Dll\NPOI.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\DSRCManagementSystem.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\DSRCManagementSystem.pdb
+C:\Project ManagementPortal\DSRCManagementSystem\bin\DsrcMailSystem.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\MvcPaging.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\NPOI.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Resources.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Utilities.dll
+C:\Project ManagementPortal\DSRCManagementSystem\bin\DsrcMailSystem.pdb
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Resources.pdb
+C:\Project ManagementPortal\DSRCManagementSystem\bin\Utilities.pdb
+C:\Project ManagementPortal\DSRCManagementSystem\obj\Release\DSRCManagementSystem.csprojResolveAssemblyReference.cache
+C:\Project ManagementPortal\DSRCManagementSystem\obj\Release\DSRCManagementSystem.dll
+C:\Project ManagementPortal\DSRCManagementSystem\obj\Release\DSRCManagementSystem.pdb

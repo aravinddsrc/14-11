@@ -1,0 +1,280 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.QuickLinks>
+@using System.Globalization
+@{
+    ViewBag.Title = "Quick Links";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+ <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+@{
+    int SNO = 1;  
+  
+}
+
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageUsers", "Users")">
+            <i class="fa-home1"></i>Adminstrative Setup
+        </a>
+    </li>
+    <li class="active"><strong>Quick Links</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageUsers", "Users")" style="color:black ">
+            Settings
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Quick Links</b>
+    </p>
+<br />
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Quick Links
+                </div>
+            </div>
+            <br />
+            <div class="panel-body">
+                @using (Html.BeginForm("QuickLinks", "QuickLinks", FormMethod.Post))
+                { 
+                    <div class="btn-group" style="float: right" id="AddLinks">
+                          <div style="float: right">
+                        <button class="btn btn-blue" type="button" style="font-weight: bold;" onclick="AddLinks()">
+                            Add Quick Links
+                        </button>
+                        <button class="btn btn-blue" type="button" style="font-weight: bold" onclick="AssignLinks()">
+                             Assign Quick Links
+                        </button>
+                    </div>
+                      
+                        <br />
+                    </div>         
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+
+                    <table class="table table-bordered datatable" id="tblQuickLinks">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">S.No</th>
+                                <th style="text-align: center;">@Html.DisplayName("Quick Links")
+                                </th>
+                                
+                                <th style="text-align: center;">@Html.DisplayName("Display Name")
+                                </th>
+                                <th style="text-align: center;">@Html.DisplayName("Menu Icon")
+                                </th>
+                                <th style="text-align: center;">Edit
+                                </th>
+                                <th style="text-align: center;">Delete
+                                </th>
+
+                            </tr>
+                        </thead>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                            <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+
+                                </td>
+                               
+                                  <td style=" word-wrap: break-word; word-break: break-all; text-align: left;">
+                                  
+                                    @Html.HiddenFor(modelItem => item.PageModuleID)
+                                    @Html.DisplayFor(modelItem => item.ModuleName)
+
+                                </td>
+                                <td style=" word-wrap: break-word; word-break: break-all; text-align: left;">
+                                  
+                                    @Html.DisplayFor(modelItem => item.DisplayName)
+
+                                </td>
+                                <td style="text-align: center;">
+                                    @if (item.path != null)
+                                    {
+                                                                               
+                                                <img src="@(item.path)" width="30px" id="icon" height="30px" />
+                                          
+                                        
+                                    }</td>
+                             
+                                <td style="text-align: center;">
+                                    <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick="Edit(@item.QuickLinkID)">
+                                        <i class="entypo-pencil"></i></a>
+                                    
+
+                                </td>
+                                <td style="text-align: center;">
+                                  
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Delete"onclick='Delete(@item.QuickLinkID)'>
+                                        <i class="entypo-cancel"></i></a>
+
+                                </td>
+
+                            </tr>
+                            
+                            }
+                        }
+
+                    </table>
+                }
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        
+         jQuery(document).ready(function ($) {
+
+
+             var columnDefs;
+
+
+             var table = $("#tblQuickLinks").dataTable({
+                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                 "sPaginationType": "bootstrap",
+                 "aaSorting": [],
+                 "columnDefs": [{ bSortable: true, 'aTargets': [0] }, { bSortable: true, 'aTargets': [1] }, { bSortable: true, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }, {bSortable: false, 'aTargets':[5]}],
+
+                     stateSave: true,
+                 stateSaveCallback: function (settings, data) {
+                     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                 },
+                 stateLoadCallback: function (settings) {
+                     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                 }
+             });
+             $(".dataTables_wrapper select").select2({
+                 minimumResultsForSearch: -1
+             });
+             $('thead>tr>th').css('text-align', 'center');
+         });
+
+         
+       
+         function AddLinks() {
+           
+            $.ajax({
+                url: "../../QuickLinks/AddLinks/",
+                type: 'GET',
+                cache: false,
+               
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                   
+                }
+            });
+    }
+        function Edit(QuickLinkID) {
+        
+            $.ajax({
+                url: "../../QuickLinks/EditLinks/",
+                type: 'GET',
+                cache: false,
+                data: { QuickLinkID: QuickLinkID },
+                success:
+                   function (result) {
+                       $('#PartialSection').html(result);
+                       $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                       @*$(".datetimepicker").datepicker({
+                           format: 'dd/mm/yyyy',
+                           todayHighlight: true,
+                           autoclose: true
+                       });*@
+
+                   }
+            });
+        }
+        function Delete(QuickLinkID) {
+         
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    $.ajax({
+                        url: "../../QuickLinks/Delete/",
+                        type: 'POST', cache: false,
+                        data: { QuickLinkID: QuickLinkID },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+                                   toastr.success("Quick Links Deleted Successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else {
+                                   toastr.warning("Quick Links Deletion Failed", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+
+                           }
+                    });
+                }
+            });
+        }
+        function AssignLinks() {
+           
+            var url = '@Url.Action("AssignQuickLinks", "AssignQuickLinks")';
+            window.location.href = url;
+          
+        }
+    </script>
+   
+}
+    </body>
+

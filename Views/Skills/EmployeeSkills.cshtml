@@ -1,0 +1,734 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Skills>
+@{                                
+    ViewBag.Title = "Add Skill";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}   
+       #toast-container > .customer-info {           
+ 
+  background-color: red;
+}      
+ </style> 
+}
+     <p>
+        <a href="@Url.Action("Skills","Skills")"style="color:black ">
+            Skills
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+
+        <b>Approve Employee Skills </b>
+
+   
+    </p>
+<br />
+
+@{
+    int SNO = 1;
+}
+
+
+<div id="Employeeskills" class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+
+                    Approve Employee Skills </div>
+
+            </div>
+             
+            <div class="panel-body">
+            @using (Html.BeginForm("EmployeeSkills", "Skills", FormMethod.Post))
+            {
+              <div class="row">
+                               
+                  <div class="col-md-3">                                             
+                     @Html.Label("Request Status", new { @class = "control-label" })                       
+                     @Html.DropDownList("RequestStatusId", ViewBag.requestStatus as SelectList, "--Select--", new { @id = "RequestStatusId", @class = "select2-container select2-container-multi select2 visible" })                     
+                  </div>
+                  
+                  
+                 @* <div class="col-md-2" style="width: 181px; padding-top: 7px;">        *@  
+                  <div class="col-md-3">                                   
+                     @Html.Label("Employee Name", new { @class = "control-label" })                       
+                     @Html.DropDownList("UserId", ViewBag.UsersREP as SelectList, "--Select--", new
+                {
+                    @id = "no",
+                    @class = "select2-container select2-container-multi select2 visible" @*, @style = "Width:200Px;Height:30px"*@ })                     
+                  </div>
+
+                  <div class="col-md-4"style="margin-top: 30px;">
+                      <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                         Search<i class="entypo-search"></i>
+                      </button>
+                      <button type="button"  id="btnAdd" style="margin-left: 4px;" class="btn btn-default" onclick="Cancel()">
+                         Reset
+                      </button>
+                  </div>  
+              </div>
+            }
+                                       
+                <div class="table table-bordered datatable" style="margin-top: 30px;">
+                    <table class="table table-bordered datatable" id="tblCmptr">
+                        <thead>
+                            <tr>
+                                <th>
+                                   S.No
+                                </th>
+                                 <th>
+                                    Employee Name
+                                </th>
+                                <th>
+                                    Technology
+                                </th>
+                                <th>
+                                    Specialization
+                                </th>
+                                <th>
+                                    Level
+                                </th>
+                                <th>
+                                    Preference
+                                </th>
+                                @*<th>
+                    Secondary
+                </th>*@
+                                @*<th>
+                                    Date Assessed
+                                </th>*@
+                                <th>
+                                    Last Used
+                                </th>
+                                <th>
+                                    Experience
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                
+                              <th style="text-align:center">
+                                 Approve
+                                  </th>
+                                <th style="text-align:center">
+                               Reject
+                                  </th>
+                            </tr>
+                        </thead>
+                        @*@foreach (var item in ViewBag.userSkills)*@
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                            <td>
+                                    @(SNO++)
+                                </td>
+                                <td>
+                                    @item.UName
+                                </td>
+                                <td>
+                                    @item.Technology
+                                </td>
+                                <td>
+                                    @item.Specification
+                                </td>
+                                <td>
+                                    @item.level
+                                </td>
+                                <td>
+                                    @(item.Primary ? "Primary" : "Secondary")
+                                </td>
+                                @*<td>
+                    @item.Secondary
+                </td>*@
+                               @* <td style="text-align: center">
+                                    @item.DateAssessed
+                                </td>*@
+                                <td style="text-align: center">
+                                    @item.LastUsed
+                                </td>
+                                <td style="text-align: center">
+                                    @item.experiance
+                                </td>
+                                <td style="text-align: center">
+                                    @if (item.Status == 1)
+                                    {
+                                        <p>Approved </p>
+                                    }
+                                      @if (item.Status == 2)
+                                      {
+                                        <p>Pending </p>
+                                      }
+                                      @if (item.Status == 3)
+                                      {
+                                        <p>Rejected </p>
+                                      }
+                                      @if (item.Status == 4)
+                                      {
+                                        <p>Cancelled </p>
+                                      }
+
+                                </td>
+                           @*     @if(item.Status == 2)
+                                {
+                                
+                                <td style="text-align:center">
+                                 <a class="btn btn-green"  data-toggle="tooltip" title="Approve" onclick=" ApproveRequest('@item.Id')"><i class="entypo-check"></i></a>
+                                    
+                                </td>
+                                
+                            <td style="text-align:center">
+                                 <a class="btn btn-red" data-toggle="tooltip" title="Reject" onclick=" RejectRequest('@item.Id')"><i class="entypo-cancel"></i></a>
+                                }
+                                else
+                                {*@
+                                <td style="text-align:center">
+                                 <a class="btn btn-green"  data-toggle="tooltip" title="Approve" onclick=" ApproveRequest('@item.Id') " @if(item.Status != 2)  {<text>disabled</text>}><i class="entypo-check"></i></a>
+                                    
+                                </td>
+                                
+                            <td style="text-align:center">
+                                 <a class="btn btn-red" data-toggle="tooltip" title="Reject" onclick=" RejectRequest('@item.Id')"  @if(item.Status != 2)
+                                                                                                                                   {<text>disabled</text>}><i class="entypo-cancel"></i></a>
+
+                              @*  }|*@
+                             </td>
+                                    
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+ 
+        jQuery(document).ready(function ($) {
+            $("#tblCmptr").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+              "columnDefs": [{ bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8]}]
+            });
+
+           $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        </script>
+
+        <script type="text/javascript">
+            function Clear() {
+                $("input:text").val('');
+                
+                $(".panel-body select").select2("val", "0");
+                $("#speli select").select2("val", "0");
+                //$("#speli").empty();
+          
+                $("#date").text('');
+                $("#last").text('');
+                $("#tech").text('');
+                // $("#speli").val('-1');
+                // $("#spl").text('');
+                $("#lev").text('');
+                $("#exp").text('');
+                $("#speli").SelectLoad($(this).val())  //i removed
+
+               // $('#speli').text('');
+
+              
+
+            
+                //$('#Presentstate').empty();
+                //$('#Presentstate').select2();
+            
+            }
+            
+        
+        function doValidation() {
+
+            var errorcount = 0;
+
+            
+            var count = $("#Courseloop > div").length;
+
+            count = count - 2;
+
+
+
+            for (i = 0; i < count; i++) 
+            {
+                if ($("#TechnologyId" + i).val() != '') 
+                {
+                    if ( $("#spl" + i).val() == 0) {
+                      
+                        $("#speli").html("Select Specification");
+                        errorcount++;
+                    }
+                    else 
+                    {
+                        $("#speli").html(" ");
+
+                    }
+                }
+    
+                if ($("#TechnologyId" + i).val() == '') 
+                {
+
+                    $("#tech").html("Select Technology");
+                    errorcount++;
+
+                }
+                else 
+                {
+                    $("#tech").html(" ");
+                }
+                
+               //// if ($("#spl" + i).val() == '') {
+                 
+                   
+               ////     $("#speli").html("Select Specification");
+               ////    errorcount++;
+
+               ////}
+
+               ////else 
+               //// {
+               ////     $("#speli").html(" ");
+               //// }
+
+                if ($("#experiance" + i).val() == 0) {
+                    $("#exp").html("Enter Experience");
+                    errorcount++;
+                }
+                else {
+                    $("#exp").html(" ");
+                }
+
+                if ($("#LevelId" + i).val() == '') {
+
+                    $("#lev").html(" Select Level");
+                    errorcount++;
+
+                }
+                else {
+                    $("#lev").html(" ");
+                }
+
+                if ($("#DateAssessed" + i).val() == '') {
+
+                    $("#date").html(" Select Date Assessed");
+                    errorcount++;
+
+                }
+                else {
+                    $("#date").html(" ");
+                }
+
+                if ($("#yearId" + i).val() == '') {
+
+                    $("#last").html(" Select Last Used");
+                    errorcount++;
+
+                }
+                else {
+                    $("#last").html(" ");
+                }
+            }
+
+
+            if (errorcount == 0) {
+               // $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                $("#form").submit();
+            }
+        }
+      
+
+        $(document).ready(function () {
+            var count = $("#Courseloop > div").length;
+
+            count = count - 2;
+
+            for (i = 0; i < count; i++) {
+                $("#experiance" + i).keypress(function (e) {
+                    var regex = new RegExp("^[0-9\\.\\s]+$");
+                    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                    if (regex.test(str)) {
+                        return true;
+                    }
+
+                    $("#exp").html("Enter Valid Experiance").show();
+                    return false;
+                });
+            }
+        });
+
+
+        $("#spl0").on("change", function () {
+       // $("#TechnologyId0").on("change",function(){
+            $.ajax({
+                url: "../../Skills/schedule/",
+                dataType: 'json',
+                data: { 'Specialization': $("#spl0").val() },
+                success: function (data) {
+
+                    if (data.Name == 'available') {
+                        $('#speli').html('Specialization already exists');
+                        document.getElementById("btnsub").disabled = true;
+                        Submitform = false;
+                    }
+
+                    else {
+                        $('#speli').text('');
+                        document.getElementById("btnsub").disabled = false;
+                        Submitform = true;
+                    }
+                    
+                }
+
+            });
+        });
+
+
+        function SelectLoad(val, techID) {
+            $.ajax({ url: "../../Skills/DropDown/" + (val == "" ? 0 : val),
+                type: 'GET', cache: false,
+                success: function (result) {
+
+                    if (result != null) {
+
+                        $("#spl" + techID).empty();
+                                                
+                        for (i = 0; i < result.length; i++) {
+
+
+                            $("#spl" + techID).append($('<option>', {
+                                value: result[i].Item1,
+                                text: result[i].Item2
+                            }));
+                        }
+
+                        $("#spl" + techID).select2();
+                        $('#speli').text('');
+
+
+                    }
+                }
+            });
+        }
+      
+
+        function EditSkill(Id) {
+            $.ajax({ url: "../../Skills/EditSkill/" + Id,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo('body').modal('show');
+                    $(".datetimepicker").datepicker({
+                        format: 'dd-mm-yyyy',
+                        showTodayButton: true,
+                        collapse: true,
+                        autoclose: true
+                    });
+                }
+            });
+        }
+       // debugger;
+        //function AddSkill(Id) {
+        //    $.ajax({
+        //        url: "../../Skills/Details/",
+        //        type: 'GET',
+        //        cache: false,
+        //        data: { Id: Id },
+        //        success: function (result) {
+        //            $('#PartialSection').html(result);
+        //            $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+        //        }
+        //    });
+        //}
+
+        function AddSkill(Id) {
+            $.ajax({
+                url: "../../Skills/Details/",
+                type: 'GET',
+                cache: false,
+                data: { skillid: Id },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+
+        function DeleteSkill(Id) {
+            bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                if (conform) {
+                    $.ajax({ url: "../Skills/Delete/",
+                        type: 'GET', cache: false, data: { Id: Id },
+                        success: function (result) {
+                            var opts = {
+                                "closeButton": true,
+                                "debug": false,
+                                "positionClass": "toast-top-right",
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "1000",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Skill detail has been deleted successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    });
+                }
+            });
+        }
+
+        function ApproveRequest(Id) {
+            var toastrOptions = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }       
+            $("#portlet-config").modal('hide'); 
+            $.ajax({            
+                url: "../../Skills/ApproveRequestStatus/",
+                type: 'POST',
+                cache: false,
+                data: { Id: Id },
+                success: function (result) {
+                    if (result.Result === "Success") {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("The request has been approved successfully", toastrOptions);
+                        // ReloadGrid();
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else
+                    {
+                        $('#PartialSection').html(result);
+                        $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                      
+                    }
+                }});
+        }
+        
+
+        function RejectRequest(Id) {
+            var toastrOptions = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "Red",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            $("#portlet-config").modal('hide');
+            $.ajax({
+                url: "../../Skills/RejectRequestStatus/",
+                type: 'POST',
+                cache: false,
+                data: { Id: Id },
+                success: function (result) {
+                    if (result.Result === "Success") {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("The request has been rejected successfully", toastrOptions, { "iconClass": 'customer-info' });
+                        //ReloadGrid();
+
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else
+                    {
+                        $('#PartialSection').html(result);
+                        $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                       
+                    }
+                }});
+
+        }
+
+        function ReloadGrid() {
+
+         //  $("#form").submit();
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+
+            $.ajax({
+                url: "../..Skills/EmployeeSkills/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                 $('#Employeeskills').html(result);
+                   SetupGrid();
+                }
+            });
+        }
+
+        function SetupGrid() {
+            
+                $("#tblCmptr").dataTable({
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "bStateSave": false,
+                    "bAutoWidth": false,
+                    "columnDefs": [{ bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }]
+                });
+
+                $(".dataTables_wrapper select").select2({
+                    //minimumResultsForSearch: -1
+                });
+                $('thead>tr>th').css('text-align', 'center');
+            
+        }
+
+
+        $(function () {
+
+            $("#Courseloop > div.row > div > select:not(.selectSearch)").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('#Courseloop > div.row > div > select.selectSearch').select2();
+            $('#courseRows').hide();
+            newrowcount = 0;
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: 'd',
+            todayHighlight: true,
+            autoclose: true
+        });
+
+        $("#addBtn").on("click", function () {
+
+            var Text = $('#courseRows').html();
+            var rowNumber = newrowcount + 1;
+            Text = Text.replace(/SKL./g, 'skilllists[' + rowNumber + '].');
+            var newRow = $(Text);
+
+            $("#Courseloop").append(Text);
+            var CourseRow = $('#Courseloop div.row:last');
+            $(CourseRow).find('select:not(.selectSearch)').select2({
+                //minimumResultsForSearch: -1
+            });
+            $(CourseRow).find('select.selectSearch').select2();
+
+            $(CourseRow).find('.datetimepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+
+            newrowcount = newrowcount + 1;
+            return false;
+        });
+
+        $(document).ready(function () {
+            if ($('#success').val()) {
+
+             $("#portlet-config").modal('hide');
+                displayMessage($('#success').val(), 'success');
+                setTimeout(function () { location.reload(); }, 1000);
+            }
+        });
+        var displayMessage = function (message, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "500",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            toastr[msgType](message);
+        };
+
+        $(function () {
+            $("#btnAdd").click(function () {
+                $("#Courseloop > div.row > div >").select2('val', '');
+            });
+        });
+
+        function Search() {
+             
+            var UserId = $("#no").find("option:selected").val();
+            var RequestStatusId = $("#RequestStatusId").find("option:selected").val();
+
+            if (UserId == "" || UserId==null) {
+                UserId = 0;
+            }
+
+            if (RequestStatusId == "" || RequestStatusId == null) {
+                RequestStatusId = 0;
+            }
+
+           
+            
+            $.ajax({
+                url: "../../Skills/EmployeeSkills/",
+                type: 'POST',               
+                data: { RequestId: RequestStatusId, UserId: UserId },
+                success: function (result) {
+
+                    setTimeout(function () { location.reload(); }, 1000);
+                 
+                } 
+            });
+
+            //window.location.href = '@Url.Action("EmployeeSkills", "Skills")' + '?RequestId=' + RequestStatusId + ',UserId=' + UserId;  //+ UserName;
+         }
+
+            function Cancel() {
+                var url = '@Url.Action("EmployeeSkills", "Skills")';
+                  window.location.href = url;
+              }
+
+
+    </script>
+}

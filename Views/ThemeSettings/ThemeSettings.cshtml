@@ -1,0 +1,718 @@
+﻿@model DSRCManagementSystem.Models.ThemeSettings
+@using System.Globalization
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<script type="text/javascript">
+    $(function () {
+        $('select').select2();
+    });
+</script>
+
+<style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ViewRoles", "ManageRole")">Administration Setup</a></li>
+    <li class="active"><strong>Configuration</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ViewRoles","ManageRole")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Configuration</b>
+    </p>
+<br />
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ('@TempData["message"]' == "Added") {
+
+            toastr.success('Theme Updated Successfully');
+        }
+        else if ('@TempData["message"]' == "Wrongformat") {
+
+            document.getElementById("span_Photoext").innerHTML = "Choose only image files";
+        }
+        else if ('@TempData["message"]' == "Startdate") {
+            document.getElementById("span_start").innerHTML = "Financial end date should be greater than start date";
+        }
+    
+    });
+</script>
+
+<script type="text/javascript">
+
+    function Reset(uid) {
+        
+        bootbox.confirm("Are you sure want to remove the logo image ?", function (res) {
+            if (res) {
+                $.ajax({
+                    url: "../../ThemeSettings/ResetImage/",
+                    cache: false,
+                    data: { ID: uid },
+                    success: function (result) {
+                        var src = '@Url.Content("~/UsersData/Logo/Images/No_Image.png")';
+                        $('#myimage').attr("src", src);
+                            $('#file').removeAttr('disabled');
+                            $('#reset').attr('hidden', 'hidden');
+                        }
+                    });
+                    }
+            });
+            }
+
+    function onFileSelected(event) {
+        debugger;
+        var selectedFile = event.target.files[0];
+        var reader = new FileReader();
+
+        var imgtag = document.getElementById("myimage");
+        imgtag.title = selectedFile.name;
+
+        reader.onload = function (event) {
+            imgtag.src = event.target.result;
+        };
+
+        reader.readAsDataURL(selectedFile);
+    }
+
+    function StartDateChange() {
+        var values = $("#AcademicStartdate").val();
+        if (values == '')
+            document.getElementById("span_SDate").innerHTML = "Enter Financial Start Date";
+        else
+            $.ajax({
+                url: "../../ThemeSettings/StartDateChange/",
+                type: 'GET',
+                cache: false,
+                data:
+                    {
+                        Date: values,
+                    },
+                success: function (result) {
+                    $("#AcademicEnddate").val(result);
+                    //document.getElementById('AcademicEnddate').value = result;
+                }
+
+            });
+    }
+
+   
+
+  
+
+
+    function check() {
+     
+        var valid = timevalidation();
+        if (valid == false) {
+            return false;
+        }
+      
+        if (document.getElementById("AcademicStartdate").value == '') {
+            document.getElementById("span_SDate").innerHTML = "Enter Financial Start Date";
+           
+            return false;
+        }
+        else {
+            document.getElementById("span_SDate").innerHTML = "";
+
+        }
+
+        if (document.getElementById("FaceBook").value == '') {
+            document.getElementById("span_FB").innerHTML = "Enter FB URL";
+          
+            return false;
+        }
+        else {
+            document.getElementById("span_FB").innerHTML = "";
+
+        }
+        if (document.getElementById("CompanyName").value == '') {
+            document.getElementById("span_CName").innerHTML = "Enter Company Name";
+           
+            return false;
+        }
+        else {
+            document.getElementById("span_CName").innerHTML = "";
+
+        }
+        if (document.getElementById("VersionNumber").value == '') {
+            document.getElementById("span_Version").innerHTML = "Enter Version Number";
+
+            return false;
+        }
+        else if (document.getElementById("VersionNumber").value == '')
+        {
+        }
+        else {
+            document.getElementById("span_Version").innerHTML = "";
+
+        }
+        if (document.getElementById("InTime").value == '') {
+            document.getElementById("InTimed").innerHTML = "Enter In Time";
+          
+            return false;
+        }
+        else {
+            document.getElementById("InTimed").innerHTML = "";
+
+        }
+        if (document.getElementById("OutTime").value == '') {
+            document.getElementById("endtime").innerHTML = "Enter Out Time";
+           
+            return false;
+        }
+        else {
+            document.getElementById("endtime").innerHTML = "";
+
+        }
+        
+    }
+
+    function changecolor() {
+        var CName = $('#CompanyName').val();
+        var values = {
+
+            "ColorId": $("#ColorName").val()
+        }
+        $.ajax({
+            url: "../../ThemeSettings/ChangeColor/",
+            type: 'GET', cache: false, data: values,
+            success: function (result) {
+                //  window.location.href = '@Url.Action("NewLogin", "User")' + '?ColorId=' + result;
+                window.location.href = '@Url.Action("ThemeSettings", "ThemeSettings")' + '?ColorId=' + result;
+            }
+
+        });
+
+    }
+
+    function Agenda() {
+
+        if (document.getElementById('ProjectAganda').value == '') {
+
+            document.getElementById("span_ID10").innerHTML = "Enter Project Agenda";
+        }
+        else {
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            $("#ProjectAganda").val();
+            var submitForm = true;
+
+            if (submitForm == true) {
+
+                var values =
+                        {
+                            "ProjectAganda": $("#file").val()
+
+                        }
+                var opts =
+                      {
+                          "closeButton": true,
+                          "debug": false,
+                          "positionClass": "toast-top-right",
+                          "toastClass": "White",
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "2000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
+
+                $.ajax({
+                    url: "../../User/ProjectAgenda/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    global: false,
+                    success: function (result) {
+                        if (result.Result === "Success") {
+
+                            window.location.href = '@Url.Action("ThemeSettings", "TSR")';
+
+                        }
+                    }
+
+                });
+            }
+        }
+    }
+</script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+<script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+<script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            autoclose: true
+        });
+    });
+  
+
+    function isNumberKey(evt) {
+        
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (charCode == 190 || (charCode >= 48 && charCode <= 57) || charCode == 46 || charCode == 9 || charCode == 8) {
+            return true;
+        }
+        return false;
+
+    }
+
+
+    function myFunction() {
+      
+        var strStartTime = $("#InTime").val();
+        var res = strStartTime.split(":");
+       
+      
+        if (strStartTime.length == 2 && strStartTime <= 24) {
+
+            $("#InTime").val(strStartTime + ":");
+            $("#InTimed").html("").show();
+            return true;
+        }
+        else if (strStartTime > 24) {
+          
+            $("#InTimed").html("Hours should not be greater than 24").show();
+
+            return false;
+        }
+        else if (strStartTime.length == 5) {
+            $("#InTimed").html("").show();
+            return true;
+        }
+        else if (res[1] > 6) {
+          
+            $("#InTimed").html("Minutes Should be less than 60").show();
+
+            return false;
+        }
+
+        else {
+            $("#InTimed").html("").show();
+            return true;
+        }
+
+
+
+    }
+
+    function myFunction1() {
+      
+        var strStartTime = $("#OutTime").val();
+        var res = strStartTime.split(":");
+
+      
+        if (strStartTime.length == 2 && strStartTime <= 24) {
+
+            $("#OutTime").val(strStartTime + ":");
+            $("#endtime").html("").show();
+            return true;
+
+        }
+        else if (strStartTime > 24) {
+           
+            $("#endtime").html("Hours should not be greater than 24").show();
+            skipReady = true;
+            return false;
+        }
+        else if (strStartTime.length == 5) {
+            $("#endtime").html("").show();
+            return true;
+
+        }
+        else if (res[1] > 6) {
+         
+            $("#endtime").html("Minutes Should be less than 60").show();
+            skipReady = true;
+            return false;
+        }
+        else {
+            $("#endtime").html("").show();
+            return true;
+
+        }
+
+
+    }
+    $(function () {
+
+        $('.timepicker').timepicker
+        ({
+            'timeFormat': 'H:i',
+            'showDuration': false,
+            'forceRoundTime': true
+
+        });
+    });
+
+
+    function timevalidation() {
+        
+        var regexp = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/;
+        var outime = regexp.test($("#OutTime").val());
+        var intime  = regexp.test($("#InTime").val());
+        var valid1 = myFunction();
+        var valid2 = myFunction1();
+        if (valid1 == false) {
+            return false;
+        }
+
+        else if (valid2 == false) {
+            return false;
+        }
+             
+        else if (intime == false) {
+            $("#InTimed").html("Enter Valid In Time").show();
+            return false;
+        }
+        else
+            if (outime == false) {
+            $("#endtime").html("Enter Valid Out Time").show();
+            return false;
+        }
+        if ($("#OutTime").val().length > 0) {
+
+            var strStartTime = $("#InTime").val();
+
+            var strEndTime = $("#OutTime").val();                    
+
+            var Firsthours = Number(strStartTime.match(/^(\d\d?)/)[1]);
+            var Firstminutes = Number(strStartTime.match(/:(\d\d?)/)[1]);
+            var JoinFirsthoursFirstminutes = Firsthours + "" + Firstminutes;
+            var Secondhours = Number(strEndTime.match(/^(\d\d?)/)[1]);
+            var Secondminutes = Number(strEndTime.match(/:(\d\d?)/)[1]);
+            var JoinSecondhoursSecondminutes = Secondhours + "" + Secondminutes;
+            if (strStartTime >= strEndTime) {
+                $("#endtime").html("Out Time must be greater than In Time ").show();
+
+                return false;
+            }
+
+            //else if (JoinFirsthoursFirstminutes > JoinSecondhoursSecondminutes) {
+            //    $("#endtime" + i).html("End Time must be greater than Start time ").show();
+
+            //    return false;
+            //}
+
+            //var patt = new RegExp("^(0?[1-9]|1[012]):[0-5][0-9]$");
+            //var res = patt.test(strStartTime);
+            //return res;
+
+            var stt = new Date("October 1, 2014 " + strStartTime);
+            stt = stt.getTime();
+
+            var endt = new Date("October 1, 2014 " + strEndTime);
+            endt = endt.getTime();
+
+
+            if (stt >= endt) {
+
+                $("#endtime").html("Out Time must be greater than In Time ").show();
+
+                return false;
+            }
+            else {
+                $("#endtime").html("").show();
+                return true;
+            }
+
+        }
+    }
+   
+
+    var cc = '@(ViewBag.CurrentDate)';
+
+    if (cc != "" || cc != null) {
+        $(".datetimepicker").datepicker().datepicker("setDate", cc); //To set the changed date
+    }
+</script>
+@using (Html.BeginForm("ThemeSettings", "ThemeSettings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+     <div class="row">
+     <div class="col-md-12" style="text-align: right">
+                                @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                            </div>
+         </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Theme Settings
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <br />
+
+                <div class="panel-body" style="display: block;">
+                    <div class="form-group">
+
+                        <div class="row">
+
+
+                            <div class="col-md-2">
+                                @Html.Label("Company Name", new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.CompanyName, new { @id = "CompanyName", @class = "form-control", @autocomplete = "off" })
+                                @* @Html.ValidationMessageFor(model => model.CompanyName)*@
+                                <span id="span_CName" style="color: Red;"></span>
+                            </div>
+
+                            <div class="clear">
+                            </div>
+                            <br />
+
+                            <div class="col-md-2">
+                                @Html.Label("Version Number", new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.VersionNumber, new { @id = "VersionNumber", @class = "form-control", @autocomplete = "off",@onkeypress="return isNumberKey(event)" })
+                                @* @Html.ValidationMessageFor(model => model.VersionNumber)*@
+                                <span id="span_Version" style="color: Red;"></span>
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <br />
+
+                           <div class="col-md-2">
+                                @Html.Label("Theme Colors", new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-4">
+                                @if (@Model.Colors == null)
+                                {
+                                    @Html.DropDownListFor(x => x.Colors, ViewBag.Colors as SelectList, "Select", new { @id = "ColorName", @class = "form-control", @style = "Height:42Px", @onchange = "changecolor()" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownList("colorid", ViewBag.Colors as SelectList, "Select", new { @id = "ColorName", @class = "form-control", @style = "Height:42Px", @onchange = "changecolor()" })
+                                }
+                                <span id="rol" style="color: Red"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                @*  @Html.DropDownList("colorid", ViewBag.Colors as SelectList,"Select", new { @id = "ColorName", @class = "form-control",@style = "Height:42Px" })   *@
+                                @*  <span id="rol" style="color:Red"></span>*@
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-md-2">
+                                @Html.Label("Theme Logo", new { @class = "control-label" })
+                            </div>
+
+                            <div class="col-md-4">
+                                @*<input type="file" name="file" />*@ @*@Html.TextBoxFor(x => x.Photo, new { @type = "file", @class = "form-control" })*@
+                                <input type="file" name="Photo" id="file" accept=".gif,.jpg,.jpeg,.png" style="width: 100%;" onchange="onFileSelected(event)" @Html.Raw(Model.HasImage ? "Enabled" : "")/>
+                                @Html.ValidationMessageFor(x => x.Photo, "", new { @style = "color:red" })
+                                <span id="span_Photoext" style="color: Red;"></span>
+                                <div style="height: 5px">
+                                </div>
+                                @*<a>
+                                <button id="reset" type="button" onclick="ResetImage('@Session["UserID"]')" @Html.Raw(Model.HasImage ? "" : "disabled")>
+                                    Remove image</button></a>*@
+                            </div>
+
+
+                            <div class="clear">
+                            </div>
+
+
+                            <br />
+                            <br />
+
+                            @if (@Model.path != null)
+                            {
+                                <div class="col-md-2">
+                                    @Html.Label("Selected Image", new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="logo">
+                                        <img src="@(Model.path)" width="100px" id="myimage" height="100px" />
+                                    </a>
+                                </div>
+                                
+                            }
+                      
+                            <div class="clear">
+                            </div>
+                            <br />
+
+                            <div class="col-md-2"></div>
+                            <div class="cd-md-4">
+
+                                <a>
+                                    <button  id="reset" type="button" onclick="Reset('@Session["UserID"]')" @Html.Raw(Model.HasImage ? "" : "hidden")>
+                                        Remove image
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <br />
+                            <div class="col-md-2">
+                                @Html.Label("FaceBook", new { @class = "control-label" })
+
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.Facebook, new { @id = "FaceBook", @class = "form-control", @autocomplete = "off" })
+                                @*@Html.ValidationMessageFor(model => model.Facebook)*@
+                                <span id="span_FB" style="color: Red;"></span>
+                            </div>
+
+                            <br />
+
+                           
+
+                        </div>
+                      
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary" data-collapsed="0">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                Financial Year Settings
+                            </div>
+                            <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="display: block;">
+                            <div class="row">
+
+                                <div class="col-md-2">
+                                    @Html.Label("Financial Start Date", new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-4">
+
+                                    @Html.TextBoxFor(x => x.AcademicStartdate, new { @id = "AcademicStartdate", @class = "form-control datetimepicker", @autocomplete = "off", @onchange = "StartDateChange()" })
+                                    @* @Html.ValidationMessageFor(model => model.AcademicStartdate)*@
+                                    <span id="span_SDate" style="color: Red;"></span>
+
+                                </div>
+
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <div class="col-md-2">
+
+                                    @Html.Label("Financial  End Date", new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-4">
+
+                                    @Html.TextBoxFor(x => x.AcademicEnddate, new { @id = "AcademicEnddate", @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                                    @* @Html.ValidationMessageFor(model => model.AcademicEnddate)*@
+                                    <span id="span_EDate" style="color: Red;"></span>
+                                </div>
+
+
+                                <div class="clear">
+                                </div>
+                                <br />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary" data-collapsed="0">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                Manual Attendance Time Settings
+                            </div>
+                            <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="display: block;">
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                    @Html.Label("In Time", new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-4">
+                                    @if (@Model.InTime == null || @Model.InTime == "")
+                                    {
+                                        @Html.TextBox("InTime", Model.InTime, new { @id = "InTime", @name = "InTime", @maxlength = "5", @Value = "09:00", @class = "InTimes", onkeypress = "myFunction()", DataFormatString = "{0:d}", @onchange = "timevalidation()" })
+                              
+                                        <br />
+                                        <span style="color: red;" id="InTimed"></span>
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("InTime", Model.InTime, new { @id = "InTime", @name = "InTime", @maxlength = "5", @class = "InTimes", onkeypress = "myFunction()", DataFormatString = "{0:d}", @onchange = "timevalidation()" })
+                                 
+                                        <br />
+                                        <span style="color: red;" id="InTimed"></span>
+                                    }
+                                </div>
+                                <div class="col-md-2">
+
+                                    @Html.Label("Out Time", new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-4">
+                                    @if (@Model.OutTime == null || @Model.OutTime == "")
+                                    {
+                                        
+                                        @Html.TextBox("OutTime", Model.OutTime, new { @id = "OutTime", @name = "OutTime", @maxlength = "5", @class = "OutTimes", DataFormatString = "{0:d}", @Value = "18:00", @onchange = "timevalidation()", onkeypress = "myFunction1()" })
+                                        <br />
+                                        <span style="color: red;" id="endtime"></span>
+                                    }
+                                    else
+                                    {
+                                        
+                                        @Html.TextBox("OutTime", Model.OutTime, new { @id = "OutTime", @name = "OutTime", @maxlength = "5", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation()", onkeypress = "myFunction1()" })
+                                        <br />
+                                        <span style="color: red;" id="endtime"></span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a type="button" class="btn btn-default" href="@Url.Action("Index", "Home")">Cancel</a>
+        <button type="submit" id="ProfileSave" class="btn btn-info" onclick="return check(this)">Save</button>
+        <span id="demo" style="color: Red"></span>
+    </div>
+        }
+
+
+

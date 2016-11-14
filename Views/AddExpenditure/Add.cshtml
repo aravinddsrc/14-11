@@ -1,0 +1,293 @@
+﻿@model DSRCManagementSystem.Models.Expenditure
+
+@{
+  
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Add  Expenditure</title>
+
+  
+
+
+
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+             Add  Expenditure</h4>
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("Add", "AddExpenditure", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+            
+                 <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.Label("Expense Description", new { @class = "control-label" })    
+                          @Html.Label("*", new { @style = "color:#FF0000" })                    
+                        @Html.TextAreaFor(x => x.ExpenseDescription, new { @id = "ID", @name = "ID", @class = "form-control", @placeholder = "Description", @style = "height:70px", @maxlength = 1000 })     
+                         <span id="span_ID12" style="color: Red;"></span>                   
+                    </div>
+                </div>
+                </div>
+                
+                 <div class="row">
+              
+              <div class="col-md-6">  
+                     <div class="form-group">
+                      @Html.Label("Date", new { @class = "control-label" })
+                      @Html.Label("*", new { @style = "color:#FF0000" })
+                      @Html.TextBoxFor(x => x.ExpenseDate, new { Value = DateTime.Now.ToShortDateString(), @name = "Date", @id = "scheduledate", @autocomplete = "off", @class = "form-control datetimepicker"  })               
+                     <span id="span_ID7" style="color: Red;"></span>
+                      </div>
+                      </div>
+                    
+
+                 <div class="col-md-6">  
+                     <div class="form-group">
+                      @Html.Label("Expense Amount", new { @class = "control-label" })    
+                      @Html.Label("*", new { @style = "color:#FF0000" })              
+                      @Html.TextBoxFor(x => x.ExpenseAmount, new { @name = "ExpenditureAmount", @id = "ExpenditureAmount", @class = "form-control", @maxlength = 10 }) 
+                     <span id="span_ID10" style="color: Red;"></span>
+                      </div>
+                      </div>               
+                 
+                       </div>
+                    
+                    <div class="row">                     
+
+                        <div class="col-md-6" style="visibility:hidden;">  
+                     <div class="form-group">
+                      @Html.Label("Create Date", new { @class = "control-label" })    
+                      @Html.Label("*", new { @style = "color:#FF0000" })              
+                      @Html.TextBoxFor(x => x.ScheduleDate, new { @name = "EnteredBy", @id = "EnteredDate", @class = "form-control", @disabled = "disabled" }) 
+                     <span id="span_ID8" style="color: Red;"></span>
+                      </div>
+                      </div>
+                        </div>
+                   
+                  <div class="row">
+                   
+                
+                     <div class="col-md-6">  
+                     <div class="form-group">
+                     
+                      </div>
+                      </div>
+
+                      </div>
+            }   
+
+             </div>   
+           
+             <div class="modal-footer">
+            <button type="button" class="btn btn-default"  data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='AddNewMeeting()' >
+                Save
+            </button>
+        </div>
+      </div>
+                
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    
+ 
+            <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>   
+             <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+          <script type="text/javascript">
+              
+
+
+              $(document).ready(function () {
+                  $(function () {
+                      $(".modal-body select").select2({
+                          minimumResultsForSearch: -1
+                      });
+                  });
+
+                  $(".datetimepicker").datepicker({
+                      format: 'dd-mm-yyyy',
+                      autoclose:true
+                  });
+
+                    $("#ExpenditureAmount").on('paste keypress', (function (e) {
+                        var key;
+                        if (e.which) {
+                            key = String.fromCharCode(e.which);
+                        } else {
+                            key = e.originalEvent.clipboardData.getData('Text');
+                        }
+                        var value = $(this).val() + key;
+                        if (!/^[0-9.]{1,999}$/.test(value)) {
+                            e.preventDefault();
+                        }
+                    }));
+
+
+                 
+                    $('#ExpenditureAmount').keyup(function (e) {
+
+                        var key;
+                        if (e.which) {
+                            key = String.fromCharCode(e.which);
+                        } else {
+                            key = e.originalEvent.clipboardData.getData('Text');
+                        }
+                        var value = $(this).val() + key;
+                        var value1 = $(this).val().slice(0, -1);
+                        var res = value.split(".");
+                        
+                        if (res[1].length >= 4) {
+                            $('#ExpenditureAmount').val(value1);
+                        }
+
+
+
+
+                    });
+
+                });
+
+
+
+              function AddNewMeeting() {
+
+                  var IDName = $("#ID").val();
+
+                  var IDNametrim = IDName.replace(/\s/g, "").length;
+
+                    
+                  if (IDNametrim == '' || document.getElementById('ExpenditureAmount').value == 0 || document.getElementById('scheduledate').value == '' || document.getElementById('EnteredDate').value == '' || document.getElementById('ExpenditureAmount').value == '')
+                     {
+
+                      if (IDNametrim == '') {
+                          document.getElementById("span_ID12").innerHTML = "Enter the description";
+                      }
+                      else
+                       {
+                          document.getElementById("span_ID12").innerHTML = "";
+                      }
+                      if (document.getElementById('scheduledate').value == '') 
+                      {
+                          document.getElementById("span_ID7").innerHTML = "Select  expense date";
+                      }
+                      else 
+                      {
+                          document.getElementById("span_ID7").innerHTML = "";
+
+                      }
+                     
+       
+
+                      if (document.getElementById('ExpenditureAmount').value == '')
+                      {
+                          document.getElementById("span_ID10").innerHTML = " Enter expens amount ";
+                      }
+                      else if (document.getElementById('ExpenditureAmount').value == 0) {
+                          document.getElementById("span_ID10").innerHTML = "Expense amount must be greater than 0";
+                      }
+                      else {
+                          document.getElementById("span_ID10").innerHTML = "";
+                      }
+                  }
+
+
+
+
+                  else {
+
+                      $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                      var values =
+                           {                              
+                               "ScheduleDate": $("#EnteredDate").val(),
+                               "ExpenseAmount": $("#ExpenditureAmount").val(),
+                               "ExpenseDescription": $("#ID").val(),
+                               "ExpenseDate"  : $("#scheduledate").val()                           
+                           }
+                      var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                      $.ajax({
+                          url: "../../AddExpenditure/Add/",
+                          type: 'POST',
+                          cache: false,
+                          data: values,
+                          traditional: true,
+                          global: false,
+                          success: function (result) {
+
+                              if (result.Result === "Success") {
+
+                                  $("#portlet-config").modal('hide');
+                                  toastr.success("Expenditure added successfully", opts);
+                                  setTimeout(function () { location.reload(); }, 1000);
+                              }
+
+                              if (result.Result === "Already") {
+
+                                  toastr.warning("Expenditure  Already Exist", opts);
+                                 
+                              }
+
+
+                          }
+
+                      });
+
+                  }
+
+              }
+         
+          </script>
+                
+       </body>
+             </html>

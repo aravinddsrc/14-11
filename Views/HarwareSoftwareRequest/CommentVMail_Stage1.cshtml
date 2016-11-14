@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Comment VMail_Stage1";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+@{
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var AppList = db.Master_ApplicationSettings.ToList().Count;
+    
+}
+
+
+<html>
+<head>
+    <title>Comment Hardware/Software Request</title>
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+</head>
+<body>
+<div class="row" style="height:300px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Approve/Reject Hardware/Software Request</div>
+                </div>
+                <!-- panel body -->
+                @if (ViewBag.IsCanceled)
+                {
+                    
+                    <div class="panel-body">    
+                   
+                    <div style="text-align: center;font-weight:bold;color:Green;" class="success">
+                        <h5 style="font-weight:bold;color:red;">Hardware/Software request has been cancelled by employee</h5>
+                    </div>
+                    
+                </div>
+                    
+                }                
+                else if (ViewBag.IsAlreadycommented)
+                {
+                    <div class="panel-body">    
+                   
+                    <div style="text-align: center;font-weight:bold;color:Green;" class="success">
+                        <h5 style="font-weight:bold;color:red;">Already comment has been made</h5>
+                    </div>
+                    
+                </div>
+                }
+                else
+                {
+
+                <div class="panel-body">
+                    <div class="col-md-4" style="text-align: center">
+                        <div class="form-group">
+                            @Html.Label("Comments", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @Html.TextArea("Comments", new { @id = "Comments", @class = "form-control", @style = "height:100px", @maxlength = 250 })
+                            @Html.Hidden("Id", (object)ViewBag.Id.ToString())
+                        </div>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                    
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        <button  class="btn btn-success" onclick="Accept()">Approve</button>
+                        <button style="margin-left: 10px"  class="btn btn-danger" onclick="Reject()">
+                            Reject</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    function Accept() {
+
+        var values =
+            {
+                "RequestID": $("#Id").val(),
+                "Comments": $("#Comments").val(),
+                "IsAccepted": true
+            }
+        $.ajax({
+            url: "../../HarwareSoftwareRequest/CommentVMail_Stage1/",
+            type: 'POST',
+            cache: false,
+            traditional: true,
+            data: values,
+            success: function (result) {
+                            
+                //window.location = '@Html.Raw(System.Web.Configuration.WebConfigurationManager.AppSettings["SeverName"] + "HarwareSoftwareRequest/SuccessfullyApproved")';
+                window.location = '@Html.Raw(Session["ServerName"]  + "HarwareSoftwareRequest/SuccessfullyApproved")';
+            }
+
+        });
+
+    }
+    function Reject() {
+       
+        var values =
+            {
+                "RequestID": $("#Id").val(),
+                "Comments": $("#Comments").val(),
+                "IsAccepted": false
+            }
+        $.ajax({
+            url: "../../HarwareSoftwareRequest/CommentVMail_Stage1/",
+            type: 'POST',
+            cache: false,
+            traditional: true,
+            data: values,
+            success: function (result) {
+
+                window.location = '@Html.Raw(Session["ServerName"] + "HarwareSoftwareRequest/SuccessfullyRejected")';
+            }
+
+        });
+    }
+</script>
+</html>
+

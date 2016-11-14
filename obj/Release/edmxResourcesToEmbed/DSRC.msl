@@ -1,0 +1,2904 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DSRCManagementSystemModelStoreContainer" CdmEntityContainer="DSRCManagementSystemEntities1">
+    <FunctionImportMapping FunctionImportName="GetMenuListByClientIdRoleID" FunctionName="DSRCManagementSystemModel.Store.udpGetMenuListByClientId">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DSRCManagementSystemModel.MenuListByClientIdRoleID">
+          <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+          <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+          <ScalarProperty Name="ModuleIcon" ColumnName="ModuleIcon" />
+          <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+          <ScalarProperty Name="ModulePreceedanceOrder" ColumnName="ModulePreceedanceOrder" />
+          <ScalarProperty Name="PageUrl" ColumnName="PageUrl" />
+          <ScalarProperty Name="PreceedanceOrder" ColumnName="PreceedanceOrder" />
+          <ScalarProperty Name="SubModuleName" ColumnName="SubModuleName" />
+          <ScalarProperty Name="SubMenuIcon" ColumnName="SubMenuIcon" />
+          <ScalarProperty Name="SubModuleIcon" ColumnName="SubModuleIcon" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GetTimeSheetData" FunctionName="DSRCManagementSystemModel.Store.SP_GetTimeSheetData" />
+    <FunctionImportMapping FunctionImportName="Sp_FeedbackCalculation" FunctionName="DSRCManagementSystemModel.Store.Sp_FeedbackCalculation" />
+    <FunctionImportMapping FunctionImportName="Sp_WorkingDaysCalculation" FunctionName="DSRCManagementSystemModel.Store.Sp_WorkingDaysCalculation" />
+    <EntitySetMapping Name="AddHolidays">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AddHoliday">
+        <MappingFragment StoreEntitySet="AddHoliday">
+          <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+          <ScalarProperty Name="HolidayName" ColumnName="HolidayName" />
+          <ScalarProperty Name="HolidayId" ColumnName="HolidayId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AddHolidayLogs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AddHolidayLog">
+        <MappingFragment StoreEntitySet="AddHolidayLog">
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+          <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+          <ScalarProperty Name="PeviousValue" ColumnName="PeviousValue" />
+          <ScalarProperty Name="ColumnChanged" ColumnName="ColumnChanged" />
+          <ScalarProperty Name="TableId" ColumnName="TableId" />
+          <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AgendaFeedbacks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AgendaFeedback">
+        <MappingFragment StoreEntitySet="AgendaFeedback">
+          <ScalarProperty Name="MOMDate" ColumnName="MOMDate" />
+          <ScalarProperty Name="MOM" ColumnName="MOM" />
+          <ScalarProperty Name="FeedbackDate" ColumnName="FeedbackDate" />
+          <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+          <ScalarProperty Name="AgendaDate" ColumnName="AgendaDate" />
+          <ScalarProperty Name="Agenda" ColumnName="Agenda" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Assets">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Asset">
+        <MappingFragment StoreEntitySet="Asset">
+          <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
+          <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
+          <ScalarProperty Name="ModelNo" ColumnName="ModelNo" />
+          <ScalarProperty Name="InsertedBy" ColumnName="InsertedBy" />
+          <ScalarProperty Name="LastEditedby" ColumnName="LastEditedby" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="ISDelete" ColumnName="ISDelete" />
+          <ScalarProperty Name="InUse" ColumnName="InUse" />
+          <ScalarProperty Name="ConnectedTo" ColumnName="ConnectedTo" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Name_Model_No" ColumnName="Name/Model No" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="Isworking" ColumnName="Isworking" />
+          <ScalarProperty Name="Assigned" ColumnName="Assigned" />
+          <ScalarProperty Name="AssetTypeId" ColumnName="AssetTypeId" />
+          <ScalarProperty Name="TagName" ColumnName="TagName" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AssetTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AssetType">
+        <MappingFragment StoreEntitySet="AssetType">
+          <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+          <ScalarProperty Name="AssetTypeId" ColumnName="AssetTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CalendarYears">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CalendarYear">
+        <MappingFragment StoreEntitySet="CalendarYear">
+          <ScalarProperty Name="EndingMonth" ColumnName="EndingMonth" />
+          <ScalarProperty Name="StartingMonth" ColumnName="StartingMonth" />
+          <ScalarProperty Name="CalendarYearId" ColumnName="CalendarYearId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="communicationMessages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.communicationMessage">
+        <MappingFragment StoreEntitySet="communicationMessage">
+          <ScalarProperty Name="ShowToAll" ColumnName="ShowToAll" />
+          <ScalarProperty Name="ShowComments" ColumnName="ShowComments" />
+          <ScalarProperty Name="Valid_To" ColumnName="Valid_To" />
+          <ScalarProperty Name="Valid_From" ColumnName="Valid_From" />
+          <ScalarProperty Name="MessageType" ColumnName="MessageType" />
+          <ScalarProperty Name="MessageText" ColumnName="MessageText" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Compoffs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Compoff">
+        <MappingFragment StoreEntitySet="Compoff">
+          <ScalarProperty Name="MaximumDays" ColumnName="MaximumDays" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CompoffId" ColumnName="CompoffId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ComputerAssigneds">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ComputerAssigned">
+        <MappingFragment StoreEntitySet="ComputerAssigned">
+          <ScalarProperty Name="ComponentId" ColumnName="ComponentId" />
+          <ScalarProperty Name="UPSID" ColumnName="UPSID" />
+          <ScalarProperty Name="WorkStation" ColumnName="WorkStation" />
+          <ScalarProperty Name="pendriveAccessnew" ColumnName="pendriveAccessnew" />
+          <ScalarProperty Name="pendriveAccess" ColumnName="pendriveAccess" />
+          <ScalarProperty Name="Locationid" ColumnName="Locationid" />
+          <ScalarProperty Name="ExtraDevices" ColumnName="ExtraDevices" />
+          <ScalarProperty Name="LastEditedby" ColumnName="LastEditedby" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="ISDelete" ColumnName="ISDelete" />
+          <ScalarProperty Name="InsertedBy" ColumnName="InsertedBy" />
+          <ScalarProperty Name="Departmentid" ColumnName="Departmentid" />
+          <ScalarProperty Name="Managementid" ColumnName="Managementid" />
+          <ScalarProperty Name="Userid" ColumnName="Userid" />
+          <ScalarProperty Name="Assignid" ColumnName="Assignid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="computermanagements">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.computermanagement">
+        <MappingFragment StoreEntitySet="computermanagement">
+          <ScalarProperty Name="CpuIdNew" ColumnName="CpuIdNew" />
+          <ScalarProperty Name="OsId" ColumnName="OsId" />
+          <ScalarProperty Name="ComputerStatusNew" ColumnName="ComputerStatusNew" />
+          <ScalarProperty Name="IP" ColumnName="IP" />
+          <ScalarProperty Name="ComputerStatus" ColumnName="ComputerStatus" />
+          <ScalarProperty Name="cpu" ColumnName="cpu" />
+          <ScalarProperty Name="InsertedBy" ColumnName="InsertedBy" />
+          <ScalarProperty Name="LastEditedby" ColumnName="LastEditedby" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="ISDelete" ColumnName="ISDelete" />
+          <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
+          <ScalarProperty Name="Memory" ColumnName="Memory" />
+          <ScalarProperty Name="OS" ColumnName="OS" />
+          <ScalarProperty Name="MonitorID" ColumnName="MonitorID" />
+          <ScalarProperty Name="CPUID" ColumnName="CPUID" />
+          <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+          <ScalarProperty Name="managementid" ColumnName="managementid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataBaseValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DataBaseValue">
+        <MappingFragment StoreEntitySet="DataBaseValues">
+          <ScalarProperty Name="Database_Tools_ID" ColumnName="Database_Tools_ID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DefaultFunctionPrecedanceOrders">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DefaultFunctionPrecedanceOrder">
+        <MappingFragment StoreEntitySet="DefaultFunctionPrecedanceOrder">
+          <ScalarProperty Name="PreceedanceOrder" ColumnName="PreceedanceOrder" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="PreceedingID" ColumnName="PreceedingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DefaultModulePrecedanceOrders">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DefaultModulePrecedanceOrder">
+        <MappingFragment StoreEntitySet="DefaultModulePrecedanceOrder">
+          <ScalarProperty Name="PreceedanceOrder" ColumnName="PreceedanceOrder" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="SubPreceedingID" ColumnName="SubPreceedingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DefaultTemplates">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DefaultTemplate">
+        <MappingFragment StoreEntitySet="DefaultTemplate">
+          <ScalarProperty Name="ColumnTypeID" ColumnName="ColumnTypeID" />
+          <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+          <ScalarProperty Name="DefaultTemplateID" ColumnName="DefaultTemplateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmailPurposeLogs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.EmailPurposeLog">
+        <MappingFragment StoreEntitySet="EmailPurposeLog">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Datetimestamp" ColumnName="Datetimestamp" />
+          <ScalarProperty Name="UpdatedUserID" ColumnName="UpdatedUserID" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="ParameterChanges" ColumnName="ParameterChanges" />
+          <ScalarProperty Name="EmailPurposeID" ColumnName="EmailPurposeID" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmailTemplates">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.EmailTemplate">
+        <MappingFragment StoreEntitySet="EmailTemplate">
+          <ScalarProperty Name="TemplateContent" ColumnName="TemplateContent" />
+          <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TemplatePurpose" ColumnName="TemplatePurpose" />
+          <ScalarProperty Name="TemplatePath" ColumnName="TemplatePath" />
+          <ScalarProperty Name="EmailTemplateID" ColumnName="EmailTemplateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExceptionLogs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ExceptionLog">
+        <MappingFragment StoreEntitySet="ExceptionLog">
+          <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+          <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="ExceptionMessage" ColumnName="ExceptionMessage" />
+          <ScalarProperty Name="ExceptionDate" ColumnName="ExceptionDate" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ExceptionLogId" ColumnName="ExceptionLogId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FeedBacks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.FeedBack">
+        <MappingFragment StoreEntitySet="FeedBacks">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="FeedBack1" ColumnName="FeedBack" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FunctionModules">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.FunctionModule">
+        <MappingFragment StoreEntitySet="FunctionModules">
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="FunctionModuleID" ColumnName="FunctionModuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FunctionPrecedanceOrders">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.FunctionPrecedanceOrder">
+        <MappingFragment StoreEntitySet="FunctionPrecedanceOrder">
+          <ScalarProperty Name="PreceedanceOrder" ColumnName="PreceedanceOrder" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="PreceedingID" ColumnName="PreceedingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Functions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Function">
+        <MappingFragment StoreEntitySet="Functions">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="FunctionDescription" ColumnName="FunctionDescription" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="General_Tasks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.General_Task">
+        <MappingFragment StoreEntitySet="General Task">
+          <ScalarProperty Name="GeneralTask" ColumnName="GeneralTask" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Groups">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Group">
+        <MappingFragment StoreEntitySet="Groups">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LDModulePages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.LDModulePage">
+        <MappingFragment StoreEntitySet="LDModulePages">
+          <ScalarProperty Name="PageId" ColumnName="PageId" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="LDModulePageId" ColumnName="LDModulePageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LDModules">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.LDModule">
+        <MappingFragment StoreEntitySet="LDModules">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="IsSelectable" ColumnName="IsSelectable" />
+          <ScalarProperty Name="ListPosition" ColumnName="ListPosition" />
+          <ScalarProperty Name="InitialPage" ColumnName="InitialPage" />
+          <ScalarProperty Name="ParentModuleId" ColumnName="ParentModuleId" />
+          <ScalarProperty Name="ModuleDescription" ColumnName="ModuleDescription" />
+          <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LDRoleFunctionPrivileges">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.LDRoleFunctionPrivilege">
+        <MappingFragment StoreEntitySet="LDRoleFunctionPrivileges">
+          <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
+          <ScalarProperty Name="CanWrite" ColumnName="CanWrite" />
+          <ScalarProperty Name="CanRead" ColumnName="CanRead" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="LDModulePageId" ColumnName="LDModulePageId" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="LDRoleFunctionPrivilegeID" ColumnName="LDRoleFunctionPrivilegeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LeaveBalanceCounts">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.LeaveBalanceCount">
+        <MappingFragment StoreEntitySet="LeaveBalanceCount">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="LeaveTypeId" ColumnName="LeaveTypeId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LeaveRequests">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.LeaveRequest">
+        <MappingFragment StoreEntitySet="LeaveRequest">
+          <ScalarProperty Name="Earned" ColumnName="Earned" />
+          <ScalarProperty Name="Casual" ColumnName="Casual" />
+          <ScalarProperty Name="Sick" ColumnName="Sick" />
+          <ScalarProperty Name="LOP" ColumnName="LOP" />
+          <ScalarProperty Name="WorkedDate" ColumnName="WorkedDate" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="ReportingTo" ColumnName="ReportingTo" />
+          <ScalarProperty Name="ProcessedOn" ColumnName="ProcessedOn" />
+          <ScalarProperty Name="ProcessedBy" ColumnName="ProcessedBy" />
+          <ScalarProperty Name="Details" ColumnName="Details" />
+          <ScalarProperty Name="LeaveDays" ColumnName="LeaveDays" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
+          <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+          <ScalarProperty Name="LeaveStatusId" ColumnName="LeaveStatusId" />
+          <ScalarProperty Name="LeaveTypeId" ColumnName="LeaveTypeId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LeaveRequestId" ColumnName="LeaveRequestId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="locations">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.location">
+        <MappingFragment StoreEntitySet="location">
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="locationid" ColumnName="locationid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageServers">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageServer">
+        <MappingFragment StoreEntitySet="ManageServers">
+          <ScalarProperty Name="OtherProjects" ColumnName="OtherProjects" />
+          <ScalarProperty Name="Assignedto" ColumnName="Assignedto" />
+          <ScalarProperty Name="InsertedBy" ColumnName="InsertedBy" />
+          <ScalarProperty Name="LastEditedby" ColumnName="LastEditedby" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="ISDelete" ColumnName="ISDelete" />
+          <ScalarProperty Name="NameofProjectsHosted" ColumnName="NameofProjectsHosted" />
+          <ScalarProperty Name="SoftwaresInstalled" ColumnName="SoftwaresInstalled" />
+          <ScalarProperty Name="ServerEdition" ColumnName="ServerEdition" />
+          <ScalarProperty Name="OperatingSystem" ColumnName="OperatingSystem" />
+          <ScalarProperty Name="Configurationdetails" ColumnName="Configurationdetails" />
+          <ScalarProperty Name="Raid" ColumnName="Raid" />
+          <ScalarProperty Name="HardDisks" ColumnName="HardDisks" />
+          <ScalarProperty Name="Memory" ColumnName="Memory" />
+          <ScalarProperty Name="Processor" ColumnName="Processor" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ServerMake" ColumnName="ServerMake" />
+          <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+          <ScalarProperty Name="AssetId" ColumnName="AssetId" />
+          <ScalarProperty Name="RackNo" ColumnName="RackNo" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="ManageServers_Id" ColumnName="ManageServers_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MeetingGuids">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MeetingGuid">
+        <MappingFragment StoreEntitySet="MeetingGuids">
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MettingSchedules">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MettingSchedule">
+        <MappingFragment StoreEntitySet="MettingSchedule">
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Attendees" ColumnName="Attendees" />
+          <ScalarProperty Name="TimeSlot" ColumnName="TimeSlot" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="Day" ColumnName="Day" />
+          <ScalarProperty Name="Week" ColumnName="Week" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ModulePages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ModulePage">
+        <MappingFragment StoreEntitySet="ModulePages">
+          <ScalarProperty Name="PageId" ColumnName="PageId" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="ModulePageId" ColumnName="ModulePageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ModulePrecedanceOrders">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ModulePrecedanceOrder">
+        <MappingFragment StoreEntitySet="ModulePrecedanceOrder">
+          <ScalarProperty Name="PreceedanceOrder" ColumnName="PreceedanceOrder" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="SubPreceedingID" ColumnName="SubPreceedingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Modules">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Module">
+        <MappingFragment StoreEntitySet="Modules">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Style" ColumnName="Style" />
+          <ScalarProperty Name="IsSelectable" ColumnName="IsSelectable" />
+          <ScalarProperty Name="ListPosition" ColumnName="ListPosition" />
+          <ScalarProperty Name="InitialPage" ColumnName="InitialPage" />
+          <ScalarProperty Name="ParentModuleId" ColumnName="ParentModuleId" />
+          <ScalarProperty Name="ModuleDescription" ColumnName="ModuleDescription" />
+          <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MOMs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MOM">
+        <MappingFragment StoreEntitySet="MOM">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="MOM1" ColumnName="MOM" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrgCharts">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.OrgChart">
+        <MappingFragment StoreEntitySet="OrgChart">
+          <ScalarProperty Name="PrecedenceOrder" ColumnName="PrecedenceOrder" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ORMValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ORMValue">
+        <MappingFragment StoreEntitySet="ORMValues">
+          <ScalarProperty Name="ORM_Tools_ID" ColumnName="ORM_Tools_ID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutOfOfficeTimeManagements">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.OutOfOfficeTimeManagement">
+        <MappingFragment StoreEntitySet="OutOfOfficeTimeManagement">
+          <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="OutTimeMin" ColumnName="OutTimeMin" />
+          <ScalarProperty Name="InTimeMin" ColumnName="InTimeMin" />
+          <ScalarProperty Name="OutTime" ColumnName="OutTime" />
+          <ScalarProperty Name="InTime" ColumnName="InTime" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="ODTimeManagement" ColumnName="ODTimeManagement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Page">
+        <MappingFragment StoreEntitySet="Pages">
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="PageURL" ColumnName="PageURL" />
+          <ScalarProperty Name="PageName" ColumnName="PageName" />
+          <ScalarProperty Name="PageID" ColumnName="PageID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PendingLeaveRequests">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PendingLeaveRequest">
+        <MappingFragment StoreEntitySet="PendingLeaveRequest">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="DaysCount" ColumnName="DaysCount" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="UninformedLeaveDate" ColumnName="UninformedLeaveDate" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="PendingLeaveRequestID" ColumnName="PendingLeaveRequestID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhaseTaskMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PhaseTaskMapping">
+        <MappingFragment StoreEntitySet="PhaseTaskMapping">
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+          <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhaseTaskTypeMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PhaseTaskTypeMapping">
+        <MappingFragment StoreEntitySet="PhaseTaskTypeMapping">
+          <ScalarProperty Name="TaskTypeName" ColumnName="TaskTypeName" />
+          <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+          <ScalarProperty Name="PhaseStatusId" ColumnName="PhaseStatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pros">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.pro">
+        <MappingFragment StoreEntitySet="pro">
+          <ScalarProperty Name="columnchanged" ColumnName="columnchanged" />
+          <ScalarProperty Name="tablename" ColumnName="tablename" />
+          <ScalarProperty Name="tableid" ColumnName="tableid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pro_1">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.pro_1">
+        <MappingFragment StoreEntitySet="pro_1">
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+          <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+          <ScalarProperty Name="PreviousValue" ColumnName="PreviousValue" />
+          <ScalarProperty Name="ColumnChanged" ColumnName="ColumnChanged" />
+          <ScalarProperty Name="TableId" ColumnName="TableId" />
+          <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectAgendas">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectAgenda">
+        <MappingFragment StoreEntitySet="ProjectAgenda">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Agenda" ColumnName="Agenda" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectMetrics">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectMetric">
+        <MappingFragment StoreEntitySet="ProjectMetrics">
+          <ScalarProperty Name="Metrics" ColumnName="Metrics" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPhases">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectPhase">
+        <MappingFragment StoreEntitySet="ProjectPhase">
+          <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
+          <ScalarProperty Name="IsACTIVE" ColumnName="IsACTIVE" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="NoOfEfforts" ColumnName="NoOfEfforts" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Phase" ColumnName="Phase" />
+          <ScalarProperty Name="PhaseStatus" ColumnName="PhaseStatus" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ProjectPhaseId" ColumnName="ProjectPhaseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPhaseLogs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectPhaseLog">
+        <MappingFragment StoreEntitySet="ProjectPhaseLog">
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+          <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+          <ScalarProperty Name="PreviousValue" ColumnName="PreviousValue" />
+          <ScalarProperty Name="ColumnChanged" ColumnName="ColumnChanged" />
+          <ScalarProperty Name="TableId" ColumnName="TableId" />
+          <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Project">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="ProjectEndDate" ColumnName="ProjectEndDate" />
+          <ScalarProperty Name="ProjectStartDate" ColumnName="ProjectStartDate" />
+          <ScalarProperty Name="CommentedBy" ColumnName="CommentedBy" />
+          <ScalarProperty Name="Metrix" ColumnName="Metrix" />
+          <ScalarProperty Name="CommentsCreated" ColumnName="CommentsCreated" />
+          <ScalarProperty Name="RAGComments" ColumnName="RAGComments" />
+          <ScalarProperty Name="RAGStatus" ColumnName="RAGStatus" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="SvnRepositoryUrl" ColumnName="SvnRepositoryUrl" />
+          <ScalarProperty Name="ProjectTypeID" ColumnName="ProjectTypeID" />
+          <ScalarProperty Name="ProjectDescription" ColumnName="ProjectDescription" />
+          <ScalarProperty Name="ProjectCode" ColumnName="ProjectCode" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectStatu">
+        <MappingFragment StoreEntitySet="ProjectStatus">
+          <ScalarProperty Name="CommnetedBy" ColumnName="CommnetedBy" />
+          <ScalarProperty Name="CommentsCreated" ColumnName="CommentsCreated" />
+          <ScalarProperty Name="StatusComments" ColumnName="StatusComments" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="REPORTs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.REPORT">
+        <MappingFragment StoreEntitySet="REPORT">
+          <ScalarProperty Name="REPORTNAME" ColumnName="REPORTNAME" />
+          <ScalarProperty Name="userNAME" ColumnName="userNAME" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReportingPersonsRollIDs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ReportingPersonsRollID">
+        <MappingFragment StoreEntitySet="ReportingPersonsRollID">
+          <ScalarProperty Name="ReportingPersonRollID" ColumnName="ReportingPersonRollID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reports1">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Report1">
+        <MappingFragment StoreEntitySet="Reports">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ReportQuery" ColumnName="ReportQuery" />
+          <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+          <ScalarProperty Name="ReportId" ColumnName="ReportId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequestComponents">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.RequestComponent">
+        <MappingFragment StoreEntitySet="RequestComponent">
+          <ScalarProperty Name="NetworkingHead" ColumnName="NetworkingHead" />
+          <ScalarProperty Name="RejectedBy" ColumnName="RejectedBy" />
+          <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />
+          <ScalarProperty Name="SecondStageApprovedBy" ColumnName="SecondStageApprovedBy" />
+          <ScalarProperty Name="SecondStageApprovalDate" ColumnName="SecondStageApprovalDate" />
+          <ScalarProperty Name="FirstStageApprovedBy" ColumnName="FirstStageApprovedBy" />
+          <ScalarProperty Name="FirstStageApprovalDate" ColumnName="FirstStageApprovalDate" />
+          <ScalarProperty Name="NewrequestDate" ColumnName="NewrequestDate" />
+          <ScalarProperty Name="SecondstageApprovalid" ColumnName="SecondstageApprovalid" />
+          <ScalarProperty Name="FirststageApprovalid" ColumnName="FirststageApprovalid" />
+          <ScalarProperty Name="AcceptedBy" ColumnName="AcceptedBy" />
+          <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+          <ScalarProperty Name="ISDelete" ColumnName="ISDelete" />
+          <ScalarProperty Name="NetworkingId" ColumnName="NetworkingId" />
+          <ScalarProperty Name="SecondstageApproval" ColumnName="SecondstageApproval" />
+          <ScalarProperty Name="FirststageApproval" ColumnName="FirststageApproval" />
+          <ScalarProperty Name="AssignedToId" ColumnName="AssignedToId" />
+          <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="ComputerId" ColumnName="ComputerId" />
+          <ScalarProperty Name="Employee" ColumnName="Employee" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleFunctionPrivileges">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.RoleFunctionPrivilege">
+        <MappingFragment StoreEntitySet="RoleFunctionPrivileges">
+          <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
+          <ScalarProperty Name="CanWrite" ColumnName="CanWrite" />
+          <ScalarProperty Name="CanRead" ColumnName="CanRead" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleFunctionPrivilegeID" ColumnName="RoleFunctionPrivilegeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleFunctions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.RoleFunction">
+        <MappingFragment StoreEntitySet="RoleFunctions">
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleFunctionID" ColumnName="RoleFunctionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rpts">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.rpt">
+        <MappingFragment StoreEntitySet="rpt">
+          <ScalarProperty Name="REPORTNAME" ColumnName="REPORTNAME" />
+          <ScalarProperty Name="userNAME" ColumnName="userNAME" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Skills1">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Skill1">
+        <MappingFragment StoreEntitySet="Skills">
+          <ScalarProperty Name="experiance" ColumnName="experiance" />
+          <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+          <ScalarProperty Name="LastUsed" ColumnName="LastUsed" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Secondary" ColumnName="Secondary" />
+          <ScalarProperty Name="Primary" ColumnName="Primary" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Specialization" ColumnName="Specialization" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SkillSpecificationMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.SkillSpecificationMapping">
+        <MappingFragment StoreEntitySet="SkillSpecificationMapping">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="SpecificationId" ColumnName="SpecificationId" />
+          <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+          <ScalarProperty Name="SkillSpecificationMappingId" ColumnName="SkillSpecificationMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SoftwareComponents">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.SoftwareComponent">
+        <MappingFragment StoreEntitySet="SoftwareComponent">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SoftwareId" ColumnName="SoftwareId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Softwares">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Software">
+        <MappingFragment StoreEntitySet="Softwares">
+          <ScalarProperty Name="InstalledDate" ColumnName="InstalledDate" />
+          <ScalarProperty Name="Installedto" ColumnName="Installedto" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="SoftwareType" ColumnName="SoftwareType" />
+          <ScalarProperty Name="SoftwareId" ColumnName="SoftwareId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SourceControlValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.SourceControlValue">
+        <MappingFragment StoreEntitySet="SourceControlValues">
+          <ScalarProperty Name="SourceControlID" ColumnName="SourceControlID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Status">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="Statusid" ColumnName="Statusid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCustomers">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.tblCustomer">
+        <MappingFragment StoreEntitySet="tblCustomer">
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCustomer2">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.tblCustomer2">
+        <MappingFragment StoreEntitySet="tblCustomer2">
+          <ScalarProperty Name="Grade" ColumnName="Grade" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMailingaddresses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.tblMailingaddress">
+        <MappingFragment StoreEntitySet="tblMailingaddress">
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Place" ColumnName="Place" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblphysicaladdresses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.tblphysicaladdress">
+        <MappingFragment StoreEntitySet="tblphysicaladdress">
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Placee" ColumnName="Placee" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblproducts">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.tblproduct">
+        <MappingFragment StoreEntitySet="tblproducts">
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TechnologyValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TechnologyValue">
+        <MappingFragment StoreEntitySet="TechnologyValues">
+          <ScalarProperty Name="TecnologyId" ColumnName="TecnologyId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="temps">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.temp">
+        <MappingFragment StoreEntitySet="temp">
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+          <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tempholidays">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Tempholiday">
+        <MappingFragment StoreEntitySet="Tempholiday">
+          <ScalarProperty Name="Detail" ColumnName="Detail" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="HolidayId" ColumnName="HolidayId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TemplateTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TemplateType">
+        <MappingFragment StoreEntitySet="TemplateType">
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="TemplateTypeID" ColumnName="TemplateTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThirdPartyValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ThirdPartyValue">
+        <MappingFragment StoreEntitySet="ThirdPartyValues">
+          <ScalarProperty Name="ThirdParty_Tools_ID" ColumnName="ThirdParty_Tools_ID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeManagements">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimeManagement">
+        <MappingFragment StoreEntitySet="TimeManagement">
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+          <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="OutTimeMin" ColumnName="OutTimeMin" />
+          <ScalarProperty Name="InTimeMin" ColumnName="InTimeMin" />
+          <ScalarProperty Name="OutTime" ColumnName="OutTime" />
+          <ScalarProperty Name="InTime" ColumnName="InTime" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="TimeManagement1" ColumnName="TimeManagement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSheets">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimeSheet">
+        <MappingFragment StoreEntitySet="TimeSheet">
+          <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="TimeSheetValue" ColumnName="TimeSheetValue" />
+          <ScalarProperty Name="TimeSheetColumnID" ColumnName="TimeSheetColumnID" />
+          <ScalarProperty Name="TimesheetID" ColumnName="TimesheetID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSheetColumns">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimeSheetColumn">
+        <MappingFragment StoreEntitySet="TimeSheetColumn">
+          <ScalarProperty Name="IsFinalised" ColumnName="IsFinalised" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="ColumnTypeID" ColumnName="ColumnTypeID" />
+          <ScalarProperty Name="ColumnDisplayName" ColumnName="ColumnDisplayName" />
+          <ScalarProperty Name="ColumnNames" ColumnName="ColumnNames" />
+          <ScalarProperty Name="TimeSheetColumnID" ColumnName="TimeSheetColumnID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimesheetDatas">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimesheetData">
+        <MappingFragment StoreEntitySet="TimesheetData">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nvarchar" ColumnName="nvarchar" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="aaaa" ColumnName="aaaa" />
+          <ScalarProperty Name="aasasa" ColumnName="aasasa" />
+          <ScalarProperty Name="aaa" ColumnName="aaa" />
+          <ScalarProperty Name="DateOFSheet" ColumnName="DateOFSheet" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BedfordBorough" ColumnName="BedfordBorough" />
+          <ScalarProperty Name="ArgonautRelease8_7_0_1" ColumnName="ArgonautRelease8.7.0.1" />
+          <ScalarProperty Name="Admin" ColumnName="Admin" />
+          <ScalarProperty Name="TaskAssigned" ColumnName="TaskAssigned" />
+          <ScalarProperty Name="VarianceAndReason" ColumnName="VarianceAndReason" />
+          <ScalarProperty Name="ActualEndDate" ColumnName="ActualEndDate" />
+          <ScalarProperty Name="ActualStartDate" ColumnName="ActualStartDate" />
+          <ScalarProperty Name="ProposedEndDate" ColumnName="ProposedEndDate" />
+          <ScalarProperty Name="ProposedStartDate" ColumnName="ProposedStartDate" />
+          <ScalarProperty Name="Day" ColumnName="Day" />
+          <ScalarProperty Name="TimesheetID" ColumnName="TimesheetID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimesheetTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimesheetType">
+        <MappingFragment StoreEntitySet="TimesheetType">
+          <ScalarProperty Name="IsGrouped" ColumnName="IsGrouped" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="TimesheetTypeID" ColumnName="TimesheetTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeZones">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TimeZone">
+        <MappingFragment StoreEntitySet="TimeZone">
+          <ScalarProperty Name="Zone" ColumnName="Zone" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TotalHours">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TotalHour">
+        <MappingFragment StoreEntitySet="TotalHours">
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+          <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+          <ScalarProperty Name="Friday" ColumnName="Friday" />
+          <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+          <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+          <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+          <ScalarProperty Name="Monday" ColumnName="Monday" />
+          <ScalarProperty Name="Task" ColumnName="Task" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TotalWorkingHours">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TotalWorkingHour">
+        <MappingFragment StoreEntitySet="TotalWorkingHours">
+          <ScalarProperty Name="Approved" ColumnName="Approved" />
+          <ScalarProperty Name="AssignTaskId" ColumnName="AssignTaskId" />
+          <ScalarProperty Name="TaskWeek" ColumnName="TaskWeek" />
+          <ScalarProperty Name="FridayDate" ColumnName="FridayDate" />
+          <ScalarProperty Name="ThursdayDate" ColumnName="ThursdayDate" />
+          <ScalarProperty Name="WednesdayDate" ColumnName="WednesdayDate" />
+          <ScalarProperty Name="TuesdayDate" ColumnName="TuesdayDate" />
+          <ScalarProperty Name="MOndayDate" ColumnName="MOndayDate" />
+          <ScalarProperty Name="TaskMonth" ColumnName="TaskMonth" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="SaveDate" ColumnName="SaveDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+          <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+          <ScalarProperty Name="Friday" ColumnName="Friday" />
+          <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+          <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+          <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+          <ScalarProperty Name="Monday" ColumnName="Monday" />
+          <ScalarProperty Name="Task" ColumnName="Task" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingCompletions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingCompletion">
+        <MappingFragment StoreEntitySet="TrainingCompletion">
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="Attendece" ColumnName="Attendece" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+          <ScalarProperty Name="CompletionId" ColumnName="CompletionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingFeedbackAggregates">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingFeedbackAggregate">
+        <MappingFragment StoreEntitySet="TrainingFeedbackAggregate">
+          <ScalarProperty Name="No_Of_Attendees" ColumnName="No_Of_Attendees" />
+          <ScalarProperty Name="OverAllRating" ColumnName="OverAllRating" />
+          <ScalarProperty Name="FacultyQRating" ColumnName="FacultyQRating" />
+          <ScalarProperty Name="PresentRating" ColumnName="PresentRating" />
+          <ScalarProperty Name="ContentRating" ColumnName="ContentRating" />
+          <ScalarProperty Name="QualityRating" ColumnName="QualityRating" />
+          <ScalarProperty Name="TimeRating" ColumnName="TimeRating" />
+          <ScalarProperty Name="CntPresentRating" ColumnName="CntPresentRating" />
+          <ScalarProperty Name="EgDemoRating" ColumnName="EgDemoRating" />
+          <ScalarProperty Name="PrepareRating" ColumnName="PrepareRating" />
+          <ScalarProperty Name="LearnRating" ColumnName="LearnRating" />
+          <ScalarProperty Name="CntAmtRating" ColumnName="CntAmtRating" />
+          <ScalarProperty Name="RelevanceRating" ColumnName="RelevanceRating" />
+          <ScalarProperty Name="TopicRating" ColumnName="TopicRating" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+          <ScalarProperty Name="FAId" ColumnName="FAId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingFeedBackCalcs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingFeedBackCalc">
+        <MappingFragment StoreEntitySet="TrainingFeedBackCalc">
+          <ScalarProperty Name="OverallPerc" ColumnName="OverallPerc" />
+          <ScalarProperty Name="Overall" ColumnName="Overall" />
+          <ScalarProperty Name="FeedBackSentOn" ColumnName="FeedBackSentOn" />
+          <ScalarProperty Name="Flag" ColumnName="Flag" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="LearntInPgm" ColumnName="LearntInPgm" />
+          <ScalarProperty Name="PgmUseful" ColumnName="PgmUseful" />
+          <ScalarProperty Name="FacultyQuality" ColumnName="FacultyQuality" />
+          <ScalarProperty Name="TimeMaintanence" ColumnName="TimeMaintanence" />
+          <ScalarProperty Name="ContentPresented" ColumnName="ContentPresented" />
+          <ScalarProperty Name="ExampleDemo" ColumnName="ExampleDemo" />
+          <ScalarProperty Name="AdequacyPreparation" ColumnName="AdequacyPreparation" />
+          <ScalarProperty Name="AdequacyLearning" ColumnName="AdequacyLearning" />
+          <ScalarProperty Name="ContentAmt" ColumnName="ContentAmt" />
+          <ScalarProperty Name="PgmRelevance" ColumnName="PgmRelevance" />
+          <ScalarProperty Name="ChoiceTopic" ColumnName="ChoiceTopic" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+          <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingInstructors">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingInstructor">
+        <MappingFragment StoreEntitySet="TrainingInstructors">
+          <ScalarProperty Name="USERID" ColumnName="USERID" />
+          <ScalarProperty Name="InstructorName" ColumnName="InstructorName" />
+          <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingMailPurposes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingMailPurpose">
+        <MappingFragment StoreEntitySet="TrainingMailPurpose">
+          <ScalarProperty Name="GroupEmailFlag" ColumnName="GroupEmailFlag" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+          <ScalarProperty Name="InitiatedOn" ColumnName="InitiatedOn" />
+          <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+          <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingNominations">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingNomination">
+        <MappingFragment StoreEntitySet="TrainingNomination">
+          <ScalarProperty Name="CompletionFlag" ColumnName="CompletionFlag" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="NominationFlag" ColumnName="NominationFlag" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+          <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+          <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+          <ScalarProperty Name="SupervisorName" ColumnName="SupervisorName" />
+          <ScalarProperty Name="SupervisorId" ColumnName="SupervisorId" />
+          <ScalarProperty Name="Project" ColumnName="Project" />
+          <ScalarProperty Name="ProjectWon" ColumnName="ProjectWon" />
+          <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+          <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingNominationLinks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingNominationLink">
+        <MappingFragment StoreEntitySet="TrainingNominationLink">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+          <ScalarProperty Name="NominationLinkId" ColumnName="NominationLinkId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingWeightages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingWeightage">
+        <MappingFragment StoreEntitySet="TrainingWeightage">
+          <ScalarProperty Name="Supporter" ColumnName="Supporter" />
+          <ScalarProperty Name="Instructor" ColumnName="Instructor" />
+          <ScalarProperty Name="Trainee" ColumnName="Trainee" />
+          <ScalarProperty Name="TrainingTypeid" ColumnName="TrainingTypeid" />
+          <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+          <ScalarProperty Name="WeightageId" ColumnName="WeightageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TS_Task">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TS_Task">
+        <MappingFragment StoreEntitySet="TS_Task">
+          <ScalarProperty Name="IsSave" ColumnName="IsSave" />
+          <ScalarProperty Name="PhaseNameId" ColumnName="PhaseNameId" />
+          <ScalarProperty Name="ISACTIVE" ColumnName="ISACTIVE" />
+          <ScalarProperty Name="PhaseStatus" ColumnName="PhaseStatus" />
+          <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="IsOpened" ColumnName="IsOpened" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsActice" ColumnName="IsActice" />
+          <ScalarProperty Name="NoOfEfforts" ColumnName="NoOfEfforts" />
+          <ScalarProperty Name="EndDATE" ColumnName="EndDATE" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="TaskStatus" ColumnName="TaskStatus" />
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TS_TimeSheetTotalHours">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TS_TimeSheetTotalHours">
+        <MappingFragment StoreEntitySet="TS_TimeSheetTotalHours">
+          <ScalarProperty Name="SaveDate" ColumnName="SaveDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+          <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+          <ScalarProperty Name="Friday" ColumnName="Friday" />
+          <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+          <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+          <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+          <ScalarProperty Name="Monday" ColumnName="Monday" />
+          <ScalarProperty Name="Task" ColumnName="Task" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAssetMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserAssetMapping">
+        <MappingFragment StoreEntitySet="UserAssetMapping">
+          <ScalarProperty Name="Component" ColumnName="Component" />
+          <ScalarProperty Name="AssignId" ColumnName="AssignId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="UseID" ColumnName="UseID" />
+          <ScalarProperty Name="UserAssetMappingID" ColumnName="UserAssetMappingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMessages">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserMessage">
+        <MappingFragment StoreEntitySet="UserMessage">
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="IsYesPressed" ColumnName="IsYesPressed" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="CommunicationId" ColumnName="CommunicationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProfiles">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserProfile">
+        <MappingFragment StoreEntitySet="UserProfile">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProjects">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserProject">
+        <MappingFragment StoreEntitySet="UserProjects">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserEndDate" ColumnName="UserEndDate" />
+          <ScalarProperty Name="UserStartDate" ColumnName="UserStartDate" />
+          <ScalarProperty Name="MemberTypeID" ColumnName="MemberTypeID" />
+          <ScalarProperty Name="IsBillable" ColumnName="IsBillable" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserProjectID" ColumnName="UserProjectID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserReportings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserReporting">
+        <MappingFragment StoreEntitySet="UserReporting">
+          <ScalarProperty Name="ReportingUserID" ColumnName="ReportingUserID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ReportingID" ColumnName="ReportingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRoles">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersFeedbacks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UsersFeedback">
+        <MappingFragment StoreEntitySet="UsersFeedback">
+          <ScalarProperty Name="FeedbackDate" ColumnName="FeedbackDate" />
+          <ScalarProperty Name="Feedback" ColumnName="Feedback" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserSkills">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserSkill">
+        <MappingFragment StoreEntitySet="UserSkills">
+          <ScalarProperty Name="Skills" ColumnName="Skills" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TS_AssignedTask">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TS_AssignedTask">
+        <MappingFragment StoreEntitySet="TS_AssignedTask">
+          <ScalarProperty Name="flag" ColumnName="flag" />
+          <ScalarProperty Name="SelectedEmployess" ColumnName="SelectedEmployess" />
+          <ScalarProperty Name="Task" ColumnName="Task" />
+          <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />
+          <ScalarProperty Name="Approved" ColumnName="Approved" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="RejectedUserId" ColumnName="RejectedUserId" />
+          <ScalarProperty Name="Isreject" ColumnName="Isreject" />
+          <ScalarProperty Name="TaskStatus" ColumnName="TaskStatus" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ISdelete" ColumnName="ISdelete" />
+          <ScalarProperty Name="Employees" ColumnName="Employees" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="NoOfEfforts" ColumnName="NoOfEfforts" />
+          <ScalarProperty Name="TaskName" ColumnName="TaskName" />
+          <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="AssignedTaskId" ColumnName="AssignedTaskId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutOfOfficeDetails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.OutOfOfficeDetail">
+        <MappingFragment StoreEntitySet="OutOfOfficeDetails">
+          <ScalarProperty Name="Ireject" ColumnName="Ireject" />
+          <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />
+          <ScalarProperty Name="RejectedReason" ColumnName="RejectedReason" />
+          <ScalarProperty Name="RejectedUserid" ColumnName="RejectedUserid" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="MngrComments" ColumnName="MngrComments" />
+          <ScalarProperty Name="StatusUpdatedBy" ColumnName="StatusUpdatedBy" />
+          <ScalarProperty Name="Others" ColumnName="Others" />
+          <ScalarProperty Name="ReportingPersonId" ColumnName="ReportingPersonId" />
+          <ScalarProperty Name="RequestStatusId" ColumnName="RequestStatusId" />
+          <ScalarProperty Name="Userid" ColumnName="Userid" />
+          <ScalarProperty Name="ODComments" ColumnName="ODComments" />
+          <ScalarProperty Name="ODPlaceID" ColumnName="ODPlaceID" />
+          <ScalarProperty Name="ODTypeID" ColumnName="ODTypeID" />
+          <ScalarProperty Name="ODAlternateNo" ColumnName="ODAlternateNo" />
+          <ScalarProperty Name="ODWorkingDays" ColumnName="ODWorkingDays" />
+          <ScalarProperty Name="ODEndDate" ColumnName="ODEndDate" />
+          <ScalarProperty Name="ODStartDate" ColumnName="ODStartDate" />
+          <ScalarProperty Name="ODId" ColumnName="ODId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MileStoneValues">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MileStoneValue">
+        <MappingFragment StoreEntitySet="MileStoneValues">
+          <ScalarProperty Name="ActualEndDate" ColumnName="ActualEndDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="MileStoneID" ColumnName="MileStoneID" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Expenditures">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Expenditure">
+        <MappingFragment StoreEntitySet="Expenditure">
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ExpenseAmount" ColumnName="ExpenseAmount" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ExpenseDescription" ColumnName="ExpenseDescription" />
+          <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Incomes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Income">
+        <MappingFragment StoreEntitySet="Income">
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IncomeAmount" ColumnName="IncomeAmount" />
+          <ScalarProperty Name="IncomeDate" ColumnName="IncomeDate" />
+          <ScalarProperty Name="IncomeDescription" ColumnName="IncomeDescription" />
+          <ScalarProperty Name="IncomeID" ColumnName="IncomeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AlbumPhotos">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AlbumPhoto">
+        <MappingFragment StoreEntitySet="AlbumPhotos">
+          <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="AlbumPhotoPath" ColumnName="AlbumPhotoPath" />
+          <ScalarProperty Name="AlbumPhotoDescription" ColumnName="AlbumPhotoDescription" />
+          <ScalarProperty Name="AlbumPhotoTitle" ColumnName="AlbumPhotoTitle" />
+          <ScalarProperty Name="AlbumPhotoID" ColumnName="AlbumPhotoID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Branches">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Branches">
+        <MappingFragment StoreEntitySet="Master_Branches">
+          <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ColumnTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ColumnTypes">
+        <MappingFragment StoreEntitySet="Master_ColumnTypes">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ColumnTypeName" ColumnName="ColumnTypeName" />
+          <ScalarProperty Name="ColumnTypeID" ColumnName="ColumnTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_CompanyArchitecture">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_CompanyArchitecture">
+        <MappingFragment StoreEntitySet="Master_CompanyArchitecture">
+          <ScalarProperty Name="Parent" ColumnName="Parent" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Component">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Component">
+        <MappingFragment StoreEntitySet="Master_Component">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_DataBaseTechnolgy">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_DataBaseTechnolgy">
+        <MappingFragment StoreEntitySet="Master_DataBaseTechnolgy">
+          <ScalarProperty Name="Database_Tools" ColumnName="Database_Tools" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Days">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Days">
+        <MappingFragment StoreEntitySet="Master_Days">
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Designation">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Designation">
+        <MappingFragment StoreEntitySet="Master_Designation">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DesignationDescription" ColumnName="DesignationDescription" />
+          <ScalarProperty Name="DesignationName" ColumnName="DesignationName" />
+          <ScalarProperty Name="DesignationID" ColumnName="DesignationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_DifferentZone">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_DifferentZone">
+        <MappingFragment StoreEntitySet="Master_DifferentZone">
+          <ScalarProperty Name="Zone" ColumnName="Zone" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_IsOpen">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_IsOpen">
+        <MappingFragment StoreEntitySet="Master_IsOpen">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_LeaveStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_LeaveStatus">
+        <MappingFragment StoreEntitySet="Master_LeaveStatus">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LeaveStatusId" ColumnName="LeaveStatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_LeaveType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_LeaveType">
+        <MappingFragment StoreEntitySet="Master_LeaveType">
+          <ScalarProperty Name="ApplicableEmployees" ColumnName="ApplicableEmployees" />
+          <ScalarProperty Name="CalculateLeaveDays" ColumnName="CalculateLeaveDays" />
+          <ScalarProperty Name="DaysAllowed" ColumnName="DaysAllowed" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LeaveTypeId" ColumnName="LeaveTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_MemberTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_MemberTypes">
+        <MappingFragment StoreEntitySet="Master_MemberTypes">
+          <ScalarProperty Name="MemberType" ColumnName="MemberType" />
+          <ScalarProperty Name="MemberTypeID" ColumnName="MemberTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_MessageType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_MessageType">
+        <MappingFragment StoreEntitySet="Master_MessageType">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_MileStones">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_MileStones">
+        <MappingFragment StoreEntitySet="Master_MileStones">
+          <ScalarProperty Name="MileStoneName" ColumnName="MileStoneName" />
+          <ScalarProperty Name="MileStoneID" ColumnName="MileStoneID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_openclose">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_openclose">
+        <MappingFragment StoreEntitySet="Master_openclose">
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="StateId" ColumnName="StateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ORM">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ORM">
+        <MappingFragment StoreEntitySet="Master_ORM">
+          <ScalarProperty Name="ORM_Tools" ColumnName="ORM_Tools" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Os">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Os">
+        <MappingFragment StoreEntitySet="Master_Os">
+          <ScalarProperty Name="OsName" ColumnName="OsName" />
+          <ScalarProperty Name="OsId" ColumnName="OsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_OutOfOfficePlaces">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_OutOfOfficePlaces">
+        <MappingFragment StoreEntitySet="Master_OutOfOfficePlaces">
+          <ScalarProperty Name="ODCountry" ColumnName="ODCountry" />
+          <ScalarProperty Name="ODLocation" ColumnName="ODLocation" />
+          <ScalarProperty Name="ODPlaceID" ColumnName="ODPlaceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_OutOfOfficeTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_OutOfOfficeTypes">
+        <MappingFragment StoreEntitySet="Master_OutOfOfficeTypes">
+          <ScalarProperty Name="ODTypeName" ColumnName="ODTypeName" />
+          <ScalarProperty Name="ODTypeId" ColumnName="ODTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_PhaseStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_PhaseStatus">
+        <MappingFragment StoreEntitySet="Master_PhaseStatus">
+          <ScalarProperty Name="PhaseStatusName" ColumnName="PhaseStatusName" />
+          <ScalarProperty Name="PhaseStatusId" ColumnName="PhaseStatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Priority">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Priority">
+        <MappingFragment StoreEntitySet="Master_Priority">
+          <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
+          <ScalarProperty Name="Priorityid" ColumnName="Priorityid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Project_Month_Week">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Project_Month_Week">
+        <MappingFragment StoreEntitySet="Master_Project_Month_Week">
+          <ScalarProperty Name="Week" ColumnName="Week" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ProjectTypes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ProjectTypes">
+        <MappingFragment StoreEntitySet="Master_ProjectTypes">
+          <ScalarProperty Name="ProjectTypeName" ColumnName="ProjectTypeName" />
+          <ScalarProperty Name="ProjectTypeID" ColumnName="ProjectTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_RequestStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_RequestStatus">
+        <MappingFragment StoreEntitySet="Master_RequestStatus">
+          <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
+          <ScalarProperty Name="RequestStatusId" ColumnName="RequestStatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Roles">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Roles">
+        <MappingFragment StoreEntitySet="Master_Roles">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ServerOs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ServerOs">
+        <MappingFragment StoreEntitySet="Master_ServerOs">
+          <ScalarProperty Name="ServerOsName" ColumnName="ServerOsName" />
+          <ScalarProperty Name="ServerOsId" ColumnName="ServerOsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Skill">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Skill">
+        <MappingFragment StoreEntitySet="Master_Skill">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="SkillName" ColumnName="SkillName" />
+          <ScalarProperty Name="SkillId" ColumnName="SkillId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_SourceControl">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_SourceControl">
+        <MappingFragment StoreEntitySet="Master_SourceControl">
+          <ScalarProperty Name="SourceControl_Tools" ColumnName="SourceControl_Tools" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TeamMonths">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TeamMonths">
+        <MappingFragment StoreEntitySet="Master_TeamMonths">
+          <ScalarProperty Name="Months" ColumnName="Months" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ThirdParty">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ThirdParty">
+        <MappingFragment StoreEntitySet="Master_ThirdParty">
+          <ScalarProperty Name="ThirdParty_Tools" ColumnName="ThirdParty_Tools" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TrainingLevel">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TrainingLevel">
+        <MappingFragment StoreEntitySet="Master_TrainingLevel">
+          <ScalarProperty Name="LevelName" ColumnName="LevelName" />
+          <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TrainingPurpose">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TrainingPurpose">
+        <MappingFragment StoreEntitySet="Master_TrainingPurpose">
+          <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+          <ScalarProperty Name="PurposeId" ColumnName="PurposeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TrainingStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TrainingStatus">
+        <MappingFragment StoreEntitySet="Master_TrainingStatus">
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TrainingTechnology">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TrainingTechnology">
+        <MappingFragment StoreEntitySet="Master_TrainingTechnology">
+          <ScalarProperty Name="TechnologyName" ColumnName="TechnologyName" />
+          <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TrainingType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TrainingType">
+        <MappingFragment StoreEntitySet="Master_TrainingType">
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+          <ScalarProperty Name="TrainingTypeId" ColumnName="TrainingTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TS_Week">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TS_Week">
+        <MappingFragment StoreEntitySet="Master_TS_Week">
+          <ScalarProperty Name="WeeK" ColumnName="WeeK" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TSR_Members">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TSR_Members">
+        <MappingFragment StoreEntitySet="Master_TSR_Members">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Types">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Types">
+        <MappingFragment StoreEntitySet="Master_Types">
+          <ScalarProperty Name="MemberTypes" ColumnName="MemberTypes" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TypesofEmployees">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TypesofEmployees">
+        <MappingFragment StoreEntitySet="Master_TypesofEmployees">
+          <ScalarProperty Name="Types" ColumnName="Types" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_WindowServiceSchedules">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_WindowServiceSchedules">
+        <MappingFragment StoreEntitySet="Master_WindowServiceSchedules">
+          <ScalarProperty Name="Schedules" ColumnName="Schedules" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Windowsservices">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Windowsservices">
+        <MappingFragment StoreEntitySet="Master_Windowsservices">
+          <ScalarProperty Name="WindowServices" ColumnName="WindowServices" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_years">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_years">
+        <MappingFragment StoreEntitySet="Master_years">
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TSR_Month">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TSR_Month">
+        <MappingFragment StoreEntitySet="Master_TSR_Month">
+          <ScalarProperty Name="Month" ColumnName="Month" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ThemeColors">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ThemeColors">
+        <MappingFragment StoreEntitySet="Master_ThemeColors">
+          <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+          <ScalarProperty Name="ColorName" ColumnName="ColorName" />
+          <ScalarProperty Name="ColorId" ColumnName="ColorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AuditLogs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AuditLog">
+        <MappingFragment StoreEntitySet="AuditLog">
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="OsVersion" ColumnName="OsVersion" />
+          <ScalarProperty Name="BrowserVersion" ColumnName="BrowserVersion" />
+          <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+          <ScalarProperty Name="LoggedOutDate" ColumnName="LoggedOutDate" />
+          <ScalarProperty Name="LogedInDate" ColumnName="LogedInDate" />
+          <ScalarProperty Name="Roles" ColumnName="Roles" />
+          <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_GetOrganizationChart" FunctionName="DSRCManagementSystemModel.Store.SP_GetOrganizationChart" />
+    <EntitySetMapping Name="CustomReports_UserMapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CustomReports_UserMapping">
+        <MappingFragment StoreEntitySet="CustomReports_UserMapping">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+          <ScalarProperty Name="MappingID" ColumnName="MappingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CalendarEventUserMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CalendarEventUserMapping">
+        <MappingFragment StoreEntitySet="CalendarEventUserMapping">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="EventID" ColumnName="EventID" />
+          <ScalarProperty Name="EumID" ColumnName="EumID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_holiday">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_holiday">
+        <MappingFragment StoreEntitySet="Master_holiday">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Detail" ColumnName="Detail" />
+          <ScalarProperty Name="HolidayId" ColumnName="HolidayId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Sp_GetColumn" FunctionName="DSRCManagementSystemModel.Store.Sp_GetColumn" />
+    <FunctionImportMapping FunctionImportName="Sp_Master" FunctionName="DSRCManagementSystemModel.Store.Sp_Master" />
+    <EntitySetMapping Name="CustomReports">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CustomReport">
+        <MappingFragment StoreEntitySet="CustomReports">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ReportQuery" ColumnName="ReportQuery" />
+          <ScalarProperty Name="ReportDescription" ColumnName="ReportDescription" />
+          <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+          <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AlbumAccesses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AlbumAccess">
+        <MappingFragment StoreEntitySet="AlbumAccess">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+          <ScalarProperty Name="AlbumAccessID" ColumnName="AlbumAccessID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.EventPermission">
+        <MappingFragment StoreEntitySet="EventPermission">
+          <ScalarProperty Name="IsAurthorized" ColumnName="IsAurthorized" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="EventPermissionID" ColumnName="EventPermissionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_Name" FunctionName="DSRCManagementSystemModel.Store.SP_Name" />
+    <FunctionImportMapping FunctionImportName="SP_Names" FunctionName="DSRCManagementSystemModel.Store.SP_Names" />
+    <FunctionImportMapping FunctionImportName="SP_GetName" FunctionName="DSRCManagementSystemModel.Store.SP_GetName" />
+    <FunctionImportMapping FunctionImportName="sp_GetManualAttendance" FunctionName="DSRCManagementSystemModel.Store.sp_GetManualAttendance" />
+    <EntitySetMapping Name="AlbumPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AlbumPermission">
+        <MappingFragment StoreEntitySet="AlbumPermission">
+          <ScalarProperty Name="IsAuthorized" ColumnName="IsAuthorized" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="AlbumPermissionId" ColumnName="AlbumPermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_TaskRecurring">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_TaskRecurring">
+        <MappingFragment StoreEntitySet="Master_TaskRecurring">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RecurringType" ColumnName="RecurringType" />
+          <ScalarProperty Name="TaskRecurringID" ColumnName="TaskRecurringID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ApplicationSettings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ApplicationSettings">
+        <MappingFragment StoreEntitySet="Master_ApplicationSettings">
+          <ScalarProperty Name="AppValue" ColumnName="AppValue" />
+          <ScalarProperty Name="AppKey" ColumnName="AppKey" />
+          <ScalarProperty Name="AppID" ColumnName="AppID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Action">
+        <MappingFragment StoreEntitySet="Actions">
+          <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+          <ScalarProperty Name="ActionID" ColumnName="ActionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_UserStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_UserStatus">
+        <MappingFragment StoreEntitySet="Master_UserStatus">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserStatusId" ColumnName="UserStatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Category">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Category">
+        <MappingFragment StoreEntitySet="Master_Category">
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="Categoryid" ColumnName="Categoryid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DefaultAlbumUsers">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DefaultAlbumUser">
+        <MappingFragment StoreEntitySet="DefaultAlbumUser">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+          <ScalarProperty Name="AccessID" ColumnName="AccessID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TestMailIDs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TestMailID">
+        <MappingFragment StoreEntitySet="TestMailIDs">
+          <ScalarProperty Name="MailAddress" ColumnName="MailAddress" />
+          <ScalarProperty Name="MailID" ColumnName="MailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskAssigneds">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TaskAssigned">
+        <MappingFragment StoreEntitySet="TaskAssigned">
+          <ScalarProperty Name="InActive" ColumnName="InActive" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RecurringStatus" ColumnName="RecurringStatus" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+          <ScalarProperty Name="TaskMasterID" ColumnName="TaskMasterID" />
+          <ScalarProperty Name="TaskAssignedID" ColumnName="TaskAssignedID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Gender">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Gender">
+        <MappingFragment StoreEntitySet="Master_Gender">
+          <ScalarProperty Name="GenderName" ColumnName="GenderName" />
+          <ScalarProperty Name="GenderID" ColumnName="GenderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_MaritalStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_MaritalStatus">
+        <MappingFragment StoreEntitySet="Master_MaritalStatus">
+          <ScalarProperty Name="MaritalStatusType" ColumnName="MaritalStatusType" />
+          <ScalarProperty Name="MaritalStatusID" ColumnName="MaritalStatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_WorkPlace">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_WorkPlace">
+        <MappingFragment StoreEntitySet="Master_WorkPlace">
+          <ScalarProperty Name="WorkPlaceName" ColumnName="WorkPlaceName" />
+          <ScalarProperty Name="WorkPlaceID" ColumnName="WorkPlaceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DepartmentGroups">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DepartmentGroup">
+        <MappingFragment StoreEntitySet="DepartmentGroup">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DepartmentGroupMappings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DepartmentGroupMapping">
+        <MappingFragment StoreEntitySet="DepartmentGroupMapping">
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="GroupMappingID" ColumnName="GroupMappingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPaymetTaxDetails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectPaymetTaxDetail">
+        <MappingFragment StoreEntitySet="ProjectPaymetTaxDetails">
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="AddionalTaxID" ColumnName="AddionalTaxID" />
+          <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+          <ScalarProperty Name="PaymentTaxID" ColumnName="PaymentTaxID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ProjectPaymentTaxType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ProjectPaymentTaxType">
+        <MappingFragment StoreEntitySet="Master_ProjectPaymentTaxType">
+          <ScalarProperty Name="TaxType" ColumnName="TaxType" />
+          <ScalarProperty Name="ProjectPaymentTaxTypeID" ColumnName="ProjectPaymentTaxTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ProjectPaymentTerms">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ProjectPaymentTerms">
+        <MappingFragment StoreEntitySet="Master_ProjectPaymentTerms">
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="ProjectPaymentTermID" ColumnName="ProjectPaymentTermID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Observations">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Observation">
+        <MappingFragment StoreEntitySet="Observation">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="ActivityLevelID" ColumnName="ActivityLevelID" />
+          <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ObservationID" ColumnName="ObservationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Activities">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Activity">
+        <MappingFragment StoreEntitySet="Activity">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ActivityDescription" ColumnName="ActivityDescription" />
+          <ScalarProperty Name="Activity1" ColumnName="Activity" />
+          <ScalarProperty Name="ActivityID" ColumnName="ActivityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SkillsSpecifications">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.SkillsSpecification">
+        <MappingFragment StoreEntitySet="SkillsSpecification">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Specification" ColumnName="Specification" />
+          <ScalarProperty Name="SpecificationId" ColumnName="SpecificationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PaymentStatu">
+        <MappingFragment StoreEntitySet="PaymentStatus">
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskMasters">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TaskMaster">
+        <MappingFragment StoreEntitySet="TaskMaster">
+          <ScalarProperty Name="InCalendar" ColumnName="InCalendar" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Recurring" ColumnName="Recurring" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+          <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+          <ScalarProperty Name="TaskDescription" ColumnName="TaskDescription" />
+          <ScalarProperty Name="TaskMasterID" ColumnName="TaskMasterID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Albums">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Album">
+        <MappingFragment StoreEntitySet="Album">
+          <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="AlbumCoverPhotoPath" ColumnName="AlbumCoverPhotoPath" />
+          <ScalarProperty Name="AlbumDescription" ColumnName="AlbumDescription" />
+          <ScalarProperty Name="AlbumTitle" ColumnName="AlbumTitle" />
+          <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPayments">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectPayment">
+        <MappingFragment StoreEntitySet="ProjectPayment">
+          <ScalarProperty Name="DepartmentGroup" ColumnName="DepartmentGroup" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+          <ScalarProperty Name="Branch" ColumnName="Branch" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="TermType" ColumnName="TermType" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReportsPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ReportsPermission">
+        <MappingFragment StoreEntitySet="ReportsPermission">
+          <ScalarProperty Name="IsAuthorized" ColumnName="IsAuthorized" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ReportsPermissionId" ColumnName="ReportsPermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Sp_MasterDataType" FunctionName="DSRCManagementSystemModel.Store.Sp_MasterDataType" />
+    <EntitySetMapping Name="Audit_LoginStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Audit_LoginStatus">
+        <MappingFragment StoreEntitySet="Audit_LoginStatus">
+          <ScalarProperty Name="LoginStatusID" ColumnName="LoginStatusID" />
+          <ScalarProperty Name="LogedInDate" ColumnName="LogedInDate" />
+          <ScalarProperty Name="BrowserVersion" ColumnName="BrowserVersion" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+          <ScalarProperty Name="AuditLoginStatusID" ColumnName="AuditLoginStatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_LoginStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_LoginStatus">
+        <MappingFragment StoreEntitySet="Master_LoginStatus">
+          <ScalarProperty Name="LoginStatus" ColumnName="LoginStatus" />
+          <ScalarProperty Name="LoginStatusID" ColumnName="LoginStatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPaymetTermDetails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ProjectPaymetTermDetail">
+        <MappingFragment StoreEntitySet="ProjectPaymetTermDetails">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Pending" ColumnName="Pending" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="PaidStatus" ColumnName="PaidStatus" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+          <ScalarProperty Name="PaymentTermID" ColumnName="PaymentTermID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_AssessmentStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_AssessmentStatus">
+        <MappingFragment StoreEntitySet="Master_AssessmentStatus">
+          <ScalarProperty Name="AssessmentStatus" ColumnName="AssessmentStatus" />
+          <ScalarProperty Name="AssessmentStatusID" ColumnName="AssessmentStatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReportingUsers">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ReportingUser">
+        <MappingFragment StoreEntitySet="ReportingUsers">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ReportingID" ColumnName="ReportingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Assessments">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Assessment">
+        <MappingFragment StoreEntitySet="Assessment">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="PassScore" ColumnName="PassScore" />
+          <ScalarProperty Name="TotalScore" ColumnName="TotalScore" />
+          <ScalarProperty Name="AssessmentDate" ColumnName="AssessmentDate" />
+          <ScalarProperty Name="AssessmentDescription" ColumnName="AssessmentDescription" />
+          <ScalarProperty Name="AssessmentName" ColumnName="AssessmentName" />
+          <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ManagerIndexTabList">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ManagerIndexTabList">
+        <MappingFragment StoreEntitySet="Master_ManagerIndexTabList">
+          <ScalarProperty Name="TabURL" ColumnName="TabURL" />
+          <ScalarProperty Name="TabName" ColumnName="TabName" />
+          <ScalarProperty Name="TabID" ColumnName="TabID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAssessments">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.UserAssessment">
+        <MappingFragment StoreEntitySet="UserAssessment">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Score" ColumnName="Score" />
+          <ScalarProperty Name="AssessmentStatus" ColumnName="AssessmentStatus" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="AssessmentID" ColumnName="AssessmentID" />
+          <ScalarProperty Name="UserAssessmentID" ColumnName="UserAssessmentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="uspDeleteDuplicateTimeEntry" FunctionName="DSRCManagementSystemModel.Store.uspDeleteDuplicateTimeEntry" />
+    <EntitySetMapping Name="Master_Tab">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Tab">
+        <MappingFragment StoreEntitySet="Master_Tab">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TabName" ColumnName="TabName" />
+          <ScalarProperty Name="TabID" ColumnName="TabID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dictionaries">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Dictionary">
+        <MappingFragment StoreEntitySet="Dictionary">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Previous_Name" ColumnName="Previous Name" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageTabs">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageTab">
+        <MappingFragment StoreEntitySet="ManageTab">
+          <ScalarProperty Name="UserSelected" ColumnName="UserSelected" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="TabID" ColumnName="TabID" />
+          <ScalarProperty Name="ManageTabID" ColumnName="ManageTabID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewEmails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ViewEmail">
+        <MappingFragment StoreEntitySet="ViewEmail">
+          <ScalarProperty Name="CheckBox" ColumnName="CheckBox" />
+          <ScalarProperty Name="Attachmentpath" ColumnName="Attachmentpath" />
+          <ScalarProperty Name="SentOn" ColumnName="SentOn" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Sign" ColumnName="Sign" />
+          <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
+          <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityLevels">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ActivityLevel">
+        <MappingFragment StoreEntitySet="ActivityLevel">
+          <ScalarProperty Name="LevelOrder" ColumnName="LevelOrder" />
+          <ScalarProperty Name="LevelDescription" ColumnName="LevelDescription" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ActivityLevel1" ColumnName="ActivityLevel" />
+          <ScalarProperty Name="ActivityLevelID" ColumnName="ActivityLevelID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaggedAlbums">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TaggedAlbum">
+        <MappingFragment StoreEntitySet="TaggedAlbums">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+          <ScalarProperty Name="TaggedAlbumId" ColumnName="TaggedAlbumId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Tab_Grids">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Tab_Grids">
+        <MappingFragment StoreEntitySet="Master_Tab_Grids">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="GridName" ColumnName="GridName" />
+          <ScalarProperty Name="GridID" ColumnName="GridID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmailPurposes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.EmailPurpose">
+        <MappingFragment StoreEntitySet="EmailPurpose">
+          <ScalarProperty Name="EmailTemplateCategoryID" ColumnName="EmailTemplateCategoryID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="BCC" ColumnName="BCC" />
+          <ScalarProperty Name="CC" ColumnName="CC" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="EmailTemplateID" ColumnName="EmailTemplateID" />
+          <ScalarProperty Name="EmailPurposeName" ColumnName="EmailPurposeName" />
+          <ScalarProperty Name="EmailPurposeID" ColumnName="EmailPurposeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_EmailTemplateCategory">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_EmailTemplateCategory">
+        <MappingFragment StoreEntitySet="Master_EmailTemplateCategory">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="EmailTemplateCategoryID" ColumnName="EmailTemplateCategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Technologies">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Technologies">
+        <MappingFragment StoreEntitySet="Master_Technologies">
+          <ScalarProperty Name="Tecnology" ColumnName="Tecnology" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetSearchResult" FunctionName="DSRCManagementSystemModel.Store.uspGetSearchResult">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DSRCManagementSystemModel.SearchResult">
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="OfficeSkypeId" ColumnName="OfficeSkypeId" />
+          <ScalarProperty Name="Skills" ColumnName="Skills" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="AssignQuickLinks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AssignQuickLink">
+        <MappingFragment StoreEntitySet="AssignQuickLinks">
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="ModBy" ColumnName="ModBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="QuickLinkID" ColumnName="QuickLinkID" />
+          <ScalarProperty Name="AssignQuicklinkID" ColumnName="AssignQuicklinkID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_RemainderServiceType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_RemainderServiceType">
+        <MappingFragment StoreEntitySet="Master_RemainderServiceType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+          <ScalarProperty Name="RemainderServiceID" ColumnName="RemainderServiceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceDataDetails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ServiceDataDetail">
+        <MappingFragment StoreEntitySet="ServiceDataDetails">
+          <ScalarProperty Name="ServiceStatus" ColumnName="ServiceStatus" />
+          <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+          <ScalarProperty Name="RemainderServiceID" ColumnName="RemainderServiceID" />
+          <ScalarProperty Name="ServiceDataID" ColumnName="ServiceDataID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.TrainingPermission">
+        <MappingFragment StoreEntitySet="TrainingPermission">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+          <ScalarProperty Name="TrainingID" ColumnName="TrainingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MissingTemplates">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MissingTemplate">
+        <MappingFragment StoreEntitySet="MissingTemplates">
+          <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+          <ScalarProperty Name="ProcessedBy" ColumnName="ProcessedBy" />
+          <ScalarProperty Name="MissedProcess" ColumnName="MissedProcess" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="MissingTemplateID" ColumnName="MissingTemplateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageQuickLinks">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageQuickLink">
+        <MappingFragment StoreEntitySet="ManageQuickLinks">
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="ModBy" ColumnName="ModBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="IconPath" ColumnName="IconPath" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="PageModuleID" ColumnName="PageModuleID" />
+          <ScalarProperty Name="QuickLinkID" ColumnName="QuickLinkID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RemainderServiceDetails">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.RemainderServiceDetail">
+        <MappingFragment StoreEntitySet="RemainderServiceDetails">
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="TemplatePath" ColumnName="TemplatePath" />
+          <ScalarProperty Name="BCC" ColumnName="BCC" />
+          <ScalarProperty Name="CC" ColumnName="CC" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="ServiceMethod" ColumnName="ServiceMethod" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="ModBy" ColumnName="ModBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="IsOnService" ColumnName="IsOnService" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="SelectedDays" ColumnName="SelectedDays" />
+          <ScalarProperty Name="HoursCheck" ColumnName="HoursCheck" />
+          <ScalarProperty Name="RemainderServiceTypeID" ColumnName="RemainderServiceTypeID" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CalenderEvents">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CalenderEvent">
+        <MappingFragment StoreEntitySet="CalenderEvents">
+          <ScalarProperty Name="Entypo" ColumnName="Entypo" />
+          <ScalarProperty Name="EventTaskId" ColumnName="EventTaskId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="Enddate" ColumnName="Enddate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EventDescription" ColumnName="EventDescription" />
+          <ScalarProperty Name="EventName" ColumnName="EventName" />
+          <ScalarProperty Name="EventID" ColumnName="EventID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageTabGrids">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageTabGrid">
+        <MappingFragment StoreEntitySet="ManageTabGrids">
+          <ScalarProperty Name="UserSelected" ColumnName="UserSelected" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="GridID" ColumnName="GridID" />
+          <ScalarProperty Name="ManageGridID" ColumnName="ManageGridID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewallProjectPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ViewallProjectPermission">
+        <MappingFragment StoreEntitySet="ViewallProjectPermission">
+          <ScalarProperty Name="IsAuthorized" ColumnName="IsAuthorized" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProjectPermissionId" ColumnName="ProjectPermissionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trainings">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Training">
+        <MappingFragment StoreEntitySet="Training">
+          <ScalarProperty Name="NotifyUsers" ColumnName="NotifyUsers" />
+          <ScalarProperty Name="MailDepartments" ColumnName="MailDepartments" />
+          <ScalarProperty Name="roleid" ColumnName="roleid" />
+          <ScalarProperty Name="Flag" ColumnName="Flag" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="SeatingCapacity" ColumnName="SeatingCapacity" />
+          <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
+          <ScalarProperty Name="Repository" ColumnName="Repository" />
+          <ScalarProperty Name="RecheduledDate" ColumnName="RecheduledDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="NumberOfAttendence" ColumnName="NumberOfAttendence" />
+          <ScalarProperty Name="NumberOfNominated" ColumnName="NumberOfNominated" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+          <ScalarProperty Name="InitiatedBy" ColumnName="InitiatedBy" />
+          <ScalarProperty Name="InitiatedOn" ColumnName="InitiatedOn" />
+          <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+          <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+          <ScalarProperty Name="TrainingTypeId" ColumnName="TrainingTypeId" />
+          <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
+          <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ReminderServiceMethod">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ReminderServiceMethod">
+        <MappingFragment StoreEntitySet="Master_ReminderServiceMethod">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+          <ScalarProperty Name="ReminderServiceMethodID" ColumnName="ReminderServiceMethodID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Relationship">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Relationship">
+        <MappingFragment StoreEntitySet="Master_Relationship">
+          <ScalarProperty Name="RelationshipName" ColumnName="RelationshipName" />
+          <ScalarProperty Name="RelationshipID" ColumnName="RelationshipID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Religious">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Religious">
+        <MappingFragment StoreEntitySet="Master_Religious">
+          <ScalarProperty Name="ReligiousName" ColumnName="ReligiousName" />
+          <ScalarProperty Name="ReligiousID" ColumnName="ReligiousID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_BloodGroup">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_BloodGroup">
+        <MappingFragment StoreEntitySet="Master_BloodGroup">
+          <ScalarProperty Name="BloodGroupName" ColumnName="BloodGroupName" />
+          <ScalarProperty Name="BloodGroupID" ColumnName="BloodGroupID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_City">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_City">
+        <MappingFragment StoreEntitySet="Master_City">
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Country">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Country">
+        <MappingFragment StoreEntitySet="Master_Country">
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_Nationality">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_Nationality">
+        <MappingFragment StoreEntitySet="Master_Nationality">
+          <ScalarProperty Name="NationalityName" ColumnName="NationalityName" />
+          <ScalarProperty Name="NationalityID" ColumnName="NationalityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_States">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_States">
+        <MappingFragment StoreEntitySet="Master_States">
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="States" ColumnName="States" />
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PermanentAddresses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PermanentAddress">
+        <MappingFragment StoreEntitySet="PermanentAddress">
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address_3" ColumnName="Address_3" />
+          <ScalarProperty Name="Address_2" ColumnName="Address_2" />
+          <ScalarProperty Name="Address_1" ColumnName="Address_1" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="PermanentAddressID" ColumnName="PermanentAddressID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PresentAddresses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.PresentAddress">
+        <MappingFragment StoreEntitySet="PresentAddress">
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address_3" ColumnName="Address_3" />
+          <ScalarProperty Name="Address_2" ColumnName="Address_2" />
+          <ScalarProperty Name="Address_1" ColumnName="Address_1" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="PresentAddressID" ColumnName="PresentAddressID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CheckLists">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.CheckList">
+        <MappingFragment StoreEntitySet="CheckList">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CheckListName" ColumnName="CheckListName" />
+          <ScalarProperty Name="CheckListID" ColumnName="CheckListID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Drivers">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Driver">
+        <MappingFragment StoreEntitySet="Drivers">
+          <ScalarProperty Name="Document_Proof" ColumnName="Document_Proof" />
+          <ScalarProperty Name="Driver_Batch_No" ColumnName="Driver_Batch_No" />
+          <ScalarProperty Name="Communication_Address" ColumnName="Communication_Address" />
+          <ScalarProperty Name="Blood_Group" ColumnName="Blood_Group" />
+          <ScalarProperty Name="Contact_No" ColumnName="Contact_No" />
+          <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
+          <ScalarProperty Name="DriverType_Id" ColumnName="DriverType_Id" />
+          <ScalarProperty Name="Driver_Licence_Expire_Date" ColumnName="Driver_Licence_Expire_Date" />
+          <ScalarProperty Name="Driver_Licence_No" ColumnName="Driver_Licence_No" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+          <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+          <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DriverVehicle_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.DriverVehicle_Mapping">
+        <MappingFragment StoreEntitySet="DriverVehicle_Mapping">
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+          <ScalarProperty Name="DriverVehicleMappingId" ColumnName="DriverVehicleMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Maintenance_Historys">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Maintenance_Historys">
+        <MappingFragment StoreEntitySet="Maintenance_Historys">
+          <ScalarProperty Name="Battery" ColumnName="Battery" />
+          <ScalarProperty Name="BrakeSystem" ColumnName="BrakeSystem" />
+          <ScalarProperty Name="AirFilter" ColumnName="AirFilter" />
+          <ScalarProperty Name="Coolant" ColumnName="Coolant" />
+          <ScalarProperty Name="TierPressure" ColumnName="TierPressure" />
+          <ScalarProperty Name="Belts" ColumnName="Belts" />
+          <ScalarProperty Name="Hoeses" ColumnName="Hoeses" />
+          <ScalarProperty Name="OilLevel" ColumnName="OilLevel" />
+          <ScalarProperty Name="Vehicle_Make" ColumnName="Vehicle_Make" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="MaintenanceHistoryId" ColumnName="MaintenanceHistoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaintenanceHistory_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.MaintenanceHistory_Mapping">
+        <MappingFragment StoreEntitySet="MaintenanceHistory_Mapping">
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="MaintenanceHistoryId" ColumnName="MaintenanceHistoryId" />
+          <ScalarProperty Name="MaintenanceHistoryMappingId" ColumnName="MaintenanceHistoryMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageExpense_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageExpense_Mapping">
+        <MappingFragment StoreEntitySet="ManageExpense_Mapping">
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="ManageExpenseId" ColumnName="ManageExpenseId" />
+          <ScalarProperty Name="ExpenseMappingId" ColumnName="ExpenseMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_DriverType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_DriverType">
+        <MappingFragment StoreEntitySet="Master_DriverType">
+          <ScalarProperty Name="DriverType" ColumnName="DriverType" />
+          <ScalarProperty Name="DriverType_Id" ColumnName="DriverType_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_ExpenseType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_ExpenseType">
+        <MappingFragment StoreEntitySet="Master_ExpenseType">
+          <ScalarProperty Name="ExpenseType" ColumnName="ExpenseType" />
+          <ScalarProperty Name="ExpenseType_Id" ColumnName="ExpenseType_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_VehicleBrand">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_VehicleBrand">
+        <MappingFragment StoreEntitySet="Master_VehicleBrand">
+          <ScalarProperty Name="VehicleBrand" ColumnName="VehicleBrand" />
+          <ScalarProperty Name="VehicleBrand_Id" ColumnName="VehicleBrand_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_VehicleModel">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_VehicleModel">
+        <MappingFragment StoreEntitySet="Master_VehicleModel">
+          <ScalarProperty Name="VehicleModel" ColumnName="VehicleModel" />
+          <ScalarProperty Name="VehicleBrand_Id" ColumnName="VehicleBrand_Id" />
+          <ScalarProperty Name="VehicleModel_Id" ColumnName="VehicleModel_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Master_VehicleType">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Master_VehicleType">
+        <MappingFragment StoreEntitySet="Master_VehicleType">
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+          <ScalarProperty Name="VehicleType_Id" ColumnName="VehicleType_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Routes">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Route">
+        <MappingFragment StoreEntitySet="Routes">
+          <ScalarProperty Name="Route_Name" ColumnName="Route_Name" />
+          <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoutesStops_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.RoutesStops_Mapping">
+        <MappingFragment StoreEntitySet="RoutesStops_Mapping">
+          <ScalarProperty Name="StopId" ColumnName="StopId" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+          <ScalarProperty Name="RoutesStopMappingId" ColumnName="RoutesStopMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleStops_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.VehicleStops_Mapping">
+        <MappingFragment StoreEntitySet="VehicleStops_Mapping">
+          <ScalarProperty Name="TripCount" ColumnName="TripCount" />
+          <ScalarProperty Name="Fees" ColumnName="Fees" />
+          <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+          <ScalarProperty Name="WaitingTime" ColumnName="WaitingTime" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="StopId" ColumnName="StopId" />
+          <ScalarProperty Name="VehicleStopMappingId" ColumnName="VehicleStopMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Voilation_Mapping">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Voilation_Mapping">
+        <MappingFragment StoreEntitySet="Voilation_Mapping">
+          <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+          <ScalarProperty Name="VoilationId" ColumnName="VoilationId" />
+          <ScalarProperty Name="VoilationMappingId" ColumnName="VoilationMappingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Voilations">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Voilation">
+        <MappingFragment StoreEntitySet="Voilations">
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="VoilationId" ColumnName="VoilationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QuickEnrolls">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.QuickEnroll">
+        <MappingFragment StoreEntitySet="QuickEnroll">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="DateOfEnquiry" ColumnName="DateOfEnquiry" />
+          <ScalarProperty Name="GenderID" ColumnName="GenderID" />
+          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="DepartmentGroup" ColumnName="DepartmentGroup" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="PersonalMailAddress" ColumnName="PersonalMailAddress" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="QuickEnroll1" ColumnName="QuickEnroll" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ManageExpenses">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ManageExpens">
+        <MappingFragment StoreEntitySet="ManageExpenses">
+          <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="ExpenseType" ColumnName="ExpenseType" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ManageExpenseId" ColumnName="ManageExpenseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReminderServiceEmailStatus">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.ReminderServiceEmailStatu">
+        <MappingFragment StoreEntitySet="ReminderServiceEmailStatus">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="EmailServiceDate" ColumnName="EmailServiceDate" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="ServiceTypeID" ColumnName="ServiceTypeID" />
+          <ScalarProperty Name="EmailStatusID" ColumnName="EmailStatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AllEmpLeaveEntryPermissions">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.AllEmpLeaveEntryPermission">
+        <MappingFragment StoreEntitySet="AllEmpLeaveEntryPermission">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="AllEmpLeaveEntryPermissionID" ColumnName="AllEmpLeaveEntryPermissionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehicles">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Vehicle">
+        <MappingFragment StoreEntitySet="Vehicles">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="VehicleMake" ColumnName="VehicleMake" />
+          <ScalarProperty Name="Vehicle_Remarks" ColumnName="Vehicle_Remarks" />
+          <ScalarProperty Name="Vehicle_Photo" ColumnName="Vehicle_Photo" />
+          <ScalarProperty Name="No_of_Trip" ColumnName="No_of_Trip" />
+          <ScalarProperty Name="No_of_Seat" ColumnName="No_of_Seat" />
+          <ScalarProperty Name="Model_Year" ColumnName="Model_Year" />
+          <ScalarProperty Name="VehicleType_Id" ColumnName="VehicleType_Id" />
+          <ScalarProperty Name="VehicleModel_Id" ColumnName="VehicleModel_Id" />
+          <ScalarProperty Name="VehicleBrand_Id" ColumnName="VehicleBrand_Id" />
+          <ScalarProperty Name="Vehicle_No" ColumnName="Vehicle_No" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stops">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.Stop">
+        <MappingFragment StoreEntitySet="Stops">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Stop_Name" ColumnName="Stop_Name" />
+          <ScalarProperty Name="StopId" ColumnName="StopId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="DSRCManagementSystemModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="EmpCode" ColumnName="EmpCode" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="Contactperson" ColumnName="Contactperson" />
+          <ScalarProperty Name="RelationshipID" ColumnName="RelationshipID" />
+          <ScalarProperty Name="EmergencyContact" ColumnName="EmergencyContact" />
+          <ScalarProperty Name="AnniversaryDate" ColumnName="AnniversaryDate" />
+          <ScalarProperty Name="NoOfChild" ColumnName="NoOfChild" />
+          <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
+          <ScalarProperty Name="ReligionID" ColumnName="ReligionID" />
+          <ScalarProperty Name="NationalityID" ColumnName="NationalityID" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+          <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+          <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+          <ScalarProperty Name="DepartmentGroup" ColumnName="DepartmentGroup" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="DesignationID" ColumnName="DesignationID" />
+          <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+          <ScalarProperty Name="CreatedUserID" ColumnName="CreatedUserID" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="IsExclude" ColumnName="IsExclude" />
+          <ScalarProperty Name="extension" ColumnName="extension" />
+          <ScalarProperty Name="officeno" ColumnName="officeno" />
+          <ScalarProperty Name="IsPasswordReseted" ColumnName="IsPasswordReseted" />
+          <ScalarProperty Name="Workplace" ColumnName="Workplace" />
+          <ScalarProperty Name="IsReseted" ColumnName="IsReseted" />
+          <ScalarProperty Name="PasswordKey" ColumnName="PasswordKey" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Attempts" ColumnName="Attempts" />
+          <ScalarProperty Name="OfficeSkypeId" ColumnName="OfficeSkypeId" />
+          <ScalarProperty Name="IsBoarding" ColumnName="IsBoarding" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="LastWorkingDate" ColumnName="LastWorkingDate" />
+          <ScalarProperty Name="ResignedOn" ColumnName="ResignedOn" />
+          <ScalarProperty Name="TemporaryAddressID" ColumnName="TemporaryAddressID" />
+          <ScalarProperty Name="PermanentAddressID" ColumnName="PermanentAddressID" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LastAccessed" ColumnName="LastAccessed" />
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="IsFirstLogin" ColumnName="IsFirstLogin" />
+          <ScalarProperty Name="IsUnderNoticePeriod" ColumnName="IsUnderNoticePeriod" />
+          <ScalarProperty Name="IsUnderProbation" ColumnName="IsUnderProbation" />
+          <ScalarProperty Name="DirectReportingTo" ColumnName="DirectReportingTo" />
+          <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

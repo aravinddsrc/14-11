@@ -1,0 +1,499 @@
+﻿@model DSRCManagementSystem.Models.ManageComputers
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add New Computer</title>
+    @*<link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    @*<link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />*@
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add New Computer</h4>
+        </div>
+        @using (Html.BeginForm("AddNewComputer", "AssetManagement", FormMethod.Post))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Manufacturer, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.Manufacturer, new { @class = "form-control", @id = "DDLComp", @maxlength = " 20",  @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.Manufacturer, " ", new { @style = "color:red" })
+                            <span id="Manufacturer" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CPUID, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.CPUID, new { @id = "DDLCpuID", @class = "form-control", @maxlength = " 20",  @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.CPUID, " ", new { @style = "color:red" })
+                            <span id="cpuid" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.MonitorID, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.MonitorID, new { @id = "DDLQuan", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.MonitorID, " ", new { @style = "color:red" })
+                            <span id="MonitorID" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Memory, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.Memory, new { @id = "DDLMem", @class = "form-control", @maxlength = " 5",  @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.Memory, " ", new { @style = "color:red" })
+                            <span id="Memory" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.CPU, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                             @Html.TextBoxFor(x => x.CPU, new { @id = "DDLCpu", @class = "form-control", @maxlength = " 20",  @style = "height:42px;" })
+                         
+                            @Html.ValidationMessageFor(x => x.CPU, " ", new { @style = "color:red" })
+                            <span id="CPU" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.OS, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @* @Html.TextBoxFor(x => x.OS, new { @id = "DDLOs", @class = "form-control", @maxlength = " 20", @onpaste = "return false", @style = "height:42px;" })*@
+                            @Html.DropDownList("OSID", ViewBag.OSIDList as SelectList, new { @id = "OSID", @name = "OSID", @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.OS, " ", new { @style = "color:red" })
+                            <span id="OS" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ComputerName, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.ComputerName, new { @id = "DDLCn", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.ComputerName, " ", new { @style = "color:red" })
+                            <span id="ComputerName" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(x => x.ComputerStatus, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.DropDownList("ComputerStatusID", ViewBag.ComputerStatusList as SelectList, new { @id = "ComputerStatusID", @name = "ComputerStatusID", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ComputerStatus, " ", new { @style = "color:red" })
+                        <span id="ComputerStatus" style="color: Red"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.IP, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.IP, new { @id = "DDLIP", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                            @Html.ValidationMessageFor(x => x.IP, " ", new { @style = "color:red" })
+                            <span id="IP" style="color: Red"></span>
+                        </div>
+                    </div>
+                    @*<div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.UPSID, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.UPSID, new { @id = "DDLUps", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                            <span id="UPSID" style="color: Red"></span>
+                        </div>
+                    </div>*@
+                </div>
+            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancel</button>
+                    <button type="button" id="btnAdd" class="btn btn-info" onclick="AddComputer()">
+                        Save</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+       
+    
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+//        $("#DDLCpuID").focusout(function () {
+//         
+//            $.getJSON('@Url.Action("SuggestCPUID", "AssetManagement")', { CPUID: $(this).val() }, function (data) {
+//                if (data.Name == 'Available') {
+//                    $('#cpuid').text('CPU ID already exists');
+//                    $("#DDLCpuID").val('');
+//                    $("#DDLCpuID").focus();
+//                }
+//                else {
+//                    $('#cpuid').text('');
+//                }
+//            });
+
+//        });
+
+//        $("#DDLQuan").focusout(function () {
+
+//            $.getJSON('@Url.Action("SuggestMonid", "AssetManagement")', { MonitorID: $(this).val() }, function (data) {
+//                if (data.Name == 'Available') {
+//                    $('#MonitorID').text('Monitor ID already exists');
+//                    $("#DDLQuan").val('');
+//                    $("#DDLQuan").focus();
+//                }
+//                else {
+//                    $('#MonitorID').text('');
+//                }
+//            });
+
+//        });
+
+//        $("#DDLCn").focusout(function () {
+
+//            $.getJSON('@Url.Action("SuggestCmpName", "AssetManagement")', { ComputerName: $(this).val() }, function (data) {
+//                if (data.Name == 'Available') {
+//                    $('#ComputerName').text('Computer Name already exists');
+//                    $("#DDLCn").val('');
+//                    $("#DDLCn").focus();
+//                }
+//                else {
+//                    $('#ComputerName').text('');
+//                }
+//            });
+
+//        });
+
+    $(document).ready(function () {
+               
+            $("#DDLMem").keypress(function (e) {
+              
+                if ( e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) ) {
+                   
+                    $("#Memory").html("Enter Valid Memory").show();
+                  return false;
+               }
+          });
+             });
+       
+         $(document).ready(function () {
+        $('#DDLComp').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#Manufacturer").html("Enter Valid Manufacturer").show();
+            return false;
+        });
+    });
+    $(document).ready(function () {
+        $('#DDLCpuID').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#CPUID").html("Enter Valid CpuID").show();
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+        $('#DDLQuan').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#MonitorID").html("Enter Valid MonitorID").show();
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+        $('#DDLUps').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#UPSID").html("Enter Valid UPSID").show();
+            return false;
+        });
+    });
+
+ 
+
+    $(document).ready(function () {
+        $('#DDLCn').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#ComputerName").html("Enter Valid ComputerName").show();
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+        $('#DDLIP').keypress(function (e) {
+            var regex = new RegExp("^[0-9\\.]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+
+            $("#IP").html("Enter Valid IP Address").show();
+            return false;
+        });
+    });
+
+
+
+
+        function AddComputer() {
+
+            var ManufacturerName = $("#DDLComp").val();
+            var ManufacturerNametrim = ManufacturerName.replace(/\s/g, "").length;
+
+            var cpuidName = $("#DDLCpuID").val();
+            var cpuidNametrim = cpuidName.replace(/\s/g, "").length;
+
+            var DDLQuanName = $("#DDLQuan").val();
+            var DDLQuanNametrim = DDLQuanName.replace(/\s/g, "").length;
+
+            var DDLCpuName = $("#DDLCpu").val();
+            var DDLCpuNametrim = DDLCpuName.replace(/\s/g, "").length;
+
+            var DDLCnName = $("#DDLCn").val();
+            var DDLCnNametrim = DDLCnName.replace(/\s/g, "").length;
+
+            if (ManufacturerNametrim == '' || DDLQuanNametrim == '' || document.getElementById('DDLMem').value == '' || cpuidNametrim == '' || DDLCpuNametrim == '' || document.getElementById('OSID').value == 0 || DDLCnNametrim == '' || document.getElementById('ComputerStatusID').value == 0 || document.getElementById('DDLIP').value == '') {
+              {
+             
+
+                  if (ManufacturerNametrim == '') {
+                    
+                    document.getElementById("Manufacturer").innerHTML = " Enter Manufacturer";
+                }
+                else
+                 {
+                   
+                    document.getElementById("Manufacturer").innerHTML = "";
+                }
+
+                  if (cpuidNametrim == '')
+                 {
+
+               document.getElementById("cpuid").innerHTML = " Enter CPU ID ";
+                }
+               else
+                 {
+                   
+                   document.getElementById("cpuid").innerHTML = "";
+
+               }
+                  if (DDLQuanNametrim == '') {
+                   
+                    document.getElementById("MonitorID").innerHTML = " Enter Monitor ID ";
+                }
+                else {
+                   
+                    document.getElementById("MonitorID").innerHTML = "";
+                }
+
+                if (document.getElementById('DDLMem').value == '') {
+                    document.getElementById("Memory").innerHTML = " Enter Memory";
+                }
+                else {
+                   
+                    document.getElementById("Memory").innerHTML = "";
+                }
+
+                if (DDLCpuNametrim == '') {
+                   document.getElementById("CPU").innerHTML = "Enter Processor ";
+                }
+                else {
+                   
+                    document.getElementById("CPU").innerHTML = "";
+                }
+
+
+                if (document.getElementById('OSID').value == 0) {
+                    document.getElementById("OS").innerHTML = "Select Operating System";
+                }
+                else {
+                   
+                    document.getElementById("OS").innerHTML = "";
+                }
+
+                if (DDLCnNametrim == '') {
+                    document.getElementById("ComputerName").innerHTML = "Enter ComputerName";
+                }
+                else {
+                   
+                    document.getElementById("ComputerName").innerHTML = "";
+                }
+
+                if (document.getElementById('ComputerStatusID').value == 0) {
+                    document.getElementById("ComputerStatus").innerHTML = "Select Computer Status";
+                }
+                else {
+                    
+                    document.getElementById("ComputerStatus").innerHTML = "";
+                }
+
+
+
+
+                if (document.getElementById('DDLIP').value == '') {
+                    document.getElementById("IP").innerHTML = "Enter IP Address";
+                }
+                else {
+                   
+                    document.getElementById("IP").innerHTML = "";
+                }
+
+            }
+            }
+            else {
+              
+                var values =
+            {
+                "ID": $("#DDLid").val(),
+                "Manufacturer": $("#DDLComp").val(),
+                "MonitorID": $("#DDLQuan").val(),
+                "CPUID": $("#DDLCpuID").val(),
+                "UPSID": $("#DDLUps").val(),
+                "Memory": $("#DDLMem").val(),
+                "OS": $("#OSID").val(),
+                "OSID": $("#OSID").val(),
+                "CPU": $("#DDLCpu").val(),
+                
+                "ComputerName": $("#DDLCn").val(),
+                "ComputerStatus": $("#ComputerStatusID").val(),
+                "IP": $("#DDLIP").val()
+
+            }
+               
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+
+
+
+                $.ajax({
+                    url: "../../AssetManagement/AddNewComputer/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+
+                        if (result === "Success") {
+                            $("#portlet-config").modal("hide"); 
+                            toastr.success("Computer details has been added successfully", opts);
+
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+                        }
+                        if (result === "Already") {
+
+                            toastr.warning("Computer name already exist", opts);
+
+
+                        }
+                    }
+
+
+
+                });
+
+            }
+        }
+
+      
+   
+        
+    </script>
+</body>
+</html>

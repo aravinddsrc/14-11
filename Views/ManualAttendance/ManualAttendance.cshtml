@@ -1,0 +1,2113 @@
+﻿@using Microsoft.Ajax.Utilities
+@using NPOI.SS.Formula.Functions
+@model DSRCManagementSystem.Models.ManualAttendance
+@{
+    ViewBag.Title = "Manual Attendance";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int S_No = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+}
+
+<style type="text/css">
+    .sNo {
+        text-align: center;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #aaaaaa;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #E1B42B;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+        border: 0px solid #ebebeb;
+    }
+    .dataTables_info {
+        visibility:collapse;
+        height: 1px;
+    }
+    #tblUsers_paginate{
+        visibility: collapse;
+        height: 1px;
+}
+
+    #tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+#tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+#tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+      .dropdown-menu {
+    background-color: white;
+}    
+  
+</style>    
+
+
+@section scripts {
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+      <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+       <link href="../../Content/jquery-timepicker-master/jquery.timepicker.css" rel="stylesheet" type="text/css" />
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            var columnDefs;
+            $('[data-toggle="tooltip"]').tooltip();
+            $("#tblUsers").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "aaSorting": [],
+                "iDisplayLength": 5000,
+                //"sDom":true,
+               // "searching": false,
+                "lengthChange": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }],
+
+                "bProcessing": true,
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+           
+               
+           
+        });
+
+        
+       
+        jQuery(document).ready(function ($) {
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $("#departmentType").select2();
+            $("#leaveType").select2();
+           
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+           // daysOfWeekDisabled: [0, 6],
+            autoclose: true,
+          
+            endDate: '1d'
+        });
+       
+        var skipReady = false;
+        var j = 0;
+        $(".InTimes").on('paste keypress', (function (e) {
+          
+            if (!skipReady) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                var position = value.lastIndexOf(":");
+                var res = value.split(":");
+
+                if (position == 2) {
+                    if (res[1] < 61) {
+                        if (!/^[0-9:]{1,999}$/.test(value)) {
+                            e.preventDefault();
+                        }
+                    }
+                    else {
+                        $("#InTime" + j).val("");
+                        $("#InTimed" + j).html("Minutes Should be less than 60").show();
+                        
+                        return false;
+                    }
+                }
+                else {
+                    if (!/^[0-9]{1,999}$/.test(value)) {
+                        e.preventDefault();
+                    }
+                }
+            }
+            
+        }));
+        $(".OutTimes").on('paste keypress', (function (e) {
+          
+            if (!skipReady) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                var position = value.lastIndexOf(":");
+                var res = value.split(":");
+
+                if (position == 2) {
+                    if (res[1] < 61) {
+                        if (!/^[0-9:]{1,999}$/.test(value)) {
+                            e.preventDefault();
+                        }
+                    }
+                    else {
+                        $("#OutTime" + j).val("");
+                        $("#endtime" + j).html("Minutes Should be less than 60").show();
+
+                        return false;
+                    }
+                }
+                else {
+                    if (!/^[0-9]{1,999}$/.test(value)) {
+                        e.preventDefault();
+                    }
+                }
+            }
+
+        }));
+        
+       
+        function myFunction(i) {
+          
+            var strStartTime = $("#InTime" + i).val();
+            var res = strStartTime.split(":");
+          
+            
+            if (strStartTime.length == 2 && strStartTime <= 24) {
+
+                $("#InTime" + i).val(strStartTime + ":");
+                $("#InTimed" + i).html("").show();
+                j = i;
+            }
+            else if (strStartTime >= 24 || res[0] >=24) {
+                $("#InTime" + i).val("");
+                $("#InTimed" + i).html("Hours should not be greater than or equal to 24").show();
+                
+                return false;
+            }
+            else if (strStartTime.length == 5) {
+                $("#InTimed" + i).html("").show();
+                j = i;
+            }
+            else if (res[1] > 6) {
+                $("#InTime" + i).val("");
+                $("#InTimed" + i).html("Minutes Should be less than 60").show();
+                
+                return false;
+            }
+            
+            else {
+                $("#InTimed" + i).html("").show();
+                j = i;
+            }
+            
+
+           
+
+           
+          
+        }
+
+       function myFunction1(i) {
+           var strStartTime = $("#OutTime" + i).val();
+           var res = strStartTime.split(":");
+
+
+           if (strStartTime.length == 2 && strStartTime <= 24) {
+
+               $("#OutTime" + i).val(strStartTime + ":");
+               $("#endtime" + i).html("").show();
+               j = i;
+           }
+           else if (strStartTime >= 24 || res[0]>=24) {
+               $("#OutTime" + i).val("");
+               $("#endtime" + i).html("Hours should not be greater than or equal to 24").show();
+               skipReady = true;
+               return false;
+           }
+           else if (strStartTime.length == 5) {
+               $("#endtime" + i).html("").show();
+               j = i;
+           }
+           else if (res[1] > 6) {
+               $("#OutTime" + i).val("");
+               $("#endtime" + i).html("Minutes Should be less than 60").show();
+               skipReady = true;
+               return false;
+           }
+           else {
+               $("#endtime" + i).html("").show();
+               j = i;
+           }
+
+          
+        }
+
+       function Cancel() {
+           var url = '@Url.Action("ManualAttendance", "ManualAttendance")';
+            window.location.href = url;
+        }
+        $(function () {
+           
+            $('.timepicker').timepicker
+            ({
+                'timeFormat': 'H:i',
+                'showDuration': false,
+                'forceRoundTime': true
+
+            });
+        });
+
+
+        function timevalidation(i) {
+
+            if ($("#OutTime" + i).val().length > 0) {
+
+                    var strStartTime = $("#InTime" + i).val();
+
+                    var strEndTime = $("#OutTime" + i).val();
+
+                    var Firsthours = Number(strStartTime.match(/^(\d\d?)/)[1]);
+                    var Firstminutes = Number(strStartTime.match(/:(\d\d?)/)[1]);
+                    var JoinFirsthoursFirstminutes =Firsthours+""+ Firstminutes;
+                    var Secondhours = Number(strEndTime.match(/^(\d\d?)/)[1]);
+                    var Secondminutes = Number(strEndTime.match(/:(\d\d?)/)[1]);
+                    var JoinSecondhoursSecondminutes = Secondhours + "" + Secondminutes;
+                    if (Firsthours >= Secondhours) {
+                        $("#endtime" + i).html("OutTime must be greater than InTime ").show();
+
+                        return false;
+                    }
+                    //else if (JoinFirsthoursFirstminutes > JoinSecondhoursSecondminutes) {
+                    //    $("#endtime" + i).html("End Time must be greater than Start time ").show();
+
+                    //    return false;
+                    //}
+
+                    var patt = new RegExp("^(0?[1-9]|1[012]):[0-5][0-9]$");
+                    var res = patt.test(strStartTime);
+                    return res;
+
+                    var stt = new Date("October 1, 2014 " + strStartTime);
+                    stt = stt.getTime();
+
+                    var endt = new Date("October 1, 2014 " + strEndTime);
+                    endt = endt.getTime();
+
+
+                    if (stt >= endt) {
+
+                        $("#endtime" + i).html("OutTime must be greater than InTime ").show();
+                        
+                        return false;
+                    }
+                    else {
+                        $("#endtime" + i).html(" ").show();
+                    }
+
+                }
+            }
+
+
+
+
+        var cc = '@(ViewBag.CurrentDate)';
+
+        if (cc != "" || cc != null) {
+            $(".datetimepicker").datepicker().datepicker("setDate", cc); //To set the changed date
+        }
+
+
+        /* Set the defaults for DataTables initialisation */
+        jQuery.extend(true, jQuery.fn.dataTable.defaults, {
+            "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page"
+            }
+        });
+
+
+
+
+        /* Default class modification */
+        jQuery.extend(jQuery.fn.dataTableExt.oStdClasses, {
+            //"Wrapper": "dataTables_wrapper form-inline",
+            "sFilterInput": "form-control input-sm",
+            "sLengthSelect": "form-control input-sm"
+        });
+
+
+        /* API method to get paging information */
+        jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+            return {
+                "iStart": oSettings._iDisplayStart,
+                "iEnd": oSettings.fnDisplayEnd(),
+                "iLength": oSettings._iDisplayLength,
+                "iTotal": oSettings.fnRecordsTotal(),
+                "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                "iPage": oSettings._iDisplayLength === -1 ?
+                    0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                "iTotalPages": oSettings._iDisplayLength === -1 ?
+                    0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+            };
+        };
+
+
+        /* Bootstrap style pagination control */
+        jQuery.extend(jQuery.fn.dataTableExt.oPagination, {
+            "bootstrap": {
+                "fnInit": function (oSettings, nPaging, fnDraw) {
+                    var oLang = oSettings.oLanguage.oPaginate;
+                    var fnClickHandler = function (e) {
+                        e.preventDefault();
+                        if (oSettings.oApi._fnPageChange(oSettings, e.data.action)) {
+                            fnDraw(oSettings);
+                        }
+                    };
+
+                    //jQuery(nPaging).append(
+                    //    '<ul class="pagination pagination-sm">' +
+                    //        '<li class="prev disabled"><a href="#"><i class="entypo-left-open"></i></a></li>' +
+                    //        '<li class="next disabled"><a href="#"><i class="entypo-right-open"></i></a></li>' +
+                    //    '</ul>'
+                    //);
+                    var els = jQuery('a', nPaging);
+                    jQuery(els[0]).bind('click.DT', { action: "previous" }, fnClickHandler);
+                    jQuery(els[1]).bind('click.DT', { action: "next" }, fnClickHandler);
+                },
+
+                "fnUpdate": function (oSettings, fnDraw) {
+                    var iListLength = 5;
+                    var oPaging = oSettings.oInstance.fnPagingInfo();
+                    var an = oSettings.aanFeatures.p;
+                    var i, ien, j, sClass, iStart, iEnd, iHalf = Math.floor(iListLength / 2);
+
+                    if (oPaging.iTotalPages < iListLength) {
+                        iStart = 1;
+                        iEnd = oPaging.iTotalPages;
+                    }
+                    else if (oPaging.iPage <= iHalf) {
+                        iStart = 1;
+                        iEnd = iListLength;
+                    } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
+                        iStart = oPaging.iTotalPages - iListLength + 1;
+                        iEnd = oPaging.iTotalPages;
+                    } else {
+                        iStart = oPaging.iPage - iHalf + 1;
+                        iEnd = iStart + iListLength - 1;
+                    }
+
+                    for (i = 0, ien = an.length ; i < ien ; i++) {
+                        // Remove the middle elements
+                        jQuery('li:gt(0)', an[i]).filter(':not(:last)').remove();
+
+                        // Add the new list items and their event handlers
+                        for (j = iStart ; j <= iEnd ; j++) {
+                            sClass = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                            jQuery()
+                                .insertBefore(jQuery('li:last', an[i])[0])
+                                .bind('click', function (e) {
+                                    e.preventDefault();
+                                    oSettings._iDisplayStart = (parseInt(jQuery('a', this).text(), 10) - 1) * oPaging.iLength;
+                                    fnDraw(oSettings);
+                                });
+                        }
+
+                        // Add / remove disabled classes from the static elements
+                        if (oPaging.iPage === 0) {
+                            jQuery('li:first', an[i]).addClass('disabled');
+                        } else {
+                            jQuery('li:first', an[i]).removeClass('disabled');
+                        }
+
+                        if (oPaging.iPage === oPaging.iTotalPages - 1 || oPaging.iTotalPages === 0) {
+                            jQuery('li:last', an[i]).addClass('disabled');
+                        } else {
+                            jQuery('li:last', an[i]).removeClass('disabled');
+                        }
+                    }
+                }
+            }
+        });
+
+
+        /*
+         * TableTools Bootstrap compatibility
+         * Required TableTools 2.1+
+         */
+        if (jQuery.fn.DataTable.TableTools) {
+            // Set the classes that TableTools uses to something suitable for Bootstrap
+            jQuery.extend(true, jQuery.fn.DataTable.TableTools.classes, {
+                "container": "DTTT btn-group",
+                "buttons": {
+                    "normal": "btn btn-white",
+                    "disabled": "disabled"
+                },
+                "collection": {
+                    "container": "DTTT_dropdown dropdown-menu",
+                    "buttons": {
+                        "normal": "",
+                        "disabled": "disabled"
+                    }
+                },
+                "print": {
+                    "info": "DTTT_print_info modal"
+                },
+                "select": {
+                    "row": "active"
+                }
+            });
+
+            // Have the collection use a bootstrap compatible dropdown
+            jQuery.extend(true, jQuery.fn.DataTable.TableTools.DEFAULTS.oTags, {
+                "collection": {
+                    "container": "ul",
+                    "button": "li",
+                    "liner": "a"
+                }
+            });
+        }
+    </script>
+ 
+  
+    <script type="text/javascript">
+        function DateValidation() {
+            try {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //January is 0!
+
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                today = dd + '/' + mm + '/' + yyyy;
+
+            } catch (err) {
+            }
+        }
+
+
+        function AddAttendanceManually(lstcnt) {
+           
+            var List = [];
+            var check = new Array();
+            
+
+            for (var i = 0; i < lstcnt; i++) {
+                for (var j = 0; j < lstcnt; j++) {
+                    var strStartTime = $("#InTime" + j).val();
+
+                    var strEndTime = $("#OutTime" + j).val();
+                    if (strStartTime != "" && strEndTime == "") {
+                        if (strStartTime.length < 5) {
+                            $("#InTimed" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        else if (strEndTime.length < 5) {
+                            $("#endtime" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        var Firsthours = Number(strStartTime.match(/^(\d\d?)/)[1]);
+                       // var Firstminutes = Number(strStartTime.match(/:(\d\d?)/)[1]);
+                       // var JoinFirsthoursFirstminutes = Firsthours + "" + Firstminutes;
+                        var Secondhours = Number(strEndTime.match(/^(\d\d?)/)[1]);
+                       // var Secondminutes = Number(strEndTime.match(/:(\d\d?)/)[1]);
+                      //  var JoinSecondhoursSecondminutes = Secondhours + "" + Secondminutes;
+                        if (Firsthours >= Secondhours) {
+                            $("#endtime" + j).html("OutTime must be greater than InTime ").show();
+
+                            return false;
+                        }
+
+                        //else
+                        //{
+                        // if (JoinFirsthoursFirstminutes > JoinSecondhoursSecondminutes) {
+                        //    $("#endtime" + j).html("End Time must be greater than Start time ").show();
+
+                        //    return false;
+                        //}
+                        //}
+                    }
+                    else if (strStartTime == "" && strEndTime != "")
+                    {
+                        if (strStartTime.length < 5) {
+                            $("#InTimed" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        else if (strEndTime.length < 5) {
+                            $("#endtime" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        var Firsthours = Number(strStartTime.match(/^(\d\d?)/)[1]);
+                        var Firstminutes = Number(strStartTime.match(/:(\d\d?)/)[1]);
+                        var JoinFirsthoursFirstminutes = Firsthours + "" + Firstminutes;
+                        var Secondhours = Number(strEndTime.match(/^(\d\d?)/)[1]);
+                        var Secondminutes = Number(strEndTime.match(/:(\d\d?)/)[1]);
+                        var JoinSecondhoursSecondminutes = Secondhours + "" + Secondminutes;
+                        if (Firsthours >= Secondhours) {
+                            $("#endtime" + j).html("OutTime must be greater than InTime ").show();
+
+                            return false;
+                        }
+                    }
+                    else if (strStartTime != "" && strEndTime != "") {
+                        if (strStartTime.length < 5) {
+                            $("#InTimed" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        else if (strEndTime.length < 5) {
+                            $("#endtime" + j).html("Enter the Valid Time").show();
+
+                            return false;
+                        }
+                        var Firsthours = Number(strStartTime.match(/^(\d\d?)/)[1]);
+                        var Firstminutes = Number(strStartTime.match(/:(\d\d?)/)[1]);
+                        var JoinFirsthoursFirstminutes = Firsthours + "" + Firstminutes;
+                        var Secondhours = Number(strEndTime.match(/^(\d\d?)/)[1]);
+                        var Secondminutes = Number(strEndTime.match(/:(\d\d?)/)[1]);
+                        var JoinSecondhoursSecondminutes = Secondhours + "" + Secondminutes;
+                        if (Firsthours >= Secondhours) {
+                            $("#endtime" + j).html("OutTime must be greater than InTime ").show();
+
+                            return false;
+                        }
+                    }
+                    
+                }
+                var chkOnOff;
+                
+                try {
+                    if (document.getElementById('switch-input' + i).checked == false) {
+                        chkOnOff = 0;
+                        List[i] =
+                        {
+                            "CurrentDate": $("#IdCurrentDate").val(),
+                           
+                            "LeaveTypeId": $("#LeaveTypeId" + i).find("option:selected").prop("value"),
+                         
+                            "UserName": $("#username" + i).val(),
+                            "BranchID": $("#BranchID").find("option:selected").prop("value"),
+                            "Comments": $("#Comments" + i).val(),
+                            "UserID": $("#UserId" + i).val(),
+                            "Presence": chkOnOff.toString(),
+                            "LeaveDays": "1",
+                            "LoginUserId": '@Session["UserId"]',
+                            "GroupID": $("#GroupID" + i).find("option:selected").prop("value"),
+                            "chkOnOff": "0",
+                            "InTime": $("#InTime" + i).val(),
+                            "OutTime": $("#OutTime" + i).val()
+                        }
+                       
+                    }
+                   else {
+                        chkOnOff = 1;
+                        List[i] =
+                        {
+                            "CurrentDate": $("#IdCurrentDate").val(),
+                           
+                            "LeaveTypeId": $("#LeaveTypeId" + i).find("option:selected").prop("value"),
+                           
+                            "UserName": $("#username" + i).val(),
+                            "BranchID": $("#BranchID").find("option:selected").prop("value"),
+                            "Comments": $("#Comments" + i).val(),
+                            "UserID": $("#UserId" + i).val(),
+                            "Presence": chkOnOff.toString(),
+                            "LeaveDays": "1",
+                            "LoginUserId": '@Session["UserId"]',
+                            "GroupID": $("#GroupID" + i).find("option:selected").prop("value"),
+                            "chkOnOff": "1",
+                            "InTime": $("#InTime" + i).val(),
+                            "OutTime": $("#OutTime" + i).val()
+                        }
+                    }
+                    }
+                    catch (err) {
+
+                    }
+
+                }
+                var Obj = {
+                    UserNames: List,
+                };
+               
+                var opts =
+                {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+               
+
+                $.ajax({
+                    url: "/ManualAttendance/AddAttendanceManually/",
+                    type: 'POST',
+                    dataType: "json",
+                    traditional: true,
+                    data: { objmodel: JSON.stringify(Obj) },
+
+
+                    success: function (result) {
+                        
+                            toastr.success(" Attendance added successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        
+                        
+                    }
+
+                });
+
+
+
+                return true;
+            }
+
+
+
+            function changecolor(id, i) {
+                
+                var values = {
+
+                    "Id": id
+                }
+
+
+                $.ajax({
+                    url: "../../ManualAttendance/dynamiconchange/",
+                    type: 'GET', cache: false, data: values,
+                    success: function (result) {
+                        document.getElementById('LeaveTypeId' + i).selectedIndex = result.value1;
+                        $("#LeaveTypeId" + i).select2();
+                       
+
+                    }
+
+                });
+            }
+
+            function checks(k, lstcnt) {
+             
+                for (var i = 0; i < lstcnt; i++) {
+                    try {
+                        if (document.getElementById('switch-input' + i).checked == true && k == i) {
+                            var usrid = document.getElementById('UserId' + i).value;
+                            document.getElementById('InTime' + i).value = "";
+                            document.getElementById('OutTime' + i).value = "";
+                            $("#InTime" + k).attr('disabled', true);
+                            $("#OutTime" + k).attr('disabled', true);
+                            $("#endtime" + i).html(" ").show();
+                            $("#InTimed" + i).html("").show();
+                            $('#InTime' + k).removeAttr('placeholder');
+                            $('#OutTime' + k).removeAttr('placeholder');
+                            changecolor(usrid, i);
+                           
+                            
+                        }
+                        else if (document.getElementById('switch-input' + i).checked == false && k == i) {                       
+                           
+                            document.getElementById('LeaveTypeId' + i).selectedIndex = 0;
+                            document.getElementById('InTime' + i).value = '@Session["InTimeEntry"].ToString()';
+                            document.getElementById('OutTime' + i).value = '@Session["OutTimeEntry"].ToString()';
+                            //$("#InTime" + i).attr("placeholder", "").val(@Session["InTimeEntry"].ToString()).focus().blur();
+                            //$("#OutTime" + i).attr("placeholder", "").val(@Session["OutTimeEntry"].ToString()).focus().blur();
+                            $("#InTime" + i).attr('disabled', false);
+                            $("#OutTime" + i).attr('disabled', false);
+                            $("#endtime" + i).html(" ").show();
+                            $("#InTimed" + i).html("").show();
+                        }
+                    }
+                    catch (err) {
+                        if (document.getElementById('switch-input' + k).checked == true) {
+                            var usrid = document.getElementById('UserId' + k).value;
+                            $("#InTime" + k).attr('disabled', true);
+                            $("#OutTime" + k).attr('disabled', true);
+                            $("#endtime" + i).html(" ").show();
+                            $("#InTimed" + i).html("").show();
+                            $('#InTime' + k).removeAttr('placeholder');
+                            $('#OutTime' + k).removeAttr('placeholder');
+                            changecolor(usrid, k);
+                        }
+                        else if (document.getElementById('switch-input' + k).checked == false) {
+                            document.getElementById('InTime' + i).value = '@Session["InTimeEntry"].ToString()';
+                            document.getElementById('OutTime' + i).value = '@Session["OutTimeEntry"].ToString()';
+                           // $("#InTime" + i).attr("placeholder", "").val(@Session["InTimeEntry"].ToString()).focus().blur();
+                           // $("#OutTime" + i).attr("placeholder", "").val(@Session["OutTimeEntry"].ToString()).focus().blur();
+                            $("#InTime" + k).attr('disabled', false);
+                            $("#OutTime" + k).attr('disabled', false);
+                            $("#endtime" + k).html(" ").show();
+                            $("#InTimed" + k).html("").show();
+                           
+                        }
+
+                    }
+                    
+                }
+
+            }
+
+            function IsValid(date) {
+
+                $("#form").submit();
+
+            }
+          
+            function InFocus(i) {
+              
+                var Value=$("#InTime" +i).val();
+
+                if (Value.length < 5) {
+                    $("#InTimed" + i).html("Enter the Valid Time").show();
+                    return false;
+                }
+                else {
+
+                    $("#InTimed" + i).html("").show();
+
+                }
+               
+            }
+
+
+
+    </script>
+    
+}
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("Attendance", "TimeEntry")">
+            <i class="fa-home"></i>Attendance Management
+        </a>
+    </li>
+    <li class="active"><strong>Manual Attendance</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Attendance","TimeEntry")"style="color:black ">
+            Attendance Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manual Attendance</b>
+    </p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manual Attendance
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" data-collapsed="0">
+                @using (Html.BeginForm("ManualAttendance", "ManualAttendance", FormMethod.Post, new { @id = "form" }))
+                {
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Start Date", new { @class = "control-label" })
+                                @Html.TextBox("CurrentDate", "", new { @id = "IdCurrentDate", @class = "form-control datetimepicker", @data_start_date = "d", @data_format = "dd-mm-yyyy", @onchange = "IsValid(this.value);" })
+                               
+                                <span id="StartDateTime_ID" style="color: Red;"></span>
+                            </div>
+                               @if (branchcnt==1)
+                        
+                        {
+                            <div class="visible-md" >
+                                @Html.Label("Branches", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                @Html.DropDownList("Branch", ViewBag.BranchList as SelectList, new { @id = "BranchID", @name = "BranchName", @class = "form-control" , @onchange = "IsValid(this.value);" })
+                            </div>
+                               }else
+                               {
+                                   <div class="col-md-2" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Branches", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                @Html.DropDownList("Branch", ViewBag.BranchList as SelectList, new { @id = "BranchID", @name = "BranchName", @class = "form-control" , @onchange = "IsValid(this.value);" })
+                            </div> 
+                               }
+                            <div class="col-md-2" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                @Html.DropDownList("Department", ViewBag.DepartmentList as SelectList, "All Departments",new { @id = "DepartmentId", @name = "DepartmentName", @class = "form-control", @onchange = "IsValid(this.value);" })
+                            </div> 
+                         
+                                   <div class="col-md-2" style="width: 181px; padding-top: 7px;">
+                                    @Html.Label("Group", (string)ViewBag.Lbl_depgroup, new { @class = "control-label" })
+                                    @Html.DropDownList("GroupName", ViewBag.DepartmentGroup as SelectList, "All Group", new { @id = "GroupID", @name = "GroupName", @class = "form-control", @onchange = "IsValid(this.value);" })
+                                </div>
+
+                           
+                            <div class="col-md-4" style="margin-top: 30px;display: inline-flexbox;width: 181px; ">
+                                <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                    Search<i class="entypo-search"></i>
+                                </button>                                
+                                <button type="button"  id="btnAdd"  class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <br />
+                 <div style="border: 2px solid ghostwhite;">
+                    <table class="table table-bordered datatable" id="tblUsers">
+                        <thead>
+                            <tr>
+                                <th>S.No
+                                </th>
+                                <th style="text-align: center;">Employee Name
+                                </th>
+                                <th style="text-align: center; ">Status
+                                </th>  
+                                  <th style="text-align: center;">In Time
+                                </th>  
+                                  <th style="text-align: center;">Out Time
+                                </th>                                
+                                <th style="text-align: center;">Comments
+                                </th>
+                                
+                            </tr>
+                        </thead>
+
+
+
+                        @if (Model.AttendanceList != null)
+                        {
+                            for (int i = 0; i < @Model.AttendanceList.Count(); i++)
+                            {
+                                //UnderNoticePeriod                                  
+                                if (@Model.AttendanceList[i].UnderNoticePeriod == "true" && !@Model.AttendanceList[i].OutOffice.Contains(Model.AttendanceList[i].UserID))
+                                {
+                            <tr style="background-color:pink;">
+                                <td style="text-align: center;">
+                                    @(S_No++)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserID, new { @id = "UserId" + i })
+                                </td>
+                                <td style="text-align: left;">
+                                    @Html.DisplayFor(x => x.AttendanceList[i].UserName)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserName, new { @id = "username" + i })
+                                    <span style="color: green;" id="ram"></span>
+                                </td>
+                                <td style="text-align: center;">
+                                    @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                    {
+                                        if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                             <center><div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                            <center><div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                        }
+
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                     <center><div>
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                        }
+                                        else
+                                        {
+                                         <center><div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                        {
+                                      <center><div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                        }
+                                        else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                        }
+                                    }
+                                </td>            
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                        @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                          @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                      
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null || @Model.AttendanceList[i].InTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                       
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                      }
+                                </td>             
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+
+
+
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                          
+                                            @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {  
+                                         
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                       
+                                          }
+                                          else if (@Model.AttendanceList[i].OutTime == null || @Model.AttendanceList[i].OutTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                        @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                         
+                                          }
+                                          else
+                                          {
+                                       @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                        
+                                          }
+                                      }
+                                </td>                             
+
+                                <td  style="text-align: center;">
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                     {
+
+                                         if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+
+
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                         {
+                                       @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                     else
+                                     {
+                                         if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                </td>
+                             
+                            </tr>
+                            
+                                    //UnderNoticePeriod       
+                                }
+                                else if (@Model.AttendanceList[i].UnderNoticePeriod == "true" && @Model.AttendanceList[i].OutOffice.Contains(Model.AttendanceList[i].UserID))
+                                {
+                                    //OutOfOffice and UnderNoticePeriod 
+                                <tr style="background-color:pink;">
+                                <td style="text-align: center;">
+                                    @(S_No++)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserID, new { @id = "UserId" + i })
+                                </td>
+                                <td style="text-align: left;">
+                                    @Html.DisplayFor(x => x.AttendanceList[i].UserName)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserName, new { @id = "username" + i })
+                                    <span style="color: green;" id="ram"></span>
+                                </td>
+                                <td style="text-align: center;">
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                    {
+                                        if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                             <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox"  id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office With Under Notice Period!</span>
+                                            </label>
+                                                 
+                                        </div></center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                            <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office With Under Notice Period!</span>
+                                            </label>
+                                                
+                                        </div></center>
+                                        }
+
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office With Under Notice Period!</span>
+                                            </label>                                           
+                                        </div></center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                     <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                 <span class="tooltiptext">Out Of Office With Under Notice Period!</span>
+                                            </label>                                        
+                                        </div></center>
+                                        }
+                                        else
+                                        {
+                                         <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office With Under Notice Period!</span> 
+                                            </label>                                             
+                                        </div></center>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        
+                                        if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                            
+                                        </div></center>
+                                        }
+                                        else if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                        {
+                                      <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                          
+                                        </div></center>
+                                        }
+                                    }
+                                </td>            
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                        @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                          @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                      
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null || @Model.AttendanceList[i].InTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                       
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", disabled = "disabled", onfocus = "OutFocus(" + i + ")", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                      }
+                                </td>             
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          
+
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                          
+                                            @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {  
+                                         
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                       
+                                          }
+                                          else if (@Model.AttendanceList[i].OutTime == null || @Model.AttendanceList[i].OutTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                        @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", disabled = "disabled", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                         
+                                          }
+                                          else
+                                          {
+                                       @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", disabled = "disabled", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                        
+                                          }
+                                      }
+                                </td>                             
+
+                                <td  style="text-align: center;">
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                     {
+
+                                         if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+
+
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                         {
+                                       @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                     else
+                                     {
+                                         if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                </td>
+                             
+                            </tr>
+                            
+//OutOfOffice and UnderNoticePeriod  
+                                }
+                                else if (@Model.AttendanceList[i].UnderNoticePeriod != "true" && @Model.AttendanceList[i].OutOffice.Contains(Model.AttendanceList[i].UserID))
+                                {
+
+//OutOfOffice 
+                                <tr>
+                                <td style="text-align: center;">
+                                    @(S_No++)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserID, new { @id = "UserId" + i })
+                                </td>
+                                <td style="text-align: left;">
+                                    @Html.DisplayFor(x => x.AttendanceList[i].UserName)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserName, new { @id = "username" + i })
+                                    <span style="color: green;" id="ram"></span>
+                                </td>
+                                <td style="text-align: center;">
+                                    
+                                    @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                    {
+                                        if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                             <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox"  id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>
+                                                 
+                                        </div></center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                            <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>
+                                                
+                                        </div></center>
+                                        }
+
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                 <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                           
+                                        </div></center>
+                                        }
+                                        else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                        {
+                                     <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                 <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                        
+                                        </div></center>
+                                        }
+                                        else
+                                        {
+                                         <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                             
+                                        </div></center>
+                                        }
+                                    }
+                                    else
+                                    {
+                                       
+                                        if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                        {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch" id="tooltip">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" disabled/>
+                                                <span  class="switch-label" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Is On Leave!</span> 
+                                            </label>                                            
+                                        </div></center>
+                                        }
+                                        else if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                        {
+                                      <center><div>
+                                            <label class="switch" id="tooltip">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" disabled/>
+                                                <span class="switch-label" data-on="Present"  data-off="Absent"></span><span class="switch-handle"></span>
+                                                <span class="tooltiptext">Out Of Office!</span> 
+                                            </label>                                          
+                                        </div></center>
+                                        }
+                                    }
+                                </td> 
+                                        
+                                    
+                                           
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = "", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                               @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")", @Value = "", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                        @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span> 
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @Value = "",@class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                          @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", onfocus = "OutFocus(" + i + ")",@Value = "", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5",@Value = "", @class = "InTimes", onfocus = "OutFocus(" + i + ")", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                      
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null || @Model.AttendanceList[i].InTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                       
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", @maxlength = "5", @class = "InTimes", disabled = "disabled", onfocus = "OutFocus(" + i + ")", @Value = "", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime",@Value = "", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                      }
+                                </td>             
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+
+
+
+                                          if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = "", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                              @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = "", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                          
+                                            @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                      @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime",@Value = "Out Of Office", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                          else
+                                          {
+                                          @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = "", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {  
+                                         
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", @Value = "", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                       
+                                          }
+                                          else if (@Model.AttendanceList[i].OutTime == null || @Model.AttendanceList[i].OutTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                        @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", disabled = "disabled", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = "", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                         
+                                          }
+                                          else
+                                          {
+                                       @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime",@Value = "", @maxlength = "5", disabled = "disabled", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                        
+                                          }
+                                      }
+                                </td>                             
+
+                                <td  style="text-align: center;">
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                     {
+
+                                         if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150",@Value = "Out Of Office", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == null && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                              @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments",@Value = "Out Of Office", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+
+
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i,@Value = "Out Of Office", @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                         {
+                                       @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i,@Value = "Out Of Office", @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime != "" && @Model.AttendanceList[i].InTime != null)
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i,@Value = "Out Of Office", @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                          @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments",@Value = "Out Of Office", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                     else
+                                     {
+                                         if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments",@Value = "Out Of Office", @maxlength = "150", disabled = "disabled", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i,@Value = "Leave", @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i,@Value = "Out Of Office", @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                </td>
+                             
+                            </tr>
+                            
+//OutOfOffice
+                                }
+
+
+                                else
+                                {
+                                    <tr >
+                                <td style="text-align: center;">
+                                    @(S_No++)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserID, new { @id = "UserId" + i })
+                                </td>
+                                <td style="text-align: left;">
+                                    @Html.DisplayFor(x => x.AttendanceList[i].UserName)
+                                    @Html.HiddenFor(x => x.AttendanceList[i].UserName, new { @id = "username" + i })
+                                    <span style="color: green;" id="ram"></span>
+                                </td>
+                                <td style="text-align: center;">
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                     {
+                                         if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                        <center><div>
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                         {
+                                       <center><div>
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                         }
+                                         else
+                                         {
+                                         <center>  <div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                         }
+                                     }
+                                     else
+                                     {
+                                         if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                         {
+                                      <center>  <div>
+                                            <label class="switch">
+                                                <input class="switch-input" type="checkbox" id="switch-input@(i)" checked="checked" />
+                                                <span class="switch-label" data-on="Present" onclick="checks(@i,@Model.AttendanceList.Count())" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div></center>
+                                         }
+                                         else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                         {
+                                        <center>  <div  >
+                                            <label disabled="disabled" class="switch">
+                                                <input  class="switch-input" type="checkbox" id="switch-input@(i)" />
+                                                <span  class="switch-label" onclick="checks(@i,@Model.AttendanceList.Count())" data-on="Present" data-off="Absent"></span><span class="switch-handle"></span>
+                                            </label>
+                                        </div>  </center>
+                                         }
+                                     }
+                                </td>            
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                        @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @Value = "", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                        @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @Value = "", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != null && @Model.AttendanceList[i].InTime != "")
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                       
+                                           @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @Value = "", @class = "InTimes", disabled = "disabled", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                      
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == null || @Model.AttendanceList[i].InTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                       
+                                      @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", @Value = Session["InTimeEntry"].ToString(), onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                          <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                         @Html.TextBox("InTime", Model.AttendanceList[i].InTime, new { @id = "InTime" + i, @name = "InTime", onfocus = "OutFocus(" + i + ")", @maxlength = "5", @class = "InTimes", onkeypress = "myFunction(" + i + ")" })
+                                        <br />
+                                             <span style="color: red;" id="InTimed@(i)"></span>
+                                          }
+
+                                      }
+                                </td>             
+                                 <td style="text-align: center;">
+                                      @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                      {
+                                          if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                          {
+                                       @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @Value = "", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                          {
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @Value = "", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else if (@Model.AttendanceList[i].InTime != null && @Model.AttendanceList[i].InTime != "")
+                                          {
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+                                          else
+                                          {
+                                        @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                          }
+
+                                      }
+                                      else
+                                      {
+                                          if (@Model.AttendanceList[i].LeaveStatusId == 2)
+                                          {  
+                                         
+                                         @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @Value = "", @class = "OutTimes", DataFormatString = "{0:d}", disabled = "disabled", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                            <br /><span style="color: red;" id="endtime@(i)"></span>
+                                       
+                                          }
+                                          else if (@Model.AttendanceList[i].OutTime == null || @Model.AttendanceList[i].OutTime == "" || (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                          {
+                                        @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime  ", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @Value = Session["OutTimeEntry"].ToString(), @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                         
+                                          }
+                                          else
+                                          {
+                                       @Html.TextBox("OutTime", Model.AttendanceList[i].OutTime, new { @id = "OutTime" + i, @name = "OutTime", @maxlength = "5", onfocus = "InFocus(" + i + ")", @class = "OutTimes", DataFormatString = "{0:d}", @onchange = "timevalidation('" + @i + "')", onkeypress = "myFunction1(" + i + ")" })
+                                           <br /> <span style="color: red;" id="endtime@(i)"></span>
+                                        
+                                          }
+                                      }
+                                </td>                             
+
+                                <td  style="text-align: center;">
+
+                                     @if (Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Saturday" || Convert.ToDateTime(@Model.AttendanceList[i].CurrentDate).DayOfWeek.ToString() == "Sunday" || Session["Holiday"].ToString() == "1")
+                                     {
+                                         if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "1")
+                                         {
+                                         @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime == "" && @Model.AttendanceList[i].BranchID == "2")
+                                         {
+                                         @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (@Model.AttendanceList[i].InTime != null && @Model.AttendanceList[i].InTime != "")
+                                         {
+                                         @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                     else
+                                     {
+                                         if (((@Model.AttendanceList[i].IsCurrentDate == 1) || (@Model.AttendanceList[i].IsCurrentDate == 0)) && (@Model.AttendanceList[i].LeaveStatusId == 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else if (((@Model.AttendanceList[i].IsCurrentDate == 0) || (@Model.AttendanceList[i].IsCurrentDate == 1)) && (@Model.AttendanceList[i].LeaveStatusId != 0))
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                         else
+                                         {
+                                        @Html.TextBox("Comments", Model.AttendanceList[i].Comments, new { disabled = "disabled", @id = "Comments" + i, @name = "Comments", @maxlength = "150", @class = "form-control" })
+                                        <span style="color: Red;" id="C@(i)"></span>
+                                         }
+                                     }
+                                </td>
+                             
+                            </tr>
+                                }
+                            }
+                        }
+
+                    </table>
+                     
+                        @if (Model.AttendanceList != null)
+                        {
+                    <button type="button"class="btn btn-info" style="float: right; margin-top: -39px;" id="btnSave" onclick="AddAttendanceManually(@Model.AttendanceList.Count())">
+                        Save
+                    </button>
+                    
+                        }
+                     </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

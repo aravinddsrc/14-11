@@ -1,0 +1,171 @@
+﻿@model DSRCManagementSystem.Models.FeedbackAggregareModel
+@{
+    ViewBag.Title = "Calculate Aggregate";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Feedback Aggregate Calculation </title>
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+</head>
+@{
+    int SNO = 1;
+    
+}
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Feedback Aggregate Calculation
+            </h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("CalculateAggregate", "ManageTraining", FormMethod.Post))
+            {
+                 
+           
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">                         
+                          @Html.Label("Content Rating", new { @class = "control-label" })                            
+                          @Html.TextBoxFor(x => x.ContentRating, new { @id = "ContentRating", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                                                    
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                           @Html.Label("Presentation Rating", new { @class = "control-label" })
+                           @Html.TextBoxFor(x => x.PresentRating, new { @id = "PresentRating", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                           
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                         
+                          @Html.Label("Faculty Rating", new { @class = "control-label" })                                            
+                          @Html.TextBoxFor(x => x.FacultyRating, new { @id = "FacultyRating", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                    
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                          @Html.Label("Overall Rating", new { @class = "control-label" })
+                          @Html.TextBoxFor(x => x.OverallRating, new { @id = "OverallRating", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                           
+
+                        </div>
+                    </div>
+                </div>   
+            
+                    
+                <table class="table table-bordered datatable" id="tblMeeting">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">
+                                        S.No
+                                    </th>
+                                    <th style="text-align:center;">
+                                    @Html.DisplayName("Suggestions/Comments")
+                                    </th>
+                                    <th style="text-align:center;">
+                                    @Html.DisplayName("Learnt from Training")
+                                    </th>
+                                </tr>
+                            </thead>
+
+                              @{
+                                  
+                                   
+                            for (int i = 0; i < Model.Comments.Count; i++)
+                       {
+                                          
+                                  <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)                              
+                                    </td>
+                                     <td style="width:3800px;word-wrap:breakword;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(model => Model.Comments[i])
+                                    </td>
+                                     <td style="width:3800px;word-wrap:breakword;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(model => Model.Learn[i])
+                                    </td>
+                                 </tr>
+                             
+                       }
+                            @*for (int i = 0; i < Model.Learn.Count; i++)
+                            {
+                     
+                                     <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)                              
+                                    </td>
+                                     <td style="width:3800px;word-wrap:breakword;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(model => Model.Learn[i])
+                                    </td>
+                                 </tr>
+                             
+                                   
+                                 
+                                
+                            }
+            *@
+                                 
+                    @*    foreach (var value in Model.Comments)
+                        {                  
+                                                      
+                                <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)                              
+                                    </td>
+                                     <td style="width:3800px;word-wrap:breakword;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(model => Model.Comments[i])
+                                    </td>
+                                  
+                                </tr>
+                       
+
+                        }*@
+                                  
+                                  
+                                  
+                                  
+                            }
+                      
+                    </table>
+                   
+                  
+                
+                
+                       
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close</button>
+                </div>        
+            }
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

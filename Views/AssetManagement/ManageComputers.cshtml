@@ -1,0 +1,364 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.ManageComputers>
+@{
+    ViewBag.Title = "Manage Computers";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int SNO = 1;
+}
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ManageComputers","AssetManagement")">Asset Management</a></li>
+    <li class="active"><strong>Manage Computers</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageComputers","AssetManagement")"style="color:black ">
+            Asset Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Computers</b>
+    </p>
+<br />
+<div class="row" style="height: 500px; ">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Computers
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="btn-group" style="float: right">
+
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='AddNewComputer()'>
+                        Add New Computer
+                    </button>
+                    <br />
+                </div>
+                @using (Html.BeginForm("ManageComputers", "AssetManagement", FormMethod.Post, new { @id = "Form_ManageComputer" }))
+                {
+                    <div class="clear">
+                    </div>
+                    <table style="white-space:nowrap">
+                        <tr>
+                            <td>
+                                <div class="col-md-2">
+                                    <label>
+                                        @Html.CheckBox("Inactive", (Request.Form["Inactive"] ?? string.Empty).Contains("true"), new
+                   {
+                       @id = "InActive",
+                       @onchange = "$('#Form_ManageComputer').submit();"
+                   })Show Inactive
+                                    </label>
+                                </div>
+                            </td>
+                            @*<td>
+                                    <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                        View <i class="entypo-search"></i>
+                                    </button>
+                                </td>*@
+                        </tr>
+                    </table>
+
+                    <br />
+                    <div class="table table-bordered datatable">
+                        <table class="table table-bordered datatable" id="tblUsers">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        S.NO
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Manufacturer)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.CPUID)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.MonitorID)
+                                    </th>
+                                    <th style="text-align: center;">
+
+                                        @Html.DisplayNameFor(model => model.Memory)
+                                    </th>
+
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.CPU)
+                                    </th>
+
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.OS)
+                                    </th>
+
+
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.ComputerName)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.ComputerStatus)
+                                    </th>
+
+                                    <th>
+                                        Edit
+                                    </th>
+                                    <th>
+                                        Delete
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.ID)
+                                        @Html.DisplayFor(modelItem => item.Manufacturer)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CPUID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MonitorID)
+                                    </td>
+                                    <td align="center">
+                                        @Html.DisplayFor(modelItem => item.Memory)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CPU)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OS)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ComputerName)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ComputerStatus)
+                                    </td>
+
+
+
+
+                                    <td style="text-align: center;">
+                                        @*<a>
+                                                <button type="button" class="btn btn-info btn-icon icon-left"   onclick='Edit("@item.ID")'>
+                                                    <i class="entypo-pencil"></i>Edit
+                                                </button>
+                                            </a>*@
+                                        <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='Edit("@item.ID")'>
+                                            <i class="entypo-pencil"></i>
+                                        </a>
+
+                                    </td>
+
+                                    @if (item.Alreadyassigned == 0)
+                                    {
+                                        <td style="text-align: center;">
+
+                                            @*<a>
+                                                    <button type="button" class="btn btn-red btn-icon icon-left" onclick='Delete("@item.ID")'>
+                                                        <i class="entypo-cancel"></i>Delete
+                                                    </button>
+                                                </a>*@
+                                            <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.ID")'>
+                                                <i class="entypo-cancel"></i>
+                                            </a>
+
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align: center;">
+
+                                            <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='DeleteAssigned("@item.ID")'>
+                                                    <i class="entypo-cancel"></i>
+                                                
+                                            </a>
+
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                }
+
+                @*<button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;" onclick="Back()">
+                    Back
+                </button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            //$("#tblUsers").dataTable({
+            //    "sPaginationType": "bootstrap",
+            //    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //    "bStateSave": false,
+            //    "bAutoWidth": false,
+            //    "columnDefs": [{ bSortable: false, 'aTargets': [0] }, { bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }]
+            //});
+
+            var table = $("tblUsers").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [0] }, { bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }],
+                //"columnDefs": columnDefs,
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+
+
+        function AddNewComputer() {
+
+            $.ajax({
+                url: "../../AssetManagement/AddNewComputer/",
+                type: 'GET', cache: false,
+
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function Back() {
+            var url = '../Home/Index?id=AssetManagement';
+            window.location.href = url;
+        }
+
+
+        //        $(document).ready(function () {
+        //            $("#tabs").tabs();
+        //            $("#btnclick").click(function () {
+        //                $('#tabs').tabs('select', 4);
+
+        //            });
+        //        });
+
+
+
+
+        function Edit(ID) {
+
+            $.ajax({
+                url: "../../AssetManagement/Edit/",
+                type: 'GET', cache: false, data: { ID: ID },
+                success: function (result) {
+
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+            });
+        }
+
+        function Delete(ID) {
+
+            bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                if (conform) {
+                    $.ajax({
+                        url: "../AssetManagement/Delete/",
+                        type: 'POST', cache: false, data: { ID: ID }, success: function (result) {
+                            var opts = {
+                                "closeButton": true,
+                                "debug": false,
+                                "positionClass": "toast-top-right",
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "1000",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Deleted successfully!", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+        function DeleteAssigned(ID) {
+
+            bootbox.confirm(" Computer Is  Assigned.  Are you sure want to delete ?", function (conform) {
+                if (conform) {
+                    $.ajax({
+                        url: "../AssetManagement/Delete/",
+                        type: 'POST', cache: false, data: { ID: ID }, success: function (result) {
+                            var opts = {
+                                "closeButton": true,
+                                "debug": false,
+                                "positionClass": "toast-top-right",
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "1000",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Deleted successfully!", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+    </script>
+}

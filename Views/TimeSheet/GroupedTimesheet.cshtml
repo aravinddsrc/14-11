@@ -1,0 +1,281 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Template>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewUser</title>
+    <link href="../../Content/Template/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+</head>
+<body>
+    @{
+        List<string> itemsChk = new List<string>();
+    }
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                TimeSheet</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            </div>
+            <div class="col-md-12">
+                <ul class="nav nav-tabs bordered">
+                    @{int i = 0;}
+                    @foreach (var item in Model)
+                    {
+                        if (!itemsChk.Contains(@item.groupName))
+                        {
+                            itemsChk.Add(@item.groupName);
+                            if (i == 0)
+                            {
+              
+                        <li class="active"><a href="#@item.groupName" data-toggle="tab">@item.groupName</a></li>
+                            }
+                            else
+                            {
+                        <li><a href="#@item.groupName" data-toggle="tab">@item.groupName</a></li>
+                            }
+                            i++;
+                        }
+                    }
+                </ul>
+                <div class="tab-content">
+                    @{int j = 0;}
+                    @foreach (var item in Model)
+                    {
+
+                        if (j == 0)
+                        {
+                        <div class="tab-pane active" id="@item.groupName">
+                            @foreach (var itemList in Model)
+                            {
+                                if (itemList.groupName == item.groupName)
+                                {
+                                    if (itemList.columnTypeName == "Date")
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextBox(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @class = "form-control datetimepicker", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                   else if (item.columnTypeName == "SingleLineText")
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextBox(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @name = @itemList.columnName.ToString(), @class = "form-control columns", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextArea(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @name = "columnName", @class = "form-control", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                }
+                            }
+                        </div>
+			
+                        }
+                        else
+                        {
+                        <div class="tab-pane" id="@item.groupName">
+                            @foreach (var itemList in Model)
+                            {
+                                if (itemList.groupName == item.groupName)
+                                {
+                                    //if (item.columnTypeName == "Date")
+                                    //{
+                                    //}
+                                    if (itemList.columnTypeName == "Date")
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextBox(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @class = "form-control datetimepicker", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                    else if (item.columnTypeName == "SingleLineText")
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextBox(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @name = @itemList.columnName.ToString(), @class = "form-control columns", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>@itemList.columnName</label>
+                                            @Html.TextArea(@itemList.columnName.ToString(), "", new { @id = @itemList.ColumnId.ToString(), @name = "columnName", @class = "form-control", @placeholder = "Enter " + @itemList.columnName.ToString(), @autocomplete = "off" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        }
+                        j++;
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+            <button type="submit" id="btnAdd" class="btn btn-info" onclick="save()">
+                Save</button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <input type="hidden" id="hidden" value="dsf" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+   
+
+    var opts = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "3000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+   $(".datetimepicker").datepicker({
+        format: 'mm/dd/yyyy',
+        showTodayButton: true,
+        collapse: true,
+        autoclose: true
+    });
+
+    function save() {
+       
+        var ColumnName = [];
+        var ColumnValue=[];
+
+        @foreach (var item in Model)
+        {
+            //@:alert(@item.ColumnId);
+            // @:alert($("#"+@item.ColumnId).val());
+            //  @:alert($("#"+@item.ColumnId).attr("name"));
+         @:ColumnName.push($("#"+@item.ColumnId).attr("name"));
+         @:ColumnValue.push($("#"+@item.ColumnId).val());
+//         @:counter++;
+            //         @:alert(counter);  
+        }
+
+
+       
+        $.ajax({
+            url: "../../Timesheet/SaveTimeSheet/",
+            type: "GET",
+          
+            cache: false,
+            data: {"ColumnName":ColumnName,"ColumnValue":ColumnValue},
+            traditional: true,
+
+            success: function (result) {
+            
+             //  $('#PartialSection').html(result);
+              //$('#portlet-config').appendTo("body").modal('show');
+              $('#portlet-config').modal('toggle');
+                setTimeout(function () {
+                var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+                                    toastr.success("TimeSheet Save successfully..!", opts);
+                                }, 0);
+            }
+        });
+
+
+    }
+
+
+
+    </script>
+</body>
+</html>

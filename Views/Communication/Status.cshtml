@@ -1,0 +1,413 @@
+﻿
+@model DSRCManagementSystem.Models.MailId
+
+@{
+    ViewBag.Title = "Mail Status";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+
+    <link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="assets/js/script.js"></script>
+
+<body>
+  
+@*</style>
+    <style type="text/css">
+        table td:nth-child(2) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        table td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        body {
+            overflow-y: auto;
+        }
+
+
+    </style>*@
+}
+    @{
+        int SNO = 1;
+        SNO++;
+   
+}
+
+
+
+<div class="row">
+    <div class="panel panel-default panel-shadow" 
+
+data-collapsed="0">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+           
+            <h4 class="modal-title">
+                Mail Sending Status</h4>
+        </div>
+            
+        <div class="modal-body" style="padding:0px;">
+            @using (Html.BeginForm("Status", "Communication", FormMethod.Post))
+            {
+               
+                <div class="clear">
+                   </div>
+                <div class="col-md-6">
+                <p>Mail Sending for....</p>
+                    </div>
+                
+                
+                
+              @* <p> <input name="user" id="lbluser" /></p>*@
+                    
+                
+                <br />
+                <br />
+               
+                <br />
+               
+                <div id="myProgress">
+  <div id="myBar">
+
+          <div id="label" ></div>
+      
+      <div id="Users"></div>
+     
+  </div>
+</div>
+                <br />
+                <br />
+                <div id="count"></div>
+                
+                <br />
+                 <div class="clears" id="test">
+                    <p id="test1">Mail sent successfully for @ViewBag.count Users</p>
+                   </div>
+                
+              
+                
+                
+                
+                if (ViewBag.Name != null || ViewBag.Name != "")
+                {
+                    
+                }
+            
+            
+                <br />
+                <br />
+            }
+
+            </div>
+        </div>
+   @* </div>*@
+@*</div>*@
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        
+        $("#test").hide();
+
+        setTimeout(function() {
+            move();
+           
+        }, 2000);
+      
+       
+
+      //  $("#test").show();
+    });
+
+   
+   @*  function move() {
+        debugger;
+        var count=@Html.Raw(Json.Encode(ViewData["count"]));
+        var User=@Html.Raw(Json.Encode(ViewData["Names"]));
+        debugger;
+
+
+        
+        //for(var f=0;f<=count;f++)
+        //{            
+        //    window.setTimeout(function(){
+        //        document.getElementById("Users").innerHTML =User[f];
+        
+        //    },300);          
+            
+        //}*@
+
+       
+
+       
+
+
+
+    @*  function move() {
+       
+        
+        var count=@Html.Raw(Json.Encode(ViewData["count"]));
+        var User=@Html.Raw(Json.Encode(ViewData["Names"]));
+        var elem = document.getElementById("myBar");
+        var width = 1;
+        var per=1;
+        var vaiI=0;
+        //var interval=(count/100)*350;
+        var limit=count/100;
+        var intv = Math.round(limit);
+        var interval=(count/100)*500;
+        
+        var id = setInterval(frame, interval);
+
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                per++;
+                elem.style.width = width + '%';
+               
+                document.getElementById("label").innerHTML = width * 1 + '%' + 'Complete';
+                if(per<count)
+                {
+                    document.getElementById("count").innerHTML ='Mail sending for'+ per* 1 +  'Out of' +count;
+                  per= per+1;
+                }
+                
+                     }
+            vaiI =vaiI+1;
+            per= per+1;
+
+            setTimeout(function () {
+                $("#test").show();
+            
+                        
+            }, 5000);
+        }
+       
+    }*@
+
+
+
+    function move() {
+       
+        
+        var count=@Html.Raw(Json.Encode(ViewData["count"]));
+        
+         var User=@Html.Raw(Json.Encode(ViewData["Names"]));
+         var elem = document.getElementById("myBar");
+         var width = count;
+         var vaiI=0;
+         //var interval=(count/100)*350;
+         var interval=(count/100)*300
+        
+         var id = setInterval(frame, interval);
+         var i=1;
+         function frame() {
+             if (width >= 100) {
+                 clearInterval(id);
+                 document.getElementById("Count").innerHTML = "Mail Sending For"+ count +"/'"+count+"'" ;
+             } else {
+
+               
+                 width++;
+                 elem.style.width = width + '%';
+               
+                 document.getElementById("label").innerHTML = width * 1 + '%' + '(complete)';
+                 if(width == 20 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                    
+                     i++;
+                 }
+                 else if(width == 40 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                     i++;
+                 }
+                 else if(width == 60 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                     i++;
+                 }
+                 else if(width == 70 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                     i++;
+                 }
+                 else if(width == 80 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                     i++;
+                 }
+                 else if(width == 90 && i <= count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                     i++;
+                 }
+                
+                 else if(width==100 && i==count)
+                 {
+                     document.getElementById("count").innerHTML = "Mail Sending For"+ i +"out of" +count ;
+                 }
+               
+             }
+            
+             vaiI =vaiI+1;
+
+             setTimeout(function () {
+                 $("#test").show();
+            
+                        
+             }, 5000);
+         }
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @*  function move() {
+        debugger;
+        
+        var count=@Html.Raw(Json.Encode(ViewData["count"]));
+        var User=@Html.Raw(Json.Encode(ViewData["Names"]));
+        var elem = document.getElementById("myBar");
+        var width = count;
+        var vaiI=0;
+        var interval=(count/100)*350;
+        alert(interval);
+        var id = setInterval(frame, interval);
+
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+               
+                document.getElementById("label").innerHTML = width * 1 + '%';
+                for(var f=0;f<=count;f++)
+                {
+                   
+                    
+                    console.log(User);
+                        
+                    $("#lbluser").val(User[vaiI]);
+                    
+                }
+                setTimeout(function () {
+                        
+                }, 5000);
+            }
+            
+            vaiI =vaiI+1;
+
+            setTimeout(function () {
+                $("#test").show();
+            
+                        
+            }, 5000);
+        }
+    }*@
+
+</script>
+
+       <style>
+ #myProgress {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background-color: #ddd;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
+
+
+
+    }
+
+    #count{
+   font-size:larger;
+    }
+
+#myBar {
+        position: absolute;
+        width: 10%;
+        height: 100%;
+        background-color: green;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        border-bottom-left-radius:10px;
+        border-bottom-right-radius:10px;
+       
+    }
+
+#label {
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+
+    </style>      
+    </body>
+   

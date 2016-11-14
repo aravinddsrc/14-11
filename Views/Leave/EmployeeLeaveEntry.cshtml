@@ -1,0 +1,882 @@
+﻿@model DSRCManagementSystem.Models.LeaveModel
+@{
+    ViewBag.Title = "Employee Leave Entry";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EmployeeLeaveEntry</title>
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic" id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/JS/date.js" type="text/javascript"></script>
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+         
+      .dropdown-menu {
+    background-color: white;
+}   
+       
+
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Employee Leave Entry</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("EmployeeLeaveEntry", "Leave", FormMethod.Post))
+            {
+            
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="Days">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(x => x.UserName, new { @class = "control-label" })
+                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                        @Html.DropDownList("Leave Entry For", ViewBag.Reportable as SelectList, "---Select---", new
+                            {
+                            @id = "UserName",
+                            @name = "UserName",
+                            @class = "form-control",
+                            @onchange = "GetLeaveTypes()"
+                            })                                       
+                        @Html.ValidationMessageFor(x => x.UserName, "", new { @style = "color: Red;" })
+                        <span id="LeaveEntry_Id" style="color: Red;"></span>
+                    </div>
+                </div>
+                                <br /> 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.Label("Leave Type", new { @class = "control-label" })
+                                             <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                            @Html.DropDownList("LeaveType", ViewBag.LeaveTypeList as SelectList, "---Select---", new
+                                       {
+                                           @id = "LeaveTypeList",
+                                           @name = "LeaveType",
+                                           @class = "form-control",
+                                           @onchange = "GetLeaveBalance()"
+                                       })
+                                       @Html.HiddenFor(x => x.LeaveTypeId)
+
+                                            <div class="form-control" style="margin-top: 5px" id="LeaveBalanceDays">
+                                            </div>
+                                          
+                                            <span id="LeaveTypeList_ID" style="color: Red;"></span>
+                                        </div>
+                                    </div>
+
+                   <div class="col-md-6" id="work" >
+                        <div >
+                            @Html.LabelFor(x => x.WorkedDate1, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.WorkedDate1, new { @id = "worked", @class = "form-control date", @placeholder = Resources.Resource.DN_LeaveRequest_WorkedDate })                            
+                            <span id="workedDate" style="color: Red"></span>
+                        </div>
+                    </div>
+                                </div>
+                 
+                <div class="row">
+                    <div class="col-md-6">
+                     <div class="form-group">
+                            @Html.Label("Start Date", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.StartDateTime, new { @id = "StartDateTime", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_LeaveRequest_StartDateTime, @autocomplete = "off" })
+                            <span class="add-on"><i class="icon-remove"></i></span><span class="add-on"><i class="icon-th">
+                            </i></span><span id="StartDateTime_ID" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6" >                                        
+                    <div class="form-group">
+                            @Html.Label("End Date", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.EndDateTime, new { @id = "EndDateTime", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_LeaveRequest_EndDateTime, @autocomplete = "off" })
+                            <span class="add-on"><i class="icon-remove"></i></span><span class="add-on"><i class="icon-th">
+                            </i></span><span id="EndDateTime_ID" style="color: Red;"></span>
+                            <div class="form-control" style="margin-top: 5px" id="TotalLeaveBalanceDays">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div  style="height:10px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(x => x.Details, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                        @Html.TextAreaFor(x => x.Details, new { @id = "Details", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveRequest_Details, @autocomplete = "off", @style = "height:105px", @maxlength = 250 })
+                                        @Html.ValidationMessageFor(x => x.Details, "", new { @style = "color: Red;" })
+                                        <span id="Details_ID" style="color: Red;"></span>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel</button>
+            <button type="button" id="btnAddLeaveRequest" class="btn btn-info" onclick=" AddNewLeave() ">
+               Apply</button>
+        </div>
+    </div>
+      <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#LeaveBalanceDays").hide();
+            $("#LeaveBalanceHours").hide();
+            $("#TotalLeaveBalanceDays").hide();
+
+
+
+            $('#LeaveTypeList').each(function () {               
+
+                if ($(this).val() == 4) {
+                    $("#work").show();
+                }
+
+                else if ($(this).val() == 5) {
+                    $("#work").hide();
+                    $("#EndDateTime").prop('disabled', false);
+                }
+
+                else if ($(this).val() == 6) {
+                    $("#work").hide();
+                    $("#EndDateTime").prop('disabled', true);
+                }
+
+                else {
+                    $("#work").hide();
+                }
+            });
+        });
+
+        $('#LeaveTypeList').change(function () {
+
+            var UserId = $("#UserName").find("option:selected").prop("value");
+
+            if (UserId === "") {
+                $("#LeaveEntry_Id").html("Select Employee Name").show();
+                clearLeaveType();
+                return;
+
+            }
+
+        if ($(this).val() == 4) {
+            $("#work").show();
+            $("#EndDateTime").prop('disabled', false);
+        }
+
+        else if ($(this).val() == 5) {
+            $("#work").hide();
+            $("#EndDateTime").prop('disabled', false);
+        }
+        else if ($(this).val() == 6) {
+            $("#work").hide();
+            $("#EndDateTime").prop('disabled', true);
+        }
+
+        else {
+            $("#work").hide();
+            $("#EndDateTime").prop('disabled', false);
+            $("#StartDateTime").val('');
+            $("#EndDateTime").val('');
+            $("#LeaveBalanceDays").hide();
+            $("#TotalLeaveBalanceDays").hide();
+
+        }
+    });
+
+    $('#EndDateTime').change(function () {
+
+        var leaveTypeId = $("#LeaveTypeList").find("option:selected").prop("value");
+        var UserId = $("#UserName").find("option:selected").prop("value");
+
+
+        if (UserId === "") {        
+            $("#LeaveEntry_Id").html("Select Employee Name").show();
+            clearLeaveType();
+
+            $("#work").hide();
+            $("#EndDateTime").prop('disabled', false);
+            $("#StartDateTime").val('');
+            $("#EndDateTime").val('');
+            $("#LeaveBalanceDays").hide();
+            $("#TotalLeaveBalanceDays").hide();
+
+            return;
+        }
+        else
+            $("#LeaveEntry_Id").html("").hide();
+
+        if (leaveTypeId === "" || leaveTypeId == 0) {
+            $("#LeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+            $("#LeaveBalanceDays").html("Select Leave Type").show();
+
+            $("#StartDateTime").val('');
+            $("#EndDateTime").val('');
+            $("#TotalLeaveBalanceDays").hide();
+
+            return;
+
+        }
+        else
+            $("#LeaveBalanceDays").html("").hide();
+
+        if ($("#StartDateTime").val() == '') {
+            $("#StartDateTime_ID").html("Select Start Date").show();
+            $("#LeaveBalanceDays").html("").hide();
+            return;
+        }
+        else {
+            $("#StartDateTime_ID").html("").hide();
+        }
+
+        if (leaveTypeId != 4 && leaveTypeId != 6) {
+
+            var startDate = $("#StartDateTime").val();
+            var splitedStartDate = startDate.split("/");
+            var endDate = $("#EndDateTime").val();
+            var splitedEndDate = endDate.split("/");
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (startDateTime > endDateTime) {
+                $("#EndDateTime_ID").html("End Date should be greater than the Start Date").show();
+                $("#TotalLeaveBalanceDays").html("").hide();
+            }
+            else {
+                $("#EndDateTime_ID").html("").hide();
+
+                var from = $("#StartDateTime").val().split("/");
+                var start = new Date(from[2], from[1] - 1, from[0]).toUTCString().toLocaleString();
+
+                var to = $("#EndDateTime").val().split("/");
+                var end = new Date(to[2], to[1] - 1, to[0]).toUTCString().toLocaleString();
+
+                var values =
+                {
+                    "LeaveType": $("#LeaveTypeList").find("option:selected").prop("value"),
+                    "StartDateTime": start,
+                    "EndDateTime": end,
+                    "UserId": $("#UserName").find("option:selected").prop("value")
+                };
+
+                $.ajax({
+                    url: "../../Leave/GetTotalLeaveBalance/",
+                    cache: true,
+                    type: "GET",
+                    data: values,
+                    datatype: 'JSON',
+                    success: function (result) {
+                        if (leaveTypeId != 4 && leaveTypeId != 6) {
+                            if (result.Result != 0.0) {
+                                $("#TotalLeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                                outputStr = result.Result + " days wil be LOP.";
+                                $("#TotalLeaveBalanceDays").html(outputStr).show();
+                            }
+                            else {
+                                $("#TotalLeaveBalanceDays").html("").hide();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    $('#LeaveTypeList').click(function () {
+
+        $("#StartDateTime").val('');
+        $("#EndDateTime").val('');
+        $('#EndDateTime_ID').hide();
+        $('#StartDateTime_ID').hide();
+        $("#TotalLeaveBalanceDays").hide();
+
+        var UserId = $("#UserName").find("option:selected").prop("value");
+
+        if (UserId === "") {
+            $("#LeaveEntry_Id").html("Select Employee Name").show();
+            clearLeaveType();
+            return;
+        }
+
+        $('#StartDateTime').change(function () {
+
+
+            var leaveTypeId = $("#LeaveTypeList").find("option:selected").prop("value");
+            var UserId = $("#UserName").find("option:selected").prop("value");
+
+
+            if (UserId === "") {
+                $("#LeaveEntry_Id").html("Select Employee Name").show();
+                clearLeaveType();
+
+                $("#work").hide();
+                $("#EndDateTime").prop('disabled', false);
+                $("#StartDateTime").val('');
+                $("#EndDateTime").val('');
+                $("#LeaveBalanceDays").hide();
+                $("#TotalLeaveBalanceDays").hide();
+
+                return;
+
+            }
+            else
+                $("#LeaveEntry_Id").html("").hide();
+
+            if (leaveTypeId === "" || leaveTypeId == 0) {
+                $("#LeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                $("#LeaveBalanceDays").html("Select Leave Type").show();
+
+                $("#StartDateTime").val('');
+                $("#EndDateTime").val('');
+                $("#TotalLeaveBalanceDays").hide();
+
+                return;
+
+            }
+            else
+                $("#LeaveBalanceDays").html("").hide();
+
+            var x = $('#LeaveTypeList').val();
+
+            if (x == 6) {
+
+                var startDt = $('#StartDateTime').val().split("/");
+                Dtfrmt = new Date(startDt[2], startDt[1] - 1, startDt[0]);
+                var d1 = Dtfrmt.setDate(Dtfrmt.getDate() + 89);
+                var d2 = new Date(d1);
+
+                $('#EndDateTime').datepicker("setDate", d2);
+            }
+
+            if (leaveTypeId != 4 && leaveTypeId != 6) {
+
+                if ($("#StartDateTime").val() != '' && $("#EndDateTime").val() != '') {
+
+                    var startDate = $("#StartDateTime").val();
+                    var splitedStartDate = startDate.split("/");
+                    var endDate = $("#EndDateTime").val();
+                    var splitedEndDate = endDate.split("/");
+                    var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+                    var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+                    if (startDateTime > endDateTime) {
+
+                        $("#EndDateTime_ID").html("End Date should be greater than the Start Date").show();
+                        $("#TotalLeaveBalanceDays").html("").hide();
+                    }
+                    else {
+
+                        $("#EndDateTime_ID").html("").hide();
+
+                        var from = $("#StartDateTime").val().split("/");
+                        var start = new Date(from[2], from[1] - 1, from[0]).toUTCString().toLocaleString();
+
+                        var to = $("#EndDateTime").val().split("/");
+                        var end = new Date(to[2], to[1] - 1, to[0]).toUTCString().toLocaleString();
+
+
+                        var values =
+                {
+                    "LeaveType": $("#LeaveTypeList").find("option:selected").prop("value"),
+                    "StartDateTime": start,
+                    "EndDateTime": end,
+                    "UserId": $("#UserName").find("option:selected").prop("value")
+                };
+
+                        $.ajax({
+                            url: "../../Leave/GetTotalLeaveBalance/",
+                            cache: true,
+                            type: "GET",
+                            data: values,
+                            datatype: 'JSON',
+                            success: function (result) {
+
+                                console.log(result.Result);
+
+                                if (leaveTypeId != 4 && leaveTypeId != 6) {
+                                    if (result.Result != 0.0) {
+                                        $("#TotalLeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                                        outputStr = result.Result + " days wil be LOP.";
+                                        $("#TotalLeaveBalanceDays").html(outputStr).show();
+                                    }
+                                    else {
+                                        $("#TotalLeaveBalanceDays").html("").hide();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+        });
+    });
+
+    function GetLeaveBalance() {
+            var leaveTypeId = $("#LeaveTypeList").find("option:selected").prop("value");
+            if (leaveTypeId === "") {
+                $("#LeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                $("#LeaveBalanceDays").html("Select Leave Type").show();
+                return;
+
+            }
+
+            else if (leaveTypeId == 5) {
+
+
+                var from = $("#StartDateTime").val().split("/");
+                var start = new Date(from[2], from[1] - 1, from[0]).toUTCString().toLocaleString();
+
+                var to = $("#EndDateTime").val().split("/");
+                var end = new Date(to[2], to[1] - 1, to[0]).toUTCString().toLocaleString();
+
+                var values =
+            {
+                "LeaveType": $("#LeaveTypeList").find("option:selected").prop("value"),
+                "StartDateTime": start,
+                "EndDateTime": end,
+                "UserId": $("#UserName").find("option:selected").prop("value")
+            };
+
+                $.ajax({
+                    url: "../../Leave/GetAvailLeaveBalance/",
+                    cache: true,
+                    type: "GET",
+                    data: values,
+                    datatype: 'JSON',
+                    success: function (result) {
+
+                        if (result.Result != 0.0) {
+                            $("#LeaveBalanceDays").css({ "background-color": "#bdedbc", "border-color": "#b4e8a8", "color": "#045702" });
+                            outputStr = "Total " + result.Result + " days available.";
+                            $("#LeaveBalanceDays").html(outputStr).show();
+                        }
+                        else if (result.Result == 0) {
+                            $("#LeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                            outputStr = "No days available.";
+                            $("#LeaveBalanceDays").html(outputStr).show();
+                        }
+                        else {
+                            $("#LeaveBalanceDays").html("").hide();
+                        }
+
+                    }
+                });
+
+            }
+
+            else {
+
+                $.ajax({
+                    url: "../../Leave/GetLeaveBalance/",
+                    cache: true,
+                    type: "GET",
+                    data: { leaveTypeId: leaveTypeId, userId: $("#UserName").find("option:selected").prop("value"), year: new Date().getFullYear() },
+                    datatype: 'JSON',
+                    success: function (result) {
+                        var outputStr = "";
+                        if (result.CalculateLeave === true) {
+
+                            if (result.LeaveTypeId != 4) {
+                                if (result.RemainingDays > 0) {
+                                    outputStr = result.RemainingDays + " days available";
+                                    $("#LeaveBalanceDays").css({ "background-color": "#bdedbc", "border-color": "#b4e8a8", "color": "#045702" });
+                                } else {
+                                    $("#LeaveBalanceDays").css({ "background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818" });
+                                    outputStr = "No days available.";
+                                }
+                            }
+                        }
+                        else if (result.CalculateLeave === false) {
+                            outputStr = "Can take as many as you want";
+                        }
+
+                        if (leaveTypeId == 4 || leaveTypeId == 6) {
+                            $("#LeaveBalanceDays").hide();
+                        }
+                       
+                        else
+                            $("#LeaveBalanceDays").html(outputStr).show();
+                    }
+                });
+            }
+        };
+
+        function getAllowedLeaves() {
+
+            var selectedLeaveType = $("#LeaveTypeList").val();
+            var start = $("#StartDateTime").datepicker("getDate");
+            var End = $("#EndDateTime").datepicker("getDate");
+           
+            if (selectedLeaveType == "") {
+                $('#EndDateTime_ID').text("First select Leave Type").show();
+            }
+
+            var daysDifferce = (End - start) / (1000 * 60 * 60 * 24);
+
+            if (daysDifferce) {
+                var weeks = Math.floor(daysDifferce / 7);
+                daysDifferce = daysDifferce - (weeks * 2);
+
+                var startDay = start.getDay();
+                var endDay = End.getDay();
+
+                if (startDay - endDay > 1)
+                    daysDifferce = daysDifferce - 2;
+
+                if (startDay == 0 && endDay != 6)
+                    daysDifferce = daysDifferce - 1;
+
+                if (endDay == 6 && startDay != 0)
+                    daysDifferce = daysDifferce - 1;
+            }
+            var maxLeaves = 1;
+            switch (selectedLeaveType) {
+                case '2':
+                    maxLeaves = 1;
+                    break;
+                case '1':
+                    maxLeaves = 1;
+                    break;
+                case '3':
+                    maxLeaves = 12;
+                    break;
+                default:
+                    maxLeaves = 12;
+                    break;
+            }
+
+            if (selectedLeaveType == '1' && (daysDifferce > maxLeaves)) {
+                $('#EndDateTime_ID').text("If you take sick leave above two days, medical certificate is required to join duty.").show();
+            }
+
+        }
+
+        function selectleave() {
+            var selectedLeaveType = $("#LeaveTypeList").val();
+            if (selectedLeaveType == "")
+                $('#StartDateTime_ID').text("First select Leave Type").show();
+        }
+
+                 
+    function AddNewLeave() {
+    
+        var button = $('button#btnAddLeaveRequest');
+        var flag = true;
+        var errorsCount = 0;
+
+            //Leave type
+        if ($("#UserName").val() === '') {
+                $("#LeaveEntry_Id").html("Select Employee Name");
+                flag = false;
+                errorsCount++;
+            } else {
+                $("#LeaveEntry_Id").html("");
+                flag = true;
+            }
+
+           //Leave type
+            if ($("#LeaveTypeList").val() === '') {
+                $("#LeaveTypeList_ID").html("Select Leave Type");
+                flag = false;
+                errorsCount++;
+            } else {
+                $("#LeaveTypeList_ID").html("");
+                flag = true;
+            }
+            //Start Date
+            if ($("#StartDateTime").val() === '') {
+                $("#StartDateTime_ID").html("Select Start Date").show();
+                flag = false;
+                errorsCount++;
+            } else {
+                $("#StartDateTime_ID").html("");
+                flag = true;
+            }
+            //End Date
+            if ($("#EndDateTime").val() === '') {
+                $("#EndDateTime_ID").html("Select End Date");
+                flag = false;
+                errorsCount++;
+            } else {
+                $("#EndDateTime_ID").html("");
+                flag = true;
+            }
+        //Comments
+
+            var Details = $("#Details").val();
+
+            var Detailstrim = Details.replace(/\s/g, "").length;
+
+
+            if (Detailstrim == '') {
+                $(".field-validation-error").empty();
+                $("#Details_ID").html("Enter Details");
+                flag = false;
+                errorsCount++;
+            } else {
+                $("#Details_ID").html("");
+                flag = true;
+            }
+
+          if ($("#worked").val() === '') {
+                $("#workedDate").html("Select Worked Date");
+                flag = false;
+            } else {
+                $("#workedDate").html("");
+                flag = true;
+            }
+             
+        var startDate = $("#StartDateTime").val();
+        var splitedStartDate = startDate.split("/");
+        var endDate = $("#EndDateTime").val();
+        var splitedEndDate = endDate.split("/");
+        var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+        var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+      
+        if (errorsCount === 0) {
+            if (startDateTime > endDateTime) {
+                errorsCount++;
+                $("#EndDateTime_ID").html("End Date should be greater than the Start Date");
+            } else {
+                errorsCount = 0;
+            }
+           
+
+        }
+
+        if (errorsCount === 0) {
+
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+        $("#StartDateTime_ID").html("");
+        $("#EndDateTime_ID").html("");
+
+         
+            var values =
+            {
+
+                "LeaveType": $("#LeaveTypeList").find("option:selected").prop("value"),
+                "WorkedDate1":$("#worked").val(),
+                "StartDateTime": $("#StartDateTime").val(),
+                "EndDateTime": $("#EndDateTime").val(),                
+                "UserId":$("#UserName").find("option:selected").prop("value"),
+                "UserName":$("#UserName").find("option:selected").prop("text"),
+                "Details": $("#Details").val()
+
+            };
+            var toastrOptions = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+            $.ajax({
+                url: "../../Leave/EmployeeLeaveEntry/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+               
+             
+                if (result.Result === "Success") {
+                    $("#portlet-config").modal('hide');
+                    toastr.success("Leave request has been approved successfully", toastrOptions);
+                    setTimeout(function () { location.reload(); }, 8000);
+                    ReloadGrid();
+                }
+                else if(result.Result === "Invalid")
+                {
+                    toastr.warning("You already applied leave on this date.");
+                    setTimeout(function () { location.reload(); }, 10000);
+                    ReloadGrid();
+
+                }//Sunday
+                  else if(result.Result ==="Invalid Leaves")
+                {
+                      toastr.warning("Only &nbsp;&nbsp;" + result.AvailableDays + "&nbsp;&nbsp; days are available you can not apply");
+                      setTimeout(function () { location.reload(); }, 8000);
+                      ReloadGrid();
+                }
+
+                  else if (result.Result === "Holiday") {
+                      toastr.warning("You selected holidays. Can't send leave request ..!");
+                      setTimeout(function () { location.reload(); }, 8000);
+                      ReloadGrid();
+                  }
+
+                  else if (result.Result === "Not Holiday") {
+                      toastr.warning("Worked Dates are not applicable for Comp Off");
+                      setTimeout(function () { location.reload(); }, 10000);
+                      ReloadGrid();
+                  }
+
+                  else if (result.Result === "already") {
+                      toastr.warning("Already these Worked Dates are applied for leave");
+                      setTimeout(function () { location.reload(); }, 8000);
+                      ReloadGrid();
+                  }
+
+                  else if (result.Result === "not applicable") {
+                      toastr.warning("Working hours of the Worked date may be below 5 hours or you may not worked on that date");
+                      setTimeout(function () { location.reload(); }, 8000);
+                      ReloadGrid();
+                  }
+                  else if (result.Result === "not equal") {
+                      toastr.warning("Your leave days count does not match the worked date count");
+                      setTimeout(function () { location.reload(); }, 8000);
+                      ReloadGrid();
+                  }
+                  else {
+                      $('#PartialSection').html(result);
+                      $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                      $(button).prop('disabled', false);
+                      $(".datetimepicker").datepicker({
+
+                          format: 'dd/mm/yyyy',
+                          todayHighlight: true,
+                          daysOfWeekDisabled: [0, 6],
+                          autoclose: true
+                      });
+                  }
+            }});
+        } else {
+            $(button).prop('disabled', false);
+        }
+    }
+
+    $('#StartDateTime').datepicker({
+    format: 'dd/mm/yyyy',
+    daysOfWeekDisabled: [0,6],
+    autoclose: true
+
+})
+
+$('#EndDateTime').datepicker({
+    format: 'dd/mm/yyyy',
+    daysOfWeekDisabled: [0,6],
+    autoclose: true
+
+})
+  $('.date').datepicker({
+            multidate: true,
+            format: 'dd-mm-yyyy(DD)'          
+        });
+        
+        $(function () {
+        
+           $("#LeaveTypeList").select2({ 
+                minimumResultsForSearch: -1
+            });  
+                        
+            $("#UserName").select2();
+        });
+
+        function clearLeaveType() {
+            var items = [];
+            items.push("");
+            items.push("<option value=0>--Select--</option>");
+            $("#LeaveTypeList").html(items.join(' '));
+            $("#LeaveTypeList").select2();
+        }
+
+
+        function GetLeaveTypes() {
+
+            var Id =  $("#UserName").find("option:selected").prop("value")
+
+            if (Id !== "") {
+
+                var url2 = '@Url.Action("GetAvailLeaveTypes")';
+
+                $.get(url2, { UserId: Id }, function (data) {
+
+                    if (data == "Failed") {
+
+                        clearLeaveType();
+
+                        toastr.warning("Fill Gender in profile for the selected employee");
+                    }
+                    else if (data == "NoMarital") {
+
+                        clearLeaveType();
+
+                        toastr.warning("Fill Maritalstatus in profile for the selected employee");
+                    }
+                    else {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data, function () {
+                            items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                        });
+                        $("#LeaveTypeList").html(items.join(' '));
+                        $("#LeaveTypeList").select2();
+                    }
+                });
+            }
+        }
+</script>
+</body>
+</html>
+

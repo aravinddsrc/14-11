@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Node>
+@{
+    ViewBag.Title = "Node";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ViewBag.Title</title>@*<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['orgchart']}]}"></script>*@
+    <script src="../../Content/JS/OrgChart.js" type="text/javascript"></script>
+    <link href="../../Content/css/GoogleOrgChart.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<ol class="breadcrumb bc-3">
+    @*<li><a><i class="entypo-home"></i>Home</a>
+    </li>*@
+    <li><a >Organization Chart Template</a> </li>
+    <li class="active"><strong>Organization Chart</strong> </li>
+</ol>
+    @*<div style="font-size: 18px;">
+        <b>Organization Chart</b>
+    </div>*@
+    <br/>
+    <div id="chart_div" style="border-collapse: inherit !important">
+    </div>
+    <script type="text/javascript">
+        google.load('visualization', '1', {packages:['orgchart']});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Name');
+            data.addColumn('string', 'Manager');
+            data.addColumn('string', 'ToolTip');
+             @foreach (var item in Model)
+             {
+                <text>                  
+                data.addRow([
+                    {v:'@item.NodeId.ToString()',f:'<div style="color:Black; font-style:italic ; font-size:15px ">@item.Name</div>'}, '@item.ParentNodeId.ToString()', '@item.Tooltip']);                    
+                </text>
+             }
+            var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+            chart.draw(data, { allowHtml: true });
+        }
+    </script>
+    <style type="text/css">
+        .google-visualization-orgchart-node
+        {
+            width: 200px;
+        }
+        .google-visualization-orgchart-node-medium
+        {
+            vertical-align: top;
+        }
+    </style>
+</body>
+</html>

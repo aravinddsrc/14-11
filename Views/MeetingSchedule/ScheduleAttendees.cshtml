@@ -1,0 +1,260 @@
+﻿@model DSRCManagementSystem.Models.ProjectMom
+@{
+    ViewBag.Title = "ScheduleAttendees";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MeetingScheduleAttendees</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+    @*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <style>
+        .dropdown-menu {
+            background-color: white;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">Add Attendees</h4>
+        </div>
+
+        <div class="modal-body">
+
+            @using (Html.BeginForm("ScheduleAttendees", "MeetingSchedule", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6" style="width: 500px">
+                        <div class="form-group" style="width: 500px">
+                            @Html.Label("Attendees", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @*@Html.DropDownList("AttendeeId", ViewBag.Leaders as MultiSelectList, new { @id = "AttendeeId", @name = "AttendeeId",@class = "form-control", @multiple = "multiple"})*@
+                            @Html.DropDownList("AttendeeId",   ViewBag.UnAuthorizedUsers as SelectList, "--Select--", new { @id = "AttendeeId", @class = "form-control", @maxlength = 50 })
+                            <span id="span_ID10" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick='Agenda()'>
+                Save
+            </button>
+        </div>
+
+    </div>
+
+    <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            debugger;
+            $("#AttendeeId").select2();
+        });
+          @*  var data = @Html.Raw(Json.Encode(ViewData["MeetingGuidsIDs"]))
+
+                      //for (var i = 0; i < data.length; i++) {
+
+                      //    var x=data[i];
+                      //    $("#AttendeeId").val(x);
+                      //    $("#AttendeeId").select2();
+
+                      //}
+                      
+                      $("#AttendeeId").val(data);
+
+                     $("#AttendeeId").select2();
+
+
+
+
+                 });*@
+
+                 function Agenda() {
+                     debugger;
+                     //$('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                     if (document.getElementById('AttendeeId').value == 0) {
+                         if (document.getElementById('AttendeeId').value == 0) {
+                             document.getElementById("span_ID10").innerHTML = " Select Project Attendees";
+                         }
+                         else {
+                             document.getElementById("span_ID10").innerHTML = "";
+                         }
+                     }
+                     else {
+
+                         var values =
+                                 {
+                                     "Attendee": $("#AttendeeId").val().toString()
+                                 }
+
+                         var opts =
+                 {
+                     "closeButton": true,
+                     "debug": false,
+                     "positionClass": "toast-top-right",
+                     "toastClass": "White",
+                     "onclick": null,
+                     "showDuration": "300",
+                     "hideDuration": "1000",
+                     "timeOut": "2000",
+                     "extendedTimeOut": "1000",
+                     "showEasing": "swing",
+                     "hideEasing": "linear",
+                     "showMethod": "fadeIn",
+                     "hideMethod": "fadeOut"
+                 }
+
+
+
+                         $.ajax({
+                             url: "../../MeetingSchedule/ScheduleAttendees/",
+                             type: 'POST',
+                             cache: false,
+                             data: values,
+                             traditional: true,
+                             global: false,
+                             success: function (result) {
+                                 if (result == "Success") {
+                                     $("#portlet-config").modal("hide");
+                                     toastr.success(" Attendee added successfully", opts);
+                                     setTimeout(function () { location.reload(); }, 1000);
+
+                                 }
+
+                             }
+
+                         });
+                     }
+                 }
+
+
+
+                 @*function Check(no) {
+                     debugger;
+
+
+                     var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+
+                     var url2 = '@Url.Action("GetSearch")';
+                     $.get(url2, { Search: no }, function (data) {
+
+                       
+                         if (data == "Success") {
+                             debugger;
+                             bootbox.confirm("Are you sure want to delete ?", function (result) {
+                             });
+                             //toastr.warning("Activity Name Already Exist", opts);
+
+                         }
+                         if(data=="Failure")
+                         { toastr.success("Deleted", opts); }
+
+                     });*@
+
+
+                     
+
+                   
+
+@*                     $.ajax({
+
+                         url: '@Url.Action("GetSearch")',
+                         cache: false,
+                         data: no,
+                         traditional: true,
+                         global: false,
+                         success: function (result) {
+
+                             if (result == "Success") {
+                                 toastr.success(" Activity Added successfully", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+
+
+
+                             }
+                             if (result == "Warning") {
+                                 toastr.warning("Activity Name Already Exist", opts);
+                             }
+                         }
+
+                     });*@
+
+                 
+
+
+    </script>
+
+</body>
+</html>
+
+

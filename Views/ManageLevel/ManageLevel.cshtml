@@ -1,0 +1,620 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.ManageLevel>
+@{
+    ViewBag.Title = "Manage Level";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="~/Content/css/hopscotch-0.1.1.css" rel="stylesheet" />
+    <link href='//fonts.googleapis.com/css?family=RobotoDraft:regular,bold,italic,thin,light,bolditalic,black,medium&lang=en' rel='stylesheet' type='text/css'>
+}
+@{
+    int SNO = 1;
+}
+<style type="text/css">
+    .entypo-play {
+
+      
+        border: none;
+        font-size: 1em;
+        color: white;
+        background-color: #ff4081;
+        border-radius: 50%;
+        width: 27px;
+        height: 27px;
+        margin: auto;
+        -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+        -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+        box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+    }
+
+        .entypo-play:hover {
+            background-color: #ff4060;
+        }
+
+
+    /*body {
+        margin: 2em;
+        background-color: white;
+        font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+    }
+
+    h2 {
+        color: #ccc;
+    }
+
+    h4 {
+        margin: 4px;
+        padding: 2px;
+    }*/
+
+
+      .dropdown-menu {
+    background-color: white;
+}   
+     
+
+</style>
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageActivities", "ManageActivities")">
+            <i class="fa-home"></i>Activity Management
+        </a>
+    </li>
+    <li class="active"><strong>Manage Level</strong> </li>
+    <li>
+        <a href="#" data-toggle="tooltip" title="Tour">
+            <button class="entypo-play" id="startTourBtn"></button>
+        </a>
+    </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageActivities","ManageActivities")"style="color:black ">
+            Activity Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Level</b>
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <a href="#" data-toggle="tooltip" title="Tour">
+            <button class="entypo-play" id="startTourBtn"></button>
+        </a>
+    </p>
+<br />
+<div class="row" >
+
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Level
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" style="overflow: auto">
+
+
+
+
+
+
+                @*<p class="text-center">
+                    <button id="startTourBtn" class="btn btn-large btn-primary">Take a tour</button>
+                </p>*@
+
+
+                <div class="row">
+                    <div class="col-md-3" style="float: right" id="btnAdd2">
+                        <button id="Add" type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddLevel()'>
+                        Add Level
+                    </div>
+                </div>
+                <br />
+
+                <table class="table table-bordered datatable" id="tblRoles">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">S.No
+                            </th>
+
+
+                            <th style="text-align: center;">@Html.DisplayName("Level Name")
+                            </th>
+
+                            <th style="text-align: center;">@Html.DisplayName("Level Description")
+                            </th>
+
+                            <th style="text-align: center;" id="Edit">@Html.DisplayName("Edit")
+
+                            </th>
+                            <th style="text-align: center;" id="Delete">@Html.DisplayName("Delete")
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr id="@item.LevelId" >
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelitem => item.LevelId)
+                                    @Html.DisplayFor(modelitem => item.LevelName)
+                                </td>
+
+                                <td>
+
+                                    @Html.DisplayFor(modelitem => item.LevelDescription)
+                                </td>
+
+
+                                <td style="text-align: center;">
+
+                                    <a href="#" data-toggle="tooltip" title="Edit">
+                                        <button type="button" class="btn btn-info" onclick='Edit(@item.LevelId, "@item.LevelName", "@item.LevelDescription")'>
+                                            <i class="entypo-pencil"></i>
+                                        </button>
+                                    </a>
+
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="#" data-toggle="tooltip" title="Delete">
+                                        <button type="button" class="btn btn-red" onclick='Delete(@item.LevelId)'>
+                                            <i class="entypo-cancel"></i>
+                                        </button>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                        }
+
+
+
+
+                    </tbody>
+
+                </table>
+                @* <div style="float: right">
+                    <button type="button" class="btn btn-info form-control" style="width: 100px" id="SendMail" onclick="Update()">
+                        Update Order
+                    </button>
+                </div>*@
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+
+    <script src="~/Content/Plugins/hopscotch-0.1.1.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $('#tblRoles tbody').sortable({
+                helper: fixWidthHelper
+            }).disableSelection();
+
+            function fixWidthHelper(e, ui) {
+                ui.children().each(function () {
+                    $(this).width($(this).width());
+                });
+                return ui;
+            }
+        });
+
+
+
+
+        $(document).ready(function () {
+
+
+            $("#tblRoles").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }]
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        function Save() {
+
+            var LevelName = $("#LevelName").val();
+
+            var LevelNametrim = LevelName.replace(/\s/g, "").length;
+
+            var LevelDescription = $("#LevelDescription").val();
+
+            var LevelDescriptiontrim = LevelDescription.replace(/\s/g, "").length;
+
+
+            if ((LevelNametrim == "" || LevelDescriptiontrim == "")) {
+                if (LevelNametrim == "") {
+                    document.getElementById("span_LevelName").innerHTML = " Name";
+                }
+                else {
+                    document.getElementById("span_LevelName").innerHTML = "";
+                }
+                if (LevelDescriptiontrim == "") {
+                    document.getElementById("span_LevelDescription").innerHTML = "Description ";
+                }
+                else {
+                    document.getElementById("span_LevelDescription").innerHTML = "";
+                }
+            }
+            else {
+                var values =
+                           {
+
+
+                               "LevelName": $("#LevelName").val(),
+                               "LevelDescription": $("#LevelDescription").val()
+
+                           }
+                var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                $.ajax({
+
+                    url: "../../ManageLevel/ManageLevel/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+
+                        if (result == "Success") {
+                            toastr.success(" Added successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+
+                        }
+                        if (result == "Warning") {
+                            toastr.warning("Already Exist", opts);
+                        }
+                    }
+
+                });
+            }
+        }
+
+        function Edit(uId, pName, pName1) {
+
+            $.ajax({
+                url: "../../ManageLevel/EditLevel/",
+                type: 'GET',
+                cache: false,
+                data: { LevelId: uId, LevelName: pName, LevelDescription: pName1 },
+                success: function (result) {
+                    if (result == "DeleteWarning") {
+
+                        $("#portlet-config").modal('hide');
+                        toastr.warning("Cannot Edit Unassigned Role", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    }
+                }
+            });
+        }
+
+        function Delete(uid) {
+            var opts =
+           {
+               "closeButton": true,
+               "debug": false,
+               "positionClass": "toast-top-right",
+               "toastClass": "White",
+               "onclick": null,
+               "showDuration": "3000",
+               "hideDuration": "1000",
+               "timeOut": "2000",
+               "extendedTimeOut": "1000",
+               "showEasing": "swing",
+               "hideEasing": "linear",
+               "showMethod": "fadeIn",
+               "hideMethod": "fadeOut"
+           }
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "../../ManageLevel/Delete/",
+                        type: 'GET',
+                        cache: false,
+                        data: { ID: uid },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.success(" Level Deleted successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else if (result == "Warning") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete ", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+
+                                   }, 1500);
+                               }
+                               else if (result == "Warning1") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete ", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+                                   }, 1500);
+                               }
+                           }
+                    });
+                }
+            });
+        }
+
+
+
+        function AddLevel() {
+
+            $.ajax({
+                url: "../../ManageLevel/AddLevel/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+
+        function Update() {
+
+            var ids = [];
+            $('#tblRoles tbody tr').each(function (index) {
+                ids.push($(this).attr('id'));
+            });
+
+
+            var opts =
+           {
+               "closeButton": true,
+               "debug": false,
+               "positionClass": "toast-top-right",
+               "toastClass": "White",
+               "onclick": null,
+               "showDuration": "300",
+               "hideDuration": "1000",
+               "timeOut": "2000",
+               "extendedTimeOut": "1000",
+               "showEasing": "swing",
+               "hideEasing": "linear",
+               "showMethod": "fadeIn",
+               "hideMethod": "fadeOut"
+           }
+
+            $.ajax({
+                url: "../../ManageLevel/LevelOrder/",
+                type: 'GET',
+                cache: false,
+                data: { Ids: JSON.stringify(ids) },
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result == "Success") {
+                        toastr.success(" Level Updated successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+
+                }
+            });
+
+
+        }
+
+
+        $(document).ready(function () {
+            $("#tblRoles tbody").sortable({
+
+                revert: true,
+                connectWith: "#tblRoles tbody",
+                stop: function (event, ui) {
+
+                    setTimeout(Update, 10);
+                }
+            });
+        });
+
+
+
+
+
+
+        var tour = {
+            id: 'hello-hopscotch',
+            steps: [
+              {
+                  target: 'Add',
+                  title: '',
+                  content: 'Click on Add Level!',
+                  placement: 'left',
+                  arrowOffset: 1,
+                  yOffset: -20
+
+              },
+              {
+                  target: 'Edit',
+                  title: '',
+                  content: 'Click on Edit to Modify!',
+                  placement: 'top',
+                  arrowOffset: 50,
+
+
+              },
+              {
+                  width: 160,
+                  target: 'Delete',
+                  placement: 'top',
+                  title: '',
+                  content: 'Click To Delete!',
+
+
+
+              },
+              //{
+              //    target: 'start-tour',
+              //    placement: 'right',
+              //    title: 'Starting your tour',
+              //    content: 'After you\'ve created your tour, pass it in to the startTour() method to start it.',
+              //    yOffset: -25
+              //},
+              //{
+              //    target: 'basic-options',
+              //    placement: 'left',
+              //    title: 'Basic step options',
+              //    content: 'These are the most basic step options: <b>target</b>, <b>title</b>, <b>content</b>, and <b>placement</b>. For some steps, they may be all you need.',
+              //    arrowOffset: 100,
+              //    yOffset: -80
+              //},
+              //{
+              //    target: 'api-methods',
+              //    placement: 'top',
+              //    title: 'Hopscotch API methods',
+              //    content: 'Control your tour programmatically using these methods.',
+              //},
+              //{
+              //    target: 'tour-example',
+              //    placement: 'top',
+              //    title: 'This tour\'s code',
+              //    content: 'This is the JSON for the current tour! Pretty simple, right?',
+              //},
+              {
+                  target: 'startTourBtn',
+                  placement: 'bottom',
+                  title: '',
+                  content: 'You\'re all set!',
+                  yOffset: -25,
+                  arrowOffset: 10,
+              }
+            ],
+            showPrevButton: true,
+            scrollTopMargin: 100
+        },
+
+/* ========== */
+/* TOUR SETUP */
+/* ========== */
+addClickListener = function (el, fn) {
+    if (el.addEventListener) {
+        el.addEventListener('click', fn, false);
+    }
+    else {
+        el.attachEvent('onclick', fn);
+    }
+},
+
+init = function () {
+    var startBtnId = 'startTourBtn',
+        calloutId = 'startTourCallout',
+        mgr = hopscotch.getCalloutManager(),
+        state = hopscotch.getState();
+
+    if (state && state.indexOf('hello-hopscotch:') === 0) {
+        // Already started the tour at some point!
+        hopscotch.startTour(tour);
+    }
+    else {
+        // Looking at the page for the first(?) time.
+        //setTimeout(function () {
+        //    mgr.createCallout({
+        //        id: calloutId,
+        //        target: startBtnId,
+        //        placement: 'right',
+        //        title: 'Welcome to Manage Level',
+        //        content: '',
+        //        yOffset: -25,
+        //        arrowOffset:10,
+        //        width: 240
+        //    });
+        //}, 100);
+    }
+
+    addClickListener(document.getElementById(startBtnId), function () {
+        if (!hopscotch.isActive) {
+            mgr.removeAllCallouts();
+            hopscotch.startTour(tour);
+
+        }
+    });
+};
+
+        init();
+
+    </script>
+}

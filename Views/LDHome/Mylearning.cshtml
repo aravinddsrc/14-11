@@ -1,0 +1,851 @@
+﻿@model DSRCManagementSystem.Models.LDHomeModel
+@{
+    ViewBag.Title = "My Training";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead  
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <style>
+        .align {
+            word-wrap:break-word;
+            word-break: break-all;
+        }
+        /*.panel panel-default panel-shadow {
+            height:400px;
+        }*/
+        .panel-body {
+            height:400px;
+        }
+        #MyTraining {
+            height:200px;
+        }
+        .table table-bordered datatable {
+            height:400px;
+        }
+    </style>
+}
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("Mylearning", "LDHome")">Learning and Development</a></li>
+    <li class="active"><strong>My Training</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Mylearning","LDHome")"style="color:black ">
+            Training Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Training</b>
+    </p>
+<br />
+
+<div class="tab-pane " id="MYL">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        My Training
+                    </div>
+         
+                </div>
+                <div class="panel-body" id="MyTraining">
+                    <div class="row">
+                      <div class="col-md-12">
+                            @*<form class="text-right" method="get" action="/LDTraining/WorkList">
+                                <div class="btn-group" style="float: right; padding-right: 10px !important">
+                                    <button type="submit" class="btn btn-blue" style="font-weight: bold;">
+                                        <i class="entypo-list"></i>Work List</button>
+                                </div>
+                            </form>*@
+                            <form class="text-right" method="get" action="/LDR/CalendarEvents">
+                                <div class="btn-group" style="float: right; padding-right: 10px !important">
+                                    <button type="submit" class="btn btn-blue" style="font-weight: bold">
+                                        <i class="entypo-calendar"></i>Training Calendar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="tile-stats tile-red">
+                                <div class="num">
+                                    <h3 style="height: 30px;">@ViewBag.scor</h3>
+                                    <h3 style="height: 30px;">My Training points
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-blue">
+                                <div class="num">
+                                    @*@ViewBag.totalCourseCompleted/@ViewBag.CourseCompletedScore*@
+
+                                    <h3 style="height: 30px;">No.of Trainings Attended       @ViewBag.totalCourseCompleted</h3>
+                                    <h3 style="height: 30px;">Points      @ViewBag.CourseCompletedScore</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-aqua">
+                                <div class="num">
+                                    @*@ViewBag.totalCourseConducted/@ViewBag.CourseConductedScore*@
+
+                                    <h3 style="height: 30px;">No.of Trainings Conducted     @ViewBag.totalCourseConducted</h3>
+
+                                    <h3 style="height: 30px;">Points    @ViewBag.CourseConductedScore</h3>
+                                    @*<div class="num">
+                                 @ViewBag.CourseConductedScore
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-green">
+                                <div class="num">
+
+                                    <h3 style="height: 30px;">No.of Trainings Absent    @ViewBag.totalCourseabsented</h3>
+
+                                    <h3 style="height: 30px;">Points    @ViewBag.courseabsentscore </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row" style="min-width: 50% !important;">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow:auto;">
+                            <div class="panel-heading" style="background-color: rgb(102, 158, 225);">
+                                <div class="panel-title" color="White">
+                                    Upcoming Trainings
+                                </div>
+                              <div class="panel-options">
+                             <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                          </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                
+                                <table class="table table-bordered datatable" id="tblCmptr" >
+                                    <thead>
+                                        <tr style="min-width: 50% !important;">
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Seats
+                                            </th>
+                                            <th>Start Time
+                                            </th>
+                                            <th>End Time
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            <th>Nominate
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.upcomingTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.HiddenFor(modelItem => item.TrainingId, new { @id = "TrainingID" })
+                                                @Html.DisplayFor(modelItem => item.TrainingName, new { @id = "TrainingName", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName, new { @id = "TechnologyName", @name = "TimeSlot1", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="width: 15%; text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.Seatingcapacity, new { @id = "Capacity", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="text-align: center; font-weight: Bold;">
+                                                @Html.DisplayFor(modelItem => item.StartTime, new { @id = "StartTime", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.EndTime, new { @id = "EndTime", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                                @Html.HiddenFor(modelitem => item.instructorid)
+                                            </td>
+
+                                            <td style="text-align: center;">
+                                                @if (Convert.ToInt32(Session["UserId"]) == @item.instructorid)
+                                                {                                   
+                                                    <a href="#" data-toggle="tooltip" title="Nominate" class="btn btn-info" onclick='function2(@item.TrainingId)', disabled = "disabled">
+                                                        <i class="entypo-user-add"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" data-toggle="tooltip" title="Nominate" class="btn btn-info" onclick='function2(@item.TrainingId)'>
+                                                        <i class="entypo-user-add"></i></a>
+                                                }
+                                            </td>
+                                        </tr> 
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  <div class="row" style="min-width: 50% !important;">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(54, 207, 203);">
+                                <div class="panel-title" color="White">
+                                    Nominated Trainings
+                                </div>
+                                     <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="nomi">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Start Time
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            @* <th>Status
+                                            </th>*@
+                                            <th>Cancel</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.nominatedTrainings)
+                                    {
+                                           
+                                        <tr>
+                                            <td class="align">
+                                                @Html.HiddenFor(modelItem => item.NominationId, new { @id = "NominationId" })
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center; width: 15%;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                        
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.Starttime)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                           @* <td class="align">
+                                                @if (item.IsCompleted == true)
+                                                {
+                                                    <label>Completion Form Submitted</label>
+                                                }
+                                                else
+                                                {
+                                                    <label>Completion Form not Submitted</label>
+                                                }
+                                            </td>*@
+                                            <td style="text-align: center;">
+                                                <a href="#" data-toggle="tooltip" title="Cancel">
+                                                    <button type="button" 
+                                            class="btn btn-red" onclick='Delete("@item.NominationId")'
+                                                        
+                                                     @if (@item.test)
+                                                     {
+                                                                                                            <text>disabled</text>
+                                                     }
+                                                     else
+                                                     {
+                                                                                                           <text>enabled</text>
+                                                     } >
+                                                                                                         
+                                                        <i class="entypo-cancel"></i>
+                                                        </button>
+                                                        
+                                                    </a></td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"  style="min-width: 50% !important;">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(100, 210, 100);">
+                                <div class="panel-title" color="White">
+                                    Trainings Attended
+                                </div>
+                                   <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="history">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            <th>Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.historyTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                             <td style="text-align:center;">
+                                                @* @if (@item.FeedbackCount == 0)*@
+                                                      @if (@item.flag==false)
+                                                      {
+                                                <form class="text-right" style="text-align:center;" method="get" action="/LDTraining/Feedback/@item.TrainingId">
+                                              <button type="submit" class="btn btn-blue" style="font-weight: bold;" title="Feedback">
+                                              <i class="entypo-chat"></i></button>
+                                                </form>
+                                                      }
+                                                      else
+                                                      {
+                                                   <button type="submit" class="btn btn-blue" style="font-weight: bold;" title="Feedback" disabled="disabled">
+                                                   <i class="entypo-chat"></i></button>
+                                                      }
+                                
+                            
+                                                 
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>  
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row" style="min-width: 50% !important;">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="overflow: auto;margin-left:20px; ">
+                            <div class="panel-heading" style="background-color: rgb(223, 134, 233);">
+                                <div class="panel-title" color="White">
+                                    Trainings Conducted
+                                </div>
+                                     <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="conduct">
+                                    <thead>
+
+                                    <th style="text-align: center;">
+                                       Training Name
+                                    </th>
+                                    
+                                    <th style="text-align: center;">
+                                       Technology
+                                    <th style="text-align: center;">
+                                    
+                                        Scheduled Date
+                                    </th>
+                                    
+                                <th style="text-align: center;">
+                                    
+                                       Start Time
+                                    </th>
+                                     <th style="text-align: center;">
+                                    
+                                     End Time
+                                    </th>
+                                    <th style="text-align: center;">
+                                    
+                                       Nominations
+                                    </th>
+                                 <th>
+                                    Feedback Submitted
+                                    </th>
+                                    <th>
+                                    Feedback Pending
+                                    </th>
+                                   <th>
+                                   Action
+                                   </th>
+                                    </tr>
+                                    </thead>   
+                                              @* added on 4/10 *@
+                                          
+                                        
+                                    @foreach (var item in Model.conductedtrainings)
+                                    {
+                                        <tr>
+
+                                           @* <td>                                                                         
+                                        @Html.DisplayFor(modelItem => item.TrainingId)
+                                    </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TrainingName)
+                                    </td>
+                                 
+                                     <td >
+                                        @Html.DisplayFor(modelItem => item.TechnologyName)
+                                    </td>
+                                     
+                                    <td style="text-align: center;">
+                                       @if (item.ScheduledDate.HasValue)
+                                       {
+                        <label>
+                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                        </label>
+                                       }
+                                     
+                                    </td>
+                                    <td>                                                                         
+                                        @Html.DisplayFor(modelItem => item.Starttime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Endtime)
+                                    </td>
+                                            @* <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                 *@
+                                     <td style="text-align: center;">
+                                        <a style=" text-decoration:underline"  onclick='Popup(@item.TrainingId)'>@item.Nominations.ToString()</a>  
+                                    </td>
+                                  
+@*                                    <td style="text-align: center;">
+                                        @Html.DisplayFor(modelItem => item.Attendees)
+                                    </td>*@
+                                    
+                                    <td style="text-align:center;">
+                                     @Html.DisplayFor(modelItem => item.submit)
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                     @Html.DisplayFor(modelItem => item.pending)
+                                    </td>
+
+                                    <td style="text-align: center;">
+
+                                   @if (@item.IsCompleted == true)
+                                    {
+                                        <a data-toggle="tooltip" title="Action" class="btn btn-info" >
+                                           
+                                            @*<button type="button" class="btn btn-info btn-icon icon-left" onclick="Completion(@item.TrainingID)" >*@
+                                           
+                                                <i class="entypo-publish" onclick="@("window.location.href='" + @Url.Action("Form", "LDR", new { id = @item.TrainingId }) + "'");"></i>
+                                             
+                                        </a>
+                                    }
+                                    else
+                                    { 
+                                       <a data-toggle="tooltip" title="Action" class="btn btn-info" >
+                                         
+                                                <i class="entypo-publish " onclick="Msg()";"></i>
+                                            
+                                        </a> 
+                                    }
+                                    </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                     <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(226, 69, 141);">
+                                <div class="panel-title" color="White">
+                                    Trainings  Unattended
+                                </div>
+                                   <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="UnAttended">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.unattendedTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                           
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            $("#tblCmptr").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [7] }],
+
+                //"scrollX": "200px",
+               // "scrollCollapse": true,
+                
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        jQuery(document).ready(function ($) {
+
+            $("#nomi").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+
+                "columnDefs": [{ bSortable: false, 'aTargets': [5] }],
+               // "scrollX": "200px",
+               // "scrollCollapse": true,
+
+               // "columnDefs": [{ bSortable: false, 'aTargets': [6] }],
+               
+
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        jQuery(document).ready(function ($) {
+            $("#history").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [4] }]
+                //"scrollX": "200px",
+               // "scrollCollapse": true,
+
+                
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        jQuery(document).ready(function ($) {
+            $("#UnAttended").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+
+                //"scrollX": "200px",
+               // "scrollCollapse": true,
+
+               
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        jQuery(document).ready(function ($) {
+            $("#conduct").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [8] }]
+               // "columnDefs": [{ bSortable: false, 'aTargets': [5] }, {bSortable:false, 'aTargets':[9]}]
+                //"scrollX": "200px",
+               // "scrollCollapse": true,
+
+                
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+    </script>
+    <script type="text/javascript">
+        function function2(id) {
+
+            var values =
+                           {
+                               "Trainingid": id
+                           }
+
+            var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+
+         //   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+            $.ajax({
+                url: "../../LDHome/Mylearning/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result === "Null") {
+                        toastr.warning("Please Select The Trainee");
+                      //  setTimeout(function (){}, 100);
+                    }
+                    if (result.Result === "Instructor") {
+                        toastr.warning("Instructor does Not Allow To Nominate");
+                       // $('#portlet-config').appendTo("body").modal('hide');
+                       // setTimeout(function () { }, 100);
+                    }
+                    if (result.Result === "Already") {
+                        bootbox.alert("You already nominated for the trainingid&nbsp;&nbsp;" + result.id + "&nbsp;&nbsp;");
+                      //  $('#portlet-config').appendTo("body").modal('hide');
+                        setTimeout(function () { }, 100);
+                       // $('#portlet-config').appendTo("body").modal('hide');
+                    }
+                    if (result.Result === "NoSeat") {
+                        toastr.warning("Seats not Available");
+                       // $('#portlet-config').appendTo("body").modal('hide');
+                       // setTimeout(function () { }, 100);
+                       // $('#portlet-config').appendTo("body").modal('hide');
+                    }  
+                    if (result.Result === "Success") {
+                        toastr.success("Nomination added successfully", opts);
+                        setTimeout(function () {
+                         //   $('#portlet-config').appendTo("body").modal('hide');
+                            window.location.reload(true);
+                        }, 1000);
+                    }
+
+                }
+
+            });
+            // $('#portlet-config').appendTo("body").modal('hide');
+        }
+
+        function Delete(NominationId) {
+            //            var x = new Date();
+            //            var today = new Date();
+            //          if (x === today) {
+            //    btnAdd.style.visibility = 'hidden';  
+            //} else if {
+            //    btnAdd.style.visibility = 'visible';
+
+            //}
+
+
+
+            bootbox.confirm("Do you want to cancel your nominated training ?", function (conform) {
+                if (conform) {
+                    $.ajax({
+                        url: "../LDHome/DeleteNominate/",
+                        type: 'POST', cache: false,
+                        data: { NominationId: NominationId },
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                toastr.success(" Nominated Training  Cancelled Successfully!");
+                                setTimeout(function () {
+                                    window.location.reload(true);
+                                }, 1000);
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+
+        function Popup(Id) {
+
+            $("#tblEmployees").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false
+            });
+
+            $.ajax({
+                url: "../../ManageTraining/GetEmployee/",
+                type: 'GET', cache: false,
+                data: { TrainingID: Id },
+                success: function (result) {
+
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                }
+            });
+        }
+
+        function Msg() {
+
+            toastr.warning("Completion Form Already Filled");
+        }
+
+    </script>
+
+    <style>
+        #tblCmptr_wrapper {
+min-width:90% !important;
+
+
+
+        }
+
+
+    </style>
+
+}

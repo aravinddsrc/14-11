@@ -1,0 +1,361 @@
+﻿@model  DSRCManagementSystem.Models.Gallery
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Album</title>
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+<body>
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #f0f0f1;">
+                            <button type="button" class="close" onclick="javascript:window.location.reload()" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title">
+                                Create Album
+                            </h4>
+                        </div>
+
+                        <div class="modal-body">
+                            @using (Html.BeginForm("CreateAlbum", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data", @id = "createform" }))
+                            {
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right">
+                                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.Label("Album Title", new { @class = "control-label" })
+                                            @Html.Label("*", new { @style = "color:#FF0000" })
+                                            @Html.TextBoxFor(x => x.AlbumTitle, new { @name = "AlbumTitle", @id = "AlbumTitle", @class = "form-control", @style = "Height:42Px", @maxlength = 25 ,@autofocus="autofocus"})
+                                            <span id="span_Title" style="color: Red;"></span>
+                                            <span id="span_TitleFormat" style="color: Red;"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.Label("Cover Photo", new { @class = "control-label", @id = "photo" })
+                                            @Html.Label("*", new { @style = "color:#FF0000" })
+                                            <input type="file" name="Photo" id="file" accept=".gif,.jpg,.jpeg,.png" style="width: 100%;" />
+                                            <span id="span_Photo" style="color: Red;"></span>
+                                            <span id="span_Photoext" style="color: Red;"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @Html.Label("Album Description", new { @class = "control-label" })
+                                            @Html.TextAreaFor(x => x.AlbumDescription, new { @id = "AlbumDescription", @name = "ID", @class = "form-control", @style = "height:70px", @maxlength = 75 })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.Label("Event Date", new { @class = "control-label" })
+                                             @Html.Label("*", new { @style = "color:#FF0000" })
+                                            @Html.TextBoxFor(x => x.EventDate, new { @id = "EventDate", @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @style = "height:42px; !important" })
+                                            <span id="spanEventdate" style="color: Red;"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.Label("Album Access To", new { @class = "control-label" })
+                                        <br />
+                                        <label class="radio-inline">
+                                            <input id="all" name="IsAccess" type="radio" checked="checked">
+                                            ALL
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input id="role" name="IsAccess" type="radio">
+                                            Roles
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input id="user" name="IsAccess" type="radio">
+                                            Users
+                                        </label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row" id='Access'>
+                                    <div class="col-md-6" id="rolesdiv">
+                                        <div class="form-group">
+                                            @Html.Label("Access Roles", new { @class = "control-label" })
+                                            @Html.DropDownListFor(x => x.AlbumAccessRoles, ViewBag.AlbumAccessRoles as MultiSelectList, new { @id = "AlbumAccessRoles", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                                            <span id="spanAccessRole" style="color: Red;"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="usersdiv">
+                                        <div class="form-group">
+                                            @Html.Label("Access Users", new { @class = "control-label" })
+                                            @Html.DropDownListFor(x => x.AlbumAccessUsers, ViewBag.AlbumAccessUsers as MultiSelectList, new { @id = "AlbumAccessUsers", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                                            <span id="spanAccessUser" style="color: Red;"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(x => x.TagUsers, new { @class = "control-label" })
+                                            @Html.DropDownListFor(x => x.TagUsers, ViewBag.TagUsers as MultiSelectList, new { @id = "Idtagusers", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel()">Cancel</button>
+                            <button id="ProfileSave" type="button" class="btn btn-info" onclick="return CreateAlbum(this)">Save</button>
+                        </div>
+                    </div>
+
+    
+
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#EventDate").val('');
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+        });
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        $(function () {
+
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            $("#AlbumAccessRoles").select2();
+            $("#AlbumAccessUsers").select2();
+
+        });
+
+        function cancel() {
+            window.location.href = '@Url.Action("Album", "Gallery")';
+        }
+
+
+        function CreateAlbum() {
+            //var formdata = new FormData($('createform').get(0));
+
+            var albumrole;
+            var albumuser;
+            var Idtagusers;
+            if ($("#AlbumAccessRoles").val() == null) {
+                albumrole = "";
+            }
+            else {
+                albumrole = $("#AlbumAccessRoles").val();
+            }
+            if ($("#AlbumAccessUsers").val() == null) {
+                albumuser = "";
+            }
+            else {
+                albumuser = $("#AlbumAccessUsers").val();
+            }
+            if ($("#Idtagusers").val() == null) {
+                Idtagusers = "";
+            }
+            else {
+                Idtagusers = $("#Idtagusers").val();
+            }
+            var myArray = [];
+
+            @foreach (var d in @ViewBag.AlbumExist)
+            {
+                @:myArray.push("@d");
+                        }
+
+            var data = new FormData();
+            var ext = $('#file').val().split('.').pop().toLowerCase();
+            var files = $("#file").get(0).files;
+            var regexp = /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/;
+            var title = $("#AlbumTitle").val();
+            if (files.length > 0) {
+                data.append("UploadedImage", files[0]);
+            }
+            data.append("AlbumTitle", $("#AlbumTitle").val());
+            data.append("EventDate", $("#EventDate").val());
+            data.append("AlbumDescription", $("#AlbumDescription").val());
+            data.append("AlbumRole", albumrole.toString());
+            data.append("AlbumUser", albumuser.toString());
+           
+            data.append("TagUsers", Idtagusers.toString());
+            var AlbumTitle = $("#AlbumTitle").val().replace(/\s/g, "").length;
+            if (AlbumTitle == "" || document.getElementById('file').value == '' || document.getElementById('EventDate').value == '') {
+                if (AlbumTitle == "")
+                    document.getElementById("span_Title").innerHTML = "Enter Album Title";
+                else
+                    document.getElementById("span_Title").innerHTML = "";
+                if (document.getElementById('file').value == '')
+                    document.getElementById("span_Photo").innerHTML = "Choose Cover Photo";
+                else
+                    document.getElementById("span_Photo").innerHTML = "";
+                if (document.getElementById('EventDate').value == '') {
+                    document.getElementById("spanEventdate").innerHTML = "Enter Event Date";
+                }
+                else
+                    document.getElementById("spanEventdate").innerHTML = "";
+                return false;
+            }
+            else if (jQuery.inArray(($("#AlbumTitle").val().toUpperCase()), myArray) > -1) {
+                document.getElementById("span_Title").innerHTML = "Album Already Exists";
+                return false;
+            }
+            else if ($("#role").is(":checked") == true && document.getElementById('AlbumAccessRoles').value == 0) {
+                if (document.getElementById('AlbumAccessRoles').value == 0)
+                    document.getElementById("spanAccessRole").innerHTML = "Select Roles";
+                else
+                    document.getElementById("spanAccessRole").innerHTML = "";
+            }
+            else if ($("#user").is(":checked") == true && document.getElementById('AlbumAccessUsers').value == 0) {
+                if (document.getElementById('AlbumAccessUsers').value == 0)
+                    document.getElementById("spanAccessUser").innerHTML = "Select Users";
+                else
+                    document.getElementById("spanAccessUser").innerHTML = "";
+            }
+            else if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                document.getElementById("span_Photoext").innerHTML = "Choose only image files";
+            }
+            else if (title != "" && !regexp.test(title)) {
+                document.getElementById("span_TitleFormat").innerHTML = "Enter Valid Album Name";
+            }
+            else {
+                document.getElementById("span_Photoext").innerHTML = "";
+                document.getElementById("span_TitleFormat").innerHTML = "";
+                $.ajax({
+                    url: "../../Gallery/CreateAlbum/",
+                    type: 'POST', cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        if (result == "success") {
+
+                            toastr.success("Album Created Successfully", opts);
+                            $("#portlet-config").modal('hide');
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+                        }
+                        else {
+
+                            toastr.warning("Album Creation Failed", opts);
+                            $("#portlet-config").modal('hide');
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+                        }
+                    }
+
+                });
+            }
+
+        }
+
+
+        $('input[type=radio][name=IsAccess]').change(function () {
+
+            if ($("#all").prop('checked')) {
+
+                $("#rolesdiv").hide();
+                $("#usersdiv").hide();
+                document.getElementById("AlbumAccessRoles").value = '';
+                document.getElementById("AlbumAccessUsers").value = '';
+            }
+            else if ($("#role").prop('checked')) {
+                $("#rolesdiv").show();
+                $("#usersdiv").hide();
+                document.getElementById("AlbumAccessUsers").value = '';
+            }
+            else if ($("#user").prop('checked')) {
+                $("#rolesdiv").hide();
+                $("#usersdiv").show();
+                document.getElementById("AlbumAccessRoles").value = '';
+            }
+        });
+
+
+
+        $(document).ready(function () {
+
+            {
+                if ($("#all").prop('checked')) {
+                    $("#rolesdiv").hide();
+                    $("#usersdiv").hide();
+                }
+                else {
+                    $("#rolesdiv").show();
+                    $("#usersdiv").show();
+                }
+            }
+
+        });
+
+        $("#AlbumAccessUsers").change(function () {
+            $("#Idtagusers").val($("#AlbumAccessUsers").val());
+            $("#Idtagusers").attr("selected", "selected");
+            $("#Idtagusers").select2();
+        });
+        
+
+    </script>
+
+</body>
+</html>

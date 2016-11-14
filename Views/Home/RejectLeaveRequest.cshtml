@@ -1,0 +1,44 @@
+﻿@{
+   
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<body>
+    <div class="row" style="height: 300px;">
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-shadow"  data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                       
+                            Reject Leave Request
+                    </div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                    @if (ViewBag.IsCanceled)
+                    {
+                     <div style="text-align: center;font-weight:bold;color:red;" > <h5
+                    style="font-weight:bold;color:red;">Leave request has been cancelled by employee</h5> </div>
+                    }
+                  
+                    else if (ViewBag.IsalreadyRejected)
+                    {
+                        <div style="text-align: center;font-weight:bold;color:Red;" class="danger"> <h5
+                        style="font-weight:bold;color:red;"> Leave request already rejected</h5> </div>
+                    }
+                    else
+                    {
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="success"> <h5
+                    style="font-weight:bold;color:Red;">Leave request rejected</h5> </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</body>

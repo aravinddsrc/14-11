@@ -1,0 +1,114 @@
+﻿@model DSRCManagementSystem.Models.Mycomputerdetails
+@using System.Globalization
+@{
+    
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+                    //ViewBag.Title = "MyComputerDetails";
+}
+@*<ol class="breadcrumb bc-3">
+    <li class="active"><strong>My Computer Details </strong></li>
+</ol>*@
+    <p>
+         Settings
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Computer Details</b>
+    </p>
+<br />
+<style>
+       .dropdown-menu {
+    background-color: white;
+          }  
+        </style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    My Computer Details</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                @using (Html.BeginForm("MyComputerDetails", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(true)
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Location Name")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.Location, new { @id = "LcationID", @class = "form-control", placeholder = "Location Name", @autocomplete = "off", @disabled = "disabled", @value = Model.Location })
+                    </div>
+
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Computer Name")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.ComputerName, new { @id = "CompID", @class = "form-control", placeholder = "Computer Name", @autocomplete = "off", @disabled = "disabled", @value = Model.ComputerName })
+                    </div>
+                     <div class="clear">
+                    </div>
+                    
+                    <br />
+                    <div class="col-md-2">
+                        <strong>@Html.Label("IP Address ")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.IPAddress, new { @id = "IPAddressID", @class = "form-control", placeholder = "IP Address", @autocomplete = "off", @disabled = "disabled", @value = Model.IPAddress })
+                    </div>
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Work Station Name ")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.workstation, new { @id = "WorkID", @class = "form-control", placeholder = "Work Station Name", @autocomplete = "off", @disabled = "disabled", @value = Model.workstation })
+                    </div>
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Hard Disk Capacity")</strong>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.HardDisk, new { @id = "HardID", @class = "form-control", placeholder = "Hard Disk Capacity", @autocomplete = "off", @disabled = "disabled", @value = Model.HardDisk })
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Operating System")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.os, new { @id = "OSID", @class = "form-control", placeholder = "Operating System", @autocomplete = "off", @disabled = "disabled", @value = Model.os })
+                    </div>
+                  
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    @* <div class="col-md-2">
+                        <strong>@Html.Label("Pen Drive Access")</strong>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.pendrive, new { @id = "penID", @class = "form-control", placeholder = "Pen Drive Access", @autocomplete = "off", @disabled = "disabled", @value = Model.pendrive })
+                    </div>*@
+                    <div class="col-md-2">
+                        <strong>@Html.Label("Extra Devices Attached ")</strong>
+                    </div>
+                    <div class="col-md-4">
+                                                               
+                        @Html.TextAreaFor(m => m.Extra, new { @id = "Extra", @class = "form-control", placeholder = "Extra Devices", @style = "height:100px", @disabled = "disabled", @value = Model.Extra })
+                    </div>
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-4" style="text-align: right">
+                        <a type="submit" class="btn btn-default" href="@Url.Action("Index", "Home")">Cancel</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model DSRCManagementSystem.Models.ManageRoute
+
+@{
+    ViewBag.Title = "ViewDetail";
+    Layout = null;
+}
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+          rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+          type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+          id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            $("#drp_VehicleNumber").select2();
+        });
+    </script>
+
+</head>
+
+<div class="modal-content">
+    <div class="modal-header" style="background-color: #f0f0f1;">
+        <button type="button" class="close" onclick="javascript:window.location.reload()" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <h4 class="modal-title">View Detail</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-9" style="width: 200px; padding-top: 7px; ">
+                        @Html.Label("Route Name", new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.RouteName, new { @id = "txt_routeName", @name = "Route_Name", @class = "form-control", @style = "Width:350Px;Height:50px", @disabled = "disabled" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-12" style="width: 200px; padding-top: 7px;">
+                        @Html.Label("Vehicle Number", new { @class = "control-label" })
+                        @Html.DropDownListFor(x => x.VehicleNumber, (IEnumerable<SelectListItem>)ViewData["VehicleList"], new { @id = "drp_VehicleNumber", @disabled = "disabled", @name = "Vehicle Number", @class = "form-control", @autocomplete = "off", @style = "Width:350Px;Height:50px" })
+                        <span id="span_AssessmentDate" style="color: Red;"></span>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-3" style="width: 200px; padding-top: 7px;">
+                        @Html.Label("Stops", new { @class = "control-label" })
+                        @Html.ListBoxFor(x => x.stopList, Model.StopItemList, new { @id = "stopsList", @name = "Stops", @disabled = "disabled", @class = "form-control", @style = "Width:350Px;Height:120px" })
+                        <span id="span_PassingScore" style="color: Red;"></span>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel
+        </button>
+    </div>
+</div>

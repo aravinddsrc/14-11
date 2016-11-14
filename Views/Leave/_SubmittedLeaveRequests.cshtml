@@ -1,0 +1,39 @@
+﻿@using Microsoft.SqlServer.Server
+@model IEnumerable<DSRCManagementSystem.LeaveRequest>
+@{          
+     
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+
+@{
+    Func<DateTime, string> dateTimeFunc = delegate(DateTime dateTime)
+    {
+        //return String.Format("{0:h:mm tt}", dateTime);
+        return String.Format("{0:ddd, MMM d, yyyy}", dateTime);
+    };
+}
+
+@grid.GetHtml(tableStyle: "table table-bordered datatable", headerStyle: "head",
+                columns: grid.Columns(
+                grid.Column("S.No", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                grid.Column("User", header: "Employee Name", format: @<text>@item.User1.FirstName @item.User1.LastName</text>),
+                grid.Column("LeaveType", header: "Leave Type", format: @<text>@item.LeaveType.Name</text>),
+                grid.Column("LeaveStatus", header: "Leave Status", format: @<text>@item.Master_LeaveStatus.Status</text>),
+                grid.Column("StartDateTime", header: "Start Date", format: item => Html.Raw(dateTimeFunc(item.StartDateTime))),
+                grid.Column("EndDateTime", header: "End Date", format: item => Html.Raw(dateTimeFunc(item.EndDateTime))),
+                grid.Column("Details", header: "Details"),
+                grid.Column("LeaveDays", header: "Leave Days"),
+                grid.Column("Details", format: @<text><a class="btn btn-info" data-toggle="tooltip" title="Details" onclick="EditLeaveRequestStatus('@item.LeaveRequestId')"><i class="entypo-doc-text"></i></a></text>),
+                grid.Column("Approve", format: @<text>
+                                               <a class="btn btn-green"  data-toggle="tooltip" title="Approve" onclick=" ApproveLeaveRequest('@item.LeaveRequestId')" @if(item.LeaveStatusId != 1)
+                                                                                                                                                                     {
+                                                                                                                                                                         <text>disabled</text>
+                                                                                                                                                                     }><i class="entypo-check"></i></a>
+                                        </text>),
+                grid.Column("Reject", format: @<text>
+                                               <a class="btn btn-red" data-toggle="tooltip" title="Reject" onclick=" RejectLeaveRequest('@item.LeaveRequestId')" @if (item.LeaveStatusId == 3 || item.LeaveStatusId==4)
+                                                                                                                                                                     {
+                                                                                                                                                                         <text>disabled</text>
+                                                                                                                                                                     }><i class="entypo-cancel"></i></a>
+                                        </text>)),
+                htmlAttributes: new { @id = "tblSubmittedLeaveRequest" })

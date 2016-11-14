@@ -1,0 +1,279 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.PaymentStructure>
+@{
+    ViewBag.Title = "Project Payment";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int SNO = 1;
+}
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Payment Structure</title>
+ <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    </head>
+<body class="page-body">
+@*     <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Income","Income")">Accounts Management</a></li>
+        <li class="active"><strong>My Payment</strong> </li>
+    </ol>*@
+     <p>
+        <a href="@Url.Action("Income","Income")"style="color:black ">
+            Accounts Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Payment</b>
+    </p>
+    <br />
+    <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                   My Payment</div>
+            </div>
+            <br />
+
+            <div class="form-group">
+                        <div class="row">
+                           
+                             <div class="col-md-2" style="padding-left:35px;width: 181px; padding-top: 7px;">
+                            @Html.Label("Customer Name", new { @class = "control-label" })
+                            @Html.DropDownList("PaymentID",  ViewBag.Customer as SelectList, new { @id = "Idcustomer", @name = "CustomerName", @class = "form-control",@onchange="GetUser()" })
+                        </div>
+                       
+                            
+                         @*   <div class="col-md-2" style="    width: 181px; padding-top: 7px;">
+                            @Html.Label("User", new { @class = "control-label" })
+                            @Html.DropDownList("UserID",  ViewBag.user as SelectList, new { @id = "Iduser", @name = "User", @class = "form-control" })
+                        </div>*@
+                       
+
+                        <div class="col-md-4" style="margin-top: 30px;margin-left:30px;padding-left : 0px;">
+                            <button id="btn_Submit" type="Button" name="btn_Submit" class="btn btn-info btn-icon" onclick="Search()">
+                                Search<i class="entypo-search"></i>
+                            </button>
+                            <button type="button"  id="btnAdd"  class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                        </div>
+                            </div>
+                    </div>
+                   <div class="clear">
+                    </div>
+                    <br />
+            <div id="Check">
+                    <table class="table table-bordered datatable" id="tbltask">
+                         <thead>
+                            <tr>
+                                <th style="text-align: center;">
+                                    S.No
+                                </th>
+                                 <th style="text-align: center;">
+                                    Customer Name
+                                </th>
+                               @* <th style="text-align: center;">
+                                    User Name
+                                </th>*@
+                                 <th style="text-align: center;">
+                                    Payment Type
+                                </th>
+                                <th style="text-align: center;">
+                                    Due Date
+                                </th>
+                                <th style="text-align: right;">
+                                    Amount
+                                </th>
+                                  <th style="text-align: right;">
+                                    Paid
+                                </th>
+                                  <th style="text-align: right;">
+                                    Pending
+                                </th>
+                                <th style="text-align: center;">
+                                    Status
+                                </th>                         
+                            </tr>
+                        </thead>
+                       @foreach (var item in Model)
+                        { 
+                         <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                    @Html.HiddenFor(modelitem => item.PaymentID)
+                                </td>
+                              <td>
+                                    @Html.DisplayFor(modelitem => item.CustomerName)
+                                </td>
+                                @*<td>
+                                    @Html.DisplayFor(modelitem => item.UserName)
+                                </td>*@
+                              <td style="text-align: center;">
+                                     @Html.DisplayFor(modelitem => item.PaymentType)
+                                </td>
+                               <td style="text-align: center;">
+                                    @item.DueDate.ToString("ddd, MMM d, yyyy")
+                                </td>
+                                <td style="text-align: right;">
+                                     @Html.DisplayFor(modelitem => item.Amount)
+                                </td>
+                                <td style="text-align: right;">
+                                     @Html.DisplayFor(modelitem => item.PaidAmount)
+                                </td>
+                                <td style="text-align: right;">
+                                     @Html.DisplayFor(modelitem => item.PendingAmount)
+                                </td>
+                                <td style="text-align: center">
+                                    @if(item.Status=="Paid")
+                                    {
+                                    <span class="label label-success">Paid</span>
+                                    }
+                                    @if(item.Status=="Yet To Pay")
+                                    {
+                                    <span class="label label-info">Yet To Pay</span>
+                                    }
+                                    @if(item.Status=="Pending")
+                                    {
+                                    <span class="label label-warning">Pending</span>
+                                    }
+                                    @if(item.Status=="Over Due")
+                                    {
+                                    <span class="label label-danger">Over Due</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                   
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+          <br />
+          <br />
+  <div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+      
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+      
+    </div>
+     <script type="text/javascript">
+         jQuery(document).ready(function ($) {
+             $("#Idcustomer").select2();
+             localStorage.clear();
+
+             //$("#tbltask").dataTable({
+             //    "sPaginationType": "bootstrap",
+             //    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+             //    "columnDefs": [{ bSortable: false, 'aTargets': [4] }]
+
+             //});
+             var table = $("#tbltask").dataTable({
+                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                 "sPaginationType": "bootstrap",
+                 "aaSorting": [],
+                 "columnDefs": [{ bSortable: false, 'aTargets': [7] }],
+
+                 stateSave: true,
+                 stateSaveCallback: function (settings, data) {
+                     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                 },
+                 stateLoadCallback: function (settings) {
+                     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                 }
+             });
+             $(".dataTables_wrapper select").select2({
+                 //minimumResultsForSearch: -1
+             });
+             $('thead>tr>th').css('text-align', 'center');
+         });
+         var opts = {
+             "closeButton": true,
+             "debug": false,
+             "positionClass": "toast-top-right",
+             "onclick": null,
+             "showDuration": "300",
+             "hideDuration": "1000",
+             "timeOut": "2000",
+             "extendedTimeOut": "1000",
+             "showEasing": "swing",
+             "hideEasing": "linear",
+             "showMethod": "fadeIn",
+             "hideMethod": "fadeOut"
+         };
+
+         function CreatePayment() {
+             window.location.href = '@Url.Action("CreateProjectPayment", "PaymentStructure")';
+         }
+         function DeletePayment(PaymentID) {
+             bootbox.confirm("Are you sure want to delete ?", function (result) {
+                 if (result) {
+                     $.ajax({
+                         url: "../../PaymentStructure/DeleteProjectPayment/",
+                         type: 'POST', cache: false,
+                         data: { PaymentID: PaymentID },
+                         success: function (result) {
+                             if (result == "success") {
+                                 toastr.success("Project Payment  Deleted Successfully", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+                             }
+                             else {
+                                 toastr.warning("Project Payment Deletion Failed", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+                             }
+
+                         }
+                     });
+                 }
+             });
+         }
+         function AssignUser(PaymentID) {
+             $.ajax({
+                 url: "../../PaymentStructure/AssignPaymentGroup/",
+                 type: 'GET', cache: false,
+                 data: { PaymentID: PaymentID },
+                 success: function (result) {
+                     $('#PartialSection').html(result);
+                     $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                 }
+             });
+         }
+
+         function Cancel() {
+             var url = '@Url.Action("ViewPayment", "PaymentStructure")';
+              window.location.href = url;
+         }
+
+         function Search() {
+             var customer = parseInt($("#Idcustomer").find("option:selected").prop("value"));
+             
+             window.location.href = '@Url.Action("ViewPayment", "PaymentStructure")' + '?value=' + customer;
+             
+
+         }
+
+        </script>    
+</body>
+</html>
+

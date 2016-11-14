@@ -1,0 +1,703 @@
+﻿@model DSRCManagementSystem.Models.AssignTaskModel
+@{
+  
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Assign Task</title>
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+    <script src="../../Completion/3.34.js" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick='load()'>
+                ×</button>
+            <h4 class="modal-title">
+            Add  Assign Task</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("AssignNewTask", "AssignTask", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Project Name", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("ProjectId", ViewBag.ProjectList as SelectList, "--Select--", new { @id = "ProjectId", @class = "form-control" })
+                            <span id="span_ID6" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Phase Name", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("PhaseId", ViewBag.PhaseList as SelectList, "--Select--", new { @id = "PhaseId", @class = "form-control" })
+                            <span id="span_ID7" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                @Html.HiddenFor(x => x.assigntaskid, new { @id = "assigntaskid" })
+                <div class="row">
+                   
+                    <div class="col-md-6">
+                       <div class="form-group">
+                            @Html.Label("Task Name ", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("TaskName", new SelectList(string.Empty, "Value", "Text"), "--Select--", new { @class = "form-control", @id = "TaskName" })
+                            <span id="span_ID11" style="color: Red;"></span>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        
+                         <div class="form-group">
+                            @Html.Label("Task Status", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                         @*   @Html.DropDownList("tasktypeid", ViewBag.taskstatuslist as SelectList, "--Select--", new { @id = "tasktypeid", @class = "form-control" })*@
+                              @Html.TextBoxFor(x => x.taskstatus, new { @name = "tasktypeid", @id = "tasktypeid", @class = "form-control", @style = "Height:42Px", @disabled = "disabled", @maxlength = 50 })
+                            <span id="span_ID0" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label(" No Of Efforts", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.NumberOfEfforts, new { @name = "Efforts", @id = "Efforts", @class = "form-control", @maxlength = 3, @style = "Height:42Px" })
+                            <span id="span_ID10" style="color: Red;"></span>
+                               
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Start Date", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.StartDate, new { @name = "StartDate", @id = "StartDate", @class = "form-control datetimepicker", @style = "Height:42Px", @maxlength = 50 })
+                            <span id="span_ID8" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("End Date", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBoxFor(x => x.EndDate, new { @name = "EndDate", @id = "EndDate", @class = "form-control datetimepicker", @style = "Height:42Px", @maxlength = 50 })
+                            <span id="span_ID18" style="color: Red;"></span><span id="span_ID9" style="color: Red;">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.Label("Assigned Employees", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("userid", (MultiSelectList)ViewBag.Employees, new { @multiple = "multiple", @class = "form-control", @id = "multiselect", @name = "from", @style = "Height:200Px" })
+                            <span id="Emp" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="text-align: center">
+                        <div style="text-align: center;">
+                            @Html.Label("")
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <button type="button" id="multiselect_rightSelected" class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                        </button>
+                        <button type="button" id="multiselect_leftSelected" class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="text-align: center;">
+                            @Html.Label("Selected Employees")
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                        </div>
+                        <select name="to" id="multiselect_to" class="form-control" multiple="multiple" style="height: 200Px">
+                        </select>
+                        <span id="Emp1" style="color: Red;"></span>
+                          <span id="span_ID14" style="color: Red;"></span>
+                    </div>
+                </div>
+                <br /> <br /> 
+                           
+                
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick='cancel()'>
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick='AssignTaskNew()'>
+                Save
+            </button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+  
+    <script type="text/javascript">
+
+        var submitform = true;
+
+        $('#EndDate').change(function () {
+
+            var startDate = $("#StartDate").val();
+
+            var splitedStartDate = startDate.split("/");
+            var endDate = $("#EndDate").val();
+
+            var splitedEndDate = endDate.split("/");
+
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (startDateTime > endDateTime) {
+                submitform = false;
+                $("#span_ID9").html("End Date should be greater than the Start Date");
+            }
+
+            else {
+                submitform = true;
+                $("#span_ID9").html('');
+            }
+        });
+
+        $('#multiselect').multiselect();
+
+        $('#multiselect').multiselect({
+
+
+            startUp: function ($left, $right) {
+
+                $right.find('option').each(function (index, option) {
+                    $left.find('option[value="' + option.value + '"]').remove();
+                });
+            },
+            beforeMoveToRight: function ($left, $right, options) { return true; },
+            afterMoveToRight: function ($left, $right, options) { },
+            beforeMoveToLeft: function ($left, $right, option) { return true; },
+            afterMoveToLeft: function ($left, $right, option) { },
+            sort: function (a, b) {
+
+                if (a.innerHTML == 'NA') {
+                    return 1;
+                } else if (b.innerHTML == 'NA') {
+                    return -1;
+                }
+                return (a.innerHTML > b.innerHTML) ? 1 : -1;
+            }
+        });
+
+
+      
+   
+
+   
+
+
+        function load() {
+           
+            setTimeout(function () { location.reload(); }, 1000);
+
+        }
+        function cancel() {
+
+            setTimeout(function () { location.reload(); }, 1000);
+        }
+       
+
+        $("#PhaseId").on('change', function () {
+
+            var value = $(this).find("option:selected").val();
+       
+            var url3 = '@Url.Action("TaskName")';
+
+            $.get(url3, { phid: value }, function (data) {
+                var items = [];
+                items.push("");
+                items.push("<option value='0'> --Select-- </option>");
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#TaskName").html(items.join(' '));
+
+                $("#TaskName").select2();
+            });
+        });
+
+    
+
+  
+
+      
+
+        $("#ProjectId").on('change', function () {
+           
+            var value = $(this).find("option:selected").val();
+
+
+
+            $("#multiselect").empty();
+
+            if (value == "") {
+                value = 0;
+            }
+
+
+            if (value != 0) {
+                $.ajax({
+                    url: "../../AssignTask/GetEmployeeName",
+                    cache: false,
+                    data: { projectId: value },
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+
+                        $.each(result, function (i, value) {
+                            var opt = document.createElement("option");
+                            document.getElementById("multiselect").options.add(opt);
+                            opt.text = value.Text;
+                            opt.value = value.Value;
+
+                        });
+
+                    }
+
+
+                });
+
+            }
+
+            var url2 = '@Url.Action("PhaseName")';
+
+            $.get(url2, { pid: value }, function (data) {
+                var items = [];
+                items.push("");
+                items.push("<option value='0'> --Select-- </option>");
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#PhaseId").html(items.join(' '));
+
+                $("#PhaseId").select2();
+            });
+
+        });
+
+
+        $("#TaskName").change(function () {
+            var value = $("#TaskName").val();
+          
+            $.ajax({
+                url: "../../AssignTask/GetTaskstatus",
+                cache: false,
+                data: { proid: value },
+                success: function (result) {
+
+                    $("#tasktypeid").val(result.taskstatus);
+                    tasktypeid = result.Tasktypeid;
+
+                }
+
+
+            });
+        });
+
+
+
+        $("#ProjectId").select2();
+        $("#PhaseId").select2();
+        $("#TaskName").select2();
+
+
+
+
+//        $(function () {
+//            $(".modal-body select").select2({
+//                minimumResultsForSearch: -1
+//            });
+//        });
+
+//        $(".datetimepicker").datepicker({
+//            format: 'dd-mm-yyyy',
+//            //startDate: '+1d',
+//            daysOfWeekDisabled: [0, 6],
+//            autoclose: true
+//        });
+//
+
+
+
+//        $('#EndDate').change(function () {
+//          
+//            var startDate = $("#StartDate").val();
+
+//            var splitedStartDate = startDate.split("-");
+//            var endDate = $("#EndDate").val();
+
+//            var splitedEndDate = endDate.split("-");
+
+//            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+//            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+//            if (startDate > endDate) {
+//              
+//                document.getElementById("span_ID18").innerHTML = "End Date should be greater than the Start Date";
+//                submitform = false;
+//            }
+
+//            else {
+//                document.getElementById("span_ID18").innerHTML = "";
+//                submitform = true;
+
+//            }
+//        });
+
+    
+        $("#StartDate").datepicker({
+            format: 'dd/mm/yyyy',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        });
+
+        $("#EndDate").datepicker({
+            format: 'dd/mm/yyyy',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        });
+
+
+
+//        var errorsCount = 0;
+//        $("#EndDate").change(function () {
+
+//            var startDate = $("#StartDate").val();
+//            var splitedStartDate = startDate.split("/");
+//            var endDate = $("#EndDate").val();
+//            var splitedEndDate = endDate.split("/");
+//            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+//            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+//            if (errorsCount === 0) {
+//                if (startDateTime > endDateTime) {
+
+//                    errorsCount++;
+//                    $("#span_ID9").html("");
+//                    $("#span9").html("End Date should be greater than the Start Date");
+
+//                } else {
+
+//                    errorsCount = 0;
+//                }
+
+//            }
+
+//            if (errorsCount === 0) {
+
+//                $("#span9").html("");
+//            }
+//        });
+
+        //GetTaskstatus
+
+        $(document).ready(function () {
+            $('#StartDate').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\-\\/]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#StartDate").html("Enter Valid Start Date").show();
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            $('#EndDate').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\-\\/]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#EndDate").html("Enter Valid End Date").show();
+                return false;
+            });
+        });
+
+        $("#Efforts").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+      
+
+        function AssignTaskNew() {
+            
+            if(submitform == true)
+            {
+       
+            if (document.getElementById('ProjectId').value == '' || document.getElementById('PhaseId').value == 0 || document.getElementById('PhaseId').value == '' || document.getElementById('TaskName').value == 0 || document.getElementById('TaskName').value == '' || document.getElementById('Efforts').value == '' || document.getElementById('StartDate').value == '' || document.getElementById('EndDate').value == '' || document.getElementById('multiselect_to').value == '') {
+
+                if (document.getElementById('ProjectId').value == '') {
+
+                    document.getElementById("span_ID6").innerHTML = "Select project name";
+                }
+                else {
+                    document.getElementById("span_ID6").innerHTML = "";
+                }
+               
+                if (document.getElementById('PhaseId').value == '' || document.getElementById('PhaseId').value == 0) {
+
+                    document.getElementById("span_ID7").innerHTML = "Select phase name";
+                }
+                else {
+                    document.getElementById("span_ID7").innerHTML = "";
+
+                }
+               
+                if (document.getElementById('TaskName').value == '' || document.getElementById('TaskName').value == 0) {
+                   
+                    document.getElementById("span_ID11").innerHTML = " Select task name ";
+                }
+                else {
+                    document.getElementById("span_ID11").innerHTML = "";
+                }
+//                if (document.getElementById('tasktypeid').value == '') {
+//                    document.getElementById("span_ID0").innerHTML = " Select task status";
+//                }
+//                else {
+//                    document.getElementById("span_ID0").innerHTML = "";
+//                }
+                if (document.getElementById('Efforts').value == '') {
+                    document.getElementById("span_ID10").innerHTML = " Enter no of efforts";
+                }
+                else {
+                    document.getElementById("span_ID10").innerHTML = "";
+                }
+                if (document.getElementById('StartDate').value == '') {
+                    document.getElementById("span_ID8").innerHTML = " Select start date ";
+                }
+                else {
+                    document.getElementById("span_ID8").innerHTML = "";
+
+                }
+
+                if (document.getElementById('EndDate').value == '') {
+                    document.getElementById("span_ID18").innerHTML = " Select end date ";
+                }
+                else {
+                    document.getElementById("span_ID18").innerHTML = "";
+
+                }
+
+                if (document.getElementById('multiselect_to').value == '') {
+
+                    document.getElementById("Emp").innerHTML = " Select assigned employees ";
+
+                }
+                else {
+                    document.getElementById("Emp").innerHTML = "";
+                }
+
+            }
+//            else if ($("#Efforts").val() > 999) {
+
+//                document.getElementById('span_ID10').innerHTML = "Enter 3 digit integer only";
+//            
+//            }
+            else if ($("#Efforts").val() == 0 || $("#Efforts").val() == 00 || $("#Efforts").val() == 000) {
+
+                document.getElementById('span_ID10').innerHTML = "No of efforts should be greater than 0";
+             
+            }
+
+            else {
+
+//                var startDate = $("#StartDate").val();
+//              
+//                var splitedStartDate = startDate.split("/");
+//                var endDate = $("#EndDate").val();
+//             
+//                var splitedEndDate = endDate.split("/");
+
+//                var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+//                var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+//                if(startDateTime >endDateTime) {
+
+//                    document.getElementById("span_ID14").innerHTML = "End Date should be greater than the Start Date";
+//                   // $("#span_ID14").html("End Date should be greater than the Start Date");
+
+//                   
+//                   // $("#span_ID14").html("End Date should be greater than the Start Date");
+
+//                }
+
+
+               
+                    document.getElementById("span_ID14").innerHTML = "";
+
+
+                
+                
+                   $("#span_ID9").html("");
+                var values =
+                           {
+                               "assigntaskid": $("#assigntaskid").val(),
+                               "ProjectId": $("#ProjectId").val(),
+                               "ProjectphaseId": $("#PhaseId").val(),
+                               "Taskid": $("#TaskName").val(),
+                              
+                               "userid": $("#multiselect_to").val(),
+                               "NumberOfEfforts": $("#Efforts").val(),
+                               "StartDate": $("#StartDate").val(),
+                               "EndDate": $("#EndDate").val(),
+                              "multiselectemployees": $("#multiselect_to").val().toString(),
+                               "SelectedEmpList": $("#multiselect_to").val(), 
+                               "Task":$("#TaskName").find("option:selected").text(),
+                                "TaskName": $("#TaskName").text(),                             
+                               "tasktypeid": tasktypeid
+                           }
+
+                var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                $.ajax({
+
+                    url: "../../AssignTask/AssignNewTask/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+
+                        if (result == "Success") {
+
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                            toastr.success(" Task assigned successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                        if (result.message == "timeexceed") {
+
+
+                            toastr.warning("Task should be assign within task range from " + result.sdate + " to " + result.edate, opts);
+
+                        }
+
+                        if (result.message == "Already") {
+
+
+                            toastr.warning(result.name + " is already assigned to the task on these dates", opts);
+
+                        }
+                        if (result === "Greater") {
+                            toastr.warning("No. of Efforts in Assign Task should not exceeds No. of efforts in Task");
+
+                        }
+                    }
+
+                });
+
+            
+            }
+
+            }
+        }
+
+              
+         
+    </script>
+</body>
+</html>

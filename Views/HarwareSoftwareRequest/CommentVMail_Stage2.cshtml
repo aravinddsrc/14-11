@@ -1,0 +1,204 @@
+﻿@model DSRCManagementSystem.Models.Assets
+@{
+    ViewBag.Title = "Comment VMail_Stage2";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<html>
+<head>
+    <title>Comment Hardware/Software Request</title>
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>    
+</head>
+
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+<div class="row" style="height:300px;"></div>
+
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Approve/Reject Hardware/Software Request</div>
+                </div>
+                <!-- panel body -->
+                @if (ViewBag.IsCanceled)
+                {
+                    <div class="panel-body">    
+                   
+                    <div style="text-align: center;font-weight:bold;color:Green;" class="success">
+                        <h5 style="font-weight:bold;color:red;">Hardware/Software request has been cancelled by employee</h5>
+                    </div>
+                    
+                    </div>
+                    
+                }
+                 else if (ViewBag.IsalreadyRejected)
+                { 
+                   
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">Hardware/Software request already Rejected</h5>
+                    </div>
+                }
+                else if (ViewBag.IsalreadyApproved)
+                {
+                     
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">Hardware/Software request already Approved</h5>
+                    </div>
+                }
+               @* else if (ViewBag.IsAlreadycommented)
+                {
+                    <div class="panel-body">    
+                   
+                    <div style="text-align: center;font-weight:bold;color:Green;" class="success">
+                        <h5 style="font-weight:bold;color:red;">Already comment has been made</h5>
+                    </div>
+                    
+                </div>
+                }*@
+                else
+                {
+
+                <div class="panel-body">
+
+                 @using (Html.BeginForm("CommentVMail_Stage2", "HarwareSoftwareRequest", FormMethod.Post))
+                 {
+                     if (ViewBag.Approve)
+                     {                
+                        <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              @Html.LabelFor(x => x.AssignTo, new { @class = "control-label" })  
+                              <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>                       
+                              @Html.DropDownList("NetworkEmpList", ViewBag.NworkEmpList as SelectList, new { @id = "AssignTo", @class = "form-control" })  
+                              <span id="NetworkEmpList_ID" style="color: Red;"></span> 
+                           </div>
+                        </div>                    
+                        </div>    
+                     }
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Comments", new { @class = "control-label" })
+                            @*@Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                            @Html.TextArea("Comments", new { @id = "Comments", @class = "form-control", @style = "height:100px", @maxlength = 250 })
+                            @Html.Hidden("Id", (object)ViewBag.Id.ToString())                            
+                        </div>
+                    </div>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div class="col-md-4">
+                   @* @Html.HiddenFor(x => x.RequestedId, new { @id = "id" })*@
+                    </div>                    
+                     
+                    <div class="col-md-6" style="text-align: left">
+                    @if (ViewBag.Approve)
+                    {
+                        <button  class="btn btn-success" onclick="Accept()">Approve</button>
+                    }
+                    else
+                    {
+                        <button style="margin-left: 10px"  class="btn btn-danger" onclick="Reject()">
+                            Reject</button>
+                    }
+                    </div>
+                 }
+                </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        $(".panel-body select").select2({
+            minimumResultsForSearch: -1
+        });
+    });
+    
+    function Accept() {
+
+        var errorsCount = 0;
+
+        //Priority Required Field Validation
+
+           if ($("#AssignTo").val() == 0) {
+            $("#NetworkEmpList_ID").html("Select Network Employee Name");                
+                errorsCount++;
+            }
+            else {
+                $("#NetworkEmpList_ID").html("");                
+            }
+
+
+            if (errorsCount == 0) {
+
+                var values =
+            {
+                "RequestID": $("#Id").val(),
+                "NwEmpID": $("#AssignTo").find("option:selected").prop("value"),
+                "Comments": $("#Comments").val(),
+                "IsAccepted": true
+            }
+                $.ajax({
+                    url: "../../HarwareSoftwareRequest/CommentVMail_Stage2/",
+                    type: 'POST',
+                    cache: false,
+                    traditional: true,
+                    data: values,
+                    success: function (result) {
+                                            
+                        window.location = '@Html.Raw(Session["ServerName"]  + "HarwareSoftwareRequest/SuccessfullyApproved")';
+                    }
+
+                });
+            }
+
+    }
+    function Reject() {
+        var values =
+            {
+                "RequestID": $("#Id").val(),
+                "NwEmpID":"0",
+                "Comments": $("#Comments").val(),
+                "IsAccepted": false
+            }
+        $.ajax({
+            url: "../../HarwareSoftwareRequest/CommentVMail_Stage2/",
+            type: 'POST',
+            cache: false,
+            traditional: true,
+            data: values,
+            success: function (result) {                
+                window.location = '@Html.Raw(Session["ServerName"] + "HarwareSoftwareRequest/SuccessfullyRejected")';
+            }
+
+        });
+    }
+</script>
+</html>
+
+

@@ -1,0 +1,198 @@
+﻿@model DSRCManagementSystem.Models.HardwareList
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Hardware</title>
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+</head>
+<body>
+    <div class="modal-content">
+    <div class="modal-header" style="background-color: #f0f0f1;">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+     <h4 class="modal-title">
+                Add Hardware</h4>
+     </div>
+        @using (Html.BeginForm("AddComponent", "ManageHardware", FormMethod.Post))
+                {
+         <div class="modal-body">
+                
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6" style="text-align: right">
+                   @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+            <br /> 
+            <div class="row">
+            <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Hardware, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.DropDownList("Hardware", (IList<SelectListItem>)ViewBag.Details, "--Select--", new { @class = "form-control", @id = "HardwareList1" })
+                       <span id="hardware" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Floor, new { @class = "control-label" })
+                        @*@Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                        @Html.DropDownList("Hardware", (IList<SelectListItem>)ViewBag.Detail1, "--Select--", new { @class = "form-control", id = "HardwareList" })
+                       <span id="floor" style="color:Red"></span>
+                       </div>
+                </div>
+                </div>
+                   <div class="row">  
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Component, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.Component, new { @id = "DDLComp", @class = "form-control", @style="height:42px", @maxlenght="40" })
+                      <span id="component" style="color:Red"></span>
+                    </div>
+                </div>
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Model, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Model, new { @id = "DDLModel", @class = "form-control", @style = "height:42px", @maxlength = "20" })
+                        <span id="model" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                            @Html.LabelFor(x => x.AssignedTo, new { @class = "control-label" })
+                            @*@Html.Label("  *", new { @style = "color:red;font-weight:;" })*@
+                            @Html.DropDownList("AssignedTo", ViewBag.ManagementIdList as SelectList,"--Select--", new { @id = "Assignedto", @class = "form-control" })                          
+                            @Html.ValidationMessageFor(x => x.AssignedTo, " ", new { @style = "color:red" })
+                            <span id="assi" style="color:Red"></span>
+                     </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                    @Html.LabelFor(x => x.Quantity, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.Quantity, new { @id = "DDLQuan", @class = "form-control", @style = "height:42px",@maxlength="2"})
+                        <span id="quantity" style="color:Red"></span>
+                        <span id="errmsg" style="color:Red"></span>
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                      @Html.LabelFor(x => x.Ip, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.Ip, new { @id = "DDLIp", @class = "form-control", @style = "height:42px"})
+                        <span id="ip" style="color:Red"></span>
+                  </div>
+                </div>
+                <div  class="col-md-6">
+                <div class="form-group">
+                       @Html.LabelFor(x => x.InUse, new { @class = "control-label" })
+                       @Html.DropDownList("HardwareList",ViewBag.InUse as SelectList,new { @class = "form-control", @id = "HardwareList2" })
+                        <span id="inuse"></span>
+                </div>
+                </div>
+            </div>
+              </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel</button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="test()" >
+                Save</button>
+        </div>
+        }
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+     @* <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <script type="text/javascript">
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        $(document).ready(function () {
+            //called when key is pressed in textbox
+            $("#DDLQuan").keypress(function (e) {
+                //if the letter is not digit then display error and don't type anything
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    //display error message
+                    $("#errmsg").html("Digits Only").show();
+                    
+                    return false;
+                }
+                
+            });
+        });
+
+        $(document).ready(function () {
+            $('#DDLComp').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\s\\:\\;\\,]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#component").html("Enter Valid Component Name").show();
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            $('#DDLIp').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\.]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#ip").html("Enter Valid IP").show();
+                return false;
+            });
+        });
+
+
+       
+
+    </script>
+</body>
+</html>
+

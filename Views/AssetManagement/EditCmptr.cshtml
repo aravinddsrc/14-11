@@ -1,0 +1,246 @@
+﻿@model DSRCManagementSystem.Models.AssignComputers
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    @*<link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    @*<link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />*@
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+   @* <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>*@
+</head>
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Edit</h4>
+        </div>
+       @using (Html.BeginForm("EditCmptr", "AssetManagementController", FormMethod.Post))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label(" *", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.EmployeeName, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.HiddenFor(x => x.ID, new { @id = "HidID" })
+                            @Html.DropDownList("UserId", (IList<SelectListItem>)ViewBag.Detail3, "--Select--", new { @id = "UserID", @name = "UserID", @class = "form-control", @disabled = "disabled" })                      
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Department,(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                 @Html.TextBoxFor(x => x.Department, new { @id = "DepartmentId", @class = "form-control", @style = "height:42px;", @onpaste = "return false", @disabled = "disabled" })
+                          
+                            <span id="dept"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Location, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("locationid", ViewBag.LocationIDList as SelectList, new { @id = "locationid", @name = "locationid", @class = "form-control" })
+                            <span id="loct"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ComputerName, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                           @Html.DropDownList("Managementid", ViewBag.ManagementIdList as SelectList, new { @id = "Managementid", @name = "Managementid", @class = "form-control" })   
+                           <span id="ComputerName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.WorkstationNumber, new { @class = "control-label" })
+                           @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.WorkstationNumber, new { @id = "WOS", @class = "form-control", @style = "height:42px;", @maxlength = 200 })
+                             <span id="WS" style="color:Red"></span>
+
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                             @Html.LabelFor(x => x.PenDriveAcess, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("PDAID", ViewBag.PenDriveAcessList as SelectList, new { @id = "PDAID", @name = "PDAID", @class = "form-control" })
+                            <span id="PDA"></span> 
+                        </div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                          @Html.LabelFor(x => x.ComponentId, new { @class = "control-label" })
+                             @Html.DropDownList("ComponentList", ViewBag.ComponentIdList as MultiSelectList, new { @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple", @id = "ComponentList", @name = "ComponentList" })
+                             @Html.HiddenFor(o => o.ComponentList)
+                            <span id="ED"></span> 
+                              
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.UPSID, new { @class = "control-label" })
+                               @if (ViewBag.abc)
+                               {
+                           @Html.DropDownList("UPSID", ViewBag.UpsList as SelectList, new { @id = "UPSID", @name = "UPSID", @class = "form-control" })
+                               }
+                                else
+                            {
+                            @Html.DropDownList("UPSID", ViewBag.UpsList as SelectList, "--- select ---", new { @id = "UPSID", @name = "UPSID", @class = "form-control" })
+                            }
+
+                            <span id="UPSID" style="color: Red"></span>
+
+                        </div>
+                    </div>
+                </div>
+           
+            </div>
+               
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel</button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="EditSave()">
+                    Save</button>
+            </div>
+        }
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('select').select2();
+
+
+        });
+
+
+        function EditSave() {
+             
+            if (document.getElementById('WOS').value == 0) {
+                if (document.getElementById('WOS').value == '') {
+                    document.getElementById("WS").innerHTML = "Enter Workstation Number";
+                }
+                else {
+                    document.getElementById("WS").innerHTML = "";
+                }
+
+            }
+            else {
+
+                ID= $("#HidID").val(),
+                UserId= $("#UserID").find("option:selected").val(),
+                //                "EmployeeName": $("#UserID").find("option:selected").text(),
+                //                "Departmentvalue": $("#DepartmentId").val(),
+                 DepartmentName= $("#DepartmentId").val(),
+                locationid = $("#locationid").val(),
+                Location = $("#locationid").find("option:selected").text(),
+                Managementid = $("#Managementid").val(),
+                ComputerName = $("#Managementid").find("option:selected").text(),
+                Pendrive = $("#PDAID").val(),
+                //"UpsList": $("#UPSID").val(),
+                UPSID = $("#UPSID").find("option:selected").val(),
+                ComponentId= $("#ComponentList").val() == null ? "" : $("#ComponentList").val().toString(),
+                WorkstationNumber= $("#WOS").val(),
+                WorkstationName =$("#WOS").find("option:selected").text()
+
+
+
+     
+
+
+
+
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toastr-top-right",
+                    "toastrClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+
+
+
+                $.ajax({
+                    url: "../../AssetManagement/EditCmptr/",
+                    type: 'POST',
+                    cache: false,
+                    // traditional: true,
+                    data:{ID :ID,UserId:UserId,locationid:locationid, Location :Location,Managementid:Managementid, ComputerName:ComputerName,Pendrive :Pendrive,  UPSID:  UPSID, ComponentId:ComponentId,WorkstationNumber:WorkstationNumber ,  DepartmentName:    DepartmentName,locationid:locationid, Managementid : Managementid ,  WorkstationName :  WorkstationName },
+                    success: function (result) {
+
+                        if (result == "Success") {
+
+                            toastr.success("Assigned Computer details has been Updated successfully", opts);
+                            $("#portlet-config").modal("hide");
+                            setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                    }
+
+                });
+                
+            }
+        }
+
+    </script>
+</body>
+</html>

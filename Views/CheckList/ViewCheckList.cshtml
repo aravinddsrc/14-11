@@ -1,0 +1,227 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Checklist>
+@{
+    ViewBag.Title = "View CheckList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style type="text/css">
+        textarea {
+            resize: none;
+        }
+    </style>
+
+}
+@{
+    int SNO = 1;
+   
+}
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("CheckList","CheckList")">Mange Check List</a></li>
+    <li class="active"><strong>View Check List Items</strong></li>
+</ol>*@
+ <p>
+        <a href="@Url.Action("CheckList","CheckList")"style="color:black ">
+            Manage Category
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>View Checklist Items</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+
+                <div class="panel-title" color="White">
+                    View Check List Items
+                </div>
+            </div>
+            <div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+
+                <div class="btn-group" style="float: right">
+                    <button class="btn btn-blue" style="font-weight: bold" type="button" style="width: 100px;" onclick='AddNewCheckList()'>
+                        Add Check List Item
+                    </button>
+                </div>
+
+
+                <br />
+                <br />
+                <br />
+
+                @using (Html.BeginForm("ViewCheckList", "CheckList", FormMethod.Post))
+                { 
+                    <table class="table table-bordered datatable" id="tblMeeting">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">S.No
+                                </th>
+
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Check List Item")
+                                </th>
+
+
+                                <th style=" text-align: center;">
+                                    @Html.DisplayName("Edit")
+                                </th>
+                                <th style="text-align: center;">
+                                    @Html.DisplayName("Delete")
+                                </th>
+                            </tr>
+                        </thead>
+                        @{
+                       
+                    foreach (var item in Model)
+                    {                  
+                                                      
+                            <tr>
+                                <td style=" width: 100px; text-align: center;">
+                                    @(SNO++)
+                                    @Html.HiddenFor(modelitem => item.CheckListID)
+
+                                </td>
+
+                                <td style="width: auto; word-wrap: break-word; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelItem => item.CheckListName)
+                                </td>
+
+                                <td style=" width: 130px; text-align: center">
+
+                                    <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditCheckList("@item.CheckListID")'>
+                                        <i class="entypo-pencil"></i></a>
+                                </td>
+                                <td style=" width: 130px; text-align: center">
+
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='DeleteCheckList("@item.CheckListID")'>
+                                        <i class="entypo-cancel"></i></a>
+                                </td>
+
+
+                            </tr>
+                       
+
+                    }
+                        }
+                    </table>
+
+                            
+                           
+                }
+                <br />
+                <div class="btn-group" style="float: left" id="AddNewProject">
+                </div>
+                  <div style="text-align: right">
+        <button type="button" class="btn btn-default" onclick="window.location.href='/CheckList/CheckList'" )>
+                Back
+            </button>
+  
+           </div>  
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+        localStorage.clear();
+
+        var columnDefs;
+        var table = $("#tblMeeting").dataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+            "sPaginationType": "bootstrap",
+            "aaSorting": [],
+            "columnDefs": [{ bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }],
+
+            stateSave: true,
+            stateSaveCallback: function (settings, data) {
+                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+            }
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+
+
+
+
+    function EditCheckList(Id) {
+        $.ajax({
+            url: "../../CheckList/EditCheckList/" + Id,
+            type: 'GET',
+            cache: false,
+            data: { "Id": Id },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal('show');
+
+            }
+
+        });
+    }
+
+    function AddNewCheckList() {
+
+        $.ajax({
+            url: "../../CheckList/AddCheckList/",
+            type: 'GET', cache: false,
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+            }
+
+        });
+
+    }
+
+
+
+
+
+    function DeleteCheckList(Id) {
+        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+            if (conform) {
+                $.ajax({
+                    url: "../CheckList/DeleteCheckList/" + Id,
+                    type: 'POST', cache: false,
+                    data: { "Id": Id },
+                    success: function (result) {
+                        if (result.Result === "Success") {
+                            toastr.success(" Check list item deleted successfully!");
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+
+</script>

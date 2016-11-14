@@ -1,0 +1,2303 @@
+﻿@model DSRCManagementSystem.Models.RemainderService
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddNewEdit</title>
+    @*<link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css"    />*@
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@ @*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    @*<link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css"    />*@
+
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/JS/date.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <style>
+        textarea {
+            resize: none;
+        }
+
+        HTML div#spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1030;
+            opacity: 0.8;
+        }
+    </style>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">Edit Reminder Service</h4>
+        </div>
+        <div class="modal-body">
+
+            @using (Html.BeginForm("AddNewEdit", "ReminderService", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Service Name", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })<br />
+                            @Html.TextBox("ServiceName", (string)ViewBag.PicServiceName, new { @id = "ServiceName", @name = "ServiceName", @class = "form-control", @autocomplete = "off", @onchange = "servicenamecheck()", style = "height: 43px;" })
+                            <span id="span_servicename" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Service Type", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @*         @Html.DropDownList("ServiceType", ViewBag.ServiceType as SelectList, "--Select--", new { @id = "ServiceType", @class = "select2-container select2-container-multi select2 visible",@onchange="ServiceType()" })  **@
+                            @Html.DropDownList("Id3", ViewBag.ServiceTypeData as SelectList, "--Select--", new { @id = "Service", @class = "form-control" })
+                            <span id="span_ServiceType" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>   
+
+                <div class="row">
+                    <div class="col-md-6" id="ServiceDate1">
+                        <div class="form-group">
+                            @Html.Label("Service Date", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @*@Html.TextBoxFor(x => x.ServiceCalendar, new { @id = "ServiceDate", @class = "form-control datetimepicker", @placeholder = "Select Date", @autocomplete = "off", @onchange = "selectdate()" })*@
+                            @Html.TextBox("ServiceDate", (string)ViewBag.PicDate, new { @id = "ServiceDate", @class = "form-control datetimepicker", @placeholder = "Select Date", @autocomplete = "off", @onchange = "selectdate()", style = "height: 43px;" })
+                            <span id="span_ServiceDate" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="DaySelect">
+                        <div class="form-group">
+                            @Html.Label("Service Days", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })<br />
+                            @*@Html.DropDownList("WeekDays", ViewBag.WeekDays as MultiSelectList, new { @id = "WeekDays", @class = "select2-container select2-container-multi select2 visible", @onchange = "selectdays()", @multiple = "multiple", @disabled = "disabled" })*@
+                            @* @Html.DropDownListFor(m => m.DaysCheck , ViewBag.WeekDays as MultiSelectList, new { @id = "WeekDays", @class = "form-control", @onchange = "selectdays()", @multiple = "multiple",@disabled="disabled" })*@
+                            @Html.TextBox("WeekDays", (string)ViewBag.ValidDays, new { @id = "WeekDays", @class = "form-control ", @placeholder = "", @autocomplete = "off", @readonly = "readonly", style = "height: 43px;" })
+                            <span id="span_Days" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6" id="HourCheck">
+                        <div class="form-group datetimepickerTime1">
+                            @Html.Label("Service Start Time", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })<br />
+                            @* @Html.TextBox("StartTime", (string)ViewBag.PicTime, new { @id = "TimeSlot1", @name = "TimeSlot1", @class = "form-control", @autocomplete = "off", @onchange = "selecttime()", style = "height: 43px;" })*@
+                            @Html.TextBox("StartTime", (string)ViewBag.PicTime, new { @id = "TimeSlot1", @name = "TimeSlot1", @class = "form-control", @autocomplete = "off", @onchange = "selecttime()", style = "height: 43px;", @disabled = "disabled" })
+                            <span id="span_StartTime" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Select Service Event", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })<br />
+                            @Html.DropDownList("Value", ViewBag.Event as SelectList, "--Select--", new { @id = "EventSelect", @class = "form-control", @onchange = "selectevent()" })
+                            <span id="span_Event" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("To", new { @class = "control-label" })
+                            @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                            @Html.DropDownList("UserId", ViewBag.Email as MultiSelectList, new { @id = "To", @class = "form-control", @multiple = "multiple", style = "height: 43px;" })
+                            <span id="span_To" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("CC", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("Id1", ViewBag.Email1 as MultiSelectList, new { @id = "CC", @class = "form-control", @multiple = "multiple", style = "height: 43px;", @onchange = "ccselect()" })
+                            <span id="span_CC" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("BCC", new { @class = "control-label" })
+                            @Html.DropDownList("Id2", ViewBag.Email2 as MultiSelectList, new { @id = "BCC", @class = "form-control", @multiple = "multiple", style = "height: 43px;" })
+                            <span id="span_BCC" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Subject", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.TextBox("Subject", (string)ViewBag.PicSubject, new { @id = "Subject", @name = "Subject", @class = "form-control", @autocomplete = "off", @onchange = "subjectcheck()", style = "height: 43px;" })
+                            <span id="span_Subject" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" id="selectHour">
+                        <div class="form-group">
+                            @Html.Label("Hourly Service Hour", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })<br />
+                            @Html.DropDownList("Value", ViewBag.Hours as SelectList, "--Select--", new { @id = "HourSelect", @class = "form-control", @onchange = "selectHour()" })
+                            <span id="span_Hours" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="NextDatecalc">
+                        <div class="form-group">
+                            @Html.Label("Second Service Date", new { @class = "control-label", @id = "SDate" })
+                            @* @Html.Label("*", new { @style = "color:#FF0000" })*@
+                            @Html.TextBoxFor(x => x.NextDateCalculation, new { @id = "NextDate", @class = "form-control ", @placeholder = "", @autocomplete = "off", @readonly = "readonly", style = "height: 43px;" })
+                            <span id="span_DaysCalculation" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="TempHide">
+                        @Html.Label("Template", new { @class = "control-label" })
+                        @Html.Label("*", new { @style = "color:#FF0000" })
+                        @Html.TextBox("Value", (string)ViewBag.Template, new { @id = "TempSelect", @name = "Template", @class = "form-control", @autocomplete = "off", @disabled = "disabled", style = "height: 43px;" })
+                        @*@Html.DropDownList("Value", ViewBag.Template as SelectList, "--Select--", new { @id = "TempSelect", @name="Text", @class = "form-control", @onchange = "tempselect()" })*@
+                        <span id="span_Template" style="color: Red;"></span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick='RemainderSave()'>
+                Save
+            </button>
+        </div>
+
+    </div>
+
+    <div id="spinner">
+        <div id="LoaderContent" style="height: 100%;">
+            <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+        </div>
+    </div>
+
+    <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+
+            });
+
+            $("#Service").select2();
+            $("#HourSelect").select2();
+
+            $("#TempHide").hide();
+
+            $(".datetimepickerTime1").datetimepicker
+     ({
+         //               format: 'LT',
+         //               format:'hh:mm',
+         pickDate: false
+     });
+            // $("#NextDatecalc").disable();
+
+            $("#NextDatecalc").hide();
+
+            // $("#NextDatecalc *").attr("disabled", "disabled");
+
+            var nowDate = new Date();
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+
+
+
+            if ($("#Service :selected").text() == "Hourly Service") {
+
+                $("#NextDatecalc").hide();
+
+                var data = "Mon Tue Wed Thu Fri";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+
+
+                $("#HourSelect").attr("disabled", false);
+                $("#NextDate").attr("disabled", true);
+                //     $("#WeekDays :selected").text() == "--Select--";
+                $("#NextDatecalc").hide();
+                $('#span_ServiceType').text("").show();
+                $("#selectHour").show();
+
+                //    $("#TimeSlot1").val("");
+                //    $("#ServiceDate").val("");
+                //   $("#ServiceName").val("");
+
+
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                // document.getElementById('NextDate').innerHTML = "";
+
+
+                $('#NextDate').val("");
+
+                // $("#NextDatecalc").disable();
+
+
+                $("#WeekDays").attr("disabled", true);
+                $('#span_ServiceType').text("").show();
+
+
+            }
+            else if ($("#Service :selected").text() == "Daily Service") {
+
+                //   $("#TimeSlot1").val("");
+                //   $("#ServiceDate").val("");
+                //    $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                var data = "Mon Tue Wed Thu Fri";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+
+                $("#NextDatecalc").hide();
+
+                $("#selectHour").hide();
+                $("#HourSelect").attr("disabled", true);
+                $("#NextDate").attr("disabled", true);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+
+
+                document.getElementById('NextDate').innerHTML = "";
+                $('#span_ServiceType').text("").show();
+
+
+
+                @*var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDaysCheck")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+
+
+            }
+            else if ($("#Service :selected").text() == "Weekly Service") {
+
+                //$("#TimeSlot1").val("");
+                //$("#ServiceDate").val("");
+                //      $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+                var checkdate = document.getElementById('ServiceDate').value;
+
+
+                var datecheck = checkdate.split('-');
+                var dd1 = datecheck[1];
+                var mm1 = datecheck[0];
+                var y1 = datecheck[2];
+
+                var someFormattedDate1 = dd1 + '-' + mm1 + '-' + y1;
+                if (someFormattedDate1 != "") {
+                    var myDate = new Date(someFormattedDate1);
+                    // var checkdate = Date(document.getElementById('ServiceDate').value;
+
+                    var weekday = new Array(7);
+                    weekday[0] = "Sunday";
+                    weekday[1] = "Monday";
+                    weekday[2] = "Tuesday";
+                    weekday[3] = "Wednesday";
+                    weekday[4] = "Thursday";
+                    weekday[5] = "Friday";
+                    weekday[6] = "Saturday";
+
+                    var day = weekday[myDate.getDay()];
+                    document.getElementById('WeekDays').value = day;
+                }
+                else {
+                    var data = "";
+                    var dataarray = data.split(",");
+                    document.getElementById('WeekDays').value = "";
+                }
+
+
+
+                $("#selectHour").hide();
+
+                $("#NextDatecalc").hide();
+                $("#NextDate").attr("disabled", true);
+                $('#HourSelect').prop('selectedIndex', 0);
+                $("#HourSelect").attr("disabled", true);
+                $("#Noofdays").attr("disabled", false);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+
+                // $("#HourSelect").val("0");
+                document.getElementById('HourSelect').selectedIndex = -1
+
+                $('#span_ServiceType').text("").show();
+            }
+            else if ($("#Service :selected").text() == "Monthly Twice Service") {
+
+
+                var data = "";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+
+
+
+                //$("#WeekDays option:selected").prop("selected", false);
+                //$("#WeekDays").multiselect('refresh');
+
+
+                //   $("#TimeSlot1").val("");
+                //   $("#ServiceDate").val("");
+                //   $("#ServiceName").val("");
+
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+
+                $("#selectHour").hide();
+
+                $("#NextDatecalc").show();
+
+
+                $("#HourSelect").attr("disabled", true);
+                $("#Noofdays").attr("disabled", false);
+                $("#NextDate").attr("disabled", false);
+                $("#WeekDays").attr("disabled", true);
+                document.getElementById("HourSelect").selectedIndex = 0;
+                $('#WeekDays').html("");
+
+                //if (document.getElementById('ServiceDate').value == '') {
+                //    $('#span_ServiceDate').text("").show();
+                //}
+                //else {
+                //    $('#span_ServiceDate').text("Reselect The Date").show();
+                //}
+
+
+                $('#span_ServiceType').text("").show();
+
+
+
+
+               @* var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDays")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+            }
+            else if ($("#Service :selected").text() == "Monthly Service") {
+
+
+                //$("#WeekDays option:selected").prop("selected", false);
+                //$("#WeekDays").multiselect('refresh');
+
+
+                var data = "";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+                //   $("#TimeSlot1").val("");
+                //   $("#ServiceDate").val("");
+                //      $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                $("#selectHour").hide();
+
+                $('#WeekDays').html("");
+
+                $("#NextDatecalc").hide();
+
+                document.getElementById("HourSelect").selectedIndex = 0;
+                // $("#HourSelect").val("0");
+
+                $("#HourSelect").attr("disabled", true);
+                $("#NextDate").attr("disabled", true);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+                $('#span_ServiceType').text("").show();
+
+                @* var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDays")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+
+
+
+                // $("#WeekDays").multiselect('refresh');
+
+            }
+
+
+        });
+
+
+
+
+        $('#ServiceName').keypress(function (e) {
+
+            var regex = new RegExp("^[a-zA-Z ]+$");
+
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (e.which === 32 && !this.value.length) {
+                e.preventDefault();
+            }
+            if (regex.test(str)) {
+                $('#span_servicename').text("").show();
+                return true;
+            }
+            else {
+                e.preventDefault();
+                $('#span_servicename').text("Enter Alphabate Only").show();
+                return false;
+            }
+
+            return e.substr(0, 1).toUpperCase() + e.substr(1);
+        });
+
+
+        $('#Subject').keypress(function (e) {
+
+            var regex = new RegExp("^[a-zA-Z ]+$");
+
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (e.which === 32 && !this.value.length) {
+                e.preventDefault();
+            }
+            if (regex.test(str)) {
+                $('#span_Subject').text("").show();
+                return true;
+            }
+            else {
+                e.preventDefault();
+                $('#span_Subject').text("Enter Alphabate Only").show();
+                return false;
+            }
+
+            return e.substr(0, 1).toUpperCase() + e.substr(1);
+        });
+
+
+
+        $('#TimeSlot1').keypress(function (e) {
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+
+        });
+
+        function servicenamecheck() {
+
+
+
+            //if ($("#Service").find("option:selected").text() == "--Select--") {
+            //    $('#span_servicename').text("Please Select Service Type").show();
+            //}
+            //else {
+            //    $('#span_servicename').text("").show();
+            //}
+
+        }
+
+
+        function selectdate() {
+            var selectedLeaveType = $("#Service").val();
+            minDate: new Date();
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_ServiceDate').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_ServiceDate').text("").show();
+            }
+            if ($("#ServiceDate").val == "") {
+                $('#span_ServiceDate').text("First Select Date").show();
+            }
+            else {
+                $('#span_ServiceDate').text("").show();
+            }
+
+            if ($("#ServiceDate").val != "" && $("#Service").find("option:selected").text() == "Monthly Twice Service") {
+
+
+                //var dt = $('ServiceDate').val();
+                //var date2 = dt.setDate(dt.getDate() + 15);
+                $("#NextDate").attr("disabled", false);
+                //$('NextDate').val(date2);
+
+                var tt = document.getElementById('ServiceDate').value;
+
+                var datecheck = tt.split('-');
+                var dd1 = datecheck[1];
+                var mm1 = datecheck[0];
+                var y1 = datecheck[2];
+
+                var someFormattedDate1 = dd1 + '-' + mm1 + '-' + y1;
+
+
+                var myDate = new Date(someFormattedDate1);
+                var dayOfMonth = myDate.getDate();
+                myDate.setDate(dayOfMonth + 15);
+
+
+                var dd = myDate.getDate();
+                var mm = myDate.getMonth() + 1;
+                var y = myDate.getFullYear();
+
+                var someFormattedDate = dd + '/' + mm + '/' + y;
+                document.getElementById('NextDate').value = someFormattedDate;
+
+
+            }
+            if ($("#ServiceDate").val != "" && $("#Service").find("option:selected").text() == "Weekly Service") {
+
+
+                var checkdate = document.getElementById('ServiceDate').value;
+
+                var datecheck = checkdate.split('-');
+                var dd1 = datecheck[1];
+                var mm1 = datecheck[0];
+                var y1 = datecheck[2];
+
+                var someFormattedDate1 = dd1 + '-' + mm1 + '-' + y1;
+                var myDate = new Date(someFormattedDate1);
+                // var checkdate = Date(document.getElementById('ServiceDate').value;
+
+                var weekday = new Array(7);
+                weekday[0] = "Sunday";
+                weekday[1] = "Monday";
+                weekday[2] = "Tuesday";
+                weekday[3] = "Wednesday";
+                weekday[4] = "Thursday";
+                weekday[5] = "Friday";
+                weekday[6] = "Saturday";
+
+                var day = weekday[myDate.getDay()];
+                document.getElementById('WeekDays').value = day;
+            }
+            else if ($("#ServiceDate").val != "" && $("#Service").find("option:selected").text() == "Daily Service" || $("#ServiceDate").val != "" && $("#Service").find("option:selected").text() == "Hourly Service")
+            {
+            var data = "Mon Tue Wed Thu Fri";
+            document.getElementById('WeekDays').value = data;
+        }
+        else {
+                document.getElementById('WeekDays').value = "";
+        }
+
+        }
+
+
+        function selectHour() {
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_ServiceType').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_ServiceType').text("").show();
+            }
+            if ($("#HourSelect").find("option:selected").text() == "--Select--") {
+                $('#span_Hours').text("First Select Hours").show();
+            }
+            else {
+                $('#span_Hours').text("").show();
+            }
+
+        }
+
+
+        function selectFromdate() {
+            var selectedLeaveType = $("#Service").val();
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_ServiceDateFrom').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_ServiceDateFrom').text("").show();
+            }
+        }
+
+        function selectTodate() {
+            var selectedLeaveType = $("#Service").val();
+
+
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_ServiceDateTo').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_ServiceDateTo').text("").show();
+            }
+
+            var datefm = new Date($("#FromDate").val());
+            var dateto = new Date($("#ToDate").val());
+
+            //if (datefm > dateto) {
+
+            //    $('#span_ServiceDateTo').text("Second date must be greater than First date").show();
+            //}
+            //else {
+            //    $('#span_ServiceDateTo').text("").show();
+            //}
+
+        }
+
+
+        function selecttime() {
+            var selectedtime = $("#Service").val();
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_StartTime').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_StartTime').text("").show();
+            }
+            if (document.getElementById('TimeSlot1').value == '') {
+                $('#span_StartTime').text("First Select Start Time").show();
+            }
+            else {
+                $('#span_StartTime').text("").show();
+            }
+        }
+
+
+        function selectdays() {
+            var selectedtime = $("#Service").val();
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_Days').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_Days').text("").show();
+            }
+        }
+
+        function selectevent() {
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_Event').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_Event').text("").show();
+            }
+
+            var Bid = $("#EventSelect").find("option:selected").prop("value");
+
+            if (Bid !== 0) {
+
+                var url2 = '@Url.Action("GetTemplate")';
+
+                $.get(url2,
+                    { EventId: Bid },
+                    function (data) {
+
+                        if (data.Result != null) {
+                            document.getElementById('TempSelect').value = data.Result;
+                            document.getElementById("span_Template").innerHTML = "";
+                        }
+
+                        //var items = [];
+                        //items.push("");
+                        //items.push("<option value=0>--Select--</option>");
+
+                        //$.each(data,
+                        //    function () {
+                        //        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                        //    });
+                        //$("#HourSelect").html(items.join(' '));
+                        //$("#HourSelect").select2();
+                    });
+            }
+            else {
+                document.getElementById('TempSelect').value = data.Result;
+            }
+
+        }
+
+        function selectWeek() {
+            if ($("#Service").find("option:selected").text() == "--Select--") {
+                $('#span_Week').text("First Select Service Type").show();
+            }
+            else {
+                $('#span_Week').text("").show();
+            }
+        }
+
+
+        $(function () {
+
+            $("#Service").select2({
+
+                minimumResultsForSearch: -1
+            });
+
+
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+
+            });
+            //         
+            $("#Service").select2();  //c
+            $("#Hours").select2();
+            $("#Days").select2();
+            //  $("#WeekDays").select2();
+            $("#HourSelect").select2();
+            $("#NextDatecalc").hide();
+            $("#selectHour").hide();
+
+            $("#EventSelect").select2();
+
+            var date = new Date();
+            var currentMonth = date.getMonth();
+            var currentDate = date.getDate();
+            var currentYear = date.getFullYear();
+
+
+            $('#ServiceDate').datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true,
+                startDate: new Date(currentYear, currentMonth, currentDate)
+
+            });
+        });
+
+
+
+
+
+        $('#FromDate').datepicker({
+
+            format: 'dd/mm/yyyy',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+
+        })
+
+
+        $('#ToDate').datepicker({
+            format: 'dd/mm/yyyy',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+
+        })
+
+
+        function ccselect() {
+
+            if ($("#CC").find("option:selected").text() == "") {
+                document.getElementById("span_CC").innerHTML = " Select CC";
+            }
+            else {
+                document.getElementById("span_CC").innerHTML = "";
+            }
+        }
+
+
+        $("#TempSelect").change(function () {
+
+            if ($("#TempSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Template").innerHTML = " Select Template";
+            }
+            else {
+                document.getElementById("span_Template").innerHTML = "";
+            }
+        });
+
+
+
+        //$('#TimeSlot1').datetimepicker({
+        //    pickDate: false
+        //})
+
+        $("#Service").change(function () {
+
+
+            @*var Bid = $("#Service").find("option:selected").prop("value");
+
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetHour")';
+
+                $.get(url2,
+                    { BranchId: 0 },
+                    function (data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function () {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#HourSelect").html(items.join(' '));
+                        $("#HourSelect").select2();
+                    });
+
+                var url4 = '@Url.Action("GetMethodName")';
+
+                $.get(url4,
+                    { DepartmentId: 0 },
+                    function (data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function () {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#EventSelect").html(items.join(' '));
+                        $("#EventSelect").select2();
+                    });
+            }*@
+
+
+
+
+
+
+            if ($("#Service").find("option:selected").text() == "Hourly Service") {
+
+
+
+                var data = "Mon Tue Wed Thu Fri";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+
+
+                $("#HourSelect").attr("disabled", false);
+                $("#NextDate").attr("disabled", true);
+                //     $("#WeekDays :selected").text() == "--Select--";
+                $("#NextDatecalc").hide();
+                $('#span_ServiceType').text("").show();
+                $("#selectHour").show();
+
+                //       $("#TimeSlot1").val("");
+                //       $("#ServiceDate").val("");
+                //   $("#ServiceName").val("");
+
+
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                //     document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                // document.getElementById('NextDate').innerHTML = "";
+
+
+                $('#NextDate').val("");
+
+                $("#NextDatecalc").disable();
+
+
+                $("#WeekDays").attr("disabled", true);
+                $('#span_ServiceType').text("").show();
+
+
+            }
+            else if ($("#Service").find("option:selected").text() == "Daily Service") {
+
+                //      $("#TimeSlot1").val("");
+                //      $("#ServiceDate").val("");
+                //    $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                //       document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                var data = "Mon Tue Wed Thu Fri";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+
+                $("#NextDatecalc").hide();
+
+                $("#selectHour").hide();
+                $("#HourSelect").attr("disabled", true);
+                $("#NextDate").attr("disabled", true);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+
+
+                document.getElementById('NextDate').innerHTML = "";
+                $('#span_ServiceType').text("").show();
+
+
+
+                @*var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDaysCheck")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+
+
+            }
+            else if ($("#Service").find("option:selected").text() == "Weekly Service") {
+
+                //   $("#TimeSlot1").val("");
+                //   $("#ServiceDate").val("");
+                //      $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                //    document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+                var checkdate = document.getElementById('ServiceDate').value;
+
+
+                var datecheck = checkdate.split('-');
+                var dd1 = datecheck[1];
+                var mm1 = datecheck[0];
+                var y1 = datecheck[2];
+
+                var someFormattedDate1 = dd1 + '-' + mm1 + '-' + y1;
+                if (someFormattedDate1 != "") {
+                    var myDate = new Date(someFormattedDate1);
+                    // var checkdate = Date(document.getElementById('ServiceDate').value;
+
+                    var weekday = new Array(7);
+                    weekday[0] = "Sunday";
+                    weekday[1] = "Monday";
+                    weekday[2] = "Tuesday";
+                    weekday[3] = "Wednesday";
+                    weekday[4] = "Thursday";
+                    weekday[5] = "Friday";
+                    weekday[6] = "Saturday";
+
+                    var day = weekday[myDate.getDay()];
+                    document.getElementById('WeekDays').value = day;
+                }
+                else {
+                    var data = "";
+                    var dataarray = data.split(",");
+                    document.getElementById('WeekDays').value = "";
+                }
+
+
+
+
+                $("#selectHour").hide();
+
+                $("#NextDatecalc").hide();
+                $("#NextDate").attr("disabled", true);
+                $('#HourSelect').prop('selectedIndex', 0);
+                $("#HourSelect").attr("disabled", true);
+                $("#Noofdays").attr("disabled", false);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+
+                // $("#HourSelect").val("0");
+                document.getElementById('HourSelect').selectedIndex = -1
+
+                $('#span_ServiceType').text("").show();
+            }
+            else if ($("#Service").find("option:selected").text() == "Monthly Twice Service") {
+
+
+                var data = "";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = "";
+
+
+
+
+                //$("#WeekDays option:selected").prop("selected", false);
+                //$("#WeekDays").multiselect('refresh');
+
+
+                //    $("#TimeSlot1").val("");
+                //    $("#ServiceDate").val("");
+                //   $("#ServiceName").val("");
+
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                //   document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+
+                $("#selectHour").hide();
+
+                $("#NextDatecalc").show();
+
+
+                $("#HourSelect").attr("disabled", true);
+                $("#Noofdays").attr("disabled", false);
+                $("#NextDate").attr("disabled", false);
+                $("#WeekDays").attr("disabled", true);
+                document.getElementById("HourSelect").selectedIndex = 0;
+
+
+                //if (document.getElementById('ServiceDate').value == '') {
+                //    $('#span_ServiceDate').text("").show();
+                //}
+                //else {
+                //    $('#span_ServiceDate').text("Reselect The Date").show();
+                //}
+
+
+                $('#span_ServiceType').text("").show();
+
+
+                var GetDate = document.getElementById('ServiceDate').value;
+
+                var datecheck = GetDate.split('-');
+                var dd1 = datecheck[1];
+                var mm1 = datecheck[0];
+                var y1 = datecheck[2];
+
+                var someFormattedDate1 = dd1 + '-' + mm1 + '-' + y1;
+
+
+                var myDate = new Date(someFormattedDate1);
+
+                if (someFormattedDate1 != "") {
+
+                    var dayOfMonth = myDate.getDate();
+                    myDate.setDate(dayOfMonth + 15);
+
+
+                    var dd = myDate.getDate();
+                    var mm = myDate.getMonth() + 1;
+                    var y = myDate.getFullYear();
+
+                    var someFormattedDate = dd + '/' + mm + '/' + y;
+                    document.getElementById('NextDate').value = someFormattedDate;
+                }
+
+
+
+               @* var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDays")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+            }
+            else if ($("#Service").find("option:selected").text() == "Monthly Service") {
+
+
+                //$("#WeekDays option:selected").prop("selected", false);
+                //$("#WeekDays").multiselect('refresh');
+
+
+                var data = "";
+                var dataarray = data.split(",");
+                document.getElementById('WeekDays').value = data;
+
+                //    $("#TimeSlot1").val("");
+                //    $("#ServiceDate").val("");
+                //      $("#ServiceName").val("");
+
+                document.getElementById("span_Hours").innerHTML = "";
+                document.getElementById("span_StartTime").innerHTML = "";
+                document.getElementById("span_ServiceDate").innerHTML = "";
+                document.getElementById("span_Days").innerHTML = "";
+                //   document.getElementById("span_servicename").innerHTML = "";
+                document.getElementById("span_Event").innerHTML = "";
+
+
+
+                $("#selectHour").hide();
+
+                $('#WeekDays').html("");
+
+                $("#NextDatecalc").hide();
+
+                document.getElementById("HourSelect").selectedIndex = 0;
+                // $("#HourSelect").val("0");
+
+                $("#HourSelect").attr("disabled", true);
+                $("#NextDate").attr("disabled", true);
+                $("#WeekDays").attr("disabled", true);
+                $('#NextDate').val("");
+                $('#span_ServiceType').text("").show();
+
+                @* var Bid = $("#Service").find("option:selected").prop("value");
+
+                if (Bid !== "") {
+
+                    var url2 = '@Url.Action("GetDays")';
+
+                    $.get(url2,
+                        { BranchId: 0 },
+                        function (data) {
+                            var items = [];
+                            items.push("");
+                            items.push("<option value=0></option>");
+
+                            $.each(data,
+                                function () {
+                                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                                });
+                            $("#WeekDays").html(items.join(' '));
+                            //  $("#WeekDays").select2();
+                        });
+                }*@
+
+
+
+                // $("#WeekDays").multiselect('refresh');
+
+            }
+            else {
+
+            }
+
+            $("#work").hide();
+            $("#EndDateTime").prop('disabled', false);
+
+        });
+
+
+
+
+function RemainderSave() {
+    var values = "";
+
+    if ($("#Service").find("option:selected").text() == "--Select--" || document.getElementById('ServiceDate').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--" || $("#CC").find("option:selected").text() == "" || document.getElementById('TempSelect').value == '' || document.getElementById('Subject').value == '')
+        //|| document.getElementById('ServiceDate').value == '' || document.getElementById('TimeSlot1').value == '' || $("#WeekDays :selected").text() == "--Select--" || $("#Week :selected").text() == "--Select--" || document.getElementById('FromDate').value == '' || document.getElementById('ToDate').value == '' || document.getElementById('To').value == '' || document.getElementById('CC').value == '' || document.getElementById('BCC').value == '')
+    {
+        if (document.getElementById('Subject').value == '') {
+            document.getElementById("span_Subject").innerHTML = " Enter Subject";
+        }
+        else {
+            document.getElementById("span_Subject").innerHTML = "";
+        }
+        if ($("#CC").find("option:selected").text() == "") {
+            document.getElementById("span_CC").innerHTML = " Select CC";
+        }
+        else {
+            document.getElementById("span_CC").innerHTML = "";
+        } 
+        if (document.getElementById('TempSelect').value == '') {
+            document.getElementById("span_Template").innerHTML = " Select Correct Event Name";
+        }
+        else {
+            document.getElementById("span_Template").innerHTML = "";
+        }
+        if (document.getElementById('ServiceDate').value == '') {
+            document.getElementById("span_ServiceDate").innerHTML = " Select Date";
+        }
+        else {
+            document.getElementById("span_ServiceDate").innerHTML = "";
+        }
+        if (document.getElementById('ServiceName').value == '') {
+            document.getElementById("span_servicename").innerHTML = " Enter Service Name";
+        }
+        else {
+            document.getElementById("span_servicename").innerHTML = "";
+        }
+        if ($("#Service").find("option:selected").text() == "--Select--") {
+            document.getElementById("span_ServiceType").innerHTML = "Select Service Type";
+        }
+        else {
+            document.getElementById("span_ServiceType").innerHTML = "";
+        }
+        if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+            document.getElementById("span_Event").innerHTML = "Select Event Name";
+        }
+        else {
+            document.getElementById("span_Event").innerHTML = "";
+        }
+        if ($("#Service").find("option:selected").text() == "Hourly Service") {
+            if ($("#HourSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Hours").innerHTML = " Select Hour";
+            }
+            else {
+                document.getElementById("span_Hours").innerHTML = "";
+            }
+        }
+
+    }
+    else if ($("#Service").find("option:selected").text() == "Hourly Service") {
+
+        //$("#WeekDays").attr("disabled", true);
+        //$("#Week").attr("disabled", true);
+        //$("#ServiceDate").attr("disabled", true);
+        //$("#FromDate").attr("disabled", true);
+        //$("#ToDate").attr("disabled", true);
+        //$("#TimeSlot1").attr("disabled", false);
+
+        //$('#span_ServiceDate').text("").show();
+        //$('#span_Days').text("").show();
+        //$('#span_Week').text("").show();
+        //$('#span_ServiceToDate').text("").show();
+        //$('#span_ServiceDateFrom').text("").show();
+
+
+
+        document.getElementById("span_ServiceType").innerHTML = "";
+
+        if ($("#HourSelect").find("option:selected").text() == "--Select--" || document.getElementById('TimeSlot1').value == '' || document.getElementById('ServiceDate').value == '' || document.getElementById('WeekDays').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--") {
+
+            if ($("#HourSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Hours").innerHTML = "Select Hour";
+            }
+            else {
+                document.getElementById("span_Hours").innerHTML = "";
+            }
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+            if (document.getElementById('ServiceDate').value == '') {
+                document.getElementById("span_ServiceDate").innerHTML = "Select Date";
+            }
+            else {
+                document.getElementById("span_ServiceDate").innerHTML = "";
+            }
+
+            if (document.getElementById('WeekDays').value == '') {
+                document.getElementById("span_Days").innerHTML = "Choose Days";
+            }
+            else {
+                document.getElementById("span_Days").innerHTML = "";
+            }
+            if (document.getElementById('ServiceName').value == '') {
+                document.getElementById("span_servicename").innerHTML = "Enter Service Name";
+            }
+            else {
+                document.getElementById("span_servicename").innerHTML = "";
+            }
+            if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Event").innerHTML = "Select Event Name";
+            }
+            else {
+                document.getElementById("span_Event").innerHTML = "";
+            }
+        }
+            ///
+
+        else {
+            if ($("#Service :selected").text() == "Hourly Service") {
+
+                
+                // $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                var va = document.getElementById('ServiceDate').value;
+
+                var daily = "";
+                $('#WeekDays :selected').each(function (i, selected) {
+                    daily += $(selected).text() + " ";
+                });
+
+                var to = "";
+                $("#To :selected").each(function (i, selected) {
+                    to += $(selected).text() + " ";
+                });
+                var cc = "";
+                $("#CC :selected").each(function (i, selected) {
+                    cc += $(selected).text() + " ";
+                });
+                var bcc = "";
+                $("#BCC :selected").each(function (i, selected) {
+                    bcc += $(selected).text() + " ";
+                });
+
+                
+
+                values =
+                  {
+                      "ServiceType": $("#Service :selected").text(),
+                      "ServiceHour": $("#HourSelect :selected").text(),
+                      "SelectDate": $("#ServiceDate").val(),
+                      "Days": $("#WeekDays").val(),
+                      "ServiceStartTime": $("#TimeSlot1").val(),
+                      "ServiceName": $("#ServiceName").val(),
+                      "EventMethodName": $("#EventSelect :selected").text(),
+                      "To": to,
+                      "CC": cc,
+                      "BCC": bcc,
+                      "Template": $("#TempSelect").val(),
+                      "Subject": $("#Subject").val()
+                  }
+
+            }
+            ////
+            $("div#spinner").fadeIn("fast");
+
+            var opts =
+               {
+                   "closeButton": true,
+                   "debug": false,
+                   "positionClass": "toast-top-right",
+                   "toastClass": "White",
+                   "onclick": null,
+                   "showDuration": "300",
+                   "hideDuration": "1000",
+                   "timeOut": "2000",
+                   "extendedTimeOut": "1000",
+                   "showEasing": "swing",
+                   "hideEasing": "linear",
+                   "showMethod": "fadeIn",
+                   "hideMethod": "fadeOut"
+               }
+            
+
+            $.ajax({
+                url: "../../ReminderService/AddNewEdit/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result.Result === "Success") {
+
+                        
+                        
+                        //$("#portlet-config").modal('hide');
+                        toastr.success("Reminder service added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                    if (result.Result === "Already") {
+
+                        //$("#portlet-config").modal('hide');
+                        toastr.warning("Reminder template already exist", opts);
+                        $("div#spinner").fadeOut("fast");
+                        // setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                }
+
+            });
+
+
+        }
+    }
+
+
+
+    else if ($("#Service").find("option:selected").text() == "Daily Service") {
+
+        //$("#TimeSlot1").attr("disabled", true);
+        //$("#Week").attr("disabled", true);
+        //$("#ServiceDate").attr("disabled", true);
+        //$("#FromDate").attr("disabled", true);
+        //$("#ToDate").attr("disabled", true);
+        //$("#WeekDays").attr("disabled", false);
+
+        //$('#span_ServiceDate').text("").show();
+        //$('#span_Hours').text("").show();
+        //$('#span_Week').text("").show();
+        //$('#span_ServiceToDate').text("").show();
+        //$('#span_ServiceDateFrom').text("").show();
+
+        document.getElementById("span_ServiceType").innerHTML = "";
+        document.getElementById("span_Hours").innerHTML = "";
+
+        if (document.getElementById('TimeSlot1').value == '' || document.getElementById('ServiceDate').value == '' || document.getElementById('WeekDays').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--") {
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+            if (document.getElementById('ServiceDate').value == '') {
+                document.getElementById("span_ServiceDate").innerHTML = "Select Date";
+            }
+            else {
+                document.getElementById("span_ServiceDate").innerHTML = "";
+            }
+
+            if (document.getElementById('WeekDays').value == '') {
+                document.getElementById("span_Days").innerHTML = "Choose Days";
+            }
+            else {
+                document.getElementById("span_Days").innerHTML = "";
+            }
+            if (document.getElementById('ServiceName').value == '') {
+                document.getElementById("span_servicename").innerHTML = "Enter Service Name";
+            }
+            else {
+                document.getElementById("span_servicename").innerHTML = "";
+            }
+            if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Event").innerHTML = "Select Event Name";
+            }
+            else {
+                document.getElementById("span_Event").innerHTML = "";
+            }
+        }
+
+
+            //if ($("#WeekDays :selected").text() == "--Select--" || $("#WeekDays :selected").text() == '') {
+            //    document.getElementById("span_Days").innerHTML = " Please Select Days";
+            //}
+            //else {
+            //    document.getElementById("span_Days").innerHTML = "";
+
+
+            /////
+        else {
+            if ($("#Service :selected").text() == "Daily Service") {
+
+                //  $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                
+
+                var startDate = $("#ServiceDate").val();
+                var splitedStartDate = startDate.split("/");
+                var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+                var foo = [];
+                var daily = "";
+                $('#WeekDays :selected').each(function (i, selected) {
+                    daily += $(selected).text() + " ";
+                });
+
+                var to = "";
+                $("#To :selected").each(function (i, selected) {
+                    to += $(selected).text() + " ";
+                });
+                var cc = "";
+                $("#CC :selected").each(function (i, selected) {
+                    cc += $(selected).text() + " ";
+                });
+                var bcc = "";
+                $("#BCC :selected").each(function (i, selected) {
+                    bcc += $(selected).text() + " ";
+                });
+
+                
+
+
+                values =
+                   {
+
+                       "ServiceType": $("#Service :selected").text(),
+                       "ServiceHour": "",
+                       "SelectDate": $("#ServiceDate").val(),
+                       "Days": $("#WeekDays").val(),
+                       "ServiceStartTime": $("#TimeSlot1").val(),
+                       "ServiceName": $("#ServiceName").val(),
+                       "EventMethodName": $("#EventSelect :selected").text(),
+                       "To": to,
+                       "CC": cc,
+                       "BCC": bcc,
+                       "Template": $("#TempSelect").val(),
+                       "Subject": $("#Subject").val()
+                   }
+
+            }
+
+            $("div#spinner").fadeIn("fast");
+            ///////
+
+            var opts =
+              {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-right",
+                  "toastClass": "White",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "2000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              }
+
+            
+
+            $.ajax({
+                url: "../../ReminderService/AddNewEdit/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result.Result === "Success") {
+
+                        
+                        //$("#portlet-config").modal('hide');
+                        toastr.success("Reminder service added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                    if (result.Result === "Already") {
+
+                        //$("#portlet-config").modal('hide');
+                        toastr.warning("Reminder template already exist", opts);
+                        $("div#spinner").fadeOut("fast");
+                        // setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                }
+
+            });
+        }
+    }
+
+
+
+    else if ($("#Service").find("option:selected").text() == "Weekly Service") {
+
+        //$("#TimeSlot1").attr("disabled", true);
+        //$("#WeekDays").attr("disabled", true);
+        //$("#ServiceDate").attr("disabled", true);
+        //$("#FromDate").attr("disabled", true);
+        //$("#ToDate").attr("disabled", true);
+        //$("#Week").attr("disabled", false);
+
+        //$('#span_ServiceDate').text("").show();
+        //$('#span_Hours').text("").show();
+        //$('#span_Days').text("").show();
+        //$('#span_ServiceToDate').text("").show();
+        //$('#span_ServiceDateFrom').text("").show();
+
+        document.getElementById("span_ServiceType").innerHTML = "";
+        document.getElementById("span_Hours").innerHTML = "";
+
+        if (document.getElementById('TimeSlot1').value == '' || document.getElementById('ServiceDate').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--") {
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+            if (document.getElementById('ServiceDate').value == '') {
+                document.getElementById("span_ServiceDate").innerHTML = "Select Date";
+            }
+            else {
+                document.getElementById("span_ServiceDate").innerHTML = "";
+            }
+            if (document.getElementById('ServiceName').value == '') {
+                document.getElementById("span_servicename").innerHTML = "Enter Service Name";
+            }
+            else {
+                document.getElementById("span_servicename").innerHTML = "";
+            }
+            if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Event").innerHTML = "Select Event Name";
+            }
+            else {
+                document.getElementById("span_Event").innerHTML = "";
+            }
+
+            document.getElementById("span_Days").innerHTML = "";
+
+            //if (document.getElementById('WeekDays').value == '') {
+            //    document.getElementById("span_Days").innerHTML = " Please Choose Days";
+            //}
+            //else {
+            //    document.getElementById("span_Days").innerHTML = "";
+            //}
+        }
+
+
+            //if ($("#Week :selected").text() == "--Select--") {
+            //    document.getElementById("span_Week").innerHTML = " Please Select Week Days";
+            //}
+            //else {
+            //    document.getElementById("span_Week").innerHTML = "";
+
+
+            ////
+        else {
+            if ($("#Service :selected").text() == "Weekly Service") {
+
+                document.getElementById("span_Days").innerHTML = "";
+
+                
+
+                //    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                var startDate = $("#ServiceDate").val();
+                var splitedStartDate = startDate.split("/");
+                var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+                var daily = "";
+                $('#WeekDays :selected').each(function (i, selected) {
+                    daily += $(selected).text() + " ";
+                });
+
+                var to = "";
+                $("#To :selected").each(function (i, selected) {
+                    to += $(selected).text() + " ";
+                });
+                var cc = "";
+                $("#CC :selected").each(function (i, selected) {
+                    cc += $(selected).text() + " ";
+                });
+                var bcc = "";
+                $("#BCC :selected").each(function (i, selected) {
+                    bcc += $(selected).text() + " ";
+                });
+
+                
+
+                values =
+                   {
+                       "ServiceType": $("#Service :selected").text(),
+                       "ServiceHour": "",
+                       "SelectDate": $("#ServiceDate").val(),
+                       "Days": $("#WeekDays").val(),
+                       "ServiceStartTime": $("#TimeSlot1").val(),
+                       "ServiceName": $("#ServiceName").val(),
+                       "EventMethodName": $("#EventSelect :selected").text(),
+                       "To": to,
+                       "CC": cc,
+                       "BCC": bcc,
+                       "Template": $("#TempSelect").val(),
+                       "Subject": $("#Subject").val()
+                   }
+
+            }
+
+            $("div#spinner").fadeIn("fast");
+            /////
+
+            var opts =
+              {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-right",
+                  "toastClass": "White",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "2000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              }
+
+            
+
+            $.ajax({
+                url: "../../ReminderService/AddNewEdit/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result.Result === "Success") {
+
+                        
+                        //$("#portlet-config").modal('hide');
+                        toastr.success("Reminder service added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                    if (result.Result === "Already") {
+
+                        //$("#portlet-config").modal('hide');
+                        toastr.warning("Reminder template already exist", opts);
+                        $("div#spinner").fadeOut("fast");
+                        // setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                }
+
+            });
+
+        }
+
+    }
+    else if ($("#Service").find("option:selected").text() == "Monthly Twice Service") {
+
+        //$("#TimeSlot1").attr("disabled", true);
+        //$("#WeekDays").attr("disabled", true);
+        //$("#ServiceDate").attr("disabled", true);
+        //$("#Week").attr("disabled", true);
+        //$("#FromDate").attr("disabled", false);
+        //$("#ToDate").attr("disabled", false);
+
+        //$('#span_ServiceDate').text("").show();
+        //$('#span_Hours').text("").show();
+        //$('#span_Days').text("").show();
+        //$('#span_Week').text("").show();
+
+
+        document.getElementById("span_ServiceType").innerHTML = "";
+        document.getElementById("span_Hours").innerHTML = "";
+
+        //if (document.getElementById('FromDate').value == '' || document.getElementById('ToDate').value == '') {
+        //    document.getElementById("span_ServiceDateFrom").innerHTML = " Please Select First Date";
+        //    document.getElementById("span_ServiceToDate").innerHTML = " Please Select Second Date";
+        //}
+        //else {
+        //    document.getElementById("span_ServiceDateFrom").innerHTML = "";
+
+
+        //    document.getElementById("span_ServiceToDate").innerHTML = "";
+
+        $("#NextDatecalc").show();
+
+        if (document.getElementById('TimeSlot1').value == '' || document.getElementById('ServiceDate').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--") {
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+            if (document.getElementById('ServiceDate').value == '') {
+                document.getElementById("span_ServiceDate").innerHTML = "Select Date";
+            }
+            else {
+                document.getElementById("span_ServiceDate").innerHTML = "";
+            }
+            if (document.getElementById('ServiceName').value == '') {
+                document.getElementById("span_servicename").innerHTML = "Enter Service Name";
+            }
+            else {
+                document.getElementById("span_servicename").innerHTML = "";
+            }
+            if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Event").innerHTML = "Select Event Name";
+            }
+            else {
+                document.getElementById("span_Event").innerHTML = "";
+            }
+
+            document.getElementById("span_Days").innerHTML = "";
+            //if (document.getElementById('WeekDays').value == '') {
+            //    document.getElementById("span_Days").innerHTML = " Please Choose Days";
+            //}
+            //else {
+            //    document.getElementById("span_Days").innerHTML = "";
+            //}
+        }
+        else {
+
+            if ($("#Service :selected").text() == "Monthly Twice Service") {
+                document.getElementById("span_Days").innerHTML = "";
+
+                var startDate = $("#ServiceDate").val();
+                var splitedStartDate = startDate.split("/");
+                var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+                //    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                var to = "";
+                $("#To :selected").each(function (i, selected) {
+                    to += $(selected).text() + " ";
+                });
+                var cc = "";
+                $("#CC :selected").each(function (i, selected) {
+                    cc += $(selected).text() + " ";
+                });
+                var bcc = "";
+                $("#BCC :selected").each(function (i, selected) {
+                    bcc += $(selected).text() + " ";
+                });
+
+                
+
+                values =
+                  {
+                      "ServiceType": $("#Service :selected").text(),
+                      "ServiceHour": "",
+                      "SelectDate": $("#ServiceDate").val(),
+                      "Days": "",
+                      "ServiceStartTime": $("#TimeSlot1").val(),
+                      "ServiceName": $("#ServiceName").val(),
+                      "EventMethodName": $("#EventSelect :selected").text(),
+                      "To": to,
+                      "CC": cc,
+                      "BCC": bcc,
+                      "Template": $("#TempSelect").val(),
+                      "Subject": $("#Subject").val()
+                  }
+
+            }
+
+            /////
+            $("div#spinner").fadeIn("fast");
+            var opts =
+              {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-right",
+                  "toastClass": "White",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "2000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              }
+
+            
+
+            $.ajax({
+                url: "../../ReminderService/AddNewEdit/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result.Result === "Success") {
+
+                        
+                        //$("#portlet-config").modal('hide');
+                        toastr.success("Reminder service added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                    if (result.Result === "Already") {
+
+                        //$("#portlet-config").modal('hide');
+                        toastr.warning("Reminder template already exist", opts);
+                        $("div#spinner").fadeOut("fast");
+                        // setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        var datefm = new Date($("#FromDate").val());
+        var dateto = new Date($("#ToDate").val());
+
+        var startDate = $("#FromDate").val();
+        var splitedStartDate = startDate.split("/");
+        var endDate = $("#ToDate").val();
+        var splitedEndDate = endDate.split("/");
+        var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+        var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+        var fmmonth = new Date(splitedStartDate[1]);
+        var tomonth = new Date(splitedEndDate[1]);
+        var fmyear = new Date(splitedStartDate[2]);
+        var toyear = new Date(splitedEndDate[2]);
+
+
+        if (startDateTime > endDateTime) {
+
+            $("#span_ServiceDateTo").html("End Date should be greater than the Start Date").show();
+        }
+        else {
+            $("#span_ServiceDateTo").html("").show();
+        }
+
+        //if (fmmonth != tomonth) {
+
+        //    $("#span_ServiceDateTo").html("Select Same Month").show();
+        //}
+        //else {
+        //    $("#span_ServiceDateTo").html("").show();
+        //}
+
+        //if (fmyear != toyear)
+        //{
+        //    $("#span_ServiceDateTo").html("Select Same Year").show();
+        //}
+        //else {
+        //    $("#span_ServiceDateTo").html("").show();
+        //}
+        ///
+
+
+
+
+    }
+    else if ($("#Service").find("option:selected").text() == "Monthly Service") {
+
+        //$("#ServiceDate").attr("disabled", false);
+        //$("#Week").attr("disabled", true);
+        //$("#TimeSlot1").attr("disabled", true);
+        //$("#WeekDays").attr("disabled", true);
+        //$("#FromDate").attr("disabled", true);
+        //$("#ToDate").attr("disabled", true);
+
+        //$('#span_Hours').text("").show();
+        //$('#span_Days').text("").show();
+        //$('#span_Week').text("").show();
+        //$('#span_ServiceToDate').text("").show();
+        //$('#span_ServiceDateFrom').text("").show();
+
+
+        document.getElementById("span_ServiceType").innerHTML = "";
+        document.getElementById("span_Hours").innerHTML = "";
+
+        //if (document.getElementById('ServiceDate').value == '') {
+        //    document.getElementById("span_ServiceDate").innerHTML = " Please Select Date";
+        //}
+        //else {
+        //    document.getElementById("span_ServiceDate").innerHTML = "";
+
+
+
+        if (document.getElementById('TimeSlot1').value == '' || document.getElementById('ServiceDate').value == '' || document.getElementById('ServiceName').value == '' || $("#EventSelect").find("option:selected").text() == "--Select--") {
+
+            if (document.getElementById('TimeSlot1').value == '') {
+                document.getElementById("span_StartTime").innerHTML = "Select Start Time";
+            }
+            else {
+                document.getElementById("span_StartTime").innerHTML = "";
+
+            }
+            if (document.getElementById('ServiceDate').value == '') {
+                document.getElementById("span_ServiceDate").innerHTML = "Select Date";
+            }
+            else {
+                document.getElementById("span_ServiceDate").innerHTML = "";
+            }
+
+            if (document.getElementById('ServiceName').value == '') {
+                document.getElementById("span_servicename").innerHTML = "Enter Service Name";
+            }
+            else {
+                document.getElementById("span_servicename").innerHTML = "";
+            }
+            if ($("#EventSelect").find("option:selected").text() == "--Select--") {
+                document.getElementById("span_Event").innerHTML = "Select Event Name";
+            }
+            else {
+                document.getElementById("span_Event").innerHTML = "";
+            }
+
+
+            document.getElementById("span_Days").innerHTML = "";
+
+            //if (document.getElementById('WeekDays').value == '') {
+            //    document.getElementById("span_Days").innerHTML = " Please Choose Days";
+            //}
+            //else {
+            //    document.getElementById("span_Days").innerHTML = "";
+            //}
+        }
+        else {
+
+            /////
+            document.getElementById("span_Days").innerHTML = "";
+            if ($("#Service :selected").text() == "Monthly Service") {
+
+                var startDate = $("#ServiceDate").val();
+                var splitedStartDate = startDate.split("/");
+                var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+
+                //    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                var to = "";
+                $("#To :selected").each(function (i, selected) {
+                    to += $(selected).text() + " ";
+                });
+                var cc = "";
+                $("#CC :selected").each(function (i, selected) {
+                    cc += $(selected).text() + " ";
+                });
+                var bcc = "";
+                $("#BCC :selected").each(function (i, selected) {
+                    bcc += $(selected).text() + " ";
+                });
+
+                
+                
+
+                values =
+                  {
+                      "ServiceType": $("#Service :selected").text(),
+                      "ServiceHour": "",
+                      "SelectDate": $("#ServiceDate").val(),
+                      "Days": "",
+                      "ServiceStartTime": $("#TimeSlot1").val(),
+                      "ServiceName": $("#ServiceName").val(),
+                      "EventMethodName": $("#EventSelect :selected").text(),
+                      "To": to,
+                      "CC": cc,
+                      "BCC": bcc,
+                      "Template": $("#TempSelect").val(),
+                      "Subject": $("#Subject").val()
+                  }
+
+            }
+            $("div#spinner").fadeIn("fast");
+            /////
+
+            var opts =
+             {
+                 "closeButton": true,
+                 "debug": false,
+                 "positionClass": "toast-top-right",
+                 "toastClass": "White",
+                 "onclick": null,
+                 "showDuration": "300",
+                 "hideDuration": "1000",
+                 "timeOut": "2000",
+                 "extendedTimeOut": "1000",
+                 "showEasing": "swing",
+                 "hideEasing": "linear",
+                 "showMethod": "fadeIn",
+                 "hideMethod": "fadeOut"
+             }
+
+            
+
+            $.ajax({
+                url: "../../ReminderService/AddNewEdit/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result.Result === "Success") {
+
+                        
+                        //$("#portlet-config").modal('hide');
+                        toastr.success("Reminder service added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                    if (result.Result === "Already") {
+
+                        //$("#portlet-config").modal('hide');
+                        toastr.warning("Reminder template already exist", opts);
+                        $("div#spinner").fadeOut("fast");
+                        // setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+
+                }
+
+            });
+        }
+
+
+    }
+    else {
+        document.getElementById("span_ServiceType").innerHTML = "Select Service Type";
+    }
+
+}
+
+    </script>
+</body>
+</html>

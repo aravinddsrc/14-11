@@ -1,0 +1,189 @@
+﻿@model DSRCManagementSystem.ManageServer
+{ Layout = null; }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddServer</title>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add Server</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">
+                            Location Name</label>
+                        <label class="control-label" style="color: red;">
+                            *</label>
+                        @Html.DropDownListFor(m => m.LocationId, ViewBag.location as SelectList, new { @id = "LocationName", @class = "form-control" })
+                        <span id="employee"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.RackNo, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.RackNo, new { @id = "RackNo", @name = "RackNo", @class = "form-control", @autocomplete = "off", @maxlength = 4 })
+                        @Html.ValidationMessageFor(X => X.RackNo, null, new { @style = "color:red" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.AssetId, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.AssetId, new { @id = "Asset", @name = "HardwaresId", @class = "form-control", @autocomplete = "off", @maxlength = 5 })
+                        @Html.ValidationMessageFor(X => X.AssetId, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.MachineName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.MachineName, new { @id = "MachineName", @name = "MachineName", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.MachineName, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ServerMake, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.ServerMake, new { @id = "ServerMake", @name = "ServerMake", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.ServerMake, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Model, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Model, new { @id = "Model", @name = "Model", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.Model, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Processor, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Processor, new { @id = "Processor", @name = "Processor", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.Processor, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Memory, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Memory, new { @id = "Memory", @name = "Memory", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.Memory, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.HardDisks, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.HardDisks, new { @id = "HardDisks", @name = "HardDisks", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.HardDisks, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Raid, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Raid, new { @id = "Raid", @name = "Raid", @class = "form-control", @autocomplete = "off", @maxlength = 20 })
+                        @Html.ValidationMessageFor(X => X.Raid, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Configurationdetails, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Configurationdetails, new { @id = "Configurationdetails", @name = "Configurationdetails", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.Configurationdetails, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.OperatingSystem, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.OperatingSystem, new { @id = "OperatingSystem", @name = "OperatingSystem", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.OperatingSystem, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ServerEdition, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.ServerEdition, new { @id = "ServerEdition", @name = "ServerEdition", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.ServerEdition, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.NameofProjectsHosted, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.NameofProjectsHosted, new { @id = "NameofProjectsHosted", @name = "NameofProjectsHosted", @class = "form-control", @autocomplete = "off", @maxlength = 50 })
+                        @Html.ValidationMessageFor(X => X.NameofProjectsHosted, null, new { @style = "color:red" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel</button>
+        <button type="submit" id="btnAdd" class="btn btn-info" onclick="AddServer()">
+            Save</button>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+        $(function () {
+            alert("start");
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+      function AddServer() {
+          $.ajax({ url: "../../AssetManagement/AddNewComputer/",
+
+              type: 'GET', cache: false,
+              success: function (result) {
+                  alert(result);
+             success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal('show');
+
+              }
+          });
+          }
+  }
+</script>

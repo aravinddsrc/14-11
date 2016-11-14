@@ -1,0 +1,136 @@
+﻿@model DSRCManagementSystem.Models.CheckVal
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ProjectMeeting</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+    <script type="text/javascript">
+        
+    </script>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascript:window.location.reload()" >
+                ×</button>
+            <h4 class="modal-title">Edit Menu</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                  
+                        <div class="form-group">
+                         <div class="col-md-3" style="padding-left: 5px">  
+                             @Html.Label("Menu Name")                       
+                             @Html.TextBox("ModuleName", (string)ViewBag.Modules, new { @name = "PageModuleName", @id = "PageModuleName", @class = "form-control", @style = "Width:200Px;Height:42px;margin-left: 116px;margin-top: -32px;",@maxlength = "50",@float="left" }) 
+                              @Html.Hidden("PageModuleID",(int)ViewBag.PageModuleID, new { @name = "PageModuleId", @id = "PageModuleId", @class = "form-control", @style = "Width:200Px;Height:42px;margin-left: 116px;margin-top: -32px;",@maxlength = "50",@float="left" }) 
+                              @Html.Hidden("FunctionID", (int)ViewBag.FunctionID, new { @name = "FunctionID", @id = "FunctionID", @class = "form-control", @style = "Width:200Px;Height:42px;margin-left: 116px;margin-top: -32px;",@maxlength = "50",@float="left" })
+                             @Html.Hidden("Menutype", (string)ViewBag.Menu, new { @name = "Menutype", @id = "Menutype", @class = "form-control", @style = "Width:200Px;Height:42px;margin-left: 116px;margin-top: -32px;",@maxlength = "50",@float="left" })
+                           <span id="span_ActivityNames" style="color: Red;"></span> 
+                         </div>    
+                   
+                   
+                        </div>
+                  
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >
+                    Cancel
+                </button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="Saveact()">
+                    Save
+                </button>
+            </div>
+        </div>
+        <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="tools">
+                    <div id="PartialSection">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+
+
+    function Saveact() {
+
+
+        var PageModuleName = $("#PageModuleName").val();
+        var fid = $("#FunctionID").val();
+        var mid = $("#PageModuleId").val();
+        var menu = $("#Menutype").val();
+        
+        if ((PageModuleName == "")) {
+            if (PageModuleName == "") {
+                document.getElementById("span_ActivityNames").innerHTML = "Enter Page Name";
+            }
+            else {
+                document.getElementById("span_ActivityNames").innerHTML = "";
+            }
+
+
+        }
+        else {
+        
+            $.ajax({
+                type: 'GET',
+                url: "../../Administration/EditMenu",
+                data: { text: PageModuleName, fid: fid, mid: mid, Menutype: menu},
+                success: function (result) {
+                    if (result == "Success") {
+                        var opts = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "onclick": null,
+                            "showDuration": "500",
+                            "hideDuration": "1000",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.success("Saved successfully", opts);
+                    }
+                    setTimeout(function () { location.reload(); }, 1000);
+                },
+            });
+        }
+    }
+</script>

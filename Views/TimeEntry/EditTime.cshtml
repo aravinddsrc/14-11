@@ -1,0 +1,229 @@
+﻿@model DSRCManagementSystem.Models.EditTimeEntry
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Attendance Entry</title>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+    </head>
+    <body>
+     <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Attendance Entry</h4>
+        </div>
+        @using (Html.BeginForm("EditTime", "TimeEntry", FormMethod.Post))
+            { 
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12" style="text-align: right">
+                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                         @Html.Label("Employee ID", new { @class = "control-label" })                        
+                        @Html.TextBoxFor(x => x.EmployeeId, new { @id = "EmployeeId", @name = "EmployeeId", @class = "form-control", @placeholder = "EmployeeId", @autocomplete = "off", @maxlength = 100, @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.UserID)
+                        @Html.HiddenFor(x => x.BranchID, new { @id = "BranchID" })
+                      @* @Html.ValidationMessageFor(X => X.EmployeeName, null, new { @style = "color:red" })*@
+                    </div>
+                    </div>
+                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.EmployeeName, new { @class = "control-label" })                      
+                        @Html.TextBoxFor(x => x.EmployeeName, new { @id = "EmployeeName", @name = "EmployeeName", @class = "form-control", @placeholder = "EmployeeName", @autocomplete = "off", @maxlength = 100, @disabled = "disabled" })
+                      @*  @Html.ValidationMessageFor(X => X.EmployeeName, null, new { @style = "color:red" })*@
+                       
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Date, new { @class = "control-label" })                      
+                        @Html.TextBoxFor(x => x.Date, new { @id = "Date", @name = "Date", @class = "form-control", @placeholder = "Date", @autocomplete = "off", @maxlength = 100, @disabled = "disabled" })
+                      @*  @Html.ValidationMessageFor(X => X.EmployeeName, null, new { @style = "color:red" })*@
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group datetimepickerTime1">
+                         @Html.Label("In Time", new { @class = "control-label" })     
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.InTime, new { @id = "InTime", @name = "InTime", @class = "form-control", @placeholder = "In Time", @autocomplete = "off", @maxlength = 5 })
+                        @Html.ValidationMessageFor(X => X.InTime, null, new { @style = "color:red" })
+                        <span id="span_InTime" style="color: Red;"></span>
+                    </div>
+                    <div class="form-group datetimepickerTime2">
+                        @Html.Label("Out Time", new { @class = "control-label" })     
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.OutTime, new { @id = "OutTime", @name = "OutTime", @class = "form-control", @placeholder = "Out Time", @autocomplete = "off", @maxlength = 5 })
+                        @Html.ValidationMessageFor(X => X.OutTime, null, new { @style = "color:red" })                  
+                        <span id="span_OutTime" style="color: Red;"></span>
+                    </div>
+                </div>
+                </div>
+                </div>
+                }
+ <div class="modal-footer">
+  <button type="button" id="btnAdd" class="btn btn-info" onclick="UpdateEnrtyTime()" >
+                Save
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" >
+                Cancel
+            </button>
+            
+            </div>   
+         </div>         
+     <script type="text/javascript">
+        
+       
+         $(document).ready(function () {
+             $(".datetimepickerTime1").datetimepicker
+           ({
+               format: 'LT',
+               pickDate: false
+           });
+         });
+
+         $(document).ready(function () {
+             $(".datetimepickerTime2").datetimepicker
+           ({
+               format: 'LT',
+               pickDate: false
+           });
+       });
+       
+           $('#InTime').keypress(function (e) {
+               var regex = new RegExp("^[0-9\\:\\s]+$");
+               var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+               if (regex.test(str)) {
+
+                   return true;
+               }
+               $("#span_InTime").html("Enter Valid In Time").show();
+               return false;
+           });
+
+           $('#OutTime').keypress(function (e) {
+               var regex = new RegExp("^[0-9\\:\\s]+$");
+               var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+               if (regex.test(str)) {
+
+                   return true;
+               }
+               $("#span_OutTime").html("Enter Valid Out Time").show();
+               return false;
+           });
+
+
+         function UpdateEnrtyTime() {
+             if (document.getElementById('InTime').value == '' || document.getElementById('OutTime').value == '') {
+
+                 if (document.getElementById('InTime').value == '')
+                     document.getElementById("span_InTime").innerHTML = "Enter In Time";
+                 else
+                     document.getElementById("span_InTime").innerHTML = "";
+                 if (document.getElementById('OutTime').value == '')
+                     document.getElementById("span_OutTime").innerHTML = "Enter Out Time ";
+                 else {
+                     document.getElementById("OutTime").innerHTML = "";
+                 }
+             }
+
+             //             else {
+             //                 var submitForm = true;
+             //             }
+
+             //             if (submitForm === true) {
+
+             else {
+
+
+
+
+
+                 var fromTime = $("#InTime").val();
+                 var endTime = $("#OutTime").val();
+                 var hour1 = parseInt(fromTime.substring(0, 2));
+                 var hour2 = parseInt(endTime.substring(0, 2));
+
+                 if (hour1 < hour2) {
+
+                    // if (hour1 == 12 && hour2 == 1) {
+
+                         var values =
+                    {
+                        "UserId": $("#UserId").val(),
+                        "BranchID":$("#BranchID").val(),
+                        "EmployeeName": $("#EmployeeName").val(),
+                        "Date": $("#Date").val(),
+                        "EmployeeId": $("#EmployeeId").val(),
+                        "InTime": $("#InTime").val().trim(),
+                        "OutTime": $("#OutTime").val().trim()
+                    }
+
+                         var opts = {
+                             "closeButton": true,
+                             "debug": false,
+                             "positionClass": "toast-top-right",
+                             "toastClass": "White",
+                             "onclick": null,
+                             "showDuration": "300",
+                             "hideDuration": "1000",
+                             "timeOut": "3000",
+                             "extendedTimeOut": "1000",
+                             "showEasing": "swing",
+                             "hideEasing": "linear",
+                             "showMethod": "fadeIn",
+                             "hideMethod": "fadeOut"
+                         }
+                     }
+
+                     $.ajax({
+                         url: "../../TimeEntry/EditTime",
+                         type: 'POST',
+                         cache: false,
+                         data: values,
+                         success: function (result) {
+
+
+                             if (result == true) {
+                                 $("#portlet-config").modal("hide");                                             
+                                 toastr.success("User Time has been updated successfully", opts);
+                                 setTimeout(function () {                                     
+                                     window.location = window.location;
+                                 }, 1000);
+                             }
+                             else {
+                                 document.getElementById("span_OutTime").innerHTML = "OutTime Must Greater Than The InTime ";
+                                 var submitForm = false;
+                             }
+
+                         }
+
+                     });
+                 }
+             }
+         
+                   
+
+                   </script>
+
+            </body>
+            </html>

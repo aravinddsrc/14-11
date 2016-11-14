@@ -1,0 +1,275 @@
+﻿@model DSRCManagementSystem.Models.AddLeave
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Leave Days</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+    @*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <style>
+    </style>
+</head>
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                x</button>
+            <h4 class="modal-title">Edit Leave Days</h4>
+        </div>
+
+        <div class="modal-body">
+
+            @using (Html.BeginForm("Adminstrationsetup", "Edit", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                        @Html.HiddenFor(x => x.LeaveTypeId, new { @id = "LeaveTypeId", @name = "LeaveTypeId", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveType_DaysAllowed, @autocomplete = "off" })
+                    </div>
+                </div>         
+               
+                
+                <div class="row">
+
+                    <div class="col-md-6">
+
+
+
+                        <div class="form-group">
+                            @Html.Label("Leave Type", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+
+                            @Html.TextBoxFor(x => x.Name, new { @id = "Name", @name = "Name", @class = "form-control", @autocomplete = "off", @maxlength = 3 })
+
+                            <span id="span_ID8" style="color: Red;"></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Days Allowed", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @if (@Model.Name == "Maternity")
+                            {
+                                @Html.TextBoxFor(x => x.DaysAllowed, new { @id = "DaysAllowed", @name = "DaysAllowed", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveType_DaysAllowed, @autocomplete = "off", @maxlength = "3" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(x => x.DaysAllowed, new { @id = "DaysAllowed", @name = "DaysAllowed", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveType_DaysAllowed, @autocomplete = "off", @maxlength = "2" })
+                            }
+
+                            <span id="span_ID10" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+                </div>           
+                                              
+            }
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick='Save()'>
+                Save
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var text = document.getElementById('Name')
+        text.disabled = true;
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+            $("#NameId").select2();
+
+        });
+
+        $("#DaysAllowed").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+
+
+        }));
+
+        function Save() {
+
+
+            if (document.getElementById('DaysAllowed').value == 0) {
+
+
+                if (document.getElementById('DaysAllowed').value == 0) {
+                    document.getElementById("span_ID10").innerHTML = "Enter days allowed";
+                }
+                else {
+
+
+                    document.getElementById("span_ID10").innerHTML = "";
+                }
+
+            }
+
+
+
+            else if (document.getElementById('LeaveTypeId').value == 1|| document.getElementById('LeaveTypeId').value ==2 || document.getElementById('LeaveTypeId').value == 3) {
+
+                if (document.getElementById('DaysAllowed').value > 30) {
+
+                    document.getElementById("span_ID10").innerHTML = " leave should be less than 30";
+                }
+                else {
+
+                    var values =
+                 {
+                     "LeaveTypeId": $("#LeaveTypeId").val(),
+                     "DaysAllowed": $("#DaysAllowed").val()
+                 }
+                    var opts =
+                {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                    $.ajax({
+                        url: "../../AdministrationSetup/Edit/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        traditional: true,
+                        global: false,
+                        success: function (result) {
+                            if (result.Result === "Success") {
+
+                                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                toastr.success(" Leave Days  updated successfully", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+
+                            }
+
+                            if (result == "Warning") {
+                                toastr.warning("Already Exist", opts);
+                            }
+                        }
+                    });
+                }
+            }
+
+            else if (document.getElementById('LeaveTypeId').value == 6)
+            {
+                if (document.getElementById('DaysAllowed').value > 200) {
+                    document.getElementById("span_ID10").innerHTML = " leave should be less than 200";
+                }
+                else {
+
+                    var values =
+                 {
+                     "LeaveTypeId": $("#LeaveTypeId").val(),
+                     "DaysAllowed": $("#DaysAllowed").val()
+                 }
+                    var opts =
+                {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                    $.ajax({
+                        url: "../../AdministrationSetup/Edit/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        traditional: true,
+                        global: false,
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                toastr.success(" Leave Days  updated successfully", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+                            if (result == "Warning") {
+                                toastr.warning("Already Exist", opts);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

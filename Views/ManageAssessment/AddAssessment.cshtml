@@ -1,0 +1,512 @@
+﻿@model DSRCManagementSystem.Models.ManageAssessment
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Assessement</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="http://jsfiddle.net/laelitenetwork/puJ6G/" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+  
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+    <style type="text/css">
+        .center {
+            width: 150px;
+            margin: 40px auto;
+        }
+
+         
+
+         div#spinner {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1030;
+        /*background-color: #333333;*/
+        opacity: 0.8;
+    }
+
+
+
+
+
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+            $("#sp").select2();
+            $("#roles").select2();
+            $("#Idbranchname").select2();
+            $("#Iddepartment").select2();
+            $("#Idgroup").select2();
+        
+
+
+
+
+        });
+        $(document).ready(function () {
+
+
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                //startDate: '1d',
+                todayHighlight: true,
+                autoclose: true,
+                //endDate: '1d'
+
+            });
+        });
+
+        function Save() {
+
+
+            
+
+           @* $("div#spinner").fadeIn("fast");*@
+
+            var AssessmentName = $("#AssessmentName").val();
+            
+
+            var AssessmentNametrim = AssessmentName.replace(/\s/g, "").length;
+
+            var TotalScore = parseInt($("#TotalScore").val());
+
+            // var TotalScoretrim = TotalScore.replace(/\s/g, "").length;
+
+            var PassingScore = parseInt($("#PassingScore").val());
+
+            //var PassingScoretrim = PassingScore.replace(/\s/g, "").length;
+
+          
+            $("#multiselect_to option").prop("selected", "selected");
+
+            var Idbranchname = $("#Idbranchname").val();
+            var Iddepartment = $("#Iddepartment").val();
+            var Idgroup = $("#Idgroup").val();
+
+            
+
+            if ((TotalScore === 0 || PassingScore===0||AssessmentNametrim === 0 || document.getElementById('AssessmentDate').value === "" ||
+               Idbranchname === "0" || Iddepartment === "0" || isNaN(TotalScore) || isNaN(PassingScore) || (PassingScore > TotalScore))) {
+                if (AssessmentNametrim === 0) {
+                    document.getElementById("span_AssessmentName").innerHTML = "Enter Assessment Name";
+                }
+                else {
+                    document.getElementById("span_AssessmentName").innerHTML = "";
+                }
+                if (document.getElementById('AssessmentDate').value === "") {
+                    document.getElementById("span_AssessmentDate").innerHTML = "Select Assessment Date";
+                }
+                else {
+                    document.getElementById("span_AssessmentDate").innerHTML = "";
+                }
+                if (TotalScore === '' || isNaN(TotalScore) || TotalScore===0) {
+                    document.getElementById("span_TotalScore").innerHTML = "Enter Total Score";
+                }
+                else {
+
+                    document.getElementById("span_TotalScore").innerHTML = "";
+                }
+                if (PassingScore === '' || isNaN(PassingScore) || PassingScore===0) {
+                    document.getElementById("span_PassingScore").innerHTML = "Enter Passing Score";
+                }
+                else {
+                    document.getElementById("span_PassingScore").innerHTML = "";
+                }
+                if (PassingScore > TotalScore) {
+                    document.getElementById("span_PassingScore").innerHTML = "Passing Score Must be Lesser or Equal to Total Score";
+                }
+                else {
+                    document.getElementById("span_PassingScore1").innerHTML = "";
+                }
+                //if (document.getElementById('multiselect_to').value == '') {
+                //    document.getElementById("spanmultiselect_to").innerHTML = "Assign User";
+                //}
+                if (Idbranchname === "0") {
+                    document.getElementById("span_Idbranchname").innerHTML = "Select Branch ";
+                }
+                else {
+                    document.getElementById("span_Idbranchname").innerHTML = "";
+                }
+                if (Iddepartment === "0") {
+                    document.getElementById("span_Iddepartment").innerHTML = "Select Department";
+                }
+                else {
+                    document.getElementById("span_Iddepartment").innerHTML = "";
+                }
+                //if (TotalScore === 0) {
+                //    document.getElementById("span_TotalScore").innerHTML = "Total Score Must Greater than Zero";
+                //}
+                //else {
+                //    document.getElementById("span_TotalScore").innerHTML = "";
+                //}
+                //if (PassingScore === 0) {
+                //    document.getElementById("span_PassingScore").innerHTML = "Passing Score Must Greater than Zero";
+                //}
+                //else {
+                //    document.getElementById("span_PassingScore").innerHTML = "";
+                //}
+            }
+            else {
+                $("div#spinner").fadeIn("fast");
+                var values =
+                {
+                    "AssessmentName": $("#AssessmentName").val(),
+                    "AssessmentDescription": $("#AssessmentDescription").val(),
+                    "AssessmentDate": $("#AssessmentDate").val(),
+                    "TotalScore": $("#TotalScore").val(),
+                    "PassingScore": $("#PassingScore").val(),
+                    "SelectedEmpList": $("#multiselect_to").val(),
+                    "Idbranchname": $("#Idbranchname").val(),
+                    "Iddepartment": $("#Iddepartment").val(),
+                    "Idgroup": $("#Idgroup").val()
+
+                }
+                var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                $.ajax({
+
+                    url: "../../ManageAssessment/AddAssessment/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+
+                        if (result == "Success") {
+                            toastr.success(" Assessment Added successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+
+                        }
+                        if (result == "Warning") {
+                            toastr.warning("Assessment Name Already Exist", opts);
+                        }
+                    }
+
+                });
+            }
+        }
+
+
+
+        function change(ID) {
+          
+
+            var DepartmentName = $("#InActive").prop("checked");
+            var url2 = '@Url.Action("GetAvailEmployees")';
+
+            $.get(url2, { DepartmentName: DepartmentName }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                });
+                $("#multiselect").html(items.join(' '));
+                //$("#multiselect").select2();
+            });
+
+        }
+
+        function GetDepartments() {
+           
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetDepartments")';
+
+                $.get(url2, { BranchId: Bid }, function (data) {
+
+                    var items = [];
+                    var itemGroup = [];
+                    itemGroup.push("");
+                    itemGroup.push("<option value=0>--Select--</option>");
+                    items.push("");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#Iddepartment").html(items.join(' '));
+                    $("#Iddepartment").select2();
+                    $("#Idgroup").html(itemGroup.join(' '));
+                    $("#Idgroup").select2();
+                });
+            }
+        }
+        function GetGroups() {
+          
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+
+            if (Did !== "") {
+
+                var url2 = '@Url.Action("GetGroups")';
+
+                $.get(url2, { DepartmentId: Did }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#Idgroup").html(items.join(' '));
+                    $("#Idgroup").select2();
+                });
+            }
+        }
+
+
+    </script>
+    @{
+        DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+        var branchcnt = db.Master_Branches.ToList().Count;
+        var branchId = db.Master_Branches.ToList();
+        }
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" onclick="javascript:window.location.reload()" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">Add Assessment </h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("AddAssessment", "ManageAssessment", FormMethod.Get, new { @id = "form" }))
+            {
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: right">
+                                @Html.Label("*", new {@style = "color:#FF0000"}) Required field(s)
+                            </div>
+                               @if (branchcnt==1)
+                        
+                        {
+                            <div class="visible-md">
+
+                                @Html.Label("Branches",(string)ViewBag.Lbl_branch, new {@class = "control-label"})
+
+                                @Html.Label("Branch", new {@class = "control-label"})
+
+                                 @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.DropDownList("Idbranchname", ViewBag.BranchList as SelectList, new {@id = "Idbranchname", @name = "BranchName", @class = "form-control", @onchange = "GetDepartments()", @style = "Width:520Px;Height:42px"})
+                       
+                            </div>
+                               }
+                            else
+                            {
+                                 <div class="col-md-12" style="width: 200px; padding-top: 7px; margin-left: 15px;">
+
+                                @Html.Label("Branches",(string)ViewBag.Lbl_branch, new {@class = "control-label"})
+
+                                @Html.Label("Branch", new {@class = "control-label"})
+
+                                 @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.DropDownList("Idbranchname", ViewBag.BranchList as SelectList, new {@id = "Idbranchname", @name = "BranchName", @class = "form-control", @onchange = "GetDepartments()", @style = "Width:520Px;Height:42px"})
+                            <span id="span_Idbranchname" style="color: Red;"></span>
+                            </div>
+                               }
+
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px;margin-left: 15px;">
+                                @Html.Label("Department",(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                 @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.DropDownList("Iddepartment", ViewBag.DepartmentIdList as SelectList, new { @id = "Iddepartment", @name = "DepartmentId", @class = "form-control", @onchange = "GetGroups()", @style = "Width:200Px;Height:42px" })
+                            <span id="span_Iddepartment" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px; margin-left: 115px;">
+                                @Html.Label("Department Group",(string)ViewBag.Lbl_depgroup , new { @class = "control-label" })
+                                @Html.DropDownList("Idgroup", ViewBag.Groups as SelectList, new { @id = "Idgroup", @name = "GroupName", @class = "form-control" , @style = "Width:200Px;Height:42px"})
+                            <span id="span_Idgroup" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px; margin-left: 15px;">
+                                @Html.Label("Assessment Name")
+                                @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.TextBoxFor(x => x.AssessmentName, new { @id = "AssessmentName", @name = "AssessmentName", @class = "form-control", @maxlength = 50, @style = "Width:200Px;Height:42px" })
+                                <span id="span_AssessmentName" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px; margin-left: 115px;">
+                                @Html.Label("Assessment Date ")
+                                @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.TextBox("AssessmentDate", "", new { @id = "AssessmentDate", @name = "AssessmentDate", @class = "form-control datetimepicker", @placeholder = "Assessment Date", @autocomplete = "off", @style = "Width:200Px;Height:42px" })
+                                <span id="span_AssessmentDate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px; margin-left: 15px;">
+                                @Html.Label("Total Score ")
+                                @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.TextBoxFor(x => x.TotalScore, new { @name = "TotalScore", @id = "TotalScore", @class = "form-control", @style = "Width:200Px;Height:42px", @maxlength = "200",@type="number" ,@onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" })
+                                <span id="span_TotalScore" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-6" style="width: 200px; padding-top: 7px; margin-left: 115px;">
+                                @Html.Label("Passing Score ")
+                                @Html.Label("*", new { @style = "color:red;font-weight:;" })
+                                @Html.TextBoxFor(x => x.PassingScore, new { @name = "PassingScore", @id = "PassingScore", @class = "form-control", @style = "Width:200Px;Height:42px", @maxlength = "200" ,@type="number" ,@onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;"  })
+                                <span id="span_PassingScore" style="color: Red;"></span>
+                                <span id="span_PassingScore1" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12" style="width: 200px; padding-top: 7px; margin-left: 15px;">
+                                @Html.Label("Assessment Description")
+                                @Html.TextAreaFor(x => x.AssessmentDescription, new { @name = "AssessmentDescription", @id = "AssessmentDescription", @class = "form-control", @style = "Width:520Px;Height:100px", @maxlength = "200" })
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
+
+                                
+
+                 
+
+            }
+            @*     <div class="row">
+                <br />
+                <div class="col-md-6">
+                    <label>
+                        @Html.CheckBox("InActive", new {@id = "InActive", @class = "cb-wrapper", @onchange = "change(this.value)"})
+                        Filter Group
+                    </label>
+                </div>
+                <br/>
+                <br/>
+                <br />
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-5">
+                    <div class="form-group">
+                        @Html.Label("User Name", new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.DropDownList("from", (MultiSelectList)ViewBag.AuthorizedUsers, new { @name = "from", @class = "form-control", @id = "multiselect", @multiple = "multiple", @size = "8", @style = "Height:150px" })
+                        <span id="spanmultiselect" style="color: Red"></span>
+                    </div>
+                </div>
+
+                <div class="col-xs-2" style="text-align: center">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <button type="button" id="multiselect_rightSelected" class="btn btn-block">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                    <button type="button" id="multiselect_leftSelected" class="btn btn-block">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                    </button>
+                </div>
+                <div class="col-xs-5">
+                    <div class="form-group">
+                        @Html.Label("Assign Users", new { @class = "control-label" })
+                        @Html.Label(" *", new { @style = "color:#FF0000" })
+                        <select name="to" id="multiselect_to" class="form-control" multiple="multiple" style="height: 150px">
+                          
+                        </select>
+                        <span id="spanmultiselect_to" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>*@
+            </div>
+
+        <div id="spinner">
+                        <div id="LoaderContent" style="height: 100%;">
+                            <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+                        </div>
+                    </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="Save()">
+                    Save
+                </button>
+            </div>
+
+            <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="tools">
+                        <div id="PartialSection">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>

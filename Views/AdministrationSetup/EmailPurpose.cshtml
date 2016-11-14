@@ -1,0 +1,328 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.EmailPurpose>
+@{
+    ViewBag.Title = "Email Purpose";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style type="text/css">
+        textarea {
+            resize: none;
+        }
+    </style>
+
+}
+@{
+    int SNO = 1;
+
+}
+
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ViewRoles", "ManageRole")">Administration Setup</a></li>
+    <li class="active"><strong>Email Templates</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ViewRoles","ManageRole")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Email Templates</b>
+    </p>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Email Templates
+                </div>
+            </div>
+            <div>
+
+                @*<div class="row" >
+                      <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="col-sm-3 control-label">
+                       &nbsp;&nbsp; Week  @Html.Label(" ", new { @style = "color:#FF0000" })
+                         </label>
+                          @Html.DropDownList("Week", ViewBag.Week as SelectList, new { @id = "Week", @name = "Week", @class = "form-control" })
+                         <span id="span_ID9" style="color: Red;"></span>
+                       </div>
+                       </div>
+                    </div>  *@
+
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <br />
+
+                @using (Html.BeginForm("EmailPurpose", "AdministrationSetup", FormMethod.Post, new { @id = "form" }))
+                {
+                    
+                    <div class="btn-group" style="width: 220px; padding-top: 5px;">
+                        @Html.Label("Email Category", new { @class = "control-label" })<br />
+                        @Html.DropDownList("Emailcategory", ViewBag.Purpose as SelectList, "--Select--", new
+               {
+                   @id = "Emailcategory",
+                   @name = "Template",
+                   @class = "select2-container select2-container-multi select2 visible",
+                   onchange = "IsValid(this.value)"
+               })
+                    </div>
+                    <div class="btn-group" style="float: right" id="AddNewProject">
+                        <button type="button" class="btn btn-blue" style="font-weight: bold" onclick='AddMeeting()' />
+                        Add New Email Purpose
+                        <br />
+                    </div>
+                       <br /> 
+                    <br />
+                    <table class="table table-bordered datatable" id="tblMeeting">
+
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">S.No
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Email Purpose")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("To")
+                                </th>
+                                @* <th>
+                                        @Html.DisplayNameFor(i => i.Week)
+                                    </th>
+                                *@
+
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("CC")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Bcc")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Subject")
+                                </th>
+                                <th style="text-align: left;">
+                                    @Html.DisplayName("Template")
+                                </th>
+                                <th style="text-align: center;">Edit
+
+                                </th>
+                                <th style="text-align: center;">Delete
+                                </th>
+
+                            </tr>
+                        </thead>
+                        @{
+
+                    foreach (var item in Model)
+                    {
+                            <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                    @Html.HiddenFor(modelitem => item.Id)
+                                </td>
+                                <td style="width: 3800px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelItem => item.Purpose)
+
+                                </td>
+                                <td style="width: 4900px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelItem => item.To)
+                                </td>
+                                <td style="width: 3000px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelItem => item.CC)
+                                </td>
+                                <td style="width: 4000px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelitem => item.BCC)
+                                </td>
+                                <td style="width: 2500px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelitem => item.Subject)
+                                </td>
+                                <td style="width: 2500px; word-wrap: breakword; word-break: break-all; text-align: left;">
+                                    @Html.DisplayFor(modelitem => item.Template)
+                                </td>
+
+                                <td>
+                                    @*<a>
+                                    <button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditMail("@item.Id")'>
+                                    <i class="entypo-pencil"></i>Edit
+                                    </button>*@
+                                    <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditMail("@item.Id","@item.Purpose")'>
+                                        <i class="entypo-pencil"></i>
+                                    </a>
+                                    @*</a>*@
+                                </td>
+
+                                <td>
+                                    @*<a>
+                                    <button type="button"  class="btn btn-red btn-icon icon-left"  onclick='Delete("@item.Id")'  >
+                                    <i class="entypo-info" ></i> Delete
+                                    </button>
+                                    </a>*@
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.Id")'>
+                                        <i class="entypo-cancel"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                    }
+                        }
+
+                    </table>
+                    
+                   
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+        localStorage.clear();
+
+
+        var columnDefs;
+        //        if ($("aTargets")[6]) {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6]}];
+        //        } else {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5]}];
+        //        }
+
+        var table = $("#tblMeeting").dataTable({
+
+
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+            //"lengthMenu": [[leave, project, HwSw, -1], [leave, project, HwSw, "All"]],
+            "sPaginationType": "bootstrap",
+            "aaSorting": [],
+            //"columnDefs": [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }],
+            "columnDefs": columnDefs,
+            stateSave: true,
+            stateSaveCallback: function (settings, data) {
+                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+
+            }
+
+        });
+
+
+
+        //$("#tblMeeting").dataTable({
+        //    "sPaginationType": "bootstrap",
+        //    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]]
+        //    //            "bStateSave": false,
+        //    //            "columnDefs": columnDefs
+        //});
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+
+
+
+
+    function IsValid(date) {
+
+        $("#form").submit();
+
+    }
+
+    function Echange() {
+
+        var pur = $('#Emailcategory').find("option:selected").prop("text");
+
+
+        $.ajax({
+            "url": "/AdministrationSetup/EmailPurpose/",
+            "type": "POST",
+            data: { "EPurpose": pur },
+            //"dataType": "json",
+            "success": function () {
+                // window.location.reload();             
+
+            }
+        });
+    }
+
+
+
+    function AddMeeting() {
+
+        $.ajax({
+            url: "../../AdministrationSetup/AddNew/",
+            type: 'GET', cache: false,
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+            }
+
+        });
+
+    }
+
+
+    function EditMail(Id, Purpose) {
+
+        $.ajax({
+            url: "../../AdministrationSetup/AddNewEdit/",
+            type: 'GET',
+            cache: false,
+            data: { "Id": Id, "Purpose": Purpose },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+
+        });
+
+    }
+
+    function Delete(Id) {
+        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+            if (conform) {
+                $.ajax({
+                    url: "../AdministrationSetup/DeleteEmail/",
+                    type: 'POST', cache: false,
+                    data: { Id: Id },
+                    success: function (result) {
+                        if (result.Result === "Success") {
+                            toastr.success("Email purpose deleted successfully");
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+</script>

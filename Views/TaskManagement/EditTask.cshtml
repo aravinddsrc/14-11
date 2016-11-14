@@ -1,0 +1,302 @@
+﻿@model DSRCManagementSystem.Models.TaskManagement
+@{
+    ViewBag.Title = "EditTask";
+    Layout = null;
+}
+<!Doctype html>
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Task</title>
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    </head>
+    <body>
+     <style type="text/css">
+    div#spinner {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1030;
+        /*background-color: #333333;*/
+        opacity: 0.8;
+    }
+
+  
+       .dropdown-menu {
+    background-color: white;
+}        
+
+
+</style>
+       
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Edit Task</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("EditTask", "TaskManagement"))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new {@style = "color:#FF0000"}) Required field(s)
+                    </div>
+                </div>
+                 
+                
+                   <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                         @Html.Label("Task Description", new { @class = "control-label" })  
+                          @Html.Label("*", new { @style = "color:#FF0000" })   
+                          @Html.TextAreaFor(x => x.TaskDescription, new { @id = "TaskDescription", @name = "TaskDescription", @class = "form-control", @style = "height:45px", @maxlength = 75 })                                                                      
+                          <span id="span_Desc" style="color: Red;"></span>    
+                      </div>
+                      </div>
+                        <div class="col-md-6">
+                      <div class="form-group">
+                         @Html.Label("Assign Task To", new { @class = "control-label" })  
+                          @Html.Label("*", new { @style = "color:#FF0000" })   
+                          @Html.DropDownListFor(x=>x.TaskAssignedToID, ViewBag.ReportingUsers as SelectList, "--Select--", new { @id = "ReportingUsers", @name = "ProjectType", @class = "form-control", @maxlength = 50, @style = "height:42px; !important" })
+                          <span id="span_User" style="color: Red;"></span>    
+                      </div>
+                      </div>
+                   </div>
+                 <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                         @Html.Label("Assigned Date", new { @class = "control-label" })  
+                          @Html.Label("*", new { @style = "color:#FF0000" })   
+                            @Html.TextBoxFor(x => x.AssignedDate, new {Value = Model.AssignedDate.ToString("dd-MM-yyyy"), @id = "StartDateTime", @name = "StartDateTime", @class = "form-control datetimepicker", @autocomplete = "off",@style = "height:42px; !important" })
+                          <span id="span_AssignDate" style="color: Red;"></span>    
+                      </div>
+                      </div>
+                        <div class="col-md-6">
+                      <div class="form-group">
+                         @Html.Label("Recurring Type", new { @class = "control-label" })  
+                          @Html.Label("*", new { @style = "color:#FF0000" })   
+                          @Html.DropDownList("RecurringID", ViewBag.Recurring as SelectList, "--Select--", new { @id = "RecurringType", @name = "ProjectType", @class = "form-control", @maxlength = 50, @style = "height:42px; !important" })
+                          <span id="span_Recurring" style="color: Red;"></span>  
+                             
+                      </div>
+                      </div>
+                   </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label>
+                            @Html.CheckBoxFor(x => x.InActive, new {@id = "InActive"})
+                            Add To Calendar
+                        </label>
+
+                    </div>
+                    <div class="col-md-6" id="chkboxdiv">
+                        <input type="checkbox" name="Days" value="Monday" checked="@((Model.EditDays.Contains("Monday")))"/>M
+                        <input type="checkbox" name="Days" value="Tuesday" checked="@((Model.EditDays.Contains("Tuesday")))"/>T
+                        <input type="checkbox" name="Days" value="Wednesday" checked="@((Model.EditDays.Contains("Wednesday")))"/>W
+                        <input type="checkbox" name="Days" value="Thursday" checked="@((Model.EditDays.Contains("Thursday")))"/>T
+                        <input type="checkbox" name="Days" value="Friday" checked="@((Model.EditDays.Contains("Friday")))"/>F
+                        <input type="checkbox" name="Days" value="Saturday" checked="@((Model.EditDays.Contains("Saturday")))"/>S
+                        <input type="checkbox" name="Days" value="Sunday" checked="@((Model.EditDays.Contains("Sunday")))"/>S
+                        <br/>
+                        <span id="span_Day" style="color: Red;"></span>
+                    </div>
+                </div>
+                 <br />
+                <div class="row">
+                  <div class="col-md-12">
+                        <span id="span_RecurringDesc" style="color: green;font-weight:bolder"></span>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+        <div id="spinner">
+                        <div id="LoaderContent" style="height: 100%;">
+                            <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+                        </div>
+                    </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" onclick="javascript:window.location.reload()" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="EditTask(@Model.TaskID)">
+                Save
+            </button>
+
+        </div>
+    </div>
+
+
+      <script type="text/javascript">
+          $(function () {
+              $(".datetimepicker").datepicker({
+                  format: 'dd-mm-yyyy',
+                  todayHighlight: true,
+                  autoclose: true,
+              });
+          });
+          $(document).ready(function () {
+
+              if ($("#RecurringType").val() == "1") {
+                  $("#chkboxdiv").show();
+              }
+              else {
+                  $("#chkboxdiv").hide();
+              }
+             
+          });
+          $(function () {
+
+              $(".modal-body select").select2({
+                  minimumResultsForSearch: -1
+              });
+
+              $("#ReportingUsers").select2();
+          });
+          $("#RecurringType").change(function () {
+              if ($(this).val() == "1") {
+                  $("#chkboxdiv").show();
+              } else {
+                  $("#chkboxdiv").hide();
+              }
+              var weekday = new Array(7);
+              weekday[0] = "Sunday";
+              weekday[1] = "Monday";
+              weekday[2] = "Tuesday";
+              weekday[3] = "Wednesday";
+              weekday[4] = "Thursday";
+              weekday[5] = "Friday";
+              weekday[6] = "Saturday";
+              if ($("#StartDateTime").val() != "") {
+
+                  var mdyDate = $("#StartDateTime").val();
+                  var parts = mdyDate.split('-');
+                  var dmyDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+
+
+                  var calendar = new Date(dmyDate);
+                  if ($(this).val() == "") {
+                      document.getElementById("span_RecurringDesc").innerHTML = "";
+                  }
+                  if ($(this).val() == "1") {
+                      document.getElementById("span_RecurringDesc").innerHTML = "This task will be assigned <span style='color:red;'>daily";
+                  }
+                  if ($(this).val() == "2") {
+                      document.getElementById("span_RecurringDesc").innerHTML = "This task will be assigned weekly on <span style='color:red;'>every  " + weekday[calendar.getDay()] + "";
+                  }
+                  if ($(this).val() == "3") {
+                      document.getElementById("span_RecurringDesc").innerHTML = "This task will be assigned <span style='color:red;'> 2 weeks once";
+                  }
+                  if ($(this).val() == "4") {
+                      document.getElementById("span_RecurringDesc").innerHTML = "This task will be assigned on <span style='color:red;'> " + calendar.getDate() + " of every month";
+                  }
+              }
+          });
+          var opts = {
+              "closeButton": true,
+              "debug": false,
+              "positionClass": "toast-top-right",
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "2000",
+              "extendedTimeOut": "1000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+          };
+          function EditTask(TaskID) {
+              
+              var selected = [];
+              
+              $('input[type=checkbox]').each(function () {
+                  if ($(this).is(":checked")) {
+                      selected.push($(this).attr('value'));
+                  }
+              });
+              var value = {
+                  "InActive": $("#InActive").prop("checked"),
+                  "TaskDescription": $("#TaskDescription").val(),
+                  "TaskID": TaskID,
+                  "TaskAssignedToID": $("#ReportingUsers").val(),
+                  "AssignedDate": $("#StartDateTime").val(),
+                  "RecurringID": $("#RecurringType").val(),
+                  "SelectedDays": selected.toString()
+              };
+              var TaskDescription = $("#TaskDescription").val().replace(/\s/g, "").length;
+              var StartDate = $("#StartDateTime").val();
+              var ReportingUsers = $("#ReportingUsers").val();
+              var RecurringType = $("#RecurringType").val();
+              if (TaskDescription == '' || StartDate == '' || ReportingUsers == '' || RecurringType == '' || RecurringType == 1 && selected == '') {
+                  if (TaskDescription == '')
+                      document.getElementById("span_Desc").innerHTML = "Enter Task Description";
+                  else
+                      document.getElementById("span_Desc").innerHTML = "";
+                  if (StartDate == '')
+                      document.getElementById("span_AssignDate").innerHTML = "Select Assigned Date";
+                  else
+                      document.getElementById("span_AssignDate").innerHTML = "";
+                  if (ReportingUsers == '')
+                      document.getElementById("span_User").innerHTML = "Select Assigning User";
+                  else
+                      document.getElementById("span_User").innerHTML = "";
+                  if (RecurringType == '')
+                      document.getElementById("span_Recurring").innerHTML = "Select Recurring Type";
+                  else
+                      document.getElementById("span_Recurring").innerHTML = "";
+                  if (selected == '')
+                      document.getElementById("span_Day").innerHTML = "Select Atleast A Day";
+                  else
+                      document.getElementById("span_Day").innerHTML = "";
+                 
+
+              }
+              else {
+                  $("div#spinner").fadeIn("fast");
+                  $.ajax({
+                      url: "../../TaskManagement/EditTask/",
+                      type: 'POST', cache: false,
+                      data:value,
+                      success: function (result) {
+
+                              if (result == "Warning") {
+                                  toastr.warning("Task Already Assigned on this date", opts);
+                              }
+                              if (result == "success") {
+                                 
+                              toastr.success("Task Updated Successfully", opts);
+                              $("#portlet-config").modal('hide');
+                              setTimeout(function () { location.reload(); }, 1000);
+                          }
+                          if (result == "failed") {
+                              @*toastr.warning("Task Updation Failed", opts);*@
+                              toastr.success("Task Updated Successfully", opts);
+                              $("#portlet-config").modal('hide');
+                              setTimeout(function () { location.reload(); }, 1000);
+                          }
+                      }
+
+                  });
+              }
+          }
+         
+    </script>
+   
+    </body>
+</html>

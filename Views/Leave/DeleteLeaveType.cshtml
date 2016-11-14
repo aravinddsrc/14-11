@@ -1,0 +1,83 @@
+﻿@model DSRCManagementSystem.LeaveType
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete Leave Type</title>
+    <link href="../../Content/Template/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+      <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Delete Leave Type</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("EditHoliday", "Leave", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Name, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.Name, new { @id = "Name", @name = "Name", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                            @Html.HiddenFor(x => x.LeaveTypeId)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Days Allowed", new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.DaysAllowed, new { @id = "DaysAllowed", @name = "DaysAllowed", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>       
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="DeleteLeaveTypeRecord()">
+                Delete Leave Type</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function DeleteLeaveTypeRecord() {
+            var values =
+        {
+            "leaveTypeId": $("#LeaveTypeId").val(),
+            "Name": $("#Name").val(),
+            "DaysAllowed": $("#DaysAllowed").val()
+        };
+            $.ajax({
+                url: "../../Leave/DeleteLeaveType/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

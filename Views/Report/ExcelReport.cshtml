@@ -1,0 +1,122 @@
+﻿@model DSRCManagementSystem.Models.ReportModel
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+<body style="overflow: auto">
+</body>
+
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+    type="text/css" />
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+ <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<ol class="breadcrumb bc-3">
+ 
+    <li class="active"><strong>Reports</strong> </li>
+</ol>
+<div class="row">
+    <div class="col-md-12" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                  Reports</div>
+            </div>
+            <br />
+              <div class="panel-body">
+                <div class="btn-group" style="float: right">
+                   
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='AddNewReport()'>
+                        Add New Report
+                    </button>
+                    <br />
+                </div>
+                @using (Html.BeginForm("ExcelReport", "Report", FormMethod.Post, new { @id = "form" }))
+                {
+                     @Html.ValidationSummary(true) 
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-1">
+                                @Html.LabelFor(x => x.ReportName)
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(x => x.ReportName, ViewBag.reportname_list as SelectList, new { @id = "ReportName", @class = "form-control" })
+                              <span id="repname" style="color: Red"></span>
+                            </div>
+                             <div class="col-md-4" style="text-align: left">
+                               
+                            @*  <a type="button" class="btn btn-green" onclick='download()' href="C:\ShareInventoryReports\ExcelSheets\\">Download </a>*@
+                               <input type="button" class="btn btn-green" value="Download" style="font-weight: bold" onclick="download()"/>
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <div class="clear">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".panel-body select").select2({
+            minimumResultsForSearch: -1
+        });
+    });
+
+    function download() {
+
+
+        if (document.getElementById('ReportName').value == 0) {
+            document.getElementById("repname").innerHTML = "Select Report Name";
+        }
+        else {
+          
+            // document.getElementById("repname").innerHTML = "";
+            $('#form').submit();
+        }
+    }
+
+    function AddNewReport() {
+
+        $.ajax({ url: "../../Report/AddNewReport/",
+            type: 'GET', cache: false,
+
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+   
+
+</script>

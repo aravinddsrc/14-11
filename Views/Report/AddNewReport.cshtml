@@ -1,0 +1,215 @@
+﻿@model DSRCManagementSystem.Models.ReportModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add New Report</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add New Report</h4>
+        </div>
+        @using (Html.BeginForm("AddNewReport", "Report", FormMethod.Post))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ReportName, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.ReportName, new { @class = "form-control", @id = "Reportname", @maxlength = "30",  @style = "height:42px;" })
+                            <span id="name" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.ReportQuery, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.ReportQuery, new { @id = "Reportquery", @class = "form-control", @maxlength = "50", @style = "height:42px;" })
+                           
+                            <span id="query" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancel</button>
+                    <button type="button" id="btnAdd" class="btn btn-info" onclick="AddReport()">
+                        Save</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+      
+
+
+        $(document).ready(function () {
+            $('#Reportname').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#name").html("Enter Valid Report Name").show();
+                return false;
+            });
+        });
+
+            $(document).ready(function () {
+            $('#Reportquery').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#query").html("Enter Valid Report Query").show();
+                return false;
+            });
+        });
+
+
+
+
+        function AddReport() {
+           
+            if (document.getElementById('Reportname').value == '' || document.getElementById('Reportquery').value == '') 
+                {
+
+                   
+                    if (document.getElementById('Reportname').value == '') {
+
+                        document.getElementById("name").innerHTML = "Enter Report Name";
+                    }
+                    else {
+
+                        document.getElementById("name").innerHTML = "";
+                    }
+                   
+                    if (document.getElementById('Reportquery').value == '') {
+
+                        document.getElementById("query").innerHTML = "Enter Report Query ";
+                    }
+                    else {
+
+                        document.getElementById("query").innerHTML = "";
+
+                    }
+                    
+
+            }
+                else {
+                   
+                var values =
+            {
+                "ReportName": $("#Reportname").val(),
+                "ReportQuery": $("#Reportquery").val()
+              
+
+            }
+
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+
+
+
+                $.ajax({
+                    url: "../../Report/AddNewReport/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+
+                        if (result === "Success") {
+                            $("#portlet-config").modal("hide");
+                            toastr.success("Report details has been added successfully", opts);
+
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+                        }
+                    }
+
+
+
+                });
+
+            }
+        }
+
+      
+   
+        
+    </script>
+</body>
+</html>

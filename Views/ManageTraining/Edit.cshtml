@@ -1,0 +1,548 @@
+﻿@model DSRCManagementSystem.Models.ManageTrainingModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+     <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    @*<link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />*@
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    @*<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+ @*   <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>*@
+@*    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+ 
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+         <link href="../../Content/jquery-timepicker-master/lib/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+         <script src="../../Content/jquery-timepicker-master/lib/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+   
+    <link href="../../Content/jquery-timepicker-master/jquery.timepicker.css"
+        rel="stylesheet" type="text/css" />
+         <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js"
+        type="text/javascript"></script>
+         <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js"
+        type="text/javascript"></script>
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Edit </h4>
+        </div>
+         @using (Html.BeginForm("Edit", "ManageTraining", FormMethod.Post))
+         {
+        <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+             @* <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                   
+                          @Html.LabelFor(x => x.TrainingID, new { @class = "control-label" })
+                          
+                             @Html.TextBoxFor(x => x.TrainingID, new { @id = "DDt", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                               @Html.HiddenFor(x => x.TrainingID)
+                             
+                        </div>
+                    </div>
+              *@
+              
+              <div >
+              
+              @Html.HiddenFor(x => x.StatusID, new { @id = "DDsid" })
+              </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                         
+                          @Html.LabelFor(x => x.TrainingID, new { @class = "control-label" })  
+                          @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })  *@                      
+                          @Html.TextBoxFor(x => x.TrainingID, new { @id = "DDLT", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                        
+                             <span id="Training" style="color: Red"></span>  
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.TrainingName, new { @class = "control-label" })
+                             @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                             @Html.TextBoxFor(x => x.TrainingName, new { @id = "DDLN", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="TrName" style="color: Red"></span> <span id="exist" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                   <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                         
+                          @Html.LabelFor(x => x.Level, new { @class = "control-label" })  
+                          @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })    *@                    
+                          @Html.TextBoxFor(x => x.Level, new { @id = "DDL", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                        
+                             <span id="Level" style="color: Red"></span>  
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.Technology, new { @class = "control-label" })
+                            @*  @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                             @Html.TextBoxFor(x => x.Technology, new { @id = "DDLTe", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="Technology" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                   
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.ScheduledDate, new { @class = "control-label" })
+                              @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                             @Html.TextBoxFor(x => x.ScheduledDate, "{0:dd/MM/yyyy}", new { @id = "DDLsc", @class = "form-control datetimepicker ", @style = "height:42px;" })
+                           <span id="ScheduledDate" style="color: Red"></span>
+                        </div>
+                    </div>
+
+                  <div class="col-md-6">
+                     <div class="form-group">
+                               @Html.LabelFor(x => x.Instructor, new { @class = "control-label" })
+                            @*  @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                             @Html.TextBoxFor(x => x.Instructor, new { @id = "DDLI", @class = "form-control ", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="Instructor" style="color: Red"></span>
+                        </div>
+                    </div>
+
+                </div>
+                  <div class="row">
+                   <div class="col-md-6">
+                        <div class="form-group">
+                         
+                          @Html.LabelFor(x => x.SeatingCapacity, new { @class = "control-label" })  
+                           @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })                        
+                          @Html.TextBoxFor(x => x.SeatingCapacity, new { @id = "DDLS", @class = "form-control", @style = "height:42px;" ,@maxlength=2})                        
+                             <span id="SeatingCapacity" style="color: Red"></span>  
+                        </div>
+                    </div>
+                  <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.Nominations, new { @class = "control-label" })
+                        @*    @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                             @Html.TextBoxFor(x => x.Nominations, new { @id = "DDLNs", @class = "form-control  ", @style = "height:42px;",@disabled = "disabled" })
+                           <span id="Nominations" style="color: Red"></span>
+                        </div>
+                    </div>
+                
+                   
+
+                </div>
+              <div class="row">
+                  <div class="col-md-6">
+                        <div class="form-controltimepicker">
+                               @Html.LabelFor(x => x.Starttime, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                             @Html.TextBoxFor(x => x.Starttime, new { @id = "DDLst", @class = "form-control  timepicker ", @style = "height:42px;" })
+                           <span id="Starttime" style="color: Red"></span>
+                        </div>
+                    </div>
+                
+                    <div class="col-md-6">
+                        <div class="form-controltimepicker">
+                         
+                          @Html.LabelFor(x => x.Endtime, new { @class = "control-label" })  
+                           @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })                        
+                          @Html.TextBoxFor(x => x.Endtime, new { @id = "DDLet", @class = "form-control  timepicker", @style = "height:42px;" })                        
+                             <span id="Endtime" style="color: Red"></span> 
+                             
+                               <span id ="span_ID14" style="color:Red;"> </span> 
+                        </div>
+                    </div>
+          
+                 
+                </div>
+              
+
+              <div class="row">
+            <div class="col-md-6">
+                        <div class="form-group">
+                         
+                          @Html.LabelFor(x => x.Status, new { @class = "control-label" })  
+                                              
+                          @Html.TextBoxFor(x => x.Status, new { @id = "sts", @class = "form-control ", @style = "height:42px;" ,@disabled = "disabled"})                        
+                             <span id="stst" style="color: Red"></span> 
+                             
+                              
+                        </div>
+                    </div>
+            </div>
+
+                
+                
+       <br />
+        <div class="modal-footer">
+          @if (Model.StatusID == 3 || Model.StatusID == 4 || Model.StatusID == 5 || Model.StatusID == 6 ||Model.IsToday==true)
+          {
+            <button type="button" style="float:right" class="btn btn-default" data-dismiss="modal">
+                Cancel</button>
+          }
+          else
+          { 
+              <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel</button>
+          }
+                    @if (Model.StatusID == 3 || Model.StatusID == 4 || Model.StatusID == 5 || Model.StatusID == 6 ||Model.IsToday==true)
+                    {
+                                        <a>
+                                          
+                                            <button type="button"  id="btnAdd" class="btn btn-info" onclick="EditDetails()" style="visibility:hidden">
+                                           Save</button>
+                                        </a>
+                    }
+                    else
+                    { 
+                          <a>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="EditDetails()">
+                Save</button>
+                  </a>
+                    }
+        </div>
+         </div>
+         }
+    </div>
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+           
+ 
+   
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+       
+        $(document).ready(function () {
+
+
+
+            $(".timepicker").datetimepicker({
+                pickDate: false,
+                format: 'HH:mm',
+            });
+
+
+        });
+
+
+        var ValidName = true;
+
+        $(function () {
+            $(".modal-body select").select2({
+                //minimumResultsForSearch: -1
+            });
+           
+            $(".datetimepicker").datepicker({
+                format: 'dd/mm/yyyy',
+                //showTodayButton: true,
+                //collapse: true,
+               // todayHighlight: true,
+                //endDate: new Date(),
+                startDate: '+1d',
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true
+            });
+          
+            $('.timepicker').timepicker
+
+            ({
+
+                'minTime': '9:00am',
+                'maxTime': '7:30pm',
+                'showDuration': false,
+                'timeFormat': 'h:i A',
+                'forceRoundTime': true
+                // pickTime: false
+            });
+
+
+        });
+
+        $(document).ready(function () {
+           
+
+            $('#DDLS').keypress(function (e) {
+                var regex = new RegExp("^[0-9]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#SeatingCapacity").html("Enter Valid Numbers").show();
+                return false;
+            });
+
+            $('#DDLsc').keypress(function (e) {
+                var regex = new RegExp("^[0-9/////-]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#ScheduledDate").html("Select Valid Schedule Date").show();
+
+                return false;
+            });
+            $('#DDLst').keypress(function (e) {
+                var regex = new RegExp("^[0-9//:]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#Starttime").html("Select Valid Start Time").show();
+                return false;
+            });
+            $('#DDLet').keypress(function (e) {
+                var regex = new RegExp("^[0-9//:]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#Endtime").html("Select Valid End Time").show();
+                return false;
+            });
+        });
+
+
+        $("#DDLsc").on("change", function () {
+
+            var schdt = $("#DDLsc").val();
+
+
+            $.ajax({
+                url: "../../LDCourse1/schedule/",
+                dataType: 'json',
+                data: { 'ID':$("#DDLT").val(),'scheduledate': schdt, 'trainingname': $("#DDLN").val() },
+                success: function (data) {
+
+                    if (data.Name == 'available') {
+                        //  $("#etime").html("Select Valid End Time").show();
+                        $('#exist').html('Training Name already exists');
+
+                        // $("#course0").val('');
+                        ValidName = false;
+                        
+
+                    }
+                    else {
+                        $('#exist').text('');
+
+                        ValidName = true;
+                    
+                    }
+                }
+
+
+            });
+
+        });
+
+
+        function EditDetails() {
+
+            var errorcount = 0;
+
+            //if (document.getElementById('DDLS').value == '' || document.getElementById('DDLsc').value == 0 || document.getElementById('DDLst').value == 0 || document.getElementById('DDLet').value == 0) {                                
+
+                if (document.getElementById('DDLS').value == '') {
+                    errorcount++;
+                    document.getElementById("SeatingCapacity").innerHTML = " Enter Seating Capacity";
+                }
+                else if (document.getElementById('DDLS').value == 0) {
+                    errorcount++;
+                    document.getElementById("SeatingCapacity").innerHTML = " Seating Capacity must be greater than 0";
+                }
+                else if (Number($('#DDLS').val()) < Number($('#DDLNs').val())) {
+                    errorcount++;
+                    document.getElementById("SeatingCapacity").innerHTML = " Seats Cannot be Less than Nominations";
+                }                            
+                else {
+                    document.getElementById("SeatingCapacity").innerHTML = "";
+                }
+
+                if (document.getElementById('DDLsc').value == 0) {
+                    errorcount++;      
+                    document.getElementById("ScheduledDate").innerHTML = " Select Schedule Date ";
+                }
+                else {
+
+                    document.getElementById("ScheduledDate").innerHTML = "";
+
+                }
+                if (document.getElementById('DDLst').value == 0) {
+                    errorcount++;      
+                    document.getElementById("Starttime").innerHTML = " Select Start time ";
+                }
+                else {
+
+                    document.getElementById("Starttime").innerHTML = "";
+                }
+                if (document.getElementById('DDLet').value == 0) {
+                    errorcount++;      
+                    document.getElementById("Endtime").innerHTML = " Select End time ";
+                }
+                else {
+
+                    document.getElementById("Endtime").innerHTML = "";
+                }
+
+                //}
+
+
+            if (errorcount == 0) {       
+                       
+                var strStartTime = $("#DDLst").val();
+
+                var strEndTime = $("#DDLet").val();
+
+                var stt = new Date("October 1, 2014  " + strStartTime);
+                stt = stt.getTime();
+
+                var endt = new Date("October 1, 2014 " + strEndTime);
+                endt = endt.getTime();
+
+                if (stt < endt) {
+                    $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        var values =
+                           {
+                               "TrainingID": $("#DDLT").val(),
+                               "SeatingCapacity": $("#DDLS").val(),
+                               "ScheduledDate": $("#DDLsc").val(),
+                               "Starttime": $("#DDLst").val(),
+                               "Endtime": $("#DDLet").val()
+
+                           }
+
+                        var opts = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "toastClass": "White",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+
+                        if (ValidName == true) {
+
+                            $.ajax({
+                                url: "../../ManageTraining/Edit/",
+                                type: 'POST',
+                                cache: false,
+                                data: values,
+                                success: function (result) {
+                                                                   
+                                    if (result === "Success") {
+                                        $("#portlet-config").modal("hide");
+                                        toastr.success(" Training details updated successfully", opts);
+                                        
+                                        setTimeout(function () { location.reload(); }, 1000);
+                                    }
+
+                                    if (result == "availabletime") {
+
+                                        toastr.warning("Training has been scheduled for the same timing.Please select different timings");
+                                    }
+                                }
+
+
+
+                            });
+                        }
+                    }
+               
+
+                else {
+                    document.getElementById("span_ID14").innerHTML = "End Time Must be Greater than  Start Time ";
+
+                    submitForm = false;
+                }
+
+
+            }
+
+        }
+
+        
+
+
+        
+    </script>
+                   
+</body>
+</html>

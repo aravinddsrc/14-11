@@ -1,0 +1,239 @@
+﻿@model DSRCManagementSystem.Models.SubmenuItems
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Submenu</title>
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+          rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+          type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+          id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+        <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h4 class="modal-title">
+                Add Submenu
+            </h4>
+        </div>
+        @using (Html.BeginForm("AddSubFunction", "AdministrationSetup", FormMethod.Post))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Menu Name", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.DropDownListFor(a => a.FunctionName, ViewBag.Functions as SelectList, "---Select---",
+                 new { @class = "form-control", @id = "IdFunctionName", @maxlength = " 20", @style = "height:42px;", @onchange = "GetSubModule()" })
+                            @Html.ValidationMessageFor(a => a.FunctionName, " ", new { @style = "color:red" })
+                            <span id="FuncName" style="color:Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Submenu Name", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBox("Sub-Menu", "", new { @class = "form-control", @id = "IdSubMenuName", @maxlength = "50", @style = "height:42px;" })
+                            @Html.ValidationMessageFor(a => a.InsertAfterModuleName, " ", new { @style = "color:red" })
+                            <span id="SubMenuName" style="color:Red"></span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-13">
+                        <div class="form-group">
+                            @Html.Label("Insert After Submenu", new { @class = "control-label", @style = "text-align:left" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.DropDownListFor(a => a.InsertAfterModuleName, ViewBag.SubFunctions as SelectList, "---Select---", new { @class = "form-control", @id = "IdSubFunctionName", @maxlength = " 20", @style = "height:42px;" })
+                            <span id="InsertAfterSubmenu" style="color:Red"></span>
+                        </div>
+                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Controller Name", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.DropDownListFor(m => m.ControllerName, ViewBag.GetController as SelectList, "--- Select---", new { @id = "IdController", @class = "form-control", @maxlength = " 20", @style = "height:42px;", @onchange = "FilterAction()" })
+                            <span id="SpanController" style="color:Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Action Name", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.DropDownListFor(m => m.ActionName, ViewBag.GetAction as SelectList, "--- Select---", new { @id = "IdAction", @class = "form-control", @maxlength = " 20", @style = "height:42px;" })
+                            <span id="SpanAction" style="color:Red"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="SaveSubFunction()">
+                    Save
+                </button>
+            </div>
+        }
+         <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        //$("#IdFunctionName").select2();
+        //$("#IdSubFunctionName").select2();
+        //$("#IdController").select2();
+        //$("#IdAction").select2();
+    function SaveSubFunction() {
+
+        if (document.getElementById('IdFunctionName').value == 0 || document.getElementById('IdSubMenuName').value == 0
+            || document.getElementById('IdController').value == 0 || document.getElementById('IdAction').value == 0
+            /*|| document.getElementById('IdSubFunctionName').value == 0*/) {
+
+            if (document.getElementById('IdFunctionName').value == 0)
+                document.getElementById("FuncName").innerHTML = "Select Menu Name";
+            else
+                document.getElementById("FuncName").innerHTML = "";
+
+            if (document.getElementById('IdSubMenuName').value == 0)
+                document.getElementById("SubMenuName").innerHTML = "Enter Submenu Name";
+            else
+                document.getElementById("SubMenuName").innerHTML = "";
+
+            if (document.getElementById('IdController').value == 0)
+                document.getElementById("SpanController").innerHTML = "Select Controller Name";
+            else
+                document.getElementById("SpanController").innerHTML = "";
+
+            if (document.getElementById('IdAction').value == 0)
+                document.getElementById("SpanAction").innerHTML = "Select Action Name";
+            else
+                document.getElementById("SpanAction").innerHTML = "";
+            if (document.getElementById('IdSubFunctionName').value == 0)
+                document.getElementById("InsertAfterSubmenu").innerHTML = "Select Insert After Submenu";
+            else
+                document.getElementById("InsertAfterSubmenu").innerHTML = "";
+        }
+        else {
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var values =
+         {
+             "FunctionID": $("#IdFunctionName").find("option:selected").val(),
+             "FunctionName": $("#IdFunctionName").find("option:selected").text(),
+             "InsertAfterPageModuleID": $("#IdSubFunctionName").val(),
+             "InsertAfterModuleName": $("#IdSubFunctionName").find("option:selected").text(),
+             "NewModuleName": $("#IdSubMenuName").val(),
+             "ControllerName": $("#IdController").find("option:selected").text(),
+             "ActionName": $("#IdAction").find("option:selected").text()
+         }
+
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            $.ajax({
+                url: "../../AdministrationSetup/AddSubFunction/",
+                type: 'POST',
+                traditional: true,
+                cache: false,
+                data: values,
+                success: function (result) {
+
+                    if (result == "Success") {
+                        $("#portlet-config1").modal("hide");
+                        toastr.success("SubMenu Added Successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                }
+            });
+        }
+    }
+
+    function GetSubModule() {
+
+        var fid = $("#IdFunctionName").val();
+        if (fid !== "") {
+
+            var url2 = '@Url.Action("GetSubModule")';
+
+                $.get(url2, { FunctionId: fid }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>---Select---</option>");
+                    
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#IdSubFunctionName").html(items.join(' '));
+                    $("#IdSubFunctionName").select2();
+                });
+            }
+        }
+
+        function FilterAction() {
+            var cid = $("#IdController").val();
+        
+            if (cid !== "") {
+
+                var url = '@Url.Action("FilterAction")';
+
+                $.get(url, { ControllerName: cid }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option>" + this.Text + "</option>");
+                    });
+                    $("#IdAction").html(items.join(' '));
+                    $("#IdAction").select2();
+                });
+            }
+        }
+    </script>
+</body>
+</html>

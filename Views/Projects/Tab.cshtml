@@ -1,0 +1,373 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.ProjectMapping>
+@{
+    ViewBag.Title = "Tab";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Calender/fullcalendar.print.css" rel="stylesheet" type="text/css"
+        media="print" />
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+
+        #tblSubmittedLeaveRequest td:nth-child(1) {
+            text-align: center;
+        }
+
+        #tblSubmittedLeaveRequest td:nth-child(6) {
+            text-align: center;
+        }
+
+        #tblProjects2 td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .colorClass1 {
+            background-color: rgb(245,105,84);
+            border-color: rgb(245,105,84);
+        }
+
+        .colorClass2 {
+            background-color: rgb(0,141,76);
+            border-color: rgb(12,158,55);
+        }
+
+        .colorClass3 {
+            background-color: rgb(0,115,183);
+            border-color: rgb(0,84,168);
+        }
+    </style>
+}
+@{
+    /// int SNO = 1;
+    //int sno = 1;
+    int SNo = 1;
+}
+@{
+    int ForPagination = @Session["PaginationNumber"] != null ? Convert.ToInt32(@Session["PaginationNumber"].ToString()) : 0;
+}
+
+<div class="row">
+    @{
+        if (Session["Tab"] == "one")
+        {
+            if (ForPagination > 0)
+            {
+          <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#enrollment" data-toggle="tab" role="tab">Details</a></li>
+            @if (ViewBag.IsReportingPerson)
+            {
+            <li class="active"><a href="#Resources" data-toggle="tab" role="tab">Resources</a></li>
+            }
+            <li><a href="#StatusSummary" data-toggle="tab" role="tab">Status Summary</a></li>
+                  @if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+                  {
+            <li><a href="#Metrics" data-toggle="tab" role="tab">Metrics</a></li>
+                  }
+        </ul>
+            }
+            else
+            {
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#enrollment" data-toggle="tab" role="tab">Details</a></li>
+            @if (ViewBag.IsReportingPerson)
+            {
+                <li class="active"><a href="#Resources" data-toggle="tab" role="tab">Resources</a></li>
+            }
+            <li><a href="#StatusSummary" data-toggle="tab" role="tab">Status Summary</a></li>
+            @if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+            {
+                <li><a href="#Metrics" data-toggle="tab" role="tab">Metrics</a></li>
+            }
+        </ul>
+            }
+
+        }
+        else if (Session["Tab"] == "Two")
+        {
+            if (ForPagination > 0)
+            {
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#enrollment" data-toggle="tab" role="tab">Details</a></li>
+            @if (ViewBag.IsReportingPerson)
+            {
+                <li><a href="#Resources" data-toggle="tab" role="tab">Resources</a></li>
+            }
+            <li><a href="#StatusSummary" data-toggle="tab" role="tab">Status Summary</a></li>
+            @if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+            {
+                <li class="active"><a href="#Metrics" data-toggle="tab" role="tab">Metrics</a></li>
+            }
+        </ul>
+            }
+            else
+            {
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#enrollment" data-toggle="tab" role="tab">Details</a></li>
+            @if (ViewBag.IsReportingPerson)
+            {
+                <li><a href="#Resources" data-toggle="tab" role="tab">Resources</a></li>
+            }
+            <li><a href="#StatusSummary" data-toggle="tab" role="tab">Status Summary</a></li>
+            @if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+            {
+                <li class="active"><a href="#Metrics" data-toggle="tab" role="tab">Metrics</a></li>
+            }
+        </ul>
+            }
+        }
+
+        else
+        {
+      <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li class="active"><a href="#enrollment" data-toggle="tab" role="tab">Details</a></li>
+             @if (ViewBag.IsReportingPerson)
+             {
+                  <li><a href="#Resources" data-toggle="tab" role="tab">Resources</a></li>
+                  <li><a href="#StatusSummary" data-toggle="tab" role="tab">Status Summary</a></li>
+             }
+           
+                  @if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+                  {
+            <li><a href="#Metrics" data-toggle="tab" role="tab">Metrics</a></li>
+                  }
+        </ul>
+        
+        }
+    }
+    <br />
+
+    <div class="panel-body">
+
+        <div class="clear">
+        </div>
+
+        <br />
+
+        <div class="tab-content">
+
+            @if (Session["Tab"] == "one")
+            {
+ 
+                <div class="tab-pane" id="enrollment">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("ProjectDetails", "Projects", new { Id = @ViewData["ProjectID"],v=ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                if (ViewBag.IsReportingPerson)
+                {
+                <div class="tab-pane active" id="Resources">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ResourcesTabWithAssignProject", "Projects", new { Id = @ViewData["ProjectID"], v=ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div>   
+                }
+     
+                <div class="tab-pane" id="StatusSummary">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("CommentsSummary", "Projects", new { projectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+
+                if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+                {
+                <div class="tab-pane" id="Metrics">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ViewMetrics", "Projects", new { ProjectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+                }
+
+            }
+
+            else if (Session["Tab"] == "Two")
+            {
+ 
+                <div class="tab-pane" id="enrollment">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("ProjectDetails", "Projects", new { Id = @ViewData["ProjectID"],v=ViewBag.val  });                      
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                if (ViewBag.IsReportingPerson)
+                {
+                <div class="tab-pane" id="Resources">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ResourcesTabWithAssignProject", "Projects", new { Id = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div>   
+                }
+     
+                <div class="tab-pane" id="StatusSummary">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("CommentsSummary", "Projects", new { projectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+
+                if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+                {
+                <div class="tab-pane active" id="Metrics">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ViewMetrics", "Projects", new { ProjectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+                }
+
+            }
+            else
+            {
+                <div class="tab-pane active" id="enrollment">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("ProjectDetails", "Projects", new { Id = @ViewData["ProjectID"] ,v=ViewBag.val});                      
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                if (ViewBag.IsReportingPerson)
+                {
+                <div class="tab-pane" id="Resources">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ResourcesTabWithAssignProject", "Projects", new { Id = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div>   
+                }
+     
+                <div class="tab-pane" id="StatusSummary">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                Html.RenderAction("CommentsSummary", "Projects", new { projectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+
+                if (ViewBag.IsReportingPerson == true || ViewBag.MemberTypeID == 5 || ViewBag.MemberTypeID == 7)
+                {
+                <div class="tab-pane" id="Metrics">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-heading">
+                            </div>
+                            @{
+                    Html.RenderAction("ViewMetrics", "Projects", new { ProjectID = @ViewData["ProjectID"], v = ViewBag.val });                      
+                            }
+                        </div>
+                    </div>
+                </div> 
+                }
+
+            }
+
+        </div>
+    </div>
+</div>
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var columnDefs;
+        //        if ($("aTargets")[6]) {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6]}];
+        //        } else {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5]}];
+        //        }
+        $("#tblProjects2").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]]
+            //            "bStateSave": false,
+            //            "columnDefs": columnDefs
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+</script>
+

@@ -1,0 +1,122 @@
+﻿@model DSRCManagementSystem.Models.LoginModel
+@{
+    ViewBag.Title = " "+Model.company+" | Login";
+    Layout = null;
+}
+<html lang="en" style="height:0px;">
+<!-- BEGIN HEAD -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+   @* <meta charset="utf-8">*@
+    <title> @Model.company |Login </title>
+    <link href="~/Content/Login/global/css/LoginPage.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+          }  
+        </style>
+</head>
+<body class="login" >
+    <div class="logo">
+    </div>
+    <div class="content" >
+  
+        <div class="logo">
+            <img src="@Model.path" width="100px" height="100px"/>
+        </div>
+        <h3 class="form-title">
+            Login to your account
+        </h3>
+
+        @using (Html.BeginForm("Login", "User", FormMethod.Post))
+        {
+            <div class="form-group">
+
+                @if (ViewBag.Roles == null)
+                {
+                    @Html.TextBoxFor(a => a.UserName, new { @id = "text", @class = "form-control placeholder-no-fix", placeholder="User Name", autocomplete = "off" }) //placeholder = Resources.Resource.DN_UserModels_UserName, autocomplete = "off" })
+                    <span id="pas" style="color: Red;"></span>
+                }
+                else
+                {
+                    @Html.TextBoxFor(a => a.UserName, new { @id = "text", @class = "form-control placeholder-no-fix", @style = "pointer-events: none" })
+                    <span id="pas" style="color: Red;"></span>
+                }
+                <div class="form-group validator">
+                    @Html.ValidationMessageFor(a => a.UserName, "", new { @class = "editor-validator", @style = "color:red;" })
+                </div>
+            </div>
+            <div class="form-group">
+                @if (ViewBag.Roles == null)
+                {
+                    @Html.PasswordFor(a => a.Password, new { @class = "form-control", placeholder = Resources.Resource.VR_UserModels_Password1 })
+                }
+                else
+                {
+                    @Html.PasswordFor(a => a.Password, new { @class = "form-control", @value = Model.Password, @style = "pointer-events: none" })
+                }
+
+                <div class="form-group validator">
+                    @Html.ValidationMessageFor(a => a.Password, "", new { @class = "editor-validator", @style = "color:red" })
+                </div>
+            </div>
+            <button type="submit" class="btn green pull-right">
+                Login <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        }
+        <div class="form-actions">
+            <label class="checkbox"></label>
+        </div>
+        <div class="forget-password">
+            <h4>Forgot your password ?</h4>
+            <p>
+                No worries, click <a href="@Url.Action("ForgotPassword", "User")" id="forget-password" style='color:Blue;'>
+                    here
+                </a>
+                to reset your password.
+            </p>
+        </div>
+    </div>
+    <div class="copyright">
+        @DateTime.Now.Year © @Model.company
+.<br />
+        Management Portal - @Model.version
+    </div>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery('.reset-password').hide();
+            sessionStorage.removeItem('activeTab');
+        });
+
+        jQuery('#forget-next').click(function () {
+            jQuery('.forget-form').hide();
+            jQuery('.reset-password').show();
+
+        });
+
+        jQuery('#back-btn-reset').click(function () {
+            jQuery('.forget-form').show();
+            jQuery('.reset-password').hide();
+        });
+        $(document).ready(function () {
+
+            $('#text').keypress(function (e) {
+                var searchSpecial = '$Backspace$Del$Home$Tab$Left$Right$Up$Down$End$';
+                var theEvent = e.htmlEvent || window.event;
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+                var regex = new RegExp("^([a-zA-Z0-9]|\\@@|\\.|\\_)+$");
+                if (!regex.test(key)) {
+                    theEvent.returnValue = false;
+                    if (theEvent.preventDefault)
+                        theEvent.preventDefault();
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Transportation>
+@{
+    ViewBag.Title = "Manage Expense";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    @*<link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+}
+@{
+    int SNO = 1;
+    
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddUser</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+
+    <p>
+        <a href=""style="color:black ">
+           Transportation
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Expenses</b>
+    </p>
+<br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+               <div class="panel-heading" style= "padding-top: 15px ;">
+                    <div class="panel-title" color="White">
+                       Manage Expenses</div>
+                </div>
+                <div>
+
+                 </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                     <div class="row">
+                  @*   <div class="col-md-4" style="width :auto;float: left ;text-align:center;color:Black; font-weight:bold; padding-top: 15px ;">
+                                    Vehicle No
+                                    </div>*@
+                      @*          <div class="col-md-4">
+                                  @Html.DropDownList("VehicleId", ViewBag.Vehicles as SelectList, "--Select--", new { @id = "VehicleNumber", @class = "form-control",@onchange="changeuser()" })        
+                                </div>      *@                   
+                                          
+                        @*    <br />
+                           
+                                  <div style="padding-right: 22%">
+                                    <div>
+                                        <button id="btn" type="submit" class="btn btn-success center-block" style="float: right;
+                                            margin-right: 20px; font-weight: bold;">
+                                            Show</button>
+                                        <button type="button" id="btnAdd" style="float: right; margin-right: 20px; padding-left: 13px"
+                                            class="btn btn-default" onclick="Clear()">
+                                            Reset
+                                        </button>
+                                    </div>
+                                    </div>*@
+                           
+                             <div class="btn-group" style="float: right;padding-right:15px;margin-top: 13px">
+                      <button class="btn btn-blue" style="font-weight: bold;" type="button" onclick='AddNewDays()'>
+                        Add Expense
+                    </button>
+               </div>
+
+                            </div>   
+                 
+                  
+            
+                    <br /> <br />
+
+                    @using (Html.BeginForm("ManageExpense", "Transportation", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblMeeting">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">
+                                        S.No
+                                    </th>
+                                    <th style="text-align:left;">
+                                    @Html.DisplayName("Vehicle Number")
+                                    </th>
+                                     <th style="text-align:left;">
+                                   @Html.DisplayName("Vehicle Model")
+                                    </th>
+                                   @* <th>
+                                        @Html.DisplayNameFor(i => i.Week)
+                                    </th>
+                                   *@
+                                  
+                                    <th style="text-align:center;">
+                                        @Html.DisplayName("Vehicle Make")
+                                    </th>
+
+                                    <th style="text-align:center;">
+                                        @Html.DisplayName("Year Of  Manufacturing")
+                                    </th>
+                                    <th style="text-align:left;">
+                                     @Html.DisplayName("Expense Type")
+                                    </th>
+                                   @* <th style="text-align:left;">
+                                     @Html.DisplayName("Approved By")
+                                    </th>*@
+                                     <th style="text-align:left;">
+                                     @Html.DisplayName("Cost")
+                                    </th>
+                                     <th style="text-align:center;">
+                                        Edit
+                                    </th>
+                                      <th style="text-align:center;">
+                                   Delete
+                                    </th>
+                                </tr>
+                            </thead>
+                            @{
+                       
+                        foreach (var item in Model)
+                        {                  
+                                                      
+                                <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)
+                                        @Html.HiddenFor(modelitem => item.ExpenseId, new { @id = "ExpenseId" })
+                                     
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:center;" >
+                                        @Html.DisplayFor(modelItem => item.VehicleNumber)
+                                      
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.VehicleModel)
+                                    </td>
+                                    
+                                   <td style="width:3000px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                          @Html.DisplayName(item.VehicleMake)
+                                    </td>
+                                     
+                                      <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:center;" >
+                                        @Html.DisplayFor(modelItem => item.YearsofManufacturing)
+                                    </td>
+
+                                     <td style="width:4000px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelitem => item.ExpenseType)
+                                    </td>
+
+                                    <td style="width:4000px;word-wrap:break-word;word-break:break-all;text-align:center;" >
+                                        @Html.DisplayFor(modelitem => item.Cost)
+                                    </td>
+
+
+                                       <td>
+                                        <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditAttendee("@item.ExpenseId","@item.Id")'>
+                                            <i class="entypo-pencil"></i></a>
+                                       </td>
+                                    
+
+                                  
+                      
+                                 
+                                  <td style="text-align: center">
+                                        <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.ExpenseId")'>
+                                            <i class="entypo-cancel"></i></a>
+                                    </td>
+                                   
+                                </tr>
+                       
+
+                       
+                        }
+
+
+
+
+
+                    }
+
+                            
+                             </table>
+                                
+                   
+                        
+                    }
+                    <br />
+                    <div class="btn-group" style="float:left" id="AddNewProject">
+                     
+                    
+                    </div>
+
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+     <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+     <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+ 
+        <script type="text/javascript">
+
+            jQuery(document).ready(function ($) {
+
+                $("#VehicleNumber").select2();
+
+                var columnDefs;
+
+                $("#tblMeeting").dataTable({
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                    "columnDefs": [{ bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8]}]
+
+                });
+
+                $(".dataTables_wrapper select").select2({
+                    minimumResultsForSearch: -1
+                });
+                $('thead>tr>th').css('text-align', 'center');
+            });
+
+
+            function AddNewDays() {
+            
+                $.ajax({
+                    url: "../../Transportation/AddExpense/",
+                    type: 'GET', cache: false,
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    }
+
+                });
+
+            }
+
+
+            function changeuser() {
+                var id = $("#VehicleNumber").find("option:selected").text();
+                var expid = $("#VehicleNumber").find("option:selected").val();
+
+            
+             
+                window.location.href = '@Url.Action("ManageExpense", "Transportation")' + '?ExpenseId=' + id+'&intexp=' + expid;
+
+            }
+
+
+            function EditAttendee(Id, Id1)
+            {
+               
+                var values =
+                         {
+                             "Id" :Id,
+                             "vehicleno": Id1
+                            
+                         }
+
+                $.ajax({
+                    url: "../../Transportation/EditExpense/",
+                    type: 'GET',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal('show');
+
+                    }
+
+                });
+            }
+
+
+
+            function Delete(Id) {
+                bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                    if (conform) {
+                        $.ajax({ url: "../Transportation/Delete/",
+                            type: 'POST', cache: false,
+                            data: { Id: Id },
+                            success: function (result) {
+                                if (result.Result === "Success") {
+                                    toastr.success("Expense  deleted successfully!");
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
+</body>
+</html>

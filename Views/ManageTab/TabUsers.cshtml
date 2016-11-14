@@ -1,0 +1,256 @@
+﻿@model DSRCManagementSystem.Models.ManageTabs
+@{
+    Layout = null;
+}
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+
+
+
+   <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+<!DOCTYPE html>
+<html>
+<body>
+    @* @using (Html.BeginForm("ManageTab", "Home", FormMethod.Post))
+     {*@
+    <div class="modal-content" style="width:400px;">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                x
+            </button>
+            <h4 class="modal-title">
+                Manage Tab 
+            </h4>
+        </div>
+        <div class="modal-body" style="width:430px;height:200px;">
+            <div class="row"> 
+                <div class="col-md-6" >
+                   <div class="panel panel-default panel-shadow" style="width: 365px;height: 190px; padding-bottom: 30px;    float: left;    OVERFLOW: auto;    padding-left: 3px; PADDING-RIGHT: 16px;" >
+                    <div class="form-group">
+                       <div class="row" style="padding-left:15px;">
+                           
+                              @if (ViewBag.TanId == DSRCManagementSystem.Models.MasterEnum.Master_Tab.DashBoard.GetHashCode() || ViewBag.UserCount == 0)
+                               {
+                              <input type="checkbox" name="unselect" checked="checked" value="UnSelect All" id="unslect" disabled="disabled"/><label>&nbsp;&nbsp;</label>
+                              @Html.Label("Select/UnSelect All")   
+                             }
+                            else
+                            {
+                            <input type="checkbox" name="unselect" checked="checked" value="UnSelect All" id="unslect"/><label>&nbsp;&nbsp;</label>
+                             @Html.Label("Select/UnSelect All")  
+                            }
+                           
+                     </div>
+                         
+                        @for (int i = 0; i < @Model.TabUsers.Count(); i++)
+                        {
+                            if (Model.TabUsers[i].IsChecked == true)
+                            {
+                                if (Model.TabUsers[i].TabId == DSRCManagementSystem.Models.MasterEnum.Master_Tab.DashBoard.GetHashCode() || Model.TabUsers[i].NoofUsers == 0)
+                                {
+                                    //@Html.CheckBox("InActive", new { @id = "InActive", @class = "cb-wrapper",})
+                       @Html.HiddenFor(model => Model.TabUsers[i].TabId, new { id = "TabId" + i, @name = "TabId" })
+                       @Html.HiddenFor(model => Model.TabUsers[i].UserId, new { id = "UserId" + i, @name = "UserId" }) 
+                       @Html.CheckBox("UserName", new { @id = "UserName" + i, @class = "cb-wrapper", @checked = "checked", @name = "UserName", @value = "UserName", @style = "padding-right:20px",@disabled = "disabled" })<label>&nbsp;&nbsp;&nbsp;</label>
+                       @Html.DisplayFor(model => Model.TabUsers[i].UserName)     
+                                    //@Html.CheckBox("TabName", new { @id = "TabName", @class = "cb-wrapper"})
+                                }
+                                else
+                                {
+                                    
+                       @Html.HiddenFor(model => Model.TabUsers[i].TabId, new { id = "TabId" + i, @name = "TabId" })
+                       @Html.HiddenFor(model => Model.TabUsers[i].UserId, new { id = "UserId" + i, @name = "UserId" }) 
+                       @Html.CheckBox("UserName", new { @id = "UserName" + i, @class = "cb-wrapper", @checked = "checked", @name = "UserName", @value = "UserName", @style = "padding-right:20px" })<label>&nbsp;&nbsp;&nbsp;</label>
+                       @Html.DisplayFor(model => Model.TabUsers[i].UserName)     
+                                }
+
+
+                            }
+
+                            else
+                            {
+                                //@Html.CheckBox("InActive", new { @id = "InActive", @class = "cb-wrapper",})
+                       @Html.HiddenFor(model => Model.TabUsers[i].TabId, new { id = "TabId" + i, @name = "TabId" })
+                       @Html.HiddenFor(model => Model.TabUsers[i].UserId, new { id = "UserId" + i, @name = "UserId" })
+                       @Html.CheckBox("UserName", new { @id = "UserName" + i, @class = "cb-wrapper", @name = "UserName", @value = "UserName", @style = "padding-right:50px" })<label>&nbsp;&nbsp;&nbsp;</label>
+                       @Html.DisplayFor(model => Model.TabUsers[i].UserName) 
+           
+                            }
+                            
+                            <br />
+
+                        }
+
+              </div>
+                </div>
+                  
+            </div>
+        </div>
+               </div>
+        <div class="modal-footer" style="height:60px;">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="cursor:pointer">
+                Cancel
+            </button>
+
+                       @if (ViewBag.UserCount == 0)
+                           {
+
+
+                 <button type="button"       
+                class="btn btn-info" onclick="Save(@Model.TabUsers.Count())" name="submit" style="cursor:pointer" disabled="disabled">
+                Save
+
+               </button>
+                           }
+                           else
+                           {
+
+                <button type="button"       
+            class="btn btn-info" onclick="Save(@Model.TabUsers.Count())" name="submit" style="cursor:pointer">
+
+          Save
+        </button>
+           }
+            
+        </div>
+                   
+    </div>
+     
+  <div class="modal fade in" id="Loader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    $('#unslect').change(function ()
+    {
+      
+        check = $("#unslect").prop("checked");
+
+        var c =@Model.TabUsers.Count();
+
+            k = c;
+
+        if (check == false) {
+            for (var j = 0; j < k; j++) {
+                // $("#UserName" + j).attr('checked', false);
+                //   $("#UserName" + j).prop("checked") = false;
+                document.getElementById("UserName" + j).checked = false;
+                //$("#UserName" + j).attr('checked', true);
+            }
+
+        }
+
+        else {
+            
+            for (var j = 0; j < k; j++) {
+                // $("#UserName" + j).attr('checked', true);
+              //  $("#UserName" + j).prop("checked") = true;
+                document.getElementById("UserName" + j).checked = true;
+            }
+
+        }
+
+    });
+
+    function Save(c) {
+        $('#Loader').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+        var arr = new Array();
+        var array = new Array();
+        var opts =
+     {
+     "closeButton": true,
+     "debug": false,
+     "positionClass": "toast-top-right",
+     "toastClass": "White",
+     "onclick": null,
+     "showDuration": "300",
+     "hideDuration": "1000",
+     "timeOut": "2000",
+     "extendedTimeOut": "1000",
+     "showEasing": "swing",
+     "hideEasing": "linear",
+     "showMethod": "fadeIn",
+     "hideMethod": "fadeOut"
+ }
+
+        
+        for (var i = 0; i < k; i++) {
+            var TabId = $("#TabId" + i).val();
+            if ($("#UserName" + i).is(':checked')) {
+                var j = $("#UserId" + i).val();
+                
+                
+                if (i == 0) {
+                    arr += j;
+                }
+                else {
+
+                    arr += "," + j;
+                }
+
+                // arr.push(j);
+            }
+            else {
+                // alert("----");
+            }
+            //if (i == 0) {
+            //    array += TabId;
+            //}
+        }
+    
+        
+
+        $.ajax({
+            url: "../../ManageTab/TabUsers/",
+            type: 'POST',
+            cache: false,
+            data: {
+                UserId: arr,
+                TabId :"0",
+                UserCount:"0",
+            },
+            success: function (result) {
+                if (result == "Success") {
+                   // $('#Loader').appendTo("body").modal('hide');
+                    $('#portlet-config').appendTo("body").modal('hide');
+                    toastr.success("Changes Saved Succesfully", opts);
+                    setTimeout(function () { window.location.reload(true); }, 1000);
+                }
+
+            }
+        });
+    }
+    
+</script>
+
+

@@ -1,0 +1,185 @@
+﻿@model DSRCManagementSystem.Models.OnDutyRequestModel
+@{
+    ViewBag.Title = "Reject OnDuty Request";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Out Of Office Request Rejection</title>
+     <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script> 
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+     <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+              Out Of Office Request Rejection</h4>
+        </div>
+         @using (Html.BeginForm("RejectOnDutyRequest", "OOOnDuty", FormMethod.Get))
+         {
+        <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                         @Html.HiddenFor(x => x.ODID, new { @id = "ODID" })
+                          @Html.LabelFor(x => x.StartDate, new { @class = "control-label" })  
+                           @Html.TextBoxFor(x => x.StartDate, "{0:dd/MM/yyyy}", new { @id = "start", @class = "form-control datetimepicker ", @style = "height:42px;", @disabled = "disabled" })                       
+                             <span id="start" style="color: Red"></span>  
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.EndDate, new { @class = "control-label" })
+                             @Html.TextBoxFor(x => x.EndDate, "{0:dd/MM/yyyy}", new { @id = "end", @class = "form-control datetimepicker ", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="end" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                   <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                          @Html.LabelFor(x => x.Workingdays, new { @class = "control-label" })  
+                          @Html.TextBoxFor(x => x.Workingdays, new { @id = "workingdays", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                        
+                             <span id="workingdays" style="color: Red"></span>  
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.AlternateNo, new { @class = "control-label" })
+                             @Html.TextBoxFor(x => x.AlternateNo, new { @id = "alternate", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="alternate" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                               @Html.LabelFor(x => x.ODType, new { @class = "control-label" })
+                             @Html.TextBoxFor(x => x.ODType, new { @id = "type", @class = "form-control datetimepicker ", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="type" style="color: Red"></span>
+                        </div>
+                    </div>
+
+                  <div class="col-md-6">
+                     <div class="form-group">
+                               @Html.LabelFor(x => x.ODPlace, new { @class = "control-label" })
+                             @Html.TextBoxFor(x => x.ODPlace, new { @id = "place", @class = "form-control ", @style = "height:42px;", @disabled = "disabled" })
+                           <span id="place" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+                  <div class="row">
+                   <div class="col-md-6">
+                        <div class="form-group">
+                          @Html.LabelFor(x => x.RequestStatus, new { @class = "control-label" })  
+                          @Html.TextBoxFor(x => x.RequestStatus, new { @id = "status", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })                        
+                             <span id="status" style="color: Red"></span>  
+                        </div>
+                    </div>
+                      </div>
+                     <div class="row">
+                     <div class="col-md-6">
+                    <div class="form-group">
+                          @Html.LabelFor(x => x.ODComments, new { @class = "control-label" })  
+                          @Html.TextBoxFor(x => x.ODComments, new { @id = "comments", @class = "form-control ", @style = "height:70px;", @disabled = "disabled", @maxlength = 1000,  })                        
+                             <span id="comments" style="color: Red"></span> 
+                        </div>
+                     </div>
+                      <div class="col-md-6">
+                         <div class="form-group">                         
+                          @Html.LabelFor(x => x.ManagerComments, new { @class = "control-label" })                                                
+                          @*<b>@Html.Label("*", new { @style = "color:#FF0000" })</b>  *@
+                          @Html.TextAreaFor(x => x.ManagerComments, new { @id = "ManagerComments", @class = "form-control ", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })                                              
+                         <span id="Approvercomments" style="color: Red"></span> 
+                        </div>     
+                      </div>
+                    </div>
+       <br />
+         <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal" >
+                Cancel
+               </button>
+            <button type="button" class="btn btn-info" onclick="RejectOnDutyRequestPost()" >                     
+                    <i class="entypo-cancel"></i>Reject</button>
+         </div>
+        </div>    
+         }
+    </div>
+      <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+   
+    <script type="text/javascript">
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        function RejectOnDutyRequestPost() {
+
+                   
+                    
+                        $("#Approvercomments").html("");
+                        var values =
+                           {
+                               "ODID": $("#ODID").val(),
+                               "ManagerComments": $("#ManagerComments").val()
+                           }
+
+                        $.ajax({
+                            url: "../../OOOnDuty/RejectOnDutyRequest/",
+                            type: 'POST',
+                            cache: false,
+                            data: values,
+                            success: function (result) {
+                                if (result.Result === "Success") {
+
+                                    toastr.success("Out of office request has been rejected successfully", toastrOptions);
+                                    setTimeout(function () { location.reload(); }, 1000);
+
+                                }
+                                else if (result.Result === "Approved") {
+                                    toastr.success("Out of office request has been already approved.", toastrOptions);
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+                                else if (result.Result === "Rejected") {
+                                    toastr.success("Out of office request has been already rejected.", toastrOptions);
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+                                else if (result.Result === "Cancelled") {
+                                    toastr.success("Out of office request has been already cancelled by user.", toastrOptions);
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+                            }
+                        });
+                    }
+                
+    </script>
+</body>
+</html>
+
+

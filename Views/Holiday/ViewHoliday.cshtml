@@ -1,0 +1,275 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Format>
+@{
+    ViewBag.Title = "Holidays";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+}
+@{
+    int SNO = 1;
+}
+
+<style>
+   
+    .num {
+    height:30px;
+    }
+</style>
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ViewHoliday", "Holiday")">Holiday</a> </li>
+    <li class="active"><strong>View Holidays</strong> </li>
+</ol>*@
+     <p>
+        <a href="@Url.Action("ViewHoliday","Holiday")"style="color:black ">
+            Holiday
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>View Holidays</b>
+    </p>
+<br />
+
+                    <div class="panel-heading">
+                        <div class="panel-options"> 
+                        </div>
+                    </div>
+                  
+                        <div class="row">
+
+                            @{
+                                Random r = new Random();
+                                Dictionary<int, string> colorsList = new Dictionary<int, string>()
+        {
+            {1, "red"},
+            {2, "green"},
+            {3, "blue"},
+            {4, "aqua"},
+            {5, "purple"},
+            {6, "pink"},
+            {7, "cyan"},
+            {8, "pink"},
+            {9, "plum"},
+            {10, "orange"},
+            {11, "gray"}            
+        };
+                                var count = 1;
+                            }
+                            @if (Model != null)
+                            {
+                                int j = 0;
+                                foreach (var item in Model)
+                                {
+                                    if (item.Date >= DateTime.Now)
+                                    {
+                                        if (j < 4)
+                                        {
+                                
+                                <div class="col-md-2 col-lg-3">
+                                    <div class="tile-stats tile-@colorsList[count++]">
+                                        <div class="num" style="font-size: 30px; height: 80px">
+
+
+                                            <h3 style="height: 30px; font-size: 20px;height:60px">@item.HolidayName</h3>
+
+
+                                          
+                                            <h3 style="height: 30px; font-size: 16px;">
+                                                
+                                               @item.Date.Value.ToString("MMM d, yyyy - ddd")
+                                                   
+                                            </h3>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                        }
+                                        j++;
+                                    }
+                                }
+
+                            }                         
+@*<table class="table table-bordered datatable" id="tblProjects1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>@Html.DisplayName("Date")
+                                </th>
+                                <th>@Html.DisplayName("Detail")
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Date >= DateTime.Now)
+                            {
+                            <tr>
+                                <td style="text-align:center;">
+                                    @(SNO++)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(item.Date.Value.ToString("MMM d, yyyy - ddd"))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HolidayName)
+                                </td>
+                            </tr>
+                            }
+                        }
+                    </table>*@
+                        </div>
+
+               
+                <br />
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    View Holidays
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4" style="width: auto; float: left; text-align: center; color: Black; font-weight: bold; padding-top: 15px;">
+                        Year
+                    </div>
+
+                    <div class="col-md-4">
+
+                        @Html.DropDownList("Year", ViewBag.Years as SelectList, "--Select Year--", new { @id = "Year", @name = "Year", @class = "form-control select2", @onclick = "GetHolidays(this.value)" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                
+        
+
+
+
+                <div class="panel panel-default panel-shadow" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Holidays
+                        </div>
+                        <div class="panel-options">
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+
+
+
+
+                    <table class="table table-bordered datatable" id="tblProjects">
+                        <thead>
+                            <tr>
+                                <th>S.No
+                                </th>
+                                <th>@Html.DisplayName("Date")
+                                </th>
+                                <th>@Html.DisplayName("Detail")
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                </td>
+                                <td>
+                                    @Html.DisplayName(item.Date.Value.ToString("MMM d, yyyy - ddd"))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HolidayName)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $("#tblProjects").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }]
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+            $("#tblProjects1").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }]
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+
+        });
+        function GetHoliday(Year) {
+            {
+                $.ajax({
+                    url: "../../Holiday/GetYear/",
+                    type: 'GET',
+                    cache: false,
+                    data: { year: Year },
+                    success: function (result) {
+                        window.location.href = '@Url.Action("ViewHoliday", "Holiday")' + '?year=' + result;
+                    }
+                });
+                }
+            }
+
+            function GetHolidays(Year) {
+
+                var Year = $("#Year").find("option:selected").prop("value");
+                $.ajax({
+                    url: "../../Holiday/GetYear/",
+                    type: 'GET',
+                    cache: false,
+                    data: { year: Year },
+                    success: function (result) {
+                        window.location.href = '@Url.Action("ViewHoliday", "Holiday")' + '?year=' + result;
+                    }
+                });
+
+                }
+    </script>
+}

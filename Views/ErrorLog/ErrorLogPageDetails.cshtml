@@ -1,0 +1,188 @@
+﻿
+@model IEnumerable<DSRCManagementSystem.Models.Error>
+@{
+    ViewBag.Title = "ErrorLog Page Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@{
+    int SNO = 1;
+}
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("VisitorsDetails","Visitors")">Utilities</a></li>
+    <li class="active"><strong>Error Log </strong> </li>
+</ol>*@
+     <p>
+        <a href="@Url.Action("VisitorsDetails","Visitors")"style="color:black ">
+            Utilities
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Error Log</b>
+    </p>
+<br />
+<div class="row" style="height: 500px; ">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title"  color="White">
+                   Error Log</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" data-collapsed="0">
+              
+                 @using (Html.BeginForm("ErrorLogPageDetails", "ErrorLog", FormMethod.Post))
+                { 
+                    <div class="clear">
+                    </div>
+ 
+
+                    <br />
+                    <div class="table table-bordered datatable" >
+                        <table class="table table-bordered datatable" id="tblUsers">
+                            <thead>
+                                <tr>
+                                <th>
+                                      S.NO
+                                    </th>
+                                       
+                                        <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.Username)
+                                        </th>
+                                        <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.ExecptionDate)
+                                        </th>
+                                        <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.Message)
+                                        </th>
+                                          <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.source)
+                                        </th>
+                                        <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.Method)
+                                        </th>
+                                         <th style="text-align: Left;">
+                                            @Html.DisplayNameFor(model => model.strck)
+                                        </th>
+                                        <th style="text-align: center;">
+                                          @Html.DisplayName("View")
+                                    </th>
+                                    </tr>
+                                        </thead>
+                                        @foreach (var item in Model)
+                                        {
+                                      <tr>
+                                     <td style="text-align: center;">
+                                    @(SNO++)
+                                </td>
+                                <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.Username)
+                                </td>
+                                <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.ExecptionDate)
+                                </td>
+                                 <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.Message)
+                                </td>
+                                  <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.source)
+                                </td>
+                                 <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.Method)
+                                </td>
+                                  <td style="text-align: Left;">
+                                @Html.DisplayFor(modelitem => item.strck)
+                                </td>
+                                 <td>              
+                                     <a href="#" data-toggle="tooltip" title="View">
+                    <button type="button" class="btn btn-info" onclick='ErrorViewDetails("@item.ExecptionLogID")'>
+                        <i class="entypo-info"></i>
+                    </button>
+                </a>
+                                     </td>
+                                
+                                 </tr>
+                           
+                            }
+                                
+                        </table>
+                    </div>                    
+                }
+                
+               
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            localStorage.clear();
+
+            //$("#tblUsers").dataTable({
+            //    "sPaginationType": "bootstrap",
+            //    "aLengthMenu": [[ 10, 25, 50, -1], [10, 25, 50, "All"]],
+            //    "aaSorting": [],
+            //    "columnDefs": [{ bSortable: false, 'aTargets': [7] }]
+               
+            //});
+            var table = $("#tblUsers").dataTable({
+                "alengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+               
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [7] }],
+
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'Center');
+        });
+
+
+
+        function ErrorViewDetails(ID) {
+         
+            $.ajax({ url: "../../ErrorLog/ErrorViewDetails/" + ID,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    $(".datetimepicker").datepicker({
+                        format: 'dd/mm/yyyy',
+                        showTodayButton: true,
+                        collapse: true
+                    });
+                }
+            });
+        }
+
+        </script>
+        }

@@ -1,0 +1,634 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Department>
+@{
+    ViewBag.Title = "Manage User Activity";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    
+
+}
+
+
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+@{
+    int SNO = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+   
+}
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageActivities","ManageActivities")">
+            <i class="fa-home"></i>Activity Management
+        </a>
+    </li>
+    <li class="active"><strong>Manage Users Activity</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageActivities","ManageActivities")"style="color:black ">
+            Activity Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Users Activity</b>
+    </p>
+<br />
+<div class="row" >
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage User Activity
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" style="overflow: auto">
+                @using (Html.BeginForm("Observation", "ManageObservation", FormMethod.Post, new { @id = "form" }))
+                { 
+                    <div class="form-group">
+
+                       @* <div class="row">
+                            <div class="col-md-3" style="float: right" id="btnAdd2">
+                                <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='Addobservation()'>
+                                Assign Activity
+                            </div>
+                        </div>*@
+                        <br />
+
+                        <div class="row">
+                             @if (branchcnt==1)
+                        
+                        {
+                            <div class="visible-md">
+                                @Html.Label("Branch",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                @Html.DropDownList("Idbranchname1", ViewBag.BranchList as SelectList, "", new { @id = "Idbranchname1", @name = "BranchName", @class = "select2-container select2-container-multi select2 visible", @onchange = "GetDepartments()" })
+                            </div>
+                             }else{
+                              <div class="col-md-1" style="width:210px;padding-top: 7px; ">
+                                @Html.Label("Branch",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                @Html.DropDownList("Idbranchname1", ViewBag.BranchList as SelectList, "", new { @id = "Idbranchname1", @name = "BranchName", @class = "select2-container select2-container-multi select2 visible", @onchange = "GetDepartments()" })
+                            </div>
+                             }
+                            <div class="col-md-1" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Department",(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                @Html.DropDownList("DepartmentName", ViewBag.Department as SelectList, "--Select--", new { @id = "DepartmentName", @class = "select2-container select2-container-multi select2 visible", @style = "Width:170Px", @onchange = "change()" })
+                                <span id="StartDateTime_ID" style="color: Red;"></span>
+                            </div>
+                            <div class="col-md-1" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Group",(string)ViewBag.Lbl_depgroup , new { @class = "control-label" })
+                                @Html.DropDownList("GroupName", ViewBag.Group as SelectList, "--Select--", new { @id = "GroupName", @class = "select2-container select2-container-multi select2 visible", @style = "Width:170Px", @onchange = "fnUserchange() " })
+                            </div>
+                             <div class="col-md-1" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Users" , new { @class = "control-label" })
+                                @Html.DropDownList("UserId", ViewBag.Users as SelectList, "--Select--", new { @id = "Users", @class = "select2-container select2-container-multi select2 visible", @style = "Width:170Px"})
+                            </div>
+                              <div class="col-md-1" style="width: 181px; padding-top: 7px;">
+                                @Html.Label("Activity Date", new { @class = "control-label" })
+                                @Html.TextBox("ActivityDate", string.Empty, new { @id = "ActivityDate", @name = "ActivityDate", @class = "form-control datetimepicker", @autocomplete = "off", @style = "Height:42px" })
+                            </div>
+                            <div class="col-md-4" style="margin-top: 30px;  padding-top: 5px;">
+                                <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                    Search<i class="entypo-search"></i>
+                                </button>
+                                <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()">
+                                    Reset   
+                                </button>
+                             </div>
+                            @*<div class="col-md-1" style="margin-top: 30px; padding-right:30px; padding-top: 4px;">
+                            </div>*@
+                           
+                        </div>
+                        <br/>
+                        @*<div class="row" >
+                                    <div style="padding-left: 30px; margin-right: 12px;">
+                                        <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()" style="float: right">
+                                            Reset
+                                        </button>
+
+                                    </div>
+                                    <div style="padding-right: 30px;"></div>
+                                    <div style="padding-left: 30px;">
+
+                                        <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon" style="float: right ;margin-right: 4px">
+                                            Search<i class="entypo-search"></i>
+                                        </button>
+                                    </div>
+
+
+                                </div>*@
+                        <br />
+                        <div style="overflow: auto">
+                        <table class="table table-bordered datatable" id="tblRoles">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">S.No
+                                    </th>
+
+                                    <th style="text-align: center;">@Html.DisplayName("User")
+                                    </th>
+                                    <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_department)
+                                    </th>
+                                    <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_depgroup )
+                                    </th>
+                                    <th style="text-align: center;">@Html.DisplayName("Activity")
+                                    </th>
+                                    <th style="text-align: center;">@Html.DisplayName("Level")
+                                    </th>
+                                    <th style="text-align: center;">@Html.DisplayName("Date")
+                                    </th>
+                                    <th style="text-align: center;">@Html.DisplayName("Comments")
+                                    </th>
+
+
+                                    <th style="text-align: center;">@Html.DisplayName("Edit")
+                                    </th>
+                                    <th style="text-align: center;">@Html.DisplayName("Delete")
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                    <tr class="@Html.Raw((item.SelectedUserStatusid == 2) ? "danger" : "")">
+                                        <td>
+                                            @(SNO++)
+                                        </td>
+
+                                        <td>
+                                            @Html.HiddenFor(modelitem => item.DepartmentID)
+                                            @Html.DisplayFor(modelitem => item.GroupName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.DepartmentName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.OBUserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.Activity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.ActivityLevel)
+
+                                        </td>
+                                        <td>
+
+                                         @item.ActivityDate.ToString("ddd, MMM d, yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.Comment)
+                                           
+                                    </td>
+
+                                                                    
+
+                                        <td style="text-align: center;">
+                                            <a href="#" data-toggle="tooltip" title="Edit">
+                                                
+                                                <button type="button" class="btn btn-info" onclick='Edit(@item.DepartmentID,"@item.Activity","@item.ActivityLevel","@item.Comment.Replace("\"", "-")")'>
+                                                    <i class="entypo-pencil"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a href="#" data-toggle="tooltip" title="Delete">
+                                                <button type="button" class="btn btn-red" onclick='Delete(@item.DepartmentID)'>
+                                                    <i class="entypo-cancel"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                            </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+
+       
+            $(".datetimepicker").datepicker({
+                format: 'yyyy-mm-dd',
+                //startDate: '1d',
+                todayHighlight: true,
+                autoclose: true,
+                //endDate: '1d'
+            });
+            
+        });
+
+        $(document).ready(function () {
+            $("#tblRoles").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }]
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+
+        function Addobservation() {
+            var url = '@Url.Action("AddObservation", "ManageObservation")';
+            window.location.href = url;
+        }
+
+        
+       
+            function Edit(uId, pName, pName1, pName2) {
+               
+
+                $.ajax({
+              
+                    url: "../../ManageObservation/EditObservation/",
+                    type: 'GET',
+                    cache: false,
+                    data: { UID: uId, Activity: pName, ActivityLevel: pName1, Comment: pName2 },
+                 
+                    success: function (result) {
+                        if (result == "DeleteWarning") {
+
+                            $("#portlet-config").modal('hide');
+                            toastr.warning("Cannot Delete", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                        else {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    }
+               
+                });
+              
+            }
+           
+        
+
+        function Delete(uid) {
+            var opts =
+           {
+               "closeButton": true,
+               "debug": false,
+               "positionClass": "toast-top-right",
+               "toastClass": "White",
+               "onclick": null,
+               "showDuration": "3000",
+               "hideDuration": "1000",
+               "timeOut": "2000",
+               "extendedTimeOut": "1000",
+               "showEasing": "swing",
+               "hideEasing": "linear",
+               "showMethod": "fadeIn",
+               "hideMethod": "fadeOut"
+           }
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "../../ManageObservation/Delete/",
+                        type: 'GET',
+                        cache: false,
+                        data: { ID: uid },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.success("Users Activity Deleted successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else if (result == "Warning") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+
+                                   }, 1500);
+                               }
+                               else if (result == "Warning1") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   toastr.warning("Cannot Delete ", opts);
+                                   setTimeout(function () {
+                                       window.location = window.location;
+                                   }, 1500);
+                               }
+                           }
+                    });
+                }
+            });
+        }
+
+
+
+        function Save() {
+
+            var values =
+                        {
+                            "ActivityDate": $("#ActivityDate").val(),
+                        }
+            var opts =
+                   {
+                       "closeButton": true,
+                       "debug": false,
+                       "positionClass": "toast-top-right",
+                       "toastClass": "White",
+                       "onclick": null,
+                       "showDuration": "300",
+                       "hideDuration": "1000",
+                       "timeOut": "2000",
+                       "extendedTimeOut": "1000",
+                       "showEasing": "swing",
+                       "hideEasing": "linear",
+                       "showMethod": "fadeIn",
+                       "hideMethod": "fadeOut"
+                   }
+
+            $.ajax({
+
+                url: "../../ManageObservation/observation/",
+                type: 'GET',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+                    if (result == "Success") {
+                        toastr.success("Activity Added successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+
+                    }
+                    if (result == "Warning") {
+                        $("#portlet-config").modal("hide");
+                        toastr.warning(" Date Already Exist ", opts);
+                    }
+                }
+            });
+        }
+
+        function change() {
+            
+        
+
+            var Bid = "";
+            value = $("#Idbranchname1").val();
+            if (value == "") {
+                Bid = 0;
+            }
+            else {
+
+                Bid = $('#Idbranchname1').find("option:selected").prop("value");
+            }
+
+
+
+            var DepartmentName = "";
+            value = $("#DepartmentName").val();
+            if (value == "") {
+                DepartmentName = 0;
+            }
+            else {
+
+                 DepartmentName = $('#DepartmentName').find("option:selected").prop("value");
+            }
+            var url2 = '@Url.Action("GetAvailEmployees")';
+
+
+            var GroupName = "";
+            value = $("#GroupName").val();
+            if (value == "") {
+                GroupName = 0;
+            }
+            else {
+
+                GroupName = $('#GroupName').find("option:selected").prop("value");
+            }
+
+
+            $.get(url2, { DepartmentName: DepartmentName, BranchID: Bid }, function (data) {
+
+                var items = []; 
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                });
+                $("#GroupName").html(items.join(' '));
+                $("#GroupName").select2();
+            });
+
+            
+            var url6 = '@Url.Action("GetUsers")';
+            $.get(url6, { BranchId: Bid, DepartmentName: DepartmentName, GroupName: GroupName },
+               function (data) {
+                   var items = [];
+                   items.push("");
+                   items.push("<option value=0>--Select--</option>");
+
+                   $.each(data, function () {
+                       items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                   });
+                   $("#Users").html(items.join(' '));
+                   $("#Users").select2();
+               });
+
+
+
+        }
+        
+
+
+        function fnUserchange() {
+            
+
+            var selectedId = $('#DepartmentName').val();
+            //var date = $('#Date').val();
+
+
+            var Bid = "";
+            value = $("#Idbranchname1").val();
+            if (value == "") {
+                Bid = 0;
+            }
+            else {
+
+                Bid = $('#Idbranchname1').find("option:selected").prop("value");
+            }
+
+            var DepartmentName = "";
+            value = $("#DepartmentName").val();
+            if (value == "") {
+                DepartmentName = 0;
+            }
+            else {
+
+                DepartmentName = $('#DepartmentName').find("option:selected").prop("value");
+            }
+
+
+
+            var GroupName = "";
+            value = $("#GroupName").val();
+            if (value == "") {
+                GroupName = 0;
+            }
+            else {
+
+                GroupName = $('#GroupName').find("option:selected").prop("value");
+            }
+      
+
+            
+
+            var url6 = '@Url.Action("GetUsers")';
+            $.get(url6, { BranchId: Bid, DepartmentName: DepartmentName, GroupName:GroupName },
+               function (data) {
+                   var items = [];
+                   items.push("");
+                   items.push("<option value=0>--Select--</option>");
+
+                   $.each(data, function () {
+                       items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                   });
+                   $("#Users").html(items.join(' '));
+                   $("#Users").select2();
+               });
+
+          
+
+            
+    
+        }
+
+
+        function GetDepartments() {
+
+            var Bid = "";
+            value = $("#Idbranchname1").val();
+            if (value == "") {
+                Bid = 0;
+            }
+            else {
+
+                Bid = $('#Idbranchname1').find("option:selected").prop("value");
+            }
+
+            var DepartmentName = "";
+            value = $("#DepartmentName").val();
+            if (value == "") {
+                DepartmentName = 0;
+            }
+            else {
+
+                DepartmentName = $('#DepartmentName').find("option:selected").prop("value");
+            }
+
+
+
+            var GroupName = "";
+            value = $("#GroupName").val();
+            if (value == "") {
+                GroupName = 0;
+            }
+            else {
+
+                GroupName = $('#GroupName').find("option:selected").prop("value");
+            }
+
+
+
+            if (Bid !== "") {
+                var url2 = '@Url.Action("GetDepartments")';
+                $.get(url2, { BranchId: Bid }, function (data) {
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#DepartmentName").html(items.join(' '));
+                    $("#DepartmentName").select2();
+                });
+
+                var url4 = '@Url.Action("GetAvailEmployees")';
+
+                $.get(url4, { DepartmentName: 0 },
+                    function (data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data, function () {
+                            items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                        });
+                        $("#GroupName").html(items.join(' '));
+                        $("#GroupName").select2();
+                    });
+
+               
+                var url6 = '@Url.Action("GetUsers")';
+                $.get(url6, { BranchId: Bid, DepartmentName: DepartmentName, GroupName: GroupName },
+                   function (data) {
+                       var items = [];
+                       items.push("");
+                       items.push("<option value=0>--Select--</option>");
+
+                       $.each(data, function () {
+                           items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                       });
+                       $("#Users").html(items.join(' '));
+                       $("#Users").select2();
+                   });
+
+            }
+        }
+        function Cancel() {
+            var url = '@Url.Action("Observation", "ManageObservation")';
+            window.location.href = url;
+        }
+
+    </script>
+}

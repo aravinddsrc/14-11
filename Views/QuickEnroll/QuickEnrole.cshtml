@@ -1,0 +1,389 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.QuickEnrollment>
+@{
+    ViewBag.Title = "Quick Enrole";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+      
+
+    <style>
+    .abc {
+        background-color:#ffb3b3;
+
+    }
+   
+</style>
+    <style type="text/css">
+        table td:nth-child(2)
+        {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        table td:nth-child(3)
+        {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+          body {
+
+ overflow-y:auto;
+}
+          .dropdown-menu {
+    background-color: white;
+}        
+
+    </style>
+}
+@{
+    int SNO = 1;
+   
+  
+}
+
+@*<ol class="breadcrumb bc-3">
+   <li>
+        <a href="@Url.Action("ManageUsers","Users")">
+            <i class="fa-home1"></i>Employee Management
+        </a>
+    </li>
+    <li class="active"><strong>Quick Enroll</strong> </li>
+</ol>*@
+
+    <p>
+        <a href="@Url.Action("ManageUsers","Users")"style="color:black ">
+            Manage Employees
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Quick Enroll</b>
+    </p>
+    <br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            
+            <div class="panel-heading">
+                <div class="panel-title" >
+                    Quick Enroll</div>
+            </div>
+         
+           
+           
+            <div class="panel-body">
+                @using (Html.BeginForm("QuickEnrole", "QuickEnroll", FormMethod.Post))
+                { 
+                        <div class="btn-group" style="float: right" id="AddNewUser">
+                        <button type="button" class="btn btn-blue" style="font-weight: bold;    top: 9px;" onclick='AddRoll()'>
+                       Add Quick Enroll
+                        </button>
+                        <br />
+                    </div>         
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                   @* for(var item in Model)
+                    {
+                    @Html.Hidden("QuickEnroll",(int)ViewBag.Roll = QuickEnroll, new { @QuickEnroll="QuickEnrollid"})
+                    }*@
+                    <table class="table table-bordered datatable" id="tblQuickEnroll">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">
+                                    S.No</th>
+                                
+                                <th style="text-align: center;">@Html.DisplayName("First Name")
+                                  </th>
+                               <th style="text-align: center;">@Html.DisplayName("Last Name")
+                                 </th>                    
+                                     <th style="text-align: center;">@Html.DisplayName("Designation")
+                                    </th>
+                               @* <th style="text-align: center;">@Html.DisplayName("Location")
+                                    </th>*@
+                                <th style="text-align: center;">@Html.DisplayName("Phone Number")
+                                    </th>
+                                <th style="text-align: center;">@Html.DisplayName("Date of Join")
+                                    </th>
+                                <th style="text-align: center;">@Html.DisplayName("Comments")
+                                    </th>
+                                
+                                <th style="text-align: center;">
+                                    Convert
+                                    </th>
+                                <th style="text-align: center;">
+                                    Edit
+                                    </th>
+                                <th style="text-align: center;">
+                                    Delete
+                                    </th>
+                            
+                                   
+                            </tr>
+                        </thead>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                        <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                     
+                               </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                         @*@Html.Hidden("QuickEnroll",(int)@ViewBag.Role, new { @id="QuickEnrollid"})*@
+                                        @Html.HiddenFor(modelItem => item.QuickEnroll)
+                                         @Html.DisplayFor(modelItem => item.FirstName)
+                                         
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.rollName)
+                                         </td>
+                                         @*<td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.Location)
+                                    </td>*@
+                                    <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </td>
+                                    <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(ModelItem => item.DateOfJoin)
+                                        @* @Html.DisplayFor(modelItem => item.DateOfBirth.ToString("ddd, MMM d, yyyy"))*@
+                                        
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.Comments)
+                                    </td>
+
+                                       <td> 
+
+                                        @*<a class="btn btn-info" href='@Url.Action("AddUser", "Users", new { QuickEnroll = @item.QuickEnroll })'>
+                                        <i class="entypo-pencil"></i>Convert</a>*@
+
+                          @*<button type="button" class="btn btn-info" onclick='Convert("@item.QuickEnroll")' style="font-weight: bold;top: 9px";">
+                                        Convert
+                                    </button>*@
+
+
+                                           <a href="#" data-toggle="tooltip" title="Convert" class="btn btn-info" onclick='Convert("@item.QuickEnroll")'>
+                                            <i class="entypo-bag"></i></a>
+
+                                         </td>
+                                         
+                                       
+                                       
+                                         <td> @*<button type="button" class="btn btn-blue" style="font-weight: bold;    top: 9px;" onclick='AddRoll()'>*@
+                                             
+                                              @*<a class="btn btn-info" style="font-weight: bold;top: 9px" onclick="Edit(@item.QuickEnroll)">
+                                             <i class="entypo-pencil"></i>  Edit
+                                               </a>*@
+                                             <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick="Edit(@item.QuickEnroll)">
+                                            <i class="entypo-pencil"></i></a>
+
+
+
+
+                                         </td>
+                                         <td>
+                                             @*<a class="btn btn-danger" data-dismiss="modal" onclick='Delete(@item.QuickEnroll)'><i class="entypo-cancel"></i>
+                                           Delete
+                                                   </a>*@
+                                             <a class="btn btn-danger" data-toggle="tooltip" title="Delete"onclick="Delete(@item.QuickEnroll)">
+                                            <i class="entypo-cancel"></i></a>
+
+                                         </td>
+                                    
+                            </tr>
+                            
+                            }
+                        }
+                               
+                    </table>
+                }
+                
+                
+               
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+        jQuery(document).ready(function ($) {
+
+
+
+
+            var columnDefs;
+
+            //$("#tblQuickEnroll").dataTable({
+            //    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //    "sPaginationType": "bootstrap",
+            //    // "columnDefs": [{ bSortable: false, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }]
+            //    "columnDefs": [{ bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }, { bSortable: false, 'aTargets': [10] }]
+
+
+            //});
+
+            var table = $("#tblQuickEnroll").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{bSortable:false,'aTargets':[7]},{ bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }],
+
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        var opts =
+                        {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "toastClass": "White",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+        function AddRoll() {
+
+            $.ajax({
+                url: "../../QuickEnroll/AddNewRoll/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                   @* $(".datetimepicker").datepicker({
+                        format: 'dd/mm/yyyy',
+                        todayHighlight: true,
+                        autoclose: true
+                    });*@
+
+                }
+            });
+        }
+        function Edit(QuickRoleId) {
+           @* var url = '@Url.Action("EditNewRoll", "QuickEnroll")';
+            window.location.href = url;*@
+
+            $.ajax({
+                url: "../../QuickEnroll/EditNewRoll/",
+                type: 'GET',  
+                cache: false,
+                data: { QuickEnroll: QuickRoleId },
+                success:
+                   function (result) {
+                       $('#PartialSection').html(result);
+                       $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                       @*$(".datetimepicker").datepicker({
+                           format: 'dd/mm/yyyy',
+                           todayHighlight: true,
+                           autoclose: true
+                       });*@
+
+                   }
+            });
+        }
+
+        function Delete(QuickEnrollid) {
+     
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+             
+                if (result) {
+                    $.ajax({
+                        url: "../../QuickEnroll/Delete/",
+                        type: 'POST',
+                        cache: false,
+                        data: { Quickenrollid: QuickEnrollid },
+                        success:
+                           function (result) {
+                               // $("#" + QuickEnrollid).remove();
+                               toastr.success("Quick Enroll deleted successfully", opts);
+                               setTimeout(function () { location.reload(); }, 1000);
+                           }
+                    });
+                }
+            });
+        }
+
+
+        function Convert(QuickEnroll) {
+            window.location.href = "../../Users/AddUser?Quick=" + QuickEnroll + "";
+            //$.ajax({
+            //    url: "../../Users/AddUser/",
+            //    type: 'GET',
+            //    cache: false,
+            //    data: { Quick: QuickEnroll },
+            //    //traditional: true,
+            //    //global: false,
+            //    success: function (data) {
+
+            //    }
+            //});
+        }
+
+        </script>
+       @*function EditNewRoll() {
+            $.ajax({
+                url: "../../QuickEnroll/EditNewRoll",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    $(".datetimepicker").datepicker({
+                        format: 'dd/mm/yyyy',
+                        todayHighlight: true,
+                        autoclose: true
+                    });
+                }
+            });
+        }*@
+       
+
+
+   
+   
+}

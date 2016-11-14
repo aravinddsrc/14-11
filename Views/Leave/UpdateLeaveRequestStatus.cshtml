@@ -1,0 +1,203 @@
+﻿@*@model DSRCManagementSystem.LeaveRequest*@
+@model DSRCManagementSystem.Models.LeaveModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Update Leave Request</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+         <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header"  style="background-color:#f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Leave Request Details</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("UpdateLeaveRequestStatus", "Leave", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Start Date", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.StartDateTime, "{0:dd-MM-yyyy}", new { @id = "StartDateTime", @class = "form-control datetimepicker", @autocomplete = "off", @disabled = "disabled" })
+                            @Html.HiddenFor(x => x.LeaveRequestedId)
+                            @Html.HiddenFor(x => x.UserId)
+                            @Html.HiddenFor(x => x.LeaveTypeId, new { @id = "id" })
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("End Date", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.EndDateTime, "{0:dd-MM-yyyy}", new { @id = "EndDateTime", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Leave Type", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.DropDownListFor(x => x.LeaveTypeId, ViewBag.LeaveTypeList as SelectList, new { @id = "LeaveTypeList", @name = "LeaveType", @class = "form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Leave Days", new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.totalLeaveDays, new { @id = "LeaveDays", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Leave Status", new { @class = "control-label" })
+                            @Html.DropDownListFor(x => x.LeaveStatusId, ViewBag.LeaveStatusList as SelectList, new { @id = "LeaveStatusList", @name = "LeaveStatusList", @class = "form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Processed by", new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.FullName, new { @id = "ProcessedBy", @name = "LeaveStatusList", @class = "form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Detail", new { @class = "control-label" })
+                            @Html.TextAreaFor(x => x.Details, new { @id = "Details", @class = "form-control", @autocomplete = "off", @disabled = "disabled", @style = "height:75px" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Comments, new { @class = "control-label" })
+                            @Html.TextAreaFor(x => x.Comments, new { @id = "Comments", @maxlength = 250, @class = "form-control", @autocomplete = "off", @disabled = "disabled", @style = "height:75px" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Applied Date", new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.RequestedDate, "{0:dd-MM-yyyy}", new { @id = "Applied Date", @class = "form-control", @autocomplete = "off", @disabled = "disabled"})
+                        </div>                    
+                </div>
+                 <div class="row">
+                <div class="col-md-6">
+                        <div class="form-group">
+                     
+                       
+                            @Html.Label("Approved/ Rejected/ Cancelled Date", new { @class = "control-label" , @id="ARC_Label" })
+                            @Html.TextBoxFor(x => x.ProcessedOn, "{0:dd-MM-yyyy}", new { @id = "Approved Date", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                        </div>
+                    </div>  
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6" id="avail">
+                    <div class="form-group">
+                     &nbsp;&nbsp @Html.Label("Worked Date", new { @class = "control-label" })
+                     @Html.TextBoxFor(x => x.WorkedDate1, "{0:dd-MM-yyyy(DD)}", new { @id = "work Date", @class = "form-control", @autocomplete = "off", @disabled = "disabled"})
+                    </div>
+                    </div>
+                  
+                    </div>     
+                    </div>              
+           }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+      
+       $(document).ready(function() {
+       
+       $('#id').each(function() {
+       if ($(this).val() == 4)
+          {
+           $("#avail").show();
+          }
+        else
+        { 
+       
+        $("#avail").hide();
+        } 
+      });     
+    });
+        $(document).ready(function() {
+      
+       if( $("#LeaveStatusList").val()==2)
+        {
+        $("#ARC_Label").text('Approved Date');
+        }
+        else if( $("#LeaveStatusList").val()==3)
+        {
+        $("#ARC_Label").text('Rejected Date');
+        }
+          else if( $("#LeaveStatusList").val()==4)
+        {
+        $("#ARC_Label").text('Cancelled Date');
+        }
+         });
+
+        function UpdateLeaveRequestStatus(leaveRequestId) {
+      
+            var values =
+        {
+            "leaveStatusId": $("#LeaveStatusList").find("option:selected").prop("value"),
+            "leaveRequestId": leaveRequestId,
+            "reportingUserID": @Session["UserId"],
+            "comments": $("#Comments").val()
+        };
+            $.ajax({
+                url: "../../Leave/UpdateLeaveRequestStatus/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                }
+            });         
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1857 @@
+﻿@model DSRCManagementSystem.Models.Profile
+@using System.Globalization
+@{
+
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    //Layout = null;
+
+}
+
+<style>
+    .dropdown-menu {
+        background-color: white;
+    }
+</style>
+
+@if (ViewBag.Message == "Success")
+{
+   
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var Message = 'Details saved successfully.';
+            PopUp(Message);
+
+            var image = '@Html.Raw(Json.Encode(Model.HasImage))';
+            if (image == "false")
+                $('#reset').attr('disabled', 'disabled');
+            else
+                $('#reset').removeAttr('disabled');
+
+        });
+    </script>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+
+        $('#ProfileSave').click(function () {
+
+
+            var contno = $('#ContactNo').val();
+            var ipadd = $('#IPAddress').val();
+            var getdate = new Date($("[id$='DateOfBirth']").val());
+            var curDate = new Date();
+            var preexp = $('#Previous').val();
+            if ($('#MachineName').val() == "" || $('#IPAddress').val() == "" || $('#pAddress').val() == "" || $('#ContactNo').val() == "" || $('#DateOfBirth').val() == "" || (contno.length < 10) || $('#Previous').val() != "" || (!/(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/.test(ipadd))) {
+
+                var MachineName = $('#MachineName').val();
+                var call = false;
+                if ($('#DateOfBirth').val() == "") {
+                    document.getElementById("span_DateOfBirth").innerHTML = "Enter Date Of Birth";
+                    return false;
+                }
+                else {
+
+
+                    document.getElementById("span_DateOfBirth").innerHTML = "";
+                }
+
+                if ($('#previous').val() != "") {
+
+
+                    var result = [];
+                    result = preexp.split(".");
+
+                    if (result.length > 2) {
+
+                        document.getElementById("exp").innerHTML = "Enter valid previous experience";
+                        return false;
+
+                    }
+                    else {
+
+                        document.getElementById("exp").innerHTML = "";
+
+
+
+                    }
+
+
+                }
+
+
+                if (contno == "") {
+
+                    document.getElementById("span_ContactNo").innerHTML = "Enter Mobile Number";
+                    return false;
+                }
+                else if (contno.length < 10) {
+                    document.getElementById("span_ContactNo").innerHTML = "Enter  Minimum 10 Numbers";
+                    return false;
+                }
+                else {
+
+                    document.getElementById("span_ContactNo").innerHTML = "";
+                }
+
+
+
+                var Peradd = $('#pAddress').val();
+                if (Peradd == "") {
+
+                    document.getElementById("span_permanentaddress").innerHTML = "Enter the Permanent Address";
+                    return false
+                }
+                else {
+                    document.getElementById("span_permanentaddress").innerHTML = " ";
+                }
+
+                if (MachineName == "") {
+
+                    document.getElementById("machine").innerHTML = "Enter the Machine Name";
+                    //setTimeout(function () { location.reload(); }, 100000);
+                    return false;
+                }
+                else {
+                    document.getElementById("machine").innerHTML = " ";
+
+
+                }
+
+                if (ipadd == "") {
+
+                    document.getElementById("ipaddress").innerHTML = "Enter the IP Address";
+                    //setTimeout(function () { location.reload(); }, 100000);
+                    return false;
+                }
+
+                else {
+
+                    document.getElementById("ipaddress").innerHTML = " ";
+                }
+
+                // added on 9/9
+                if (!/(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/.test(ipadd)) {
+                    document.getElementById("ipaddress").innerHTML = "Enter valid IP Address";
+                    return false;
+                }
+                else {
+
+                    document.getElementById("ipaddress").innerHTML = "";
+                }
+
+
+            }
+
+
+
+            if ($("#file").val() == "") {
+                var Message = "Details Saved Successfully";
+
+                PopUp(Message);
+            }
+
+            else {
+                if ($("#file").val() != "") {
+
+                    var allowedExtension = ['jpeg', 'jpg', 'gif', 'jfif', 'png'];
+                    var fileExtension = document.getElementById('file').value.split('.').pop().toLowerCase();
+                    var result = 1;
+                    var isValidFile = false;
+
+                    for (var index in allowedExtension) {
+
+                        if (fileExtension === allowedExtension[index]) {
+                            isValidFile = true;
+                            break;
+
+
+                        }
+
+                    }
+
+
+                    if (!isValidFile) {
+                        document.getElementById("Photo_error").innerHTML = "Select valid format image";
+                        return false;
+
+                    }
+
+
+                    else {
+                        document.getElementById("Photo_error").innerHTML = "";
+                        var Message = "Details Saved Successfully";
+
+                        PopUp(Message);
+
+                    }
+
+
+
+                }
+
+            }
+
+
+            function Validatedropdown(id, Errormsg) {
+
+                $('#' + id).change(function () {
+                    validatedropdownonsave(id, Errormsg);
+                });
+            }
+
+            function validatedropdownonsave(id, Errormsg) {
+
+                if ($('#' + id)[0].selectedIndex == 0) {
+                    var _ele = $('#' + id).next();
+                    if (_ele.attr('class') == 'errorMsg')
+                        $(_ele).remove();
+                    $('<span class="errorMsg" style="color:Red">' + Errormsg + '</span>').insertAfter('#' + id)[0];
+                    return false;
+                }
+                var _ele = $('#' + id).next();
+                if (_ele.attr('class') == 'errorMsg')
+                    $(_ele).remove();
+                return true;
+            }
+
+            var MaritalCheck = validatedropdownonsave('Marital', 'Please select Marital Status');
+
+            if (MaritalCheck == false) {
+                return false;
+            }
+
+            @*    $('#ProfileSave').click(function () {
+
+                
+           @*var MachineName = $('#MachineName').val();
+            if (MachineName =="") {
+                //Text('MachineName', 'Enter the Machine Name');
+                document.getElementById("machine").innerHTML = "From date is greater";
+            }
+            var MachineName = $('#IPAddress').val();
+            if (MachineName == "") {
+                //Text('IPAddress', 'Enter the Machine Name');
+                document.getElementById("ipaddress").innerHTML = "From date is greater";
+            }*@
+
+
+
+
+            Validatedropdown('Marital', 'Please select Marital Status');
+
+            function Validatedropdown(id, Errormsg) {
+                $('#' + id).change(function () {
+                    validatedropdownonsave(id, Errormsg);
+                });
+            }
+
+            function validatedropdownonsave(id, Errormsg) {
+                if ($('#' + id)[0].selectedIndex == 0) {
+                    var _ele = $('#' + id).next();
+                    if (_ele.attr('class') == 'errorMsg')
+                        $(_ele).remove();
+                    $('<span class="errorMsg" style="color:Red">' + Errormsg + '</span>').insertAfter('#' + id)[0];
+                    return false;
+                }
+                var _ele = $('#' + id).next();
+                if (_ele.attr('class') == 'errorMsg')
+                    $(_ele).remove();
+                return true;
+            }
+
+
+
+
+            $("#Previous").on("input", function () {
+                $(this).val(function (i, val) {
+                    var Previous = this.value;
+                    var month = Previous.split('.');
+                    return val.replace(/\d{3}|[^\d{2}\.]|^\./g, "");
+                });
+            });
+
+
+
+            //$.ajax({
+            //    url: "../../Profile/ViewProfile",
+            //    type: 'POST',
+            //    cache: false,
+            //    data: values,
+            //    success: function (result) {
+            //        alert(result);
+            //    }
+
+            //});
+
+
+
+        });
+    });
+
+
+</script>
+
+@section AddToHead
+{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <style>
+        .has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline {
+            font-weight: 100;
+        }
+
+        label {
+            font-weight: 100;
+        }
+
+
+        .panel-heading > .panel-title {
+            font-weight: 100;
+        }
+
+        .form-group {
+            font-weight: 100;
+        }
+
+        .switch {
+            position: relative;
+            display: block;
+            vertical-align: top;
+            width: 100px;
+            height: 30px;
+            padding: 3px;
+            margin: 0 10px 10px 0;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+            border-radius: 18px;
+            box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .switch-label {
+            position: relative;
+            display: block;
+            height: inherit;
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #eceeef;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        }
+
+            .switch-label:before, .switch-label:after {
+                position: absolute;
+                top: 50%;
+                margin-top: -.5em;
+                line-height: 1;
+                -webkit-transition: inherit;
+                -moz-transition: inherit;
+                -o-transition: inherit;
+                transition: inherit;
+            }
+
+            .switch-label:before {
+                content: attr(data-off);
+                right: 11px;
+                color: #aaaaaa;
+                text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .switch-label:after {
+                content: attr(data-on);
+                left: 11px;
+                color: #FFFFFF;
+                text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+            }
+
+        .switch-input:checked ~ .switch-label {
+            background: #E1B42B;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-input:checked ~ .switch-label:before {
+                opacity: 0;
+            }
+
+            .switch-input:checked ~ .switch-label:after {
+                opacity: 1;
+            }
+
+        .switch-handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+            background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+            border-radius: 100%;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-handle:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -6px 0 0 -6px;
+                width: 12px;
+                height: 12px;
+                background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+                background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+                border-radius: 6px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            }
+
+        .switch-input:checked ~ .switch-handle {
+            left: 74px;
+            box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-label, .switch-handle {
+            transition: All 0.3s ease;
+            -webkit-transition: All 0.3s ease;
+            -moz-transition: All 0.3s ease;
+            -o-transition: All 0.3s ease;
+        }
+    </style>
+
+
+    <style>
+        textarea {
+            resize: none;
+        }
+
+        h2 {
+            display: block;
+            font-size: 2em;
+            color: Red;
+            text-align: justify;
+            @*font-weight: bold;*@
+        }
+    </style>
+}
+@*
+<ol class="breadcrumb bc-3">
+    @*<li><a><i class="entypo-home"></i>Home</a> </li>*@
+@*
+    <li class="active">
+        <strong>
+    My Profile
+            </strong>
+            @if (ViewBag.isalfiled == true)
+            {
+
+@*<h2><b>Please fill your details to enter into dashboard</b></h2>*@
+@*      }
+
+</ol>
+*@
+
+<p>
+    Settings
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Profile</b>
+</p>
+<br />
+<div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    My Profile
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                </div>*@
+@using (Html.BeginForm("ViewProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Company Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.BranchName, (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.DropDownListFor(x => x.BranchName, ViewBag.BranchList as SelectList, new
+                           {
+                               @id = "BranchID",
+                               @name = "BranchID",
+                               @class = "form-control select2",
+                               @disabled = "disabled"
+                           })
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.DepartmentName, (string)ViewBag.Lbl_department, new { @class = "control-label" })@*,(string)ViewBag.Lbl_department)*@
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @*@Html.DropDownListFor(x => x.DepartmentId, new SelectList(Model.DepartmentList, "Value", "Text", Model.DepartmentId), new { @id = "Department", @class = "form-control" })*@
+                                @Html.TextBoxFor(x => x.DepartmentName, new { @id = "Department", @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(x => x.DepartmentId)
+                                @*@Html.ValidationMessageFor(x => x.DepartmentId, "", new { @style = "color:red" })*@
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            @*<div class="form-group has-success">*@
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.GroupName, (string)ViewBag.Lbl_group, new { @class = "control-label", @Styles = "font-weight:100;" })@*,(string)ViewBag.Lbl_depgroup )*@
+                                @*@Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+
+                                @Html.DropDownListFor(x => x.GroupName, ViewBag.Groups as SelectList, "", new { @id = "GroupName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        @*</div>*@
+
+
+
+                        @*<div class="row">*@
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.DropDownListFor(x => x.DesignationName, ViewBag.DesignationList as SelectList, new { @id = "DesignationName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.WorkPlace)
+                                @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+                                @if (ViewBag.WorkPlaceId != null)
+                                {
+                                    @Html.DropDownListFor(x => x.WorkPlace, ViewBag.WorkPlaceList as SelectList, new { @id = "WorkPlace", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.WorkPlace, ViewBag.WorkPlaceList as SelectList, new { @id = "WorkPlace", @class = "form-control", @autocomplete = "off" })
+                                }
+
+                                @Html.HiddenFor(x => x.WorkPlace)
+                                @Html.ValidationMessageFor(x => x.WorkPlace, "", new { @style = "color:red" })
+
+                            </div>
+                        </div>
+                        @*</div>*@
+                        @* <div class="row">*@
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.Label("Email Address", new { @class = "control-label" })
+                                @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+
+                                @Html.TextBoxFor(x => x.EmailAddress, new { @id = "EmailAddress", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off", @disabled = "disabled" })
+                                @Html.HiddenFor(x => x.EmailAddress)
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.EmpID, new { @id = "EmpID", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmpID, @autocomplete = "off", @disabled = "disabled" })
+
+                                @Html.HiddenFor(x => x.EmpID)
+                                @Html.HiddenFor(x => x.RoleID)
+
+                            </div>
+                        </div>
+                        @* </div>
+
+
+
+
+                    <div class="row">*@
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.UserName, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.UserName, "", new { @id = "UserName", @name = "UserName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_UserName, @autocomplete = "off", @disabled = "disabled" })
+                                @Html.HiddenFor(x => x.UserID)
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+
+                                @Html.LabelFor(x => x.DateOfJoin, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.DateOfJoin, new { @id = "DateOfJoin", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_ProfileModel_DateofJoin, @autocomplete = "off", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(x => x.DateOfJoin, "", new { @style = "color:red" })
+                                @Html.HiddenFor(x => x.DateOfJoin)
+
+                            </div>
+                        </div>
+                        @*</div>*@
+
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.Label("Reporting Person", new { @class = "control-label" })
+                                @*@Html.LabelFor(x=>x.ReportingPerson, new { @class = "control-label" })*@
+
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.DropDownList("Id1", ViewBag.ReportingPerson as MultiSelectList, new
+                               {
+                                   @id = "Idreportingperson",
+                                   @class = "select2-container select2-container-multi select2 visible has-error",
+                                   @multiple = "multiple",
+                                   @disabled = "disabled"
+                               })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+@* <div class="clear">
+                    </div>*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Personal Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @*@Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_FirstName, @autocomplete = "off", @disabled = "disabled" })*@
+                                @Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @Html.HiddenFor(x => x.FirstName)
+                                @Html.ValidationMessageFor(x => x.FirstName, "", new { @style = "color:red" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+                                @Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+
+                                @*@Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_LastName, @autocomplete = "off", @disabled = "disabled" })*@
+                                @Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @Html.HiddenFor(x => x.LastName)
+                                @Html.ValidationMessageFor(x => x.LastName, "", new { @style = "color:red" })
+                                <span id="span_lastname" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.MiddleName)
+
+
+                                @Html.TextBoxFor(x => x.MiddleName, new { @id = "MiddleName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_MiddleName, @autocomplete = "off", @disabled = "disabled" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.DateOfBirth, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.DateOfBirth, "{0:dd-MM-yyyy}", new { @id = "DateOfBirth", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_ProfileModel_DateofBirth, @autocomplete = "off" })
+                                @*@Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @style = "color:red" })*@<span id="span_DateOfBirth" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.GenderName, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                @*<label>Address @Html.Label(" *", new { @style = "color:red;font-weight:bold;" })</label>*@
+
+                                @if (ViewBag.GenderID != null)
+                                {
+                                        
+                                    @Html.DropDownListFor(x => x.GenderName, ViewBag.GenderList as SelectList, new { @id = "Idgender", @class = "form-control", @disabled = "disabled" })        @*x => x.GenderID , ViewBag.GenderList as SelectList, new { @id = "Idgender", @name = "GenderID", @class = "form-control", @disabled = "disabled"})*@
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.GenderName, ViewBag.GenderList as SelectList, "", new { @id = "Idgender", @class = "form-control" })
+                                }
+                                @Html.HiddenFor(x => x.GenderID)
+                                @Html.ValidationMessageFor(x => x.GenderID, "", new { @style = "color:red" })
+
+                                @*    @Html.DropDownListFor(x => x.GenderID, ViewBag.GenderList as SelectList, "---Select---",
+                                                            new { @id = "Idgender", @name = "GenderID", @class = "form-control", @disabled = "disabled"})*@
+
+                                @* <span id="span_permanentaddress" style="color: Red;"></span>*@
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group has-success">
+                                @Html.LabelFor(x => x.ContactNo, new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+                                @*</div>*@
+
+                                @Html.TextBoxFor(x => x.ContactNo, new { @id = "ContactNo", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_ContactNo, @autocomplete = "off" })
+                                @Html.ValidationMessageFor(x => x.ContactNo, "", new { @style = "color:red" })
+
+                                <span id="span_ContactNo" style="color: Red;"></span>
+                                @*</div>*@
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.MotherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.MotherName, new
+                           {
+                               @id = "MotherName",
+                               @name = "MotherName",
+                               @class = "form-control",
+                               @placeholder = "Mother Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_mother" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.FatherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.FatherName, new
+                           {
+                               @id = "FatherName",
+                               @name = "FatherName",
+                               @class = "form-control",
+                               @placeholder = "Father Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_father" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Nationality, new { @class = "control-label" })
+                                @Html.DropDownList("NationalityID", ViewBag.Nationality as SelectList, "--Select--", new
+                           {
+                               @id = "Nationality",
+                               @name = "Nationality",
+                               @class = "form-control"
+                           })
+
+                                <span id="span_nationality" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Religious, new { @class = "control-label" })
+                                @Html.DropDownList("ReligiousID", ViewBag.Religious as SelectList, "--Select--", new
+                           {
+                               @id = "Religious",
+                               @name = "Religious",
+                               @class = "form-control"
+                           })
+
+                                <span id="span_religious" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BirthPlace, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.BirthPlace, new
+                           {
+                               @id = "BirthPlace",
+                               @name = "BirthPlace",
+                               @class = "form-control",
+                               @placeholder = "Birth Place",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_birth" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BloodGroup, new { @class = "control-label" })
+                                @Html.DropDownList("BloodGroupID", ViewBag.BloodGroup as SelectList, "--Select--", new
+                           {
+                               @id = "BloodGroup",
+                               @name = "BloodGroup",
+                               @class = "form-control",                                                                                                                            
+                           })
+                                <span id="span_blood" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        @*<div class="col-md-6">
+                            <div class="form-group has-success">
+
+                                @Html.LabelFor(x => x.Marital, new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @if (ViewBag.IsMarried != null)
+                                {
+                                        
+                                    @Html.DropDownListFor(x => x.Marital, ViewBag.MaritalList as SelectList, new
+                                     { @id = "Marital", @class = "form-control", @onchange = "Chkstatus()" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.Marital, ViewBag.MaritalList as SelectList, new { @id = "Marital", @class = "form-control", @onchange = "Chkstatus()" })
+                                }
+                                @Html.HiddenFor(x => x.Marital)
+                                @Html.ValidationMessageFor(x => x.Marital, "", new { @style = "color:red" })
+                            </div>
+                        </div>*@
+
+
+
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.Marital, new { @class = "control-label" })
+
+                                @Html.DropDownListFor(x => x.Marital, ViewBag.MaritalList as SelectList, new
+                                     {
+                                         @id = "Marital", 
+                                         @class = "form-control",
+                                         @onchange = "Chkstatus()"
+                                     })
+
+                                  @Html.HiddenFor(x => x.Marital)
+                               
+                                @*<span id="span_Marital" style="color: Red;"></span>*@
+                            </div>
+                        </div>  
+                        
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SpouseName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.SpouseName, new
+                           {
+                               @id = "SpouseName",
+                               @name = "SpouseName",
+                               @class = "form-control",
+                               @placeholder = "Spouse / Husband Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_spouse" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.NoOfChild, new { @class = "control-label" })
+                                @Html.DropDownList("NoOfChild", ViewBag.Child as MultiSelectList, "--Select--", new
+                           {
+                               @id = "NoOfChild",
+                               @value = "NoOfChild",
+                               @name = "NoOfChild",
+                               @class = "form-control"
+
+                           })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.AnniversaryDate, new { @class = "control-label" })
+                                    @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                    @Html.TextBoxFor(x => x.AnniversaryDate, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "AnniversaryDate",
+                               @name = "AnniversaryDate",
+                               @class = "form-control datetimepicker",
+                               @placeholder = "Anniversary Date",
+                               @autocomplete = "off",
+                               @Style = "height: 43px;"
+                           })
+                                    <span id="AnniversaryDate" style="color: Red;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    @*</div>
+                        <div class="row">*@
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+        
+    
+    
+    
+                                //Permanent Address
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Permanent Address 
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" id="PermanentAddress" style="display: none;">
+
+                    <div class="row">
+                        <div class="col-md-6 has-error">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress, new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.PermanentAddress, new
+                           {
+                               @id = "PermanentAddress1",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_Permanent" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress2)
+                                @Html.TextAreaFor(x => x.PermanentAddress2, new
+                           {
+                               @id = "PermanentAddress2",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress3)
+                                @Html.TextAreaFor(x => x.PermanentAddress3, new
+                           {
+                               @id = "PermanentAddress3",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentCountry, new { @class = "control-label" })
+                                @Html.DropDownList("PermanentCountryID", ViewBag.permanentCountry as SelectList, "--Select--", new
+                           {
+                               @id = "PermanentCountry",
+                               @class = "form-control",                               
+                               @Style = "height: 43px;",
+                               @onchange = "PermanentGetState()"
+                           })
+                                <span id="span_Permanentcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Permanentstate, new { @class = "control-label" })
+                                @Html.DropDownList("PermanentstateID", ViewBag.permanentstate as SelectList, "--Select--", new
+                           {
+                               @id = "Permanentstate",
+                               @class = "form-control",
+                               @Style = "height: 43px;",
+                               @onchange = "PermanentGetCity()"
+                           })
+                                <span id="span_Permanentstate" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentCity, new { @class = "control-label" })
+                                @Html.DropDownList("PermanentCityID", ViewBag.permanentcity as SelectList, "--Select--", new
+                           {
+                               @id = "PermanentCity",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_Permanentcity" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentPinCode, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PermanentPinCode, new
+                           {
+                               @id = "PermanentPinCode",
+                               @class = "form-control",
+                               @Style = "height: 43px;"                               
+                               // @onkeypress="return isNumber(event)"
+
+                           })
+                                <span id="span_Permanentpincode" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                //Present Address
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Present Address
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" id="ContactInformation" style="display: none;">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.TemporaryAddress, new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.TemporaryAddress, new
+                           {
+                               @id = "PresentAddress1",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_address1" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress2)
+                                @Html.TextAreaFor(x => x.PresentAddress2, new
+                           {
+                               @id = "PresentAddress2",
+                               @class = "form-control",
+                              @Style = "height: 43px;"
+                           })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress3)
+                                @Html.TextAreaFor(x => x.PresentAddress3, new
+                           {
+                               @id = "PresentAddress3",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentCountry, new { @class = "control-label" })
+                                @Html.DropDownList("PresentCountryID", ViewBag.presentCountry as SelectList, "--Select--", new
+                           {
+                               @id = "PresentCountry",
+                               @class = "form-control",
+                               @Style = "height: 43px;",
+                               @onchange = "PresentGetState()"
+                           })
+                                <span id="span_presentcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Presentstate, new { @class = "control-label" })
+                                @Html.DropDownList("PresentstateID", ViewBag.presentState as SelectList, "--Select--", new
+                           {
+                               @id = "Presentstate",
+                               @class = "form-control",
+                               @Style = "height: 43px;",
+                               @onchange = "PresentGetCity()"
+
+                           })
+                                <span id="span_presentstate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentCity, new { @class = "control-label" })
+                                @Html.DropDownList("PresentCityID", ViewBag.presentCity as SelectList, "--Select--", new
+                           {
+                               @id = "PresentCity",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_presentcity" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentPinCode, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PresentPinCode, new
+                           {
+                               @id = "PresentPinCode",
+                               @class = "form-control",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_pincode" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+       
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Others
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                Office No
+                    
+                        @Html.TextBoxFor(x => x.officeno, new { @id = "office", @class = "form-control", @autocomplete = "off" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                Extension
+                    
+                        @Html.TextBoxFor(x => x.extension, new { @id = "extension", @class = "form-control", @autocomplete = "off" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @*@Html.LabelFor(x => x.MachineName, new { @class = "control-label" })*@
+                                @Html.Label("Machine Name", new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.MachineName, new { @id = "MachineName", @class = "form-control", @autocomplete = "off", @enabled = "enable", @maxlength = "15" })
+                                <span id="machine" style="color: Red;"></span>
+                                @*@Html.TextBoxFor(x => x.MachineName, new { @id = "MachineName", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_MachineName, @autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.MachineName, "", new { @style = "color:red" })*@
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @*@Html.LabelFor(x => x.IPAddress, new { @class = "control-label" })*@
+                                @Html.Label("IP Address", new { @class = "control-label" })
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                                @Html.TextBoxFor(x => x.IPAddress, new { @id = "IPAddress", @class = "form-control", @autocomplete = "off", @enabled = "enable", @maxlength = "15" })
+
+                                <span id="ipaddress" style="color: Red;"></span>
+                                @* @Html.TextBoxFor(x => x.IPAddress, new { @id = "IPAddress", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_IPAddress, @autocomplete = "off" })
+                        @Html.ValidationMessageFor(x => x.IPAddress, "", new { @style = "color:red" })*@
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.OfficeSkypeId)
+
+                                @Html.TextBoxFor(x => x.OfficeSkypeId, new { @id = "OfficeSkypeId", @class = "form-control", @placeholder = "Office Skype Id", @autocomplete = "off", @maxlength = "50" })
+                                @Html.ValidationMessageFor(x => x.OfficeSkypeId, "", new { @style = "color:red" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            @Html.Label("Region")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+
+                            @Html.DropDownListFor(x => x.RegionId, ViewBag.Region as SelectList, new { @id = "RegionId", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @autocomplete = "off", @disabled = "disabled" })
+                            @Html.HiddenFor(x => x.RegionId)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@*</div>*@
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Work Experience
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.CurrentExperience)
+                                @* @Html.Label("*", new { @style = "color:red;font-weight:bold;" })*@
+
+                                @Html.TextBoxFor(x => x.CurrentExperience, new { @id = "Current", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @*  @Html.ValidationMessageFor(model => model.ContactNo, "", new { @style = "color:red" })*@
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.OverallExperience)
+                                @* @Html.Label("*", new { @style = "color:red;font-weight:bold;" })*@
+
+                                @Html.TextBoxFor(x => x.OverallExperience, new { @id = "overall", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                                @*  @Html.ValidationMessageFor(model => model.ContactNo, "", new { @style = "color:red" })*@
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.Previous)
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                @Html.TextBoxFor(x => x.Previous, new { @id = "Previous", @class = "form-control", @autocomplete = "off", @enabled = "enable", @maxlength = "5" ,@onkeypress="return isNumberKey(event)", @disabled = "disabled"   })
+                                @Html.ValidationMessageFor(x => x.Previous, "", new { @style = "color:red" })
+                                <span id="exp" style="color: Red" />
+                                @*  @Html.ValidationMessageFor(x => x.DateOfJoin, "", new { @style = "color:red" })
+                            @Html.HiddenFor(x => x.DateOfJoin)*@
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Skills
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                @Html.LabelFor(x => x.Skills)
+                                @* @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })*@
+
+                                @Html.TextArea("Skills", new { @id = "Skills", @class = "form-control", @style = "width:900px" })
+                                @*@Html.ValidationMessageFor(x => x.Skills, "", new { @style = "color:red" })*@
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+     
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Emergency Contact
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" id="EmergencyContact" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.EmergencyContactName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.EmergencyContactName, new
+                           {
+                               @id = "EmergencyContactName",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Name",
+                               @maxlength = 100,
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_emer" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RelationShipName, new { @class = "control-label" })
+                                @Html.DropDownList("RelationShipID", ViewBag.RelationShip as SelectList, "--Select--", new { @id = "RelationShipName", @name = "RelationShip", @class = "form-control select2" })
+                                <span id="span_emerrel" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Emergency, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.Emergency, new
+                           {
+                               @id = "EmergencyContactNumber",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Number",
+                               @maxlength = 15,
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_emercontactno" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" id="fornoticeperiod">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3">
+                    @*@Html.LabelFor(x => x.Photo)*@
+                    <label for="file">
+                        Upload Image
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    @*<input type="file" name="file" />*@ @*@Html.TextBoxFor(x => x.Photo, new { @type = "file", @class = "form-control" })*@
+                    <input type="file" name="Photo" id="file" accept=".gif,.jpg,.jpeg,.png,jfif,.pdf" style="width: 145%;" @Html.Raw(Model.HasImage ? "Enabled" : "") />
+                    @Html.ValidationMessageFor(x => x.Photo, "", new { @style = "color:red" })<span id="Photo_error" style="color: Red;"></span>
+                    <div style="height: 5px">
+                    </div>
+                    <a>
+                        <button id="reset" type="button" onclick="ResetImage('@Session["UserID"]')" @Html.Raw(Model.HasImage ? "" : "disabled")>
+                            Remove image
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <div class="modal-footer">
+        @if (ViewBag.isalfiled == true)
+        {
+
+@*<a type="submit" class="btn btn-default" href="@Url.Action("Login", "User")">Cancel</a>*@
+            <a type="submit" class="btn btn-default" href="@Url.Action("Index", "Home")">Cancel</a>
+       
+        }
+        else
+        {
+            <a type="submit" class="btn btn-default" href="@Url.Action("Index", "Home")">Cancel</a>
+        }
+
+        <button type="submit" id="ProfileSave" class="btn btn-info">
+            Save
+        </button>
+
+
+    </div>
+
+    <script type="text/javascript">
+
+        //        $("#WorkPlace #Marital").select2({
+        //            minimumResultsForSearch: -1
+        //        });
+
+        //        $("#Marital").select2({
+        //            minimumResultsForSearch: -1
+        //        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            orientation: 'auto bottom',
+            autoclose: true,
+            endDate: 'today',
+            onClose: function () {
+                $(this).focus();
+            },
+            onSelect: function () {
+                $(this).focus();
+            },
+
+        });
+
+        function Chkstatus() {
+
+            //  var status = document.getElementById('Marital').value;
+            if (document.getElementById('Marital').value == '2') {
+                $("#SpouseName").val("");
+                $("#AnniversaryDate").val("");
+                $("#NoOfChild").val('0');
+                $("#NoOfChild").select2();
+
+                $("#SpouseName").prop('disabled', true);
+                $("#NoOfChild").prop('disabled', true);
+                $("#AnniversaryDate").prop('disabled', true);
+
+            }
+            else {
+                $("#SpouseName").prop('disabled', false);
+                $("#NoOfChild").prop('disabled', false);
+                $("#AnniversaryDate").prop('disabled', false);
+
+            }
+        }
+
+
+        function PresentGetState() {
+
+
+            var Cid = $("#PresentCountry").find("option:selected").prop("value");
+            // var Cid1 = $("#PermanentCountry").find("option:selected").prop("value");
+
+            //  alert(Cid);
+
+            // if (Cid !== "" && Cid1 == "")
+            if (Cid != "") {
+                $('#Presentstate').empty();
+                $('#Presentstate').select2();
+                var url2 = '@Url.Action("GetStates", "Users")';
+
+                $.get(url2, { CountryId: Cid }, function (data) {
+
+                    var items = [];
+                    var itemsGroup = [];
+                    items.push("");
+                    itemsGroup.push("");
+                    itemsGroup.push("<option value=0>--Select--</option>");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+
+                    $("#Presentstate").html(items.join(' '));
+                    $("#Presentstate").select2();
+
+
+
+                });
+
+            }
+        }
+
+            function PermanentGetState() {
+                var Cid1 = $("#PermanentCountry").find("option:selected").prop("value");
+
+            if (Cid1 !== "") {
+
+                $('#Permanentstate').empty();
+                $('#Permanentstate').select2();
+
+                var url2 = '@Url.Action("GetStates", "Users")';
+
+            $.get(url2, { CountryId: Cid1 }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#Permanentstate").html(items.join(' '));
+                $("#Permanentstate").select2();
+
+
+
+            });
+
+        }
+    }
+
+
+        function PresentGetCity() {
+            //  alert("+++++");
+
+            var Cid = $("#Presentstate").find("option:selected").prop("value");
+            // var Cid1 = $("#Permanentstate").find("option:selected").prop("value");
+            //  alert(Cid);
+
+            if (Cid !== "") {
+                $('#PresentCity').empty();
+                $('#PresentCity').select2();
+                var url2 = '@Url.Action("GetCity", "Users")';
+
+                $.get(url2, { StateId: Cid }, function (data) {
+
+                    var items = [];
+                    var itemsGroup = [];
+                    items.push("");
+                    itemsGroup.push("");
+                    itemsGroup.push("<option value=0>--Select--</option>");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+
+                    $("#PresentCity").html(items.join(' '));
+                    $("#PresentCity").select2();
+
+
+
+                });
+            }
+        }
+
+
+
+        function PermanentGetCity() {
+            var Cid1 = $("#Permanentstate").find("option:selected").prop("value");
+            if (Cid1 !== "") {
+                $('#PermanentCity').empty();
+                $('#PermanentCity').select2();
+
+                var url2 = '@Url.Action("GetCity", "Users")';
+
+            $.get(url2, { StateId: Cid1 }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#PermanentCity").html(items.join(' '));
+                $("#PermanentCity").select2();
+
+
+
+            });
+
+
+
+
+
+        }
+
+    }
+
+
+
+    function PopUp(message) {
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.success(message, opts);
+    }
+    function ResetImage(uid) {
+        bootbox.confirm("Are you sure want to remove the profile image.?", function (res) {
+            if (res) {
+                $.ajax({
+                    url: "../../Profile/ResetImage/",
+                    type: 'GET',
+                    cache: false,
+                    data: { ID: uid },
+                    success: function (result) {
+                        var src = '@Url.Content("~/Content/Template/images/profile.jpg")';
+                            $('img').attr("src", src);
+                            $('#file').removeAttr('disabled');
+                            $('#reset').attr('disabled', 'disabled');
+                        }
+                    });
+                    }
+            });
+            }
+
+            $("#ContactNo").on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9]{1,15}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+
+            //$("#IPAddress").on('paste keypress', (function (e) {
+            //    var key;
+            //    if (e.which) {
+            //        key = String.fromCharCode(e.which);
+            //    } else {
+            //        key = e.originalEvent.clipboardData.getData('Text');
+            //    }
+            //    var value = $(this).val() + key;
+            //    if (!/^(?:(?:25[0-5]2[0-4][0-9][01]?[0-9][0-9]?)\.){3}/ 
+            //    .test(value)) {
+            //        e.preventDefault();
+            //    }
+            //}));
+
+            $("#extension").on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9]{1,8}$/.test(value)) {
+                    e.preventDefault();
+                }
+            }));
+
+            $("#office").on('paste keypress', (function (e) {
+                var key;
+                if (e.which) {
+                    key = String.fromCharCode(e.which);
+                } else {
+                    key = e.originalEvent.clipboardData.getData('Text');
+                }
+                var value = $(this).val() + key;
+                if (!/^[0-9]{1,8}$/.test(value)) {
+                    //alert(value);
+                    e.preventDefault();
+                }
+            }));
+
+            //$("#IPAddress").on('paste keypress', (function (e) {
+            //    var key;
+            //    if (e.which) {
+            //        key = String.fromCharCode(e.which);
+            //    } else {
+            //        key = e.originalEvent.clipboardData.getData('Text');
+            //    }
+            //    var value = $(this).val() + key;
+            //     {
+            //        //alert(value);
+            //        e.preventDefault();
+            //    }
+            //    }));
+
+            function isNumberKey(evt) {
+                // var call= true;
+                var charCode = (evt.which) ? evt.which : event.keyCode
+
+                if ((charCode >= 48 && charCode <= 57) || (charCode == 46) || charCode == 9 || charCode == 8) {
+
+                }
+                else
+                    return false;
+
+            }
+
+    </script>
+}

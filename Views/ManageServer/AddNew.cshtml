@@ -1,0 +1,598 @@
+﻿@model DSRCManagementSystem.Models.ManageServer
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add New </title>
+    <script src="../../Content/Selectize/js/selectize.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    @*<link href="../../Content/Selectize/css/selectize.css" rel="stylesheet" type="text/css" />*@
+</head>
+    
+
+<style type="text/css">    
+#LocationID
+{
+    width: 10px;
+    }
+
+  .dropdown-menu {
+    background-color: white;
+}    
+
+</style>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add New Server</h4>
+        </div>
+        @using (Html.BeginForm("ManageServer", "ManageServer", FormMethod.Post))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Location, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("LocationList", (IList<SelectListItem>)ViewBag.Detail1, "--Select--", new { @class = "form-control", @id = "LocationID" })
+                            <span id="locat" style="color: Red;"></span>
+                        </div>
+                    </div>
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Rack No", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.RackNo, new { @id = "RackNo", @class = "form-control", @maxlength = 4, @style = "height:42px;" })
+                            <span id="rack" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>        
+                </div>       
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Asset ID", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.AssetId, new { @id = "AssetId", @class = "form-control", @style = "height:42px;" })
+                            <span id="asset" style="color: Red;"></span>
+                        </div>
+                    </div>
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Machine Name", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.MachineName, new { @id = "MachineName", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="mach" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Server Make", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.ServerMake, new { @id = "ServerMake", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="make" style="color: Red;"></span>
+                        </div>
+                    </div>
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Model, new { @class = "control-label" })
+                            @Html.TextBoxFor(x => x.Model, new { @id = "Model", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="mod" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Processor, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.Processor, new { @id = "Processor", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="proce" style="color: Red;"></span>
+
+                          @* @Html.LabelFor(x => x.Processor, new { @class = "control-label" })
+                              @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("cpulist", (IList<SelectListItem>)ViewBag.cpu1, "--Select--", new { @class = "form-control", @id = "Processor" })
+                             <span id="proce" style="color: Red;"></span>*@
+                        </div>
+                    </div>
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                           @Html.Label("Memory(In MB)", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.Memory, new { @id = "Memory", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="memo" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Hard Disk", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.HardDisks, new { @id = "HardDisks", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="disk" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Raid, new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                             @Html.DropDownList("Raid", ViewBag.Raid as SelectList, new { @class = "form-control", @id = "Raid", @style = "height:42px;" })
+                            @*@Html.TextBoxFor(x => x.Raid, new { @id = "Raid", @class = "form-control", @maxlength = 20, @style = "height:42px;" })*@
+                            <span id="raid1" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    </div>
+                     
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Configuration Detail", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.Configurationdetails, new { @id = "Configurationdetails", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="config" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                          @*  @Html.Label("Operating System", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.OperatingSystem, new { @id = "OperatingSystem", @class = "form-control", @maxlength = 25, @style = "height:42px;" })
+                            <span id="operat" style="color: Red;"></span>*@
+
+                             @Html.Label("Server Operating System", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("OsList", (IList<SelectListItem>)ViewBag.osn1, "--Select--", new { @class = "form-control", @id = "OperatingSystem" })
+                             <span id="operat" style="color: Red;"></span>
+
+                        </div>
+                    </div>
+                    </div>
+                   
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Server Edition", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.ServerEdition, new { @id = "ServerEdition", @class = "form-control", @style = "height:42px;" })
+                            <span id="edition" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    
+                    @* <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Projects Hosted", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.NameofProjectsHosted, new { @id = "NameofProjectsHosted", @class = "form-control", @maxlength = 25 })
+                            <span id="name" style="color: Red;"></span>
+                        </div>
+                    </div>*@ @*<div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Projects Hosted", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("ProjectList", (IList<SelectListItem>)ViewBag.Detail2, "--Select--", new { @class = "form-control", @id = "NameofProjectsHosted" })
+                        </div>
+                    </div>  *@ @* <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Assigned To", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.DropDownList("AssignedtoList", (IList<SelectListItem>)ViewBag.ReportingPersons, "--Select--", new { @class = "form-control", @id = "Assignedto1" })
+                        </div>
+                    </div>*@
+                     <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Assigned To", new { @class = "control-label" })
+                           @* @Html.Label("*", new { @style = "color:#FF0000" })*@
+                            @Html.DropDownList("LeaveRequestTo", ViewBag.Reporting as MultiSelectList, new
+                       {
+                           @id = "Assignto",
+                           @name = "LeaveRequestTo",
+                           @class = "form-control",
+                           @multiple = "multiple"
+                       })
+                                       <span id="assign" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    </div>
+                    
+                     <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.Label("Projects Hosted", new { @class = "control-label" })
+                        @Html.DropDownList("ProjectList", (IList<SelectListItem>)ViewBag.Detail2, new { @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple", @id = "NameofProjectsHosted" })
+                        @Html.HiddenFor(o => o.ProjectList)
+                          <span id="pro" style="color: Red;"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                <div class="form-group">
+                 @Html.LabelFor(x => x.OtherProjects, new { @class = "control-label" })
+                 @Html.TextBoxFor(x=>x.OtherProjects,new{ @id = "OtherProjects", @class = "form-control"})
+                 <span id="op" style="color:Red;"></span>
+                </div>
+                </div>
+               
+                    @*  <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.Label("Assigned To", new { @class = "control-label" })
+                        @Html.DropDownList("LeaveRequestTo", (IList<SelectListItem>)ViewBag.Reporting, new { @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                        @Html.HiddenFor(o=>o.LeaveRequestTo)
+                    </div>
+                </div>*@
+                </div>
+            </div>
+               
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel</button>
+                <button type="button" id="btnAdd" class="btn btn-info" onclick="Asign()">
+                    Save</button>
+            </div>
+        }
+    </div>
+   @* <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="../../Content/Selectize/js/selectize.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $(".modal-body select").select2({
+                //minimumResultsForSearch: -1
+
+            });
+
+//            $('#NameofProjectsHosted').selectize({
+//                persist: false,
+//                createOnBlur: true,
+//                create: true
+//            });
+
+        });
+
+        $(document).ready(function () {
+            $("#RackNo").keypress(function (e) {
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    $("#rack").html("Enter Valid Rack No").show();
+                    return false;
+                }
+            });
+        });
+//        $(document).ready(function () {
+//            $("#AssetId").keypress(function (e) {
+//                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+//                    $("#asset").html("Enter Valid Asset ID").show();
+//                    return false;
+//                }
+//            });
+//        });
+//       
+        $(document).ready(function () {
+            $('#MachineName').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#mach").html("Enter Valid Machine Name").show();
+                return false;
+            });
+        });
+        $(document).ready(function () {
+            $('#ServerMake').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#make").html("Enter Valid Server Make").show();
+                return false;
+            });
+        });
+        $(document).ready(function () {
+            $('#Model').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#mod").html("Enter Valid Model").show();
+                return false;
+            });
+        });
+        $(document).ready(function () {
+            $('#Processor').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#proce").html("Enter Valid Processor").show();
+                return false;
+            });
+        });
+       
+        $(document).ready(function () {            
+            $("#Memory").keypress(function (e) {                
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    $("#memo").html("Enter Valid Memory(In MB)").show();
+                    return false;
+                }
+            });
+        });
+        $(document).ready(function () {
+            $("#HardDisks").keypress(function (e) {             
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    $("#disk").html("Enter Valid Hard Disk").show();
+                    return false;
+                }
+            });
+        });
+      
+        $(document).ready(function () {
+            $('#Configurationdetails').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#config").html("Enter Valid Configuration Detail").show();
+                return false;
+            });
+        });
+//        $(document).ready(function () {
+//            $('#OperatingSystem').keypress(function (e) {
+//                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+//                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+//                if (regex.test(str)) {
+
+//                    return true;
+//                }
+//                $("#operat").html("Enter Valid Operating System").show();
+//                return false;
+//            });
+//        });
+        $(document).ready(function () {
+            $('#ServerEdition').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+                $("#edition").html("Enter Valid Server Edition").show();
+                return false;
+            });
+
+          
+
+        });
+
+
+
+        function Asign() {
+            var AssetIdName = $("#AssetId").val();
+            var AssetIdNametrim = AssetIdName.replace(/\s/g, "").length; 
+
+            var MachineNameName = $("#MachineName").val();
+            var MachineNameNametrim = MachineNameName.replace(/\s/g, "").length; 
+
+            var ServerMakeName = $("#ServerMake").val();
+            var ServerMakeNametrim = ServerMakeName.replace(/\s/g, "").length; 
+
+            var ProcessorName = $("#Processor").val();
+            var ProcessorNametrim = ProcessorName.replace(/\s/g, "").length; 
+
+            var ConfigurationdetailsName = $("#Configurationdetails").val();
+            var ConfigurationdetailsNametrim = ConfigurationdetailsName.replace(/\s/g, "").length; 
+
+            var ServerEditionName = $("#ServerEdition").val();
+            var ServerEditionNametrim = ServerEditionName.replace(/\s/g, "").length;
+
+
+
+            if (document.getElementById('LocationID').value == '' || document.getElementById('RackNo').value == '' || AssetIdNametrim == '' || MachineNameNametrim == '' || ServerMakeNametrim == '' || ProcessorNametrim == '' || document.getElementById('Memory').value == '' || document.getElementById('HardDisks').value == '' || ConfigurationdetailsNametrim == '' || document.getElementById('OperatingSystem').value == '' || ServerEditionNametrim == '') {
+                if (document.getElementById('LocationID').value == 0)
+                    document.getElementById("locat").innerHTML = " Select Location";
+                else
+                    document.getElementById("locat").innerHTML = "";
+                if (document.getElementById('RackNo').value == '')
+                    document.getElementById("rack").innerHTML = " Enter Rack No ";
+                else
+                    document.getElementById("rack").innerHTML = "";
+                if (AssetIdNametrim == '')
+                    document.getElementById("asset").innerHTML = " Enter Asset ID";
+                else
+                    document.getElementById("asset").innerHTML = "";
+                if (MachineNameNametrim == '')
+                    document.getElementById("mach").innerHTML = "Enter Machine Name";
+                else
+                    document.getElementById("mach").innerHTML = "";
+                if (ServerMakeNametrim == '')
+                    document.getElementById("make").innerHTML = "Enter Server Make";
+                else
+                    document.getElementById("make").innerHTML = "";
+//                if (document.getElementById('Model').value == '')
+//                    document.getElementById("mod").innerHTML = " Enter Model";
+//                else
+//                    document.getElementById("mod").innerHTML = "";
+                if (ProcessorNametrim == '')
+                    document.getElementById("proce").innerHTML = "Enter Processor";
+                else
+                    document.getElementById("proce").innerHTML = "";
+                if (document.getElementById('Memory').value == '')
+                    document.getElementById("memo").innerHTML = "Enter Memory(In MB)";
+                else
+                    document.getElementById("memo").innerHTML = "";
+                if (document.getElementById('HardDisks').value == '')
+                    document.getElementById("disk").innerHTML = " Enter Hard Disk";
+                else
+                    document.getElementById("disk").innerHTML = "";
+//                if (document.getElementById('Raid').value == '')
+//                    document.getElementById("raid1").innerHTML = " Enter Raid";
+//                else
+//                    document.getElementById("raid1").innerHTML = "";
+                if (ConfigurationdetailsNametrim == '')
+                    document.getElementById("config").innerHTML = " Enter Configuration detail";
+                else
+                    document.getElementById("config").innerHTML = "";
+                if (document.getElementById('OperatingSystem').value == '')
+                    document.getElementById("operat").innerHTML = " Select Operating System";
+                else
+                    document.getElementById("operat").innerHTML = "";
+                if (ServerEditionNametrim == '')
+                    document.getElementById("edition").innerHTML = " Enter Server Edition";
+                else
+                    document.getElementById("edition").innerHTML = "";
+//                if (document.getElementById('NameofProjectsHosted').value == '')
+//                    document.getElementById("pro").innerHTML = " Enter Name of Projects Hosted";
+//                else
+//                    document.getElementById("pro").innerHTML = "";
+            }
+            else {
+
+                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                var model =
+            {
+                "RackNo": $("#RackNo").val(),
+                "AssetId": $("#AssetId").val(),
+                "MachineName": $("#MachineName").val(),
+                "ServerMake": $("#ServerMake").val(),
+                "Model": $("#Model").val(),
+                "Processor": $("#Processor").val(),
+                "Memory": $("#Memory").val(),
+                "HardDisks": $("#HardDisks").val(),
+                "Raid": $("#Raid").val(),
+                "Configurationdetails": $("#Configurationdetails").val(),
+//                "OperatingSystem": $("#OperatingSystem").val(),
+                "ServerEdition": $("#ServerEdition").val(),
+                //  "NameofProjectsHosted": $("#NameofProjectsHosted").find("option:selected").text(),
+                "ProjectList": $("#NameofProjectsHosted").val(),
+                "OtherProjects": $("#OtherProjects").val(),
+                "LocationId": $("#LocationID").val(),
+                "Location": $("#LocationID").find("option:selected").text(),
+                "ServerOsId": $("#OperatingSystem").val(),
+                "ServerOsName": $("#OperatingSystem").find("option:selected").text(),
+                //"CpuIdNew": $("#Processor").val(),
+               // "CpuName":$("#Processor").find("option:selected").text(),
+                "Assignedto": $("#Assignto").val()
+
+
+            }
+
+
+                var opts = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+
+                $.ajax({
+                    url: "../../ManageServer/AddNew/",
+                    type: 'POST',
+                    cache: false,
+                    traditional: true,
+                    data: model,
+                    global: false,
+
+                    success: function (result) {
+                        // alert(result);
+                        if (result.Result == "AlreadyExist") {
+                            document.getElementById("mach").innerHTML = "Machine Name already exists";
+
+                        }
+
+                        if (result.Result == "Already") {
+                            document.getElementById("op").innerHTML = "Project already Exist";
+                        }
+                        if (result === "Success") {
+                            $("#portlet-config").modal("hide");
+                            toastr.success("Server detail has been added successfully", opts);
+
+                            setTimeout(function () { location.reload(); }, 1000);
+
+
+                        }
+                    }
+
+
+
+                });
+
+            }
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Inbox>
+@{
+    ViewBag.Title = "Expenditure";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style type="text/css">
+    textarea {
+        resize: none;
+    }
+</style>
+
+}
+@{
+    int SNO = 1;
+   
+}
+     <ol class="breadcrumb bc-3">
+    <li>Communication</li>
+        <li class="active"><strong>Sent Emails View</strong></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+          
+                    <div class="panel-title" color="White">
+                         Inbox
+                       </div>
+                </div>
+                <div>
+
+                 </div>
+
+             
+                    @using (Html.BeginForm("AddExpenditure", "AddExpenditure", FormMethod.Post))
+                    {
+
+                       <div class="mail-env"> <!-- compose new email button --> <div class="mail-sidebar-row visible-xs"> <a href="#" class="btn btn-success btn-icon btn-block">
+Compose Mail
+<i class="entypo-pencil"></i> </a> </div> <!-- Mail Body --> <div class="mail-body"> <div class="mail-header"> <!-- title --> <h3 class="mail-title">
+Inbox
+<span class="count">(6)</span> 
+</h3> <!-- search -->
+ <form method="get" role="form" class="mail-search"> 
+ <div class="input-group"> 
+ <input type="text" class="form-control" name="s" placeholder="Search for mail..."> 
+ <div class="input-group-addon"> <i class="entypo-search"></i> </div> </div> </form> </div> <!-- mail table --> 
+ <table class="table mail-table"> <!-- mail table header --> <thead> <tr> <th width="5%"> 
+ <div class="checkbox checkbox-replace neon-cb-replacement"> 
+ <label class="cb-wrapper"><input type="checkbox">
+ <div class="checked"></div></label> </div> </th> <th colspan="4"> 
+ <div class="mail-select-options">Mark as Read</div> <div class="mail-pagination" colspan="2"> <strong>1-30</strong> 
+ <span>of 789</span> <div class="btn-group"> 
+ <a href="#" class="btn btn-sm btn-white"><i class="entypo-left-open"></i></a> 
+ <a href="#" class="btn btn-sm btn-white"><i class="entypo-right-open"></i></a> </div> </div> </th> </tr> </thead> <!-- email list --> <tbody> 
+ @foreach(var  item in Model)
+ {
+    @Html.HiddenFor(x => item.id);
+ <tr class="unread"><!-- new email class: unread --> <td> 
+ <div class="checkbox checkbox-replace neon-cb-replacement"> 
+ <label class="cb-wrapper"><input type="checkbox">
+ <div class="checked"></div></label> </div> </td> 
+ <td class="col-name"> 
+ 
+   <a href="#" class="star stared"> <i class="entypo-star"></i> 
+ </a> <a href="/Communication/ViewMailPage?myParams=@item.id" class="col-name">@item.header</a> </td> 
+ <td class="col-subject"> <a href="/Communication/ViewMailPage?myParams=@item.id">
+@item.message
+</a> </td> 
+<td class="col-options"> <a href="/Communication/ViewMailPage?myParams=@item.id">
+<i class="entypo-attach"></i></a> </td> <td class="col-time">@item.senton</td></tr> 
+     }
+</tbody> <!-- mail table footer --> <tfoot> <tr> <th width="5%"> <div class="checkbox checkbox-replace neon-cb-replacement"> <label class="cb-wrapper"><input type="checkbox"><div class="checked"></div></label> </div> </th> <th colspan="4"> <div class="mail-pagination" colspan="2"> <strong>1-30</strong> <span>of 789</span> <div class="btn-group"> <a href="#" class="btn btn-sm btn-white"><i class="entypo-left-open"></i></a> <a href="#" class="btn btn-sm btn-white"><i class="entypo-right-open"></i></a> </div> </div> </th> </tr> </tfoot> </table> </div> <!-- Sidebar --> <div class="mail-sidebar"> <!-- compose new email button --> <div class="mail-sidebar-row hidden-xs"> <a href="/Communication/ComposeMail" class="btn btn-success btn-icon btn-block">
+Compose Mail
+<i class="entypo-pencil"></i> </a> </div> <!-- menu --> <ul class="mail-menu"> <li class="active"> <a href="@Url.Action("Inbox", "Communication")"> <span class="badge badge-danger pull-right">@ViewData["SentCount"]</span>
+Inbox
+</a> </li> <li> <a href="@Url.Action("Sent", "Communication")"> <span class="badge badge-gray pull-right"> @ViewData["InboxCount"]</span>
+Sent
+</a> </li> <li> <a href="#">
+Drafts
+</a> </li> <li> <a href="#"> <span class="badge badge-gray pull-right">1</span>
+Spam
+</a> </li> <li> <a href="#">
+Trash
+</a> </li> </ul> <div class="mail-distancer"></div> <h4>Tags</h4> <!-- menu --> <ul class="mail-menu"> <li> <a href="#"> <span class="badge badge-danger badge-roundless pull-right"></span>
+Business
+</a> </li> <li> <a href="#"> <span class="badge badge-info badge-roundless pull-right"></span>
+Sports
+</a> </li> <li> <a href="#"> <span class="badge badge-warning badge-roundless pull-right"></span>
+Friends
+</a> </li> </ul> </div> </div>
+                        
+                        }
+                        
+
+                
+
+    

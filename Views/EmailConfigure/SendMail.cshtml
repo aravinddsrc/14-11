@@ -1,0 +1,496 @@
+﻿@model DSRCManagementSystem.Models.EmailConfigure
+@{
+    ViewBag.Title = "Configure Email";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script type="text/javascript">
+
+    var opts = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "2000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ViewRoles","ManageRole")">Administration Setup</a></li>
+    <li class="active"><strong>Email Configuration</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ViewRoles","ManageRole")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Email Configuration</b>
+    </p>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Email Configuration
+                </div>
+            </div>
+            <br />
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: right">
+                            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                        </div>
+                        <div class="col-md-12">
+                            @Html.Label("Host")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                            @Html.TextBoxFor(x => x.Host, new { @name = "HostName", @id = "HostName", @class = "form-control", @style = "Height:42Px", @maxlength = 200 })
+                            <span id="span_HostName" style="color: Red;"></span>
+                            <span id="span_HostError" style="color: Red;"></span>
+                        </div>
+
+
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.Label("Port")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.Port, new { @name = "Port", @id = "Port", @class = "form-control", @style = "Height:42Px", @maxlength = 4 })
+                            <span id="span_Port" style="color: Red;"></span>
+                            <span id="span_PortError" style="color: Red;"></span>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.Label("User Name")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.UserName, new { @name = "UserName", @id = "UserName", @class = "form-control", @style = "Height:42Px" })
+                            <span id="span_UserName" style="color: Red;"></span>
+                            <span id="span_UserError" style="color: Red;"></span>
+                        </div>
+
+                    </div>
+
+
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.Label("Password")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.PasswordFor(x => x.Password, new { @name = "Password", @id = "Password", @class = "form-control", @style = "Height:42Px" })
+                            <span id="span_Password" style="color: Red;"></span>
+
+                        </div>
+                        <div class="col-md-6">
+                            @Html.Label("Confirm Password")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.PasswordFor(x => x.ConfirmPassword, new { @name = "ConfirmPassword", @id = "ConfirmPassword", @class = "form-control", @style = "Height:42Px" })
+                            @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                            <span id="span_ConfirmPassword" style="color: Red;"></span>
+                            <span id="span_PasswordMismatch" style="color: Red;"></span>
+                        </div>
+
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.Label("From")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.From, new { @name = "From", @id = "MailFrom", @class = "form-control", @style = "Height:42Px" })
+                            <span id="span_MailFrom" style="color: Red;"></span>
+                            <span id="span_FromError" style="color: Red;"></span>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.Label("To")
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextBoxFor(x => x.To, new { @name = "From", @id = "MailTo", @class = "form-control", @style = "Height:42Px", @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress, @type = "email", @maxlength = "40" })
+                            <span id="span_MailTo" style="color: Red;"></span>
+                            <span id="span_ToError" style="color: Red;"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <br />
+
+
+
+                @*  <div class="row">*@
+                <div style="float: right">
+                    <button type="button" class="btn btn-info form-control" style="width: 100px" id="SendMail" onclick="SendMail()">
+                        Send Test Mail
+                    </button>
+                    @*<button type="button" class="btn btn-info form-control" style="width: 100px;" id="Save" onclick="SaveSettings()">
+                                Save</button>*@
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $('#HostName').keypress(function (e) {
+    //        var regex = new RegExp("^[0-9\\.]+$");
+    //        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    //        if (regex.test(str)) {
+    //            $("#span_HostError").html("").show();
+    //            return true;
+    //        }
+
+    //        $("#span_HostError").html("Enter Valid Host No").show();
+    //        return false;
+    //    });
+    //});
+    $(document).ready(function () {
+        $('#Port').keypress(function (e) {
+            var regex = new RegExp("^[0-9\\.]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                $("#span_HostError").html("").show();
+                return true;
+            }
+
+            $("#span_PortError").html("Enter Valid Port No").show();
+            return false;
+        });
+    });
+
+
+
+
+    function SendMail() {
+
+        var UserNameName = $("#UserName").val();
+        var UserNameNametrim = UserNameName.replace(/\s/g, "").length;
+
+        var MailFromName = $("#MailFrom").val();
+        var MailFromNametrim = MailFromName.replace(/\s/g, "").length;
+
+        var MailToName = $("#MailTo").val();
+        var MailToNametrim = MailToName.replace(/\s/g, "").length;
+
+
+
+        var pwd = $("#Password").val();
+        var cnfpwd = $("#ConfirmPassword").val();
+
+        var ipaddress = $('#HostName').val();
+        var username = $('#UserName').val();
+        var frommail = $('#MailFrom').val();
+        var tomail = $('#MailTo').val();
+
+
+        var emailfilter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+
+        var str = '255.255.1.193', ip = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/; var host = /^(([0-9]{1,3}.){3}([0-9]{1,3})|localhost):\d+$/;
+
+        if ((document.getElementById('HostName').value == '' || document.getElementById('Port').value == '' || UserNameNametrim == '' || document.getElementById('Password').value == '' || document.getElementById('ConfirmPassword').value == '' || MailFromNametrim == '' || MailToNametrim == '')) {
+
+
+
+            if (document.getElementById('HostName').value == '')
+                document.getElementById("span_HostName").innerHTML = "Enter Host Name";
+            else
+                document.getElementById("span_HostName").innerHTML = "";
+
+            if (document.getElementById('Port').value == '')
+                document.getElementById("span_Port").innerHTML = "Enter Port No ";
+            else
+                document.getElementById("span_Port").innerHTML = "";
+
+            if (UserNameNametrim == '')
+                document.getElementById("span_UserName").innerHTML = "Enter User Name ";
+            else
+                document.getElementById("span_UserName").innerHTML = "";
+
+            if (document.getElementById('Password').value == '')
+                document.getElementById("span_Password").innerHTML = "Enter Password";
+            else
+                document.getElementById("span_Password").innerHTML = "";
+
+            if (document.getElementById('ConfirmPassword').value == '')
+                document.getElementById("span_ConfirmPassword").innerHTML = "Enter Confirm Password";
+            else
+                document.getElementById("span_ConfirmPassword").innerHTML = "";
+
+            if (MailFromNametrim == '')
+                document.getElementById("span_MailFrom").innerHTML = "Enter From MailId";
+            else
+                document.getElementById("span_MailFrom").innerHTML = "";
+
+
+            if (MailToNametrim == '')
+                document.getElementById("span_MailTo").innerHTML = "Enter To MailId";
+            else
+                document.getElementById("span_MailTo").innerHTML = "";
+        }
+
+        else if (pwd != cnfpwd || !emailfilter.test(frommail) || !emailfilter.test(tomail) || !emailfilter.test(username)) {
+            if (pwd != cnfpwd)
+                document.getElementById("span_PasswordMismatch").innerHTML = "Password Mismatch";
+            else
+                document.getElementById("span_PasswordMismatch").innerHTML = "";
+            if (!emailfilter.test(frommail))
+                document.getElementById("span_FromError").innerHTML = "Invalid Email Id";
+            else
+                document.getElementById("span_FromError").innerHTML = "";
+            if (!emailfilter.test(tomail))
+                document.getElementById("span_ToError").innerHTML = "Invalid Email Id";
+            else
+                document.getElementById("span_ToError").innerHTML = "";
+            if (!emailfilter.test(username))
+                document.getElementById("span_UserError").innerHTML = "Invalid Email Id";
+            else
+                document.getElementById("span_UserError").innerHTML = "";
+            //|| !host.test(ipaddress)
+            //if (!host.test(ipaddress))
+            //    document.getElementById("span_HostError").innerHTML = "Invalid IP Address";
+            //else
+            //    document.getElementById("span_HostError").innerHTML = "";
+        }
+
+        else {
+            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            $("#span_HostName").hide();
+            $("#span_Port").hide();
+            $("#span_UserName").hide();
+            $("#span_Password").hide();
+            $("#span_ConfirmPassword").hide();
+            $("#span_MailTo").hide();
+            $("#span_MailFrom").hide();
+            $("#span_PasswordMismatch").hide();
+            $("#span_HostError").hide();
+            $("#span_FromError").hide();
+            $("#span_ToError").hide();
+            $("#span_UserError").hide();
+
+            var values =
+            {
+                "Host": $("#HostName").val(),
+                "Port": $("#Port").val(),
+                "UserName": $("#UserName").val(),
+                "Password": $("#Password").val(),
+                "From": $("#MailFrom").val(),
+                "To": $("#MailTo").val(),
+
+
+
+            };
+            $.ajax({
+                url: "../../Emailconfigure/SendMail/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    if (result == "success") {
+
+                        toastr.success("Test Mail Sent Successfully", opts);
+                        $("#portlet-config").modal('hide');
+                        bootbox.confirm("Do you want to save these values ?", function (result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "../../Emailconfigure/SaveApplicationSetting/",
+                                    type: 'Get',
+                                    cache: false,
+                                    data: values,
+                                    success: function (result) {
+                                        if (result == "success") {
+                                            toastr.success("Data Saved Successfully", opts);
+
+                                        }
+                                        else {
+                                            toastr.warning("Data Failed To Save", opts);
+
+                                        }
+
+
+                                    }
+                                });
+
+                            }
+                        })
+
+                    }
+                    else {
+
+                        toastr.warning("Test Mail Sending Failed", opts);
+                        $("#portlet-config").modal('hide');
+
+
+                    }
+
+
+                }
+
+
+            });
+
+
+        }
+    }
+
+    //function SaveSettings() {
+
+    //    var pwd = $("#Password").val();
+    //    var cnfpwd = $("#ConfirmPassword").val();
+
+    //    var ipaddress = $('#HostName').val();
+    //    var username = $('#UserName').val();
+    //    var frommail = $('#MailFrom').val();
+    //    var tomail = $('#MailTo').val();
+    //    var emailfilter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    //    var str = '255.255.1.193', ip = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+
+    //    if ((document.getElementById('HostName').value == '' || document.getElementById('Port').value == '' || document.getElementById('UserName').value == '' || document.getElementById('Password').value == '' || document.getElementById('ConfirmPassword').value == '' || document.getElementById('MailFrom').value == '' || document.getElementById('MailTo') == '')) {
+
+
+    //        if (document.getElementById('HostName').value == '')
+    //            document.getElementById("span_HostName").innerHTML = "Enter Host Name";
+    //        else
+    //            document.getElementById("span_HostName").innerHTML = "";
+
+    //        if (document.getElementById('Port').value == '')
+    //            document.getElementById("span_Port").innerHTML = "Enter Port No ";
+    //        else
+    //            document.getElementById("span_Port").innerHTML = "";
+
+    //        if (document.getElementById('UserName').value == '')
+    //            document.getElementById("span_UserName").innerHTML = "Enter User Name ";
+    //        else
+    //            document.getElementById("span_UserName").innerHTML = "";
+
+    //        if (document.getElementById('Password').value == '')
+    //            document.getElementById("span_Password").innerHTML = "Enter Password";
+    //        else
+    //            document.getElementById("span_Password").innerHTML = "";
+
+    //        if (document.getElementById('ConfirmPassword').value == '')
+    //            document.getElementById("span_ConfirmPassword").innerHTML = "Enter Confirm Password";
+    //        else
+    //            document.getElementById("span_ConfirmPassword").innerHTML = "";
+
+    //        if (document.getElementById('MailFrom').value == '')
+    //            document.getElementById("span_MailFrom").innerHTML = "Enter From MailId";
+    //        else
+    //            document.getElementById("span_MailFrom").innerHTML = "";
+
+
+    //        if (document.getElementById('MailTo').value == '')
+    //            document.getElementById("span_MailTo").innerHTML = "Enter To MailId";
+    //        else
+    //            document.getElementById("span_MailTo").innerHTML = "";
+
+
+
+    //    }
+    //    else if (pwd != cnfpwd || !emailfilter.test(frommail) || !emailfilter.test(tomail) || !emailfilter.test(username) || !ip.test(ipaddress)) {
+    //        if (pwd != cnfpwd)
+    //            document.getElementById("span_PasswordMismatch").innerHTML = "Password Mismatch";
+    //        else
+    //            document.getElementById("span_PasswordMismatch").innerHTML = "";
+    //        if (!emailfilter.test(frommail))
+    //            document.getElementById("span_FromError").innerHTML = "Invalid Email Id";
+    //        else
+    //            document.getElementById("span_FromError").innerHTML = "";
+    //        if (!emailfilter.test(tomail))
+    //            document.getElementById("span_ToError").innerHTML = "Invalid Email Id";
+    //        else
+    //            document.getElementById("span_ToError").innerHTML = "";
+    //        if (!emailfilter.test(username))
+    //            document.getElementById("span_UserError").innerHTML = "Invalid Email Id";
+    //        else
+    //            document.getElementById("span_UserError").innerHTML = "";
+    //        if (!ip.test(ipaddress))
+    //            document.getElementById("span_HostError").innerHTML = "Invalid IP Address";
+    //        else
+    //            document.getElementById("span_HostError").innerHTML = "";
+    //    }
+
+    //    else {
+
+    //        $("#span_HostName").hide();
+    //        $("#span_Port").hide();
+    //        $("#span_UserName").hide();
+    //        $("#span_Password").hide();
+    //        $("#span_ConfirmPassword").hide();
+    //        $("#span_MailTo").hide();
+    //        $("#span_MailFrom").hide();
+    //        $("#span_PasswordMismatch").hide();
+    //        $("#span_HostError").hide();
+    //        $("#span_FromError").hide();
+    //        $("#span_ToError").hide();
+    //        $("#span_UserError").hide();
+
+    //        var values =
+    //        {
+    //            "Host": $("#HostName").val(),
+    //            "Port": $("#Port").val(),
+    //            "UserName": $("#UserName").val(),
+    //            "Password": $("#Password").val(),
+    //            "From": $("#MailFrom").val(),
+    //            "To": $("#MailTo").val(),
+
+
+
+    //        };
+    //        $.ajax({
+    //            url: "../../Emailconfigure/SaveApplicationSetting/",
+    //            type: 'Get',
+    //            cache: false,
+    //            data: values,
+    //            success: function (result) {
+    //                if (result == "success") {
+    //                    toastr.success("Data Saved Successfully", opts);
+
+    //                }
+    //                else {
+    //                    toastr.warning("Data Failed To Save", opts);
+
+    //                }
+
+
+    //            }
+
+
+    //        });
+
+
+    //    }
+    //}
+
+
+
+</script>

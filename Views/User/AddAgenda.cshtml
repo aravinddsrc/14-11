@@ -1,0 +1,151 @@
+﻿@model DSRCManagementSystem.Models.AddAgenda
+@{
+    Layout = null;
+}
+     @section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+   <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+         <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+   
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Agenda</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+
+           .dropdown-menu {
+    background-color: white;
+          }  
+
+    </style>
+</head>
+<body  >
+ <div class="modal-content" >
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+            Add Project Agenda</h4>
+        </div>
+           
+        
+@*
+   <div class="modal-body">
+   <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Project FeedBack</div>
+           </div>*@
+            @using (Html.BeginForm("AddAgenda", "User", FormMethod.Post))
+            {
+                
+                  <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                <div class="row" >
+
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">
+                 &nbsp;&nbsp;   Project  &nbsp; Agenda @Html.Label("*", new { @style = "color:#FF0000" })                
+                     </label> 
+                     <div class="col-sm-6 chat-textarea">                     
+                      @Html.TextAreaFor(x => x.ProjectAgenda, new { @rows = 8, @cols = 500, @id = "AddAgenda", @name = "AddAgenda", @class = "form-control" })                
+                     <span id="span_ID2" style="color: Red;"></span>
+                     <br />
+                      <div  style="text-align: right;">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='Agenda()'>
+                Save
+            </button>
+       </div>
+                   </div>
+                   </div>
+                   </div>         
+               
+            } 
+            </div>
+
+ <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+             <script type="text/javascript">
+
+                 function Agenda() {
+
+                     if (document.getElementById('AddAgenda').value == '') {
+                        
+                             document.getElementById("span_ID2").innerHTML = "Enter Project Agenda";
+                     }
+                     else {
+                         $("#AddAgenda").val();
+                         var submitForm = true;
+
+                         if (submitForm == true) {
+
+                             var values =
+                        {
+                            "ProjectAgenda": $("#AddAgenda").val()
+                            
+                        }
+                             var opts =
+                      {
+                          "closeButton": true,
+                          "debug": false,
+                          "positionClass": "toast-top-right",
+                          "toastClass": "White",
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "2000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
+
+                             $.ajax({
+                                 url: "../../User/AddAgenda/",
+                                 type: 'POST',
+                                 cache: false,
+                                 data: values,
+                                 global: false,
+                                 success: function (result) {
+                                     if (result.Result === "Success") {
+
+                                         $("#portlet-config1").modal("hide");
+
+                                         toastr.success("Project Agenda added successfully", opts);
+
+                                     }
+                                 }
+
+                             });
+                         }
+                     }
+                 }
+
+             </script>
+            </body>
+            </html>

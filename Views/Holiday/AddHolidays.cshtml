@@ -1,0 +1,413 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Format>
+@{
+    ViewBag.Title = "Time Zone";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    @*<link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+}
+@{
+    int SNO = 1;
+    
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddUser</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+    
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+</head>
+<body>
+@*     <ol class="breadcrumb bc-3">
+      <li><a href="@Url.Action("ViewHoliday","Holiday")">Holiday</a> </li>
+        <li class="active"><strong>Add Holidays</strong></li>
+    </ol>*@
+     <p>
+        <a href="@Url.Action("ViewHoliday","Holiday")"style="color:black ">
+            Holiday
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Add Holidays</b>
+    </p>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+               <div class="panel-heading" style= "padding-top: 15px ;">
+                    <div class="panel-title" color="White">
+                       Holidays</div>
+                </div>
+                <div>
+
+                 </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                     <div class="row">
+                     <div class="col-md-4" style="width :auto;float: left ;text-align:center;color:Black; font-weight:bold; padding-top: 15px ;">
+                                    Zone 
+                                    </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("Id3", ViewBag.Purpose as SelectList,"--Select--", new { @id = "TimeZone", @class = "select2-container select2-container-multi select2 visible", @onclick = "GetHoliday(this.value)" })
+                                </div>                         
+                           
+
+                   <div class="col-md-4" style="width :auto;float: left ;text-align:center;color:Black; font-weight:bold; padding-top: 15px ;">
+                                    Year
+                                    </div>
+
+                             <div class="col-md-4">
+                           
+                             @Html.DropDownList("Value", ViewBag.financialyears as SelectList, "--Select--", new { @id = "Year", @class = "select2-container select2-container-multi select2 visible", @onclick = "GetHoliday1(this.value)" })
+                                </div>                         
+                            <br />
+                           
+                                  @*<div style="padding-right: 22%">
+                                    <div>
+                                        <button id="btn" type="submit" class="btn btn-success center-block" style="float: right;
+                                            margin-right: 20px; font-weight: bold;">
+                                            Show</button>
+                                        <button type="button" id="btnAdd" style="float: right; margin-right: 20px; padding-left: 13px"
+                                            class="btn btn-default" onclick="Clear()">
+                                            Reset
+                                        </button>
+                                    </div>
+                                    </div>*@
+                           
+                             <div class="btn-group" style="float: right;padding-right:15px;">
+                      <button class="btn btn-blue" style="font-weight: bold;" type="button" onclick='AddNewDays()'>
+                        Add Holiday
+                    </button>
+               </div>
+
+                            </div>   
+                 
+                  
+            
+                    <br /> <br /> <br />
+
+                    @using (Html.BeginForm("AddHolidays", "Holiday", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblMeeting">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">
+                                        S.No
+                                    </th>
+                                    <th style="text-align:left;">
+                                    @Html.DisplayName("Holiday Name")
+                                    </th>
+                                     <th style="text-align:left;">
+                                   @Html.DisplayName("Zone")
+                                    </th>
+                                   @* <th>
+                                        @Html.DisplayNameFor(i => i.Week)
+                                    </th>
+                                   *@
+                                  
+                                    <th style="text-align:center;">
+                                        @Html.DisplayName("Date")
+                                    </th>
+
+                                    <th style="text-align:center;">
+                                        @Html.DisplayName("Day")
+                                    </th>
+                                    <th style="text-align:left;">
+                                     @Html.DisplayName("Entered By")
+                                    </th>
+                                   @* <th style="text-align:left;">
+                                     @Html.DisplayName("Approved By")
+                                    </th>*@
+                                     <th style="text-align:center;">
+                                        Edit
+                                    </th>
+                                      <th style="text-align:center;">
+                                   Delete
+                                    </th>
+                                </tr>
+                            </thead>
+                            @{
+                       
+                        foreach (var item in Model)
+                        {                  
+                                                      
+                                <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)
+                                        @Html.HiddenFor(modelitem => item.Id)
+                                     
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.HolidayName)
+                                      
+                                    </td>
+                                     <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.ZoneName)
+                                    </td>
+                                     @if (item.Date.HasValue)
+                                     {
+                                   <td style="width:3000px;word-wrap:break-word;word-break:break-all;text-align:center;" >
+                                          @Html.DisplayName( item.Date.Value.ToString("MMM d, yyyy - ddd"))
+                                    </td>
+                                     }
+                                    else
+                                    {
+                                         <td style="width:3000px;word-wrap:break-word;word-break:break-all;text-align:center;" >
+                                        @Html.DisplayFor(modelitem => item.Date)
+                                    </td>  
+                                         
+                                         
+                                     }
+                                      <td style="width:3800px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelItem => item.Day)
+                                    </td>
+                                     <td style="width:4000px;word-wrap:break-word;word-break:break-all;text-align:left;" >
+                                        @Html.DisplayFor(modelitem => item.EnteredBy)
+                                    </td>
+                                   @if (item.Date <= System.DateTime.Now)
+                                   {
+                                     @*<td>
+                                        <a>
+                                            <button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditAttendee("@item.Id")' disabled="disabled">
+                                            <i class="entypo-pencil"></i>Edit
+                                            </button>
+                                        </a>
+                                    </td>*@
+                                       <td>
+                                        <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditAttendee("@item.Id")' disabled="disabled">
+                                            <i class="entypo-pencil"></i></a>
+                                       </td>
+
+                                   }
+                                   else
+                                   {
+                                   @*<td>
+                                        <a>
+                                            <button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditAttendee("@item.Id")'>
+                                            <i class="entypo-pencil"></i>Edit
+                                            </button>
+                                        </a>
+                                    </td>*@
+                                       <td>
+                                        <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditAttendee("@item.Id")'>
+                                            <i class="entypo-pencil"></i></a>
+                                       </td>
+                                   }  
+                                   
+                                   @if (item.Date <= System.DateTime.Now)
+                                   {  
+                                @* <td>
+                                 
+                                  <a>
+                              <button type="button"  class="btn btn-red btn-icon icon-left"  onclick='Delete("@item.Id")' disabled="disabled">
+                              <i class="entypo-info" ></i> Delete
+                              </button>
+                              </a>  
+                                </td>*@
+                                       
+                                       <td style="text-align: center">
+                                        <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.Id")' disabled="disabled" >
+                                            <i class="entypo-cancel"></i></a>
+                                    </td>
+                                   }
+
+                                   else
+                                   {
+                               @*<td>                               
+                                  <a>
+                              <button type="button"  class="btn btn-red btn-icon icon-left"  onclick='Delete("@item.Id")' >
+                              <i class="entypo-info" ></i> Delete
+                              </button>
+                              </a>  
+                                </td>*@
+                                  <td style="text-align: center">
+                                        <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.Id")'>
+                                            <i class="entypo-cancel"></i></a>
+                                    </td>
+                                   }
+                                </tr>
+                       
+
+                        }
+                            }
+                        </table>
+
+                            
+                           
+                    }
+                    <br />
+                    <div class="btn-group" style="float:left" id="AddNewProject">
+                     
+                    
+                    </div>
+
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+     <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+     <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+ 
+        <script type="text/javascript">
+
+            jQuery(document).ready(function ($) {
+
+
+                var columnDefs;
+
+                $("#tblMeeting").dataTable({
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "columnDefs": [{ bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }]
+
+            });
+
+                $(".dataTables_wrapper select").select2({
+                    minimumResultsForSearch: -1
+                });
+                $('thead>tr>th').css('text-align', 'center');
+            });
+
+
+            function EditAttendee(Id) {
+                $.ajax({
+                    url: "../../Holiday/AddNewDaysEdit/",
+                    type: 'GET',
+                    cache: false,
+                    data: { "Id": Id },
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal('show');
+
+                    }
+
+                });
+            }
+
+
+            function GetHoliday(Year) {
+                {
+                    var objvalue = $("#Year").text();
+
+                    var objvalue1 = $("#Year").find("option:selected").text();
+                    var objid = $("#Year").val();
+                   // alert(objvalue);
+                    
+                    $.ajax({
+                        url: "../../Holiday/GetZone/",
+                        type: 'GET',
+                        cache: false,
+                        data: { year: Year,Financial :objvalue1,Id:objid },
+                        success: function (result) {
+                            window.location.href = '@Url.Action("AddHolidays","Holiday")' + '?year=' + result.year + '&Financial=' + result.financial +'&Id='+result.Id;
+                        }
+                    });
+                }
+            }
+
+
+
+            function GetHoliday1(Year) 
+            {
+                    var objvalue = $("#Year").find("option:selected").text();
+
+                    var objvalue1 = $("#TimeZone").val();
+
+                    var objid = $("#Year").val();
+
+                    $.ajax({
+                        url: "../../Holiday/GetYear1/",
+                        type: 'GET',
+                        cache: false,
+                        data: { Date: objvalue,Country :objvalue1 ,DateId:objid},
+                        success: function (result) 
+                        {
+                            window.location.href = '@Url.Action("AddHolidays","Holiday")' + '?Date=' + result.date + '&HolidayCountry=' + result.holidaycountry+'&DateId='+result.dateid;
+                        }
+                    });
+                }
+
+
+            function AddNewDays() {
+
+                $.ajax({
+                    url: "../../Holiday/AddNewDays/",
+                    type: 'GET', cache: false,
+                    success: function (result) {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    }
+
+                });
+
+            }
+            function Dashboard() {
+
+                window.location.href = "/Holiday/DashBoard";
+
+            }
+
+            function Delete(Id) {
+                bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                    if (conform) {
+                        $.ajax({ url: "../Holiday/Delete/",
+                            type: 'POST', cache: false,
+                            data: { Id: Id },
+                            success: function (result) {
+                                if (result.Result === "Success") {
+                                    toastr.success(" Holiday  deleted successfully!");
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
+</body>
+</html>

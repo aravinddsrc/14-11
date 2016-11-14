@@ -1,0 +1,188 @@
+﻿@model DSRCManagementSystem.Models.Gallery
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Single Album</title>
+
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+         <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+         <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+    type="text/css" />
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+  @*   <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>*@
+
+</head>
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+            Edit Album Photo</h4>
+        </div>
+ 
+      <div class="modal-body">
+
+           @using (Html.BeginForm("EditSingleAlbum", "Gallery", FormMethod.Get))
+           {
+             <div class="row">
+					<div class="col-sm-6">
+										
+						<div class="row">
+							<div class="col-md-12">
+								
+								<h4 class="margin-top-none">Crop Image</h4>
+								
+								<div class="croppable-image">
+                                     @Html.HiddenFor(m=>m.AlbumID, new { @id="AlbumID"})
+                                     @Html.HiddenFor(m=>m.AlbumPhotoID, new { @id="AlbumPhotoID"})
+									<img src="@Url.Content(Model.CoverPhotoPath)" class="img-responsive" />
+								</div>
+								
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="col-sm-6">
+					
+						<div class="row">
+							<div class="col-md-12">
+								
+								<div class="form-group">
+									<label for="AlbumTitle" class="control-label">Album Title</label>
+									 @Html.TextBoxFor(x => x.AlbumTitle, new { @name = "AlbumTitle", @id = "AlbumTitle", @class = "form-control", @style = "Height:42Px",@maxlength = 25 }) 
+									
+								</div>	
+								
+							</div>
+						</div>
+					
+						
+						<div class="row">
+							<div class="col-md-12">
+								
+								<div class="form-group">
+									<label for="AlbumDescription" class="control-label">Description</label>
+									 @Html.TextAreaFor(x => x.AlbumDescription, new { @class = "form-control", @id = "AlbumDescription",@maxlength = 75 })
+									
+
+								</div>	
+								
+							</div>
+						</div>
+					</div>
+				</div>
+                
+                   
+
+                 
+             <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+   
+             <button type="button" id="EditAlbum" class="btn btn-info" onclick='Edit()'>
+                            Save</button>       
+        </div>   
+            }    
+             </div>  
+      </div>
+                
+        <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>   
+        <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+        <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+        <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+        <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+
+          <script type="text/javascript">
+
+              var submitform = true;
+
+              $(function () {
+
+                  $(".modal-body select").select2({
+                      minimumResultsForSearch: -1
+                  });
+
+                  $("#AlbumAccess").select2();
+              });
+
+              var opts = {
+                  "closeButton": true,
+                  "debug": false,
+                  "positionClass": "toast-top-right",
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "2000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              };
+
+              function Edit() {
+
+                 
+                  var value = {
+                      "AlbumTitle": $("#AlbumTitle").val(),
+                      "AlbumID": $("#AlbumID").val(),
+                      "AlbumPhotoID": $("#AlbumPhotoID").val(),
+                      "AlbumDescription": $("#AlbumDescription").val()
+                      
+                  };
+                  $.ajax({
+                      url: "../../Gallery/EditSingleAlbum/",
+                      type: 'POST', cache: false,
+                      data:value,
+                      success: function (result) {
+                          if (result == "success") {
+                              $("#portlet-config1").modal('hide');
+                              toastr.success("Album Updated Successfully", opts);
+                          }
+                          else {
+                              toastr.error("Album Updation Failed", opts);
+                          }
+                      }
+
+                  });
+
+              }
+          </script>
+                
+       </body>
+   </html>

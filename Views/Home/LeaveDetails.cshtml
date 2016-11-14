@@ -1,0 +1,134 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.LeaveDetails>
+@{
+    Layout = null;
+}
+@{
+    int SNo = 1;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LeaveDetails</title>
+    <style>
+        th
+        {
+             font-weight: bold;
+             text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Leave Details</h4>
+             
+        </div>
+        <div class="modal-body">
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered datatable" id="tblUsers">
+                <thead>
+                    <tr>
+                        <th>
+                         S.No
+                        </th>
+                        <th style="width:auto;">
+                            @Html.Label("Start Date")
+                        </th>
+                        <th style="width:auto;">
+                            @Html.Label("End Date")
+                        </th>                      
+                         @if (ViewBag.Leavetypeid == 4)
+                         {
+                           <th>
+                            @Html.Label("WorkedDate")
+                           </th>
+                         } 
+                        <th style="text-align:center">
+                            @Html.Label("Leave Days")
+                        </th>  
+                        <th style="text-align:center">
+                            @Html.Label("Sick")
+                        </th>  
+                        <th style="text-align:center">
+                            @Html.Label("Casual")
+                        </th>  
+                         @if (ViewBag.isEligible)
+                         {
+                        <th style="text-align:center">
+                            @Html.Label("Earned")
+                        </th> 
+                         }
+                        <th style="text-align:center">
+                            @Html.Label("LOP")
+                        </th>                       
+                        <th style="width:50px;">
+                            @Html.Label("Details")
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                   
+                    <tr>
+                        <td style="width:30px;" align="center">
+                            @(SNo++)
+                        </td>
+                        <td style="width:auto;text-align:center">
+                            @item.StartDate.Value.ToString("ddd, MMM d, yyyy")
+                        </td>
+                        <td style="width:auto;text-align:center">
+                            @item.EndDate.Value.ToString("ddd, MMM d, yyyy")
+                        </td>
+                        @if (ViewBag.Leavetypeid == 4)
+                        {
+                           <td style="width:30px;">
+                           @item.WorkedDate
+                        </td>
+                        }
+                        <td style="width:30px; text-align:center">
+                            @Html.DisplayFor(x => item.LeaveDays)
+                        </td>
+                         <td style="width:30px; text-align:center">
+                            @Html.DisplayFor(x => item.Sick)
+                        </td>
+                         <td style="width:30px; text-align:center">
+                            @Html.DisplayFor(x => item.Casual)
+                        </td>
+                         @if (ViewBag.isEligible)
+                         {
+                        <td style="width:30px; text-align:center">
+                            @Html.DisplayFor(x => item.Earned)
+                        </td>
+                         }
+                        <td style="width:30px; text-align:center">
+                            @Html.DisplayFor(x => item.LOP)
+                        </td>
+                        <td style="width:30px;">
+                           @Html.Raw(Html.Encode(item.Detail ?? string.Empty).Replace("\n", "<br />"))
+                        </td>
+
+                    </tr>
+                }
+            </table>
+            }
+            else
+            {
+                <div style="text-align: center">
+                    <h4>
+                        No Data Found</h4>
+                </div>
+                   
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+        </div>
+    </div>
+</body>
+</html>

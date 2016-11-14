@@ -1,0 +1,266 @@
+﻿@model DSRCManagementSystem.Models.ApprovedTimeSheet
+@{
+    ViewBag.Title = "Approved Timesheet";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/themes/base/minified/jquery.ui.datepicker.min.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+        type="text/javascript"></script>
+}
+<style>
+    #ProjectID
+    {
+        min-width: 200px;
+        width: 25%;
+    }
+     #MemberId
+    {
+        min-width: 200px;
+        width: 25%;
+    }
+
+    
+       .dropdown-menu {
+    background-color: white;
+          }  
+       
+</style>
+<ol class="breadcrumb bc-3">
+    <li><a>Timesheet Management</a> </li>
+    <li class="active"><strong>Approve Timesheet</strong> </li>
+</ol>
+<div class="row">
+    <div class="col-md-12" style="text-align: right">
+        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+    </div>
+</div>
+@using (Html.BeginForm("ApprovedTimeSheet", "TSR", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered", @id = "form" }))
+{                 
+   
+ <div class="row">
+     <div class="col-md-3">
+         @if (@Model.Multiselect == 0)
+         {
+        <label>
+            Projects @Html.Label("*", new { @style = "color:red;font-weight:bold;" })</label>
+            @Html.DropDownList("ProjectId", ViewBag.ProjectList as SelectList, "----Select----", new { @id = "Project", @name = "Project", @class = "form-control", @maxlength = 50, @style = "Height:42Px", @onchange = "changeProject()" })
+            <span id="span_ID13" style="color: Red;"></span>
+         }
+         else
+         {
+            <label>
+            Projects @Html.Label("*", new { @style = "color:red;font-weight:bold;" })</label>
+            @Html.DropDownList("ProjectId", ViewBag.ProjectList as SelectList, "----Select----", new { @id = "Project", @name = "Project", @class = "form-control", @maxlength = 50, @style = "Height:42Px", @onchange = "changeProject()" })
+            <span id="span_ID13" style="color: Red;"></span>
+         }
+       </div>
+
+        <div class="col-md-1" style="padding-top:30px; ">
+       <label>
+       
+       </label>
+       </div>
+        <div class="col-md-3" >
+        @if (@Model.Multiselect == 0)
+        {
+        <label >
+            Users @Html.Label("*", new { @style = "color:red;font-weight:bold;" })</label>
+          @Html.DropDownList("PhaseName", new List<SelectListItem>(), "--Select--", new { @class = "form-control", @id = "Phase", @maxlength = 50, @style = "Height:42Px" })
+           <span id="span_ID14" style="color: Red;"></span> 
+        
+        }
+        else
+        {
+            <label>
+         Users @Html.Label("*", new { @style = "color:red;font-weight:bold;" })</label>
+         @Html.DropDownList("UserId", ViewBag.User as MultiSelectList, new { @id = "Phase", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple", @maxlength = 50, @style = "Height:42Px" })   
+             <span id="span_ID14" style="color: Red;"></span>             
+        }
+         </div>
+         
+         <div class="col-md-3">
+        <label id="lblValidFrom">
+             Week @Html.Label("*", new { @style = "color:red;font-weight:bold;" })</label>     
+           @* @Html.TextBoxFor(x => x.StartDate, new { @name = "StartDate", @id = "StartDate", @class = "form-control datetimepicker", @maxlength = 50, @style = "Height:42Px" }) *@
+           @Html.DropDownList("Weeks", ViewBag.Weeks as SelectList, "----Select----", new { @id = "Weeeks", @name = "Weeks", @class = "form-control", @maxlength = 50, @style = "Height:42Px" })
+            <span id="Startdate_Valid" style="color: Red;"></span>
+        </div>
+
+
+       
+
+        @*<div class="col-md-2" >
+        <label id="lblValidTo">
+            To Date @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })</label>
+             @Html.TextBoxFor(x => x.EndTime, new { @name = "StartDate", @id = "EndDate", @class = "form-control datetimepicker", @maxlength = 50, @style = "Height:42Px" }) 
+            <span id="StartDateTime_ID" style="color: Red;"></span>
+        </div>*@
+       
+     
+        <div class="col-md-1" style="padding-top:25px;" >
+            <button type="button" id="btnSubmit" class="btn btn-success center-block" onclick='ShowHours()'>
+                Show
+            </button>
+  
+         </div>
+
+       </div>   
+    <br />
+    <br />
+    
+  
+}
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $("#Project").select2();
+        $("#Weeeks").select2();
+        $(function () {
+
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            //startDate: '+1d',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        });
+
+
+
+        function ShowHours() {
+
+            var ProjectId = $("#Project").val();
+            //          
+            var UserId = $("#Phase").val();
+            var Weeks = $("#Weeeks").val();
+
+        
+
+
+
+
+
+            if (document.getElementById('Project').value == '' && document.getElementById('Phase').value == '' && document.getElementById('Weeeks').value == '') {
+       
+                    document.getElementById("span_ID13").innerHTML = "Select the project";
+ 
+                    document.getElementById("span_ID14").innerHTML = "Select  project member";
+              
+                    document.getElementById("Startdate_Valid").innerHTML = "Select  week";
+                
+            }
+
+
+
+
+
+
+                else if (document.getElementById('Project').value == '' || document.getElementById('Phase').value == '' || document.getElementById('Weeeks').value == '') {
+             
+                if (document.getElementById('Project').value == '') 
+                {
+                    document.getElementById("span_ID13").innerHTML = "Select  project";
+                }
+                else {
+                    document.getElementById("span_ID13").innerHTML = "";
+                }
+                if (document.getElementById('Phase').value == '') {
+
+                    document.getElementById("span_ID14").innerHTML = "Select user";
+                }
+                else {
+
+                    document.getElementById("span_ID14").innerHTML = "";
+                }
+
+                if (document.getElementById('Weeeks').value == '') {
+
+                    document.getElementById("Startdate_Valid").innerHTML = "Select  week";
+                }
+                else {
+
+                    document.getElementById("Startdate_Valid").innerHTML = "";
+                }
+            }
+            else {
+
+                window.location.href = '@Url.Action("ApprovedTimeSheetManagement", "TSR")' + '?ProjectId=' + ProjectId + '&UserId=' + UserId + '&Week=' + Weeks;
+
+               
+
+         
+
+            }
+
+        }
+        function changeProject() {
+     
+              
+            var ProjectId = $("#Project").val();
+         //   window.location.href = '@Url.Action("ApprovedTimeSheet", "TSR")' + '?ProjectId=' + ProjectId;
+
+
+
+            var values = {  v
+
+           "ProjectId" : $("#Project").val()
+           
+
+            }
+
+
+            $.ajax({
+                    url: "../../TSR/DataBind/",
+                    type: 'GET', cache: false,data:values,
+                    success: function (result) {
+                        window.location.href = '@Url.Action("ApprovedTimeSheet", "TSR")' + '?ProjectId=' + result;
+                      
+                    }
+
+                });
+
+         
+
+
+            //            var url2 = '@Url.Action("PhaseName")';
+            //            var value = $("#Project option:selected").val();
+            //            $.get(url2, { pid: value }, function (data) {
+            //                var items = [];
+            //                items.push("");
+            //                items.push("<option value=0>--Select--</option>");
+            //                $.each(data, function () {
+            //                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+            //                });
+            //                $("#Phase").html(items.join(' '));
+            //                $("#Phase").select2();
+            //            });
+
+
+        }
+     
+    </script>
+}

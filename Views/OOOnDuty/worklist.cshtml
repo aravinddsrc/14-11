@@ -1,0 +1,328 @@
+﻿ @model  IEnumerable<DSRCManagementSystem.Models.OnDutyRequestModel>
+
+@{
+    ViewBag.Title = "work List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";   
+}
+
+@{
+    int RequestID = 1;
+}
+
+ <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+
+
+@*    <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("ApplyLeave", "Leave")">Leave Management</a></li>        
+        <li class="active"><strong>Out Of Office Assistance Request</strong> </li>
+    </ol>*@
+    <p>
+        <a href="@Url.Action("ApplyLeave", "Leave")" style="color:black ">
+            Leave Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Out Of Office Assistance Request</b>
+    </p>
+    <br />      
+
+    <div class="row">
+    <div class="col-md-12">
+    <div class="panel panel-default panel-shadow" data-collapsed="0">
+    <div class="panel-heading">
+    <div class="panel-title" color="White">Out Of Office Assistance Request</div>
+    </div>
+       
+    <div class="panel-body">
+
+        <div class="clear">
+        </div>
+        <br />
+
+         @using (Html.BeginForm("worklist", "OOOnDuty", FormMethod.Post))
+         {     
+
+            <div class="row">      
+               <div class="col-md-3" style="width :auto;text-align:center;color:Black;  padding-top: 15px ;">
+                  Request Status
+               </div>
+               <div class="col-md-3">
+                 @Html.DropDownList("RequestStatusId", ViewBag.Status_list as SelectList, new { @id = "RequestStatusId", @class = "form-control" })
+                 @Html.Hidden("RequestStatusId")
+               </div>  
+                 <div class="col-md-1" style="padding-top:7px; padding-left:0px;">
+                                <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                    Search<i class="entypo-search"></i>
+                                </button>
+                                </div>
+                    <div class="col-md-1" style="padding-top:7px;">
+                        <button type="button" id="btnAdd" class="btn btn-default" onclick="Clear()">
+                            Reset
+                        </button>
+                    </div>
+                @* <div>
+                      <button type="button" id="btnAdd" margin-right: 10px" class="btn btn-default" onclick="Clear()">
+                     Reset
+                    </button>
+                   <button id="btn" type="submit" class="btn btn-success center-block" font-weight: bold">
+                    Show</button>
+              <div>*@
+              </div>
+             @* </div>                            
+            </div>*@
+      <br /> 
+             
+        <div class="table table-bordered datatable" >
+                        <table class="table table-bordered datatable" id="tblUsers" style="width:100%;">
+                            <thead>
+                                <tr>
+                                
+                                    <th style="text-align: center; ">
+                                      Request ID
+                                    </th>
+                                     <th style="text-align: center; ">
+                                      Employee Name
+                                    </th>
+                                     <th style="text-align: center; ">
+                                     Request Name
+                                    </th>
+                                    <th style="text-align: center;">
+                                    Request Status
+                                    </th>
+                                    <th style="text-align: center; ">
+                                      Start Date
+                                    </th>
+                                    <th style="text-align: center;">
+                                       End Date
+                                    </th>
+                                   <th style="text-align: center;width: 5%;">
+                                       Approved
+                                   </th>
+
+                                   <th style="text-align: center;width: 3%;">Reject</th>
+
+                                     </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+
+                                if (item.UnderNoticePeriod != 2)
+                                {
+                                <tr>
+                                
+                               <td style="text-align: center;width: 5%;">
+
+                               @Html.HiddenFor(modelItem => @item.ODID)
+                                    <a style=" text-decoration:underline" onclick='View(@item.ODID)' > @(RequestID++) </a>                                   
+                                
+                                    </td>
+                                    <td style="text-align:left;width: 10%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => item.EmpName)
+                                    </td>
+                                    <td style="text-align:left;width: 15%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => @item.ODType)&nbsp;Trip&nbsp;For
+                                       @Html.DisplayFor(modelItem => @item.ODPlace)
+                                    </td>
+                                     <td style="text-align:center;width: 15%;">
+                                        @Html.DisplayFor(modelItem => item.RequestStatus)
+                                    </td>
+                                    
+                                    <td style="text-align: left;width: 15%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    <td style="text-align: left;width: 15%">
+                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                    </td>
+                                    <td   style="text-align: center;width: 5%;">
+                                      <button type="button" class="btn btn-green" data-toggle="tooltip" title="Approve" onclick="ApproveOnDutyRequest('@item.ODID')" 
+                                      @if (item.RequestStatus != "Pending")
+                                      {<text>disabled</text>}><i class="entypo-check"></i></button>
+                                    </td>  
+                    <td   style="text-align: center;width: 5%;">                         
+                    <button type="button" data-toggle="tooltip" title="Reject" class="btn btn-red" onclick="RejectOnDutyRequest('@item.ODID')"
+                    @if (item.RequestStatus != "Pending")
+                    {<text>disabled</text>}>                     
+                    <i class="entypo-cancel"></i></button>
+                    </td>   
+                                </tr>
+                                }
+                                else
+                                {
+                                    <tr style="background-color:pink;">
+                                
+                               <td style="text-align: center;width: 5%;">
+
+                               @Html.HiddenFor(modelItem => @item.ODID)
+                                    <a style=" text-decoration:underline" onclick='View(@item.ODID)' > @(RequestID++) </a>                                   
+                                
+                                    </td>
+                                    <td style="text-align:left;width: 10%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => item.EmpName)
+                                    </td>
+                                    <td style="text-align:left;width: 15%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => @item.ODType)&nbsp;Trip&nbsp;For
+                                       @Html.DisplayFor(modelItem => @item.ODPlace)
+                                    </td>
+                                     <td style="text-align:center;width: 15%;">
+                                        @Html.DisplayFor(modelItem => item.RequestStatus)
+                                    </td>
+                                    
+                                    <td style="text-align: left;width: 15%;">
+                                                                         
+                                        @Html.DisplayFor(modelItem => item.StartDate)
+                                    </td>
+                                    <td style="text-align: left;width: 15%">
+                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                    </td>
+                                    <td   style="text-align: center;width: 5%;">
+                                      <button type="button" class="btn btn-green" data-toggle="tooltip" title="Approve" onclick="ApproveOnDutyRequest('@item.ODID')" 
+                                      @if (item.RequestStatus != "Pending")
+                                      {<text>disabled</text>}><i class="entypo-check"></i></button>
+                                    </td>  
+                    <td   style="text-align: center;width: 5%;">                         
+                    <button type="button" data-toggle="tooltip" title="Reject" class="btn btn-red" onclick="RejectOnDutyRequest('@item.ODID')"
+                    @if (item.RequestStatus != "Pending")
+                    {<text>disabled</text>}>                     
+                    <i class="entypo-cancel"></i></button>
+                    </td>   
+                                </tr>
+                                }
+                            }
+                        </table>
+                    </div>                    
+         }
+ <br /> 
+    <div class="row">
+                    <div class="col-md-12">
+                        <form class="text-right" method="get" action="/OOOnDuty/OOODViewRequest">
+                        <div class="btn-group" style="float: right; padding-right: 10px !important">
+                            <button type="submit" class="btn btn-default">
+                                <i></i>Back</button>
+                        </div>
+                        </form>
+                    </div>
+    </div>
+    </div>
+   </div>
+ </div>
+</div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section scripts
+ {
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+
+            $("#tblUsers").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "aaSorting": [],
+                "columnDefs": [{ "width": "20%", "targets": 1 },{ bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }]
+            });
+
+            $(".panel-body select").select2({
+                //minimumResultsForSearch: -1
+            });
+
+            $('thead>tr>th').css('text-align', 'center');
+        })
+
+      var toastrOptions = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+
+                    function ApproveOnDutyRequest(odid) {
+                        $.ajax({
+                            url: "../../OOOnDuty/ApproveOnDutyRequest/",
+                            type: 'GET',
+                            cache: false,
+                            data: { ODID: odid },
+                            success: function (result) {
+
+
+                                $('#PartialSection').html(result);
+                                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                            }
+                        });
+                }
+
+                function RejectOnDutyRequest(odid) {
+                    
+                            $.ajax({
+                                url: "../../OOOnDuty/RejectOnDutyRequest/",
+                                type: 'GET',
+                                cache: false,
+                                data: { ODID: odid },
+                                success: function (result) {
+
+
+                                    $('#PartialSection').html(result);
+                                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                                }
+                            });
+                        }
+
+                function View(odid) {
+                    $.ajax({ url: "../../OOOnDuty/ViewDetail/",
+                        type: 'GET', cache: false,
+                        data: { ODID: odid },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+
+                function Clear() {
+
+                    $.ajax({ url: "../../OOOnDuty/WorkList/",
+                        type: 'GET',
+                        cache: false,
+                        success: function (result) {
+
+                            location.href = '@Url.Action("WorkList", "OOOnDuty")';
+
+                        }                       
+                    });
+
+                }         
+        
+     </script>
+  }
+ 

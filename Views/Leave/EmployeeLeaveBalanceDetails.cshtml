@@ -1,0 +1,76 @@
+﻿@model DSRCManagementSystem.Models.EmployeeLeaveBalance
+@{
+    Layout = null;
+}
+
+@{
+    var newRow = true;
+    var items = 1;
+}
+
+  <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+<div class="modal-content">
+    <div class="modal-header"  style="background-color:#f0f0f1;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×</button>
+        <h4 class="modal-title">
+            Employee Leave Balance Details</h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("EmployeeLeaveBalanceDetails", "Leave", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <b>@Html.Label("Employee Id : ", new { @class = "control-label" })</b>  
+                        @Html.Label(Model.EmployeeId, new { @id = "EmployeeId", @autocomplete = "off", @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.EmployeeId)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <b>@Html.Label("Employee Name : ", new { @class = "control-label" })</b>  
+                        @Html.Label(Model.EmployeeName ?? "", new { @id = "EmployeeName", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            
+            
+            Func<string, string> FormatString = data => { return String.Format("{0," + ViewBag.MaxLength + "}", data); };
+
+            foreach (var item in Model.LeaveTypeBalances)
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                           <b style="color:Background;">@Html.Label(FormatString(item.LeaveType + "(Taken / Allowed) :"), new { @class = "control-label" })</b> 
+                            @Html.Raw(String.Format("{0}", item.LeaveDaysUsed) + " day(s) / " + item.DaysAllowed + " day(s)")
+                        </div>
+                    </div>
+                </div>
+  
+            }
+        }
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                       <b style="color:Background;">@Html.Label("Total Days (Taken / Allowed) : ", new { @class = "control-label" })</b>
+                        @Html.Raw(String.Format("{0}", Model.LeaveTypeBalances.Sum(x => x.LeaveDaysUsed)) + " day(s) / " + Model.LeaveTypeBalances.Sum(x => x.DaysAllowed) + " day(s)")
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close</button>
+    </div>
+</div>

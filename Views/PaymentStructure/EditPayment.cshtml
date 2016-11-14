@@ -1,0 +1,387 @@
+﻿
+@model IEnumerable<DSRCManagementSystem.Models.PaymentStructure>
+@{
+    ViewBag.Title = "Project Payment";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int SNO = 1;
+}
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Payment Structure</title>
+         <style>
+        .dropdown-menu {
+    background-color: white;
+}
+
+        </style>
+   <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    </head>
+<body class="page-body">
+@*     <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Income","Income")">Accounts Management</a></li>
+        <li class="active"><strong>Update Payment Structure</strong> </li>
+    </ol>*@
+     <p>
+        <a href="@Url.Action("Income","Income")"style="color:black ">
+            Accounts Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Update Payment Structure</b>
+    </p>
+    <br />
+    <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title">
+                   Update  Payment Structure</div>
+            </div>
+            <br />
+             @using (Html.BeginForm("EditPayment", "PaymentStructure", FormMethod.Post, new { @id = "form" }))
+                {
+                  <div class="form-group">
+                        <div class="row">
+                           
+                             <div class="col-md-2" style="padding-left:30px;    width: 181px; padding-top: 7px;">
+                            @Html.Label("Customer Name", new { @class = "control-label" })
+                            @Html.DropDownList("PaymentID",  ViewBag.Customer as SelectList, new { @id = "Idcustomer", @name = "CustomerName", @class = "form-control",@onchange="GetUser()" })
+                        </div>
+                       
+                            
+                             <div class="col-md-2" style="    width: 181px; padding-top: 7px;">
+                            @Html.Label("User", new { @class = "control-label" })
+                            @Html.DropDownList("UserID",  ViewBag.user as SelectList, new { @id = "Iduser", @name = "User", @class = "form-control" })
+                        </div>
+                       
+
+                        <div class="col-md-4" style="margin-top: 30px;margin-left:30px;padding-left : 0px;">
+                            <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                Search<i class="entypo-search"></i>
+                            </button>
+                            <button type="button"  id="btnAdd"  class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                        </div>
+                            </div>
+                    </div>
+                   <div class="clear">
+                    </div>
+                    <br />
+                    <table class="table table-bordered datatable" id="tbltask">
+                         <thead>
+                            <tr>
+                                <th style="text-align: center;">
+                                    S.No
+                                </th>
+                                 <th style="text-align: center;">
+                                    Customer Name
+                                </th>
+                                <th style="text-align: center;">
+                                    User Name
+                                </th>
+                                 <th style="text-align: center;">
+                                    Payment Type
+                                </th>
+                                <th style="text-align: center;">
+                                    Due Date
+                                </th>
+                                <th style="text-align: center;">
+                                    Amount
+                                </th>
+                                 <th style="text-align: center;">
+                                    Additional Amount
+                                </th>
+                                  <th style="text-align: center;">
+                                    Paid
+                                </th>
+                                  <th style="text-align:;">
+                                    Pending
+                                </th>
+                                <th style="text-align: center;">
+                                    Status
+                                </th> 
+                                 <th style="text-align: center;">
+                                    Comments
+                                </th>  
+                                 <th style="text-align: center;">
+                                   Update Status
+                                </th>                        
+                            </tr>
+                        </thead>
+                       @foreach (var item in Model)
+                        { 
+                         <tr>
+                                <td style="text-align: center;">
+                                    @(SNO++)
+                                    @Html.HiddenFor(modelitem => item.PaymentID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelitem => item.CustomerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelitem => item.UserName)
+                                </td>
+                              <td style="text-align: center;">
+                                     @Html.DisplayFor(modelitem => item.PaymentType)
+                                </td>
+                               <td style="text-align: center;">
+                                    @item.DueDate.ToString("ddd, MMM d, yyyy")
+                                </td>
+                                <td style="text-align: right;">
+                                     @Html.DisplayFor(modelitem => item.Amount)
+                                </td>
+                               <td style="text-align: right;">
+                                    @Html.DisplayFor(modelitem=>item.AdditionalAmount)
+                                </td>
+                               <td style="text-align: right;">
+                                    @Html.DisplayFor(modelitem=>item.PaidAmount)
+                                </td>
+                               <td style="text-align: right;">
+                                    @Html.DisplayFor(modelitem=>item.PendingAmount)
+                                </td>
+                                <td style="text-align: center;">
+                                    @Html.DisplayFor(modelitem=>item.Status)
+                                </td>
+                              <td style="text-align: left;">
+                                    @Html.DisplayFor(modelitem=>item.comments)
+                                </td>
+                              <td style="text-align: center;">
+                                    <a class="btn btn-info" data-toggle="tooltip" title="Update Status" onclick="Update(@item.PaymentID,@item.PaymentTermID)">
+                                        <i class="entypo-pencil"></i></a>
+                                </td>
+                            </tr>
+                        }
+                   
+                    </table>
+             }
+            </div>
+        </div>
+      </div>
+          <br />
+          <br />
+  <div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+      
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+      
+    </div>
+     <script type="text/javascript">
+         jQuery(document).ready(function ($) {
+             $("#Idcustomer").select2();
+             $("#Iduser").select2();
+             localStorage.clear();
+
+             //$("#tbltask").dataTable({
+             //    "sPaginationType": "bootstrap",
+             //    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+             //    "columnDefs": [ { bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [8] },{ bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [7] }]
+
+             //});
+
+             var table = $("#tbltask").dataTable({
+                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                 "sPaginationType": "bootstrap",
+                 "aaSorting": [],
+                 "columnDefs": [ { bSortable: false, 'aTargets': [11] }],
+
+                 stateSave: true,
+                 stateSaveCallback: function (settings, data) {
+                     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                 },
+                 stateLoadCallback: function (settings) {
+                     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                 }
+             });
+             $(".dataTables_wrapper select").select2({
+                 //minimumResultsForSearch: -1
+             });
+             $('thead>tr>th').css('text-align', 'center');
+         });
+         var opts = {
+             "closeButton": true,
+             "debug": false,
+             "positionClass": "toast-top-right",
+             "onclick": null,
+             "showDuration": "300",
+             "hideDuration": "1000",
+             "timeOut": "2000",
+             "extendedTimeOut": "1000",
+             "showEasing": "swing",
+             "hideEasing": "linear",
+             "showMethod": "fadeIn",
+             "hideMethod": "fadeOut"
+         };
+         function GetDepartments() {
+
+             var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+             if (Bid !== "") {
+
+                 var url2 = '@Url.Action("GetDepartments","Users")';
+
+                 $.get(url2, { BranchId: Bid }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Iddepartment").html(items.join(' '));
+                     ////$("#Iddepartment").select2();
+                 });
+             }
+         }
+         function GetGroups() {
+
+             var Did = $("#Iddepartment").find("option:selected").prop("value");
+
+             if (Did !== "") {
+
+                 var url2 = '@Url.Action("GetGroups", "Users")';
+
+                 $.get(url2, { DepartmentId: Did }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Idgroup").html(items.join(' '));
+                     //$("#Idgroup").select2();
+                 });
+             }
+         }
+         function GetCustomer() {
+
+             var Did = $("#Iddepartment").find("option:selected").prop("value");
+             var Gid = $("#Idgroup").find("option:selected").prop("value")
+
+             if (Did !== "" && Gid !== "") {
+
+                 var url2 = '@Url.Action("GetCustomer", "PaymentStructure")';
+
+                 $.get(url2, { DepartmentId: Did, GroupId: Gid }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Idcustomer").html(items.join(' '));
+                     //$("#Idgroup").select2();
+                 });
+             }
+         }
+         function GetUser() {
+
+             var customer = parseInt($("#Idcustomer").find("option:selected").prop("value"));
+             var Cid = parseInt(customer);
+             var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+            
+             var branchid = parseInt(Bid);
+            
+             if (Cid !== "") {
+
+                 var url2 = '@Url.Action("GetUser", "PaymentStructure")';
+
+                 $.get(url2, { CustomerId: Cid }, function (data) {
+
+                     var items = [];
+                     items.push("");
+                     items.push("<option value=0>---Select---</option>");
+
+                     $.each(data, function () {
+                         items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                     });
+                     $("#Iduser").html(items.join(' '));
+                     //$("#Idgroup").select2();
+                 });
+             }
+         }
+         function CreatePayment() {
+             window.location.href = '@Url.Action("CreateProjectPayment", "PaymentStructure")';
+         }
+         function DeletePayment(PaymentID) {
+             bootbox.confirm("Are you sure want to delete ?", function (result) {
+                 if (result) {
+                     $.ajax({
+                         url: "../../PaymentStructure/DeleteProjectPayment/",
+                         type: 'POST', cache: false,
+                         data: { PaymentID: PaymentID },
+                         success: function (result) {
+                             if (result == "success") {
+                                 toastr.success("Project Payment  Deleted Successfully", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+                             }
+                             else {
+                                 toastr.warning("Project Payment Deletion Failed", opts);
+                                 setTimeout(function () { location.reload(); }, 1000);
+                             }
+
+                         }
+                     });
+                 }
+             });
+         }
+         function AssignUser(PaymentID) {
+             $.ajax({
+                 url: "../../PaymentStructure/AssignPaymentGroup/",
+                 type: 'GET', cache: false,
+                 data: { PaymentID: PaymentID },
+                 success: function (result) {
+                     $('#PartialSection').html(result);
+                     $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                 }
+             });
+         }
+         function Update(PaymentID, PaymentTermId) {
+             {
+                 $.ajax({
+                     url: "../../PaymentStructure/UpdatePayment/",
+                     type: 'GET',
+                     cache: false,
+                     data: { PaymentID: PaymentID, PaymentTermID: PaymentTermId },
+                     success: function (result) {
+                         $('#PartialSection').html(result);
+                         $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                     }
+                 });
+             }
+         }
+
+         function Cancel() {
+             var url = '@Url.Action("EditPayment", "PaymentStructure")';
+             window.location.href = url;
+         }
+
+        </script>    
+</body>
+</html>
+

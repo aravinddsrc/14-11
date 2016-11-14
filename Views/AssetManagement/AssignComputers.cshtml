@@ -1,0 +1,320 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.AssignComputers>
+@{                                
+    ViewBag.Title = "Assign Computers ";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int SNO = 1;
+}
+<!DOCTYPE html>
+<html>
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @* <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />*@
+    <!--<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />-->
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    @*<link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />*@
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <!--<script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>-->
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+  <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+   <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+ 
+ 
+     @* <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-beta.3/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-beta.3/js/select2.min.js"></script> *@ 
+
+    
+</head>
+<body>
+@*    <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("ManageComputers","AssetManagement")">Asset Management</a></li>
+        <li class="active"><strong>Assign Computers</strong> </li>
+    </ol>*@
+    <p>
+        <a href="@Url.Action("ManageComputers","AssetManagement")"style="color:black ">
+            Asset Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Assign Computers</b>
+    </p>
+    <br />
+    <div class="row" style="height: 500px;">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Assign Computers</div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="btn-group" style="float: right">
+                        <button class="btn btn-blue" style="font-weight: bold" onclick='AssignComputer()'>
+                            Assign Computer
+                        </button>
+                        <br />
+                         
+                    </div>
+                     
+                        
+                    @using (Html.BeginForm("AssignComputers", "AssetManagement", FormMethod.Post))
+                    { 
+                        <div class="clear">
+                        </div>
+                        <br />
+                        <div class="table table-bordered datatable">
+                            <table class="table table-bordered datatable" id="tblCmptr">
+                                <thead>
+                                    <tr>
+                                    <th>
+                                      S.NO
+                                    </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.EmployeeName)
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.Department)
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.Location)
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.ComputerName)
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.WorkstationNumber)
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.PenDriveAcess)
+                                        </th>
+                                         <th style="text-align: center;">
+                                            @Html.DisplayNameFor(model => model.ComponentId)
+                                        </th >
+
+                                        <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model =>model. UPSID)
+                                        </th>
+                                        
+                                        <th >
+                                            Edit  
+                                        </th>
+                                          
+                                         <th >
+                                             UnAssign 
+                                        </th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                     <td style="text-align: center;">
+                                    @(SNO++)
+                                </td>
+                                        <td>
+                                           @Html.HiddenFor(modelitem=>item.assetid)
+                                            @Html.HiddenFor(modelitem=>item.UserId)
+                                            @Html.HiddenFor(modelItem => item.ID)
+                                            @Html.DisplayFor(modelItem => item.EmployeeName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Department)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Location)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ComputerName)
+                                        </td>
+                                        <td>
+                                        @Html.DisplayFor(modelItem => item.WorkstationNumber)
+                                           
+                                        </td>
+                                        <td>
+                                            @(item.PenDriveAcess == true ? "Yes" : "No")  
+                                        </td>
+                                          <td>
+                                           @Html.DisplayFor(modelItem => item.Component)
+                                         
+                                        </td>
+
+                                        <td>
+                                         @Html.DisplayFor(modelItem=>item.UPSID)
+                                        </td>
+
+
+
+                                        <td style="text-align: center;">
+                                            <a>
+                                               @* <button type="button" class="btn btn-info btn-icon icon-left"   onclick='Edit("@item.ID","@item.assetid")'>
+                                                    <i class="entypo-pencil"></i>Edit
+                                                </button>*@
+                                                <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info"onclick='Edit("@item.ID","@item.assetid")'>
+                                            <i class="entypo-pencil"></i></a>
+                                                </a>
+                                           </td>
+                                            <td style="text-align: center;">
+                                             <a>
+                                                @*<button type="button" class="btn btn-red btn-icon icon-left" onclick='Delete("@item.ID","@item.assetid")'>
+                                                    <i class="entypo-cancel"></i>UnAssign
+                                                </button>*@
+                                                 <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='Delete("@item.ID","@item.assetid")'>
+                                            <i class="entypo-cancel"></i></a>
+
+                                         
+                                        </td>
+                                    </tr>
+                                }
+                            </table>       
+                        </div>                    
+                    }
+
+                    @*<button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;" onclick="Back()">
+                        Back
+                    </button>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="modal fade in" id="portlet-config"   role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 40%;" />                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                               
+  
+    @section scripts
+{
+        <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+        <!--<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>-->
+        <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+        <script type="text/javascript">
+
+
+
+
+            jQuery(document).ready(function ($) {
+                localStorage.clear();
+
+                $('select').select2();
+
+                var table = $("#tblCmptr").dataTable({
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                    "sPaginationType": "bootstrap",
+                    "aaSorting": [],
+                    "columnDefs": [{ bSortable: false, 'aTargets': [0] }, { bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7]}],
+                    //"columnDefs": columnDefs,
+                    stateSave: true,
+                    stateSaveCallback: function (settings, data) {
+                        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                    },
+                    stateLoadCallback: function (settings) {
+                        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                    }
+                });
+
+
+                //$("#tblCmptr").dataTable({
+                //    "sPaginationType": "bootstrap",
+                //    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                //    "bStateSave": false,
+                //    "bAutoWidth": false,
+                //    "columnDefs": [{ bSortable: false, 'aTargets': [0] }, { bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7]}]
+                //});
+                $(".dataTables_wrapper select").select2({
+                    minimumResultsForSearch: -1
+                });
+
+                $('thead>tr>th').css('text-align', 'center');
+            });
+
+            function AssignComputer() {
+
+                $.ajax({ url: "../../AssetManagement/AssignComputer/",
+                    type: 'GET', cache: false,
+
+                    success: function (result) {
+
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    }
+                });
+            }
+
+
+
+            function Edit(ID, AID) {
+                $.ajax({ url: "../../AssetManagement/EditCmptr/",
+                    type: 'GET',
+                    cache: false,
+                    data: { ID: ID, assetid: AID },
+                    success: function (result) {
+                      
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                    }
+                });
+            }
+
+
+
+            function Delete(ID, Aid) {
+
+                bootbox.confirm("Are you sure want to UnAssign ?", function (conform) {
+                    if (conform) {
+                        $.ajax({ url: "../AssetManagement/DeleteCmptr/",
+                            type: 'POST', cache: false, data: { ID: ID, assetid: Aid },
+                            success: function (result) {
+                                var opts = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "positionClass": "toast-top-right",
+                                    "onclick": null,
+                                    "showDuration": "500",
+                                    "hideDuration": "1000",
+                                    "timeOut": "1500",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr.success("UnAssigned successfully!", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+
+                            }
+                        });
+                    }
+                });
+            }
+       
+            function Back() {
+                var url = '../Home/Index?id=AssetManagement';
+                window.location.href = url;
+            }
+
+        </script>
+    }
+</body>
+</html>

@@ -1,0 +1,3473 @@
+﻿    @model DSRCManagementSystem.Models.Dashboard
+@{
+    ViewBag.Title = "Manager Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+
+
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    @*<link href="~/Content/Calender/LeaveBalanceCalendar/StyleSheet1.css" rel="stylesheet" />*@
+
+    <link href="../../Content/Calender/fullcalendar.print.css" rel="stylesheet" type="text/css"
+        media="print" />
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="~/Scripts/jquery.sparkline.min.js"></script>
+
+    @* <script src="../../Content/Template/js/jquery-1.10.2.min.js" type="text/javascript"></script>*@
+    @*<script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>*@
+    @*  <link href=" ../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href=" ../../Content/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+        type="text/css" />*@
+
+
+
+     @*moved from bottom*@
+
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+<script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+    type="text/javascript"></script>
+    <script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+<link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="~/Content/moment.js" type="text/javascript"></script>
+
+
+
+    <style>
+        .align {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+         .tooltip-inner
+        {
+            max-width:350px;
+           
+         }
+     
+
+        #tblSubmittedLeaveRequest td:nth-child(1) {
+            text-align: center;
+        }
+
+        #tblSubmittedLeaveRequest td:nth-child(6) {
+            text-align: center;
+        }
+
+        #tblProjects2 td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .colorClass1 {
+            /*background-color: rgb(245,105,84);
+            border-color: rgb(245,105,84);*/
+            background-color: rgb(255,0,0); 
+            border-color:rgb(255,0,0); 
+        }
+
+        .colorClass2 {
+            background-color: rgb(0,141,76);
+            border-color: rgb(12,158,55);
+        }
+
+        .colorClass3 {
+            background-color: rgb(0,115,183);
+            border-color: rgb(0,84,168);
+        }
+
+        .colorClass4 {
+            background-color: rgb(153,50,204);
+            border-color: rgb(153,50,204);
+        }
+
+        .colorClass5 {
+            background-color: rgb(255,105,180);
+            border-color: rgb(255,105,180);
+        }
+
+        .colorClass6 {
+            background-color: rgb(50,200,200);
+            border-color: rgb(50,200,200);
+        }
+
+        .square1 {
+            width: 10px;
+            height: 10px;
+            background: red;
+            margin-top: 1.5px;
+        }
+
+        .square2 {
+            width: 10px;
+            height: 10px;
+            background: #0073B7;
+            margin-top: 1.5px;
+        }
+
+        .square3 {
+            width: 10px;
+            height: 10px;
+            background: green;
+            margin-top: 1.5px;
+        }
+
+        .square4 {
+            width: 10px;
+            height: 10px;
+            background: #9932CC;
+            margin-top: 1.5px;
+        }
+
+        .square5 {
+            width: 10px;
+            height: 10px;
+            background: #FF69B4;
+        }
+
+        .square6 {
+            width: 10px;
+            height: 10px;
+            background: #32C8C8;
+            margin-top: 1.5px;
+        }
+
+
+        .pagina {
+            width: auto;
+            height: auto;
+        }
+
+        .linha {
+            width: auto;
+            padding: 5px;
+            height: auto;
+            display: table;
+        }
+
+        .tile {
+            height: 100px;
+            width: 100px;
+            float: left;
+            margin: 0 5px 0 0;
+            padding: 2px;
+            vertical-align: bottom;
+        }
+
+        .tileLargo {
+            width: 210px;
+        }
+
+        .amarelo {
+            background: #DAA520;
+        }
+
+        .vermelho {
+            background: #CD0000;
+        }
+
+        .azul {
+            background: #4682B4;
+        }
+
+        .verde {
+            background-color: #2E8B57;
+        }
+
+        .body {
+            font-family: Century;
+            background: #DAA520;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .dynamicTile .col-sm-2 col-xs-4 {
+            padding: 5px;
+        }
+
+        .col-xs-8r,
+        .col-sm-8r,
+        .col-md-8r,
+        .col-lg-8r {
+            position: relative;
+            min-height: 1px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .col-xs-8r {
+            width: 12.5%;
+            float: left;
+        }
+
+        .frame {
+            height: 100px;
+            width: 100px;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        img ModuleImage {
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            text-align: center;
+        }
+
+    </style>
+}
+@{
+    int SNO = 1;
+    int sno = 1;
+    int SNo = 1;
+    int no = 1;
+}
+@{
+    int ForPagination = @Session["PaginationNumber"] != null ? Convert.ToInt32(@Session["PaginationNumber"].ToString()) : 0;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    int sessionuserid = Convert.ToInt32(Session["UserID"]);
+    int sessionroleid = Convert.ToInt32(Session["RoleId"]);
+    //var checkGrid = db.ManageTabGrids.Where(x => x.UserID == sessionuserid || x.RoleID == sessionroleid).Select(x => x).ToList();
+    var checkGrid = db.ManageTabGrids.Where(x => x.UserID == sessionuserid && x.UserSelected == true).Select(x => x).OrderBy(c => c.GridID).ToList();
+    //if (checkGrid.Count == 0)
+    //    checkGrid = db.ManageTabGrids.Where(x => x.RoleID == sessionroleid && x.UserSelected == true).Select(x => x).OrderBy(c => c.GridID).ToList();
+    // var checkTab = db.ManageTabs.Where(x => x.UserID == sessionuserid || x.RoleID == sessionroleid).Select(x => x).ToList();
+    var checkTab = db.ManageTabs.Where(x => x.UserID == sessionuserid && x.UserSelected == true).Select(x => x).OrderBy(c => c.TabID).ToList();
+    //if (checkTab.Count == 0)
+    //    checkTab = db.ManageTabs.Where(x => x.RoleID == sessionroleid && x.UserSelected == true).Select(x => x).OrderBy(c => c.TabID).ToList();
+    //Tab display based on the UserId by Nithya
+    //Grid display based on the UserId by Nithya
+    
+}
+@{
+   
+    Random r = new Random();
+    Dictionary<int, string> colorsList = new Dictionary<int, string>()
+        {
+            {1, "red"},
+            {2, "green"},
+            {3, "blue"},
+            {4, "aqua"},
+            {5, "purple"},
+            {6, "pink"},
+            {7, "cyan"},
+            {8, "pink"},
+            {9, "plum"},
+            {10, "orange"},
+            {11, "gray"}            
+        };
+    var count = 1;
+    
+}
+<div class="row">
+
+    @foreach (var User in Model.Pages)
+    {
+
+        if (User.path != null)
+        {
+
+            if (count >= colorsList.Count)
+            {
+                count = 1;
+            }
+
+                   
+        <div class="col-md-2">
+            <br />
+            <a href="@Url.Content(User.URL)"  >
+                <div class="tile-title tile-@colorsList[count++]" style="height: 120px;text-decoration-color :white! important;">
+
+                    <div class="icon">
+                        <img src="@(User.path)" width="30px" id="ModuleImage" height="30px" />
+                    </div>
+
+                    <div class="title" style="color: white; vertical-align: bottom; padding-left: 10px; padding-top: 10px; padding-right: 10px; height: 50px; font-size: 10px;">
+                        @User.ModuleName
+                    </div>
+                </div>
+            </a>
+        </div>
+   
+        }
+
+
+
+    }
+
+
+</div>
+
+
+
+<div class="row">
+
+
+    <ul class="nav nav-tabs bordered" role="tablist" id="tabDashboard">
+        <!-- available classes "bordered", "right-aligned" -->
+        @{
+           
+            <li class="active"><a href="#home" data-toggle="tab" role="tab">Dashboard &nbsp;&nbsp;
+                <button type="button" class="btn btn-info" onclick="ManageGrid()" title="Manage Widgets">
+                    <i class="entypo-cog"></i>
+                </button>
+            </a>
+
+            </li>
+            
+
+            foreach (var item in checkTab)
+            {
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.AbsenceCalendar.GetHashCode())
+                {
+            <li><a href="#cal" data-toggle="tab" role="tab" id="ABS">Absence Calendar</a></li>
+                }
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.Finance.GetHashCode())
+                {
+            <li><a href="#Finance" data-toggle="tab" role="tab">Finance</a></li>
+                }
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.MyTask.GetHashCode())
+                {
+            <li><a href="#MyTask" data-toggle="tab" role="tab">My Task</a></li>
+                }
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.RAGStatus.GetHashCode())
+                {
+            <li><a href="#RAG" data-toggle="tab" role="tab">RAG Status</a></li>
+                }
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.Training.GetHashCode())
+                {                    
+            <li><a href="#MYL" data-toggle="tab" role="tab">Training</a></li>
+                }
+                if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.AssetManagement.GetHashCode())
+                {
+            <li><a href="#Asset" data-toggle="tab" role="tab">Asset Management</a></li>
+                }
+               // if (item.TabID == DSRCManagementSystem.Models.MasterEnum.Master_Tab.MyDashBoard.GetHashCode())
+              //  {
+            //<li><a href="#MyDashboard" data-toggle="tab" role="tab">My Dashboard</a></li>
+              //  }
+            }
+            
+            <li style="float: right">
+
+                <button type="button" class="btn btn-info" onclick="ManageTab()" title="Manage Tabs" style="margin-right: 10px">
+                    <i class="entypo-cog"></i>
+                </button>
+
+            </li>
+            }
+    </ul>
+   <div class="tab-content">
+   
+          
+        <div class="tab-pane " id="Finance">
+            <div class="row">
+                <div class="col-md-12">
+                    @{
+                        //Html.RenderAction("Finance", "Finance");
+                    }
+                </div>
+            </div>
+            
+
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default panel-shadow">
+                        <!-- panel head -->
+                        <div class="panel-heading">
+                            <div class="panel-title" color="White">
+                                Finance Chart
+                            </div>
+                        </div>
+                        <div class="panel-body" data-collapsed="0" style="height: 250px">
+
+                            <div class="row">
+                                <div id="myfirstchart" style="height: 250px">
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        
+
+
+        <div class="tab-pane " id="MyTask">
+            <div class="row">
+                <div class="col-md-12">
+                    @{
+                        Html.RenderAction("DashBoardAssignTask", "TaskManagement");
+                    }
+                </div>
+            </div>
+        </div>
+
+
+       
+      <div class="tab-pane active" id="home">
+
+
+            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @id="form1",@class = "form-horizontal form-groups-bordered" }))
+            {
+            
+          
+                <br />
+               
+                <div class="row">
+
+
+
+                    @foreach (var items in checkGrid)
+                    {
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.LeaveBalanceDashboard.GetHashCode())
+                        {
+                          
+                        <div class="col-md-12">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(183, 155, 222);">
+                                    <div class="panel-title">
+                                        My Leave Balance Dashboard
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    @{
+                            Html.RenderAction("LeaveBalanceDashboard", "Leave");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.WorkingHours.GetHashCode())
+                        {
+                            if (Model.JsonWorkedData.Count > 0)
+                            {
+                       
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 158, 63);">
+                                    <div class="panel-title">
+                                        My Attendance
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="form-group">
+                                        <div style="text-align: right; margin-right: 30px">
+                                            L-Leave
+                                        <br />
+                                            OEM-Out Entry
+                                        </div>
+                                        <div class="chart" id="chart3" style="width: 100%; height: 250px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                  
+                            }
+
+                        }
+
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.NewJoiningEmployee.GetHashCode())
+                        {
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0" style="overflow:auto">
+                                <div class="panel-heading" style="background-color: rgb(230, 115, 179);">
+                                    <div class="panel-title" color="White">
+                                        New Joining Employees
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="clear">
+                                    </div>
+                                    <br />
+                                    <table class="table table-bordered datatable" id="tblProjects1">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No
+                                                </th>
+                                                <th>Employee Name
+                                                </th>
+                                                <th>@Html.Raw((string)ViewBag.Lbl_department)
+                                                </th>
+                                                <th>Joining Date
+                                                </th>
+                                                <th>Experience
+                                                </th>
+                                                <th>Days Left To Joining
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        @{
+                            if (Model.Propation.Count > 0)
+                            {
+                                foreach (var item in Model.Propation)
+                                {
+                                    var daysLeft = 0;
+
+                                    if (item.JoiningDate != null)
+                                    {
+                                        daysLeft = ((Convert.ToDateTime(item.JoiningDate.Value)).Date - DateTime.Today).Days;
+                                    }
+                                            <tr>
+                                                <td style="text-align: center">
+                                                    @(SNO++)
+                                                </td>
+                                                <td>
+                                                    @item.Name
+                                                </td>
+                                                <td>
+                                                    @item.Department
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @(item.JoiningDate == null ? "-" : item.JoiningDate.Value.ToString("dd MMM yyyy"))
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @(item.Experience ?? "-")
+                                                </td>
+                                                @if (daysLeft < 0)
+                                                {
+                                                    <td style="text-align: center">0
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="text-align: center" id="date">
+                                                        @(item.JoiningDate == null ? "-" : daysLeft.ToString())
+                                                    </td>
+                                                }
+                                            </tr> 
+                                }
+                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        }
+               
+                                     
+@*Month Calender *@
+              
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.UnInformedLeave.GetHashCode())
+                        {
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(138, 189, 138);">
+                                    <div class="panel-title" color="White">
+                                        Uninformed Leave Employees
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="clear">
+                                    </div>
+                                    <br />
+                                    <table class="table table-bordered datatable" id="tblProjects12">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No
+                                                </th>
+                                                <th>Employee Name
+                                                </th>
+                                                <th>Days Absent
+                                                </th>
+                                                @*<th>
+                                                End Date
+                                            </th>*@
+                                                @*<th>
+                                               Number Of Days Present
+                                            </th>*@
+
+                                            </tr>
+                                        </thead>
+                                        @{
+                            if (Model.objuser.Count > 0)
+                            {
+                                foreach (var item in Model.objuser)
+                                {
+
+                                    //int val = 7-@item.StartDate.Count();
+                                            <tr>
+                                                <td style="text-align: center">
+                                                    @(no++)
+                                                </td>
+                                                <td>
+                                                    @item.name
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(x => item.startdate)
+
+                                                </td>
+
+                                                @* <td>
+                                                @(item.StartDate == null ? "-" : item.StartDate.ToList()("dd MMM yyyy"))
+                                            </td>*@
+                                                @*<td style="text-align: center">
+                                                @(item.EndDate == null ? "-" : item.EndDate.ToString("dd MMM yyyy"))
+                                            </td>*@
+                                                @* <td style="text-align: center">
+                                                @item.days
+                                            </td>*@
+
+                                            </tr>
+
+                                }
+                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.UnderNoticePeriod.GetHashCode())
+                        {
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 164, 164);">
+                                    <div class="panel-title" color="White">
+                                       Under Notice Period Employees
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px; overflow: auto;">
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="clear">
+                                    </div>
+                                    <br />
+                                    <table class="table table-bordered datatable" id="tblProjects13" style="overflow: auto;">
+                                        <thead style="overflow: auto;">
+                                            <tr>
+                                                <th>S.No
+                                                </th>
+                                                <th>Employee Name
+                                                </th>
+                                                @*<th>Resigned On
+                                            </th>*@
+                                                <th>@Html.Raw((string)ViewBag.Lbl_department)
+                                                </th>
+                                                <th>Resigned On
+                                                </th>
+                                                <th>Last Working date
+                                                </th>
+                                                <th>Days Left to Relieve
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        @{
+                            if (Model.Noticeperiod.Count > 0)
+                            {
+                                foreach (var item in Model.Noticeperiod)
+                                {
+                                    var daysLeft = 0;
+
+                                    if (item.LastWorkingDate != null)
+                                    {
+                                        daysLeft = ((Convert.ToDateTime(item.LastWorkingDate.Value)).Date - DateTime.Today).Days;
+                                    }
+
+                                    if (daysLeft >= 0)
+                                    {
+                                            <tr>
+                                                <td style="text-align: center">
+                                                    @(sno++)
+                                                </td>
+                                                <td>
+                                                    @item.Name
+
+                                                </td>
+
+                                                <td>
+                                                    @item.Department
+                                                </td>
+
+                                                <td style="text-align: center">
+                                                    @(item.ResignedOn == null ? "  -  " : item.ResignedOn.Value.ToString("dd MMM yyyy"))
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @(item.LastWorkingDate == null ? "    -   " : item.LastWorkingDate.Value.ToString("dd MMM yyyy"))
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @(daysLeft == 0 ? "    -   " : daysLeft.ToString())
+                                                </td>
+
+                                            </tr>
+                                    }
+
+                                }
+                            }
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.GenderRatio.GetHashCode())
+                        {
+                        
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(183, 155, 222);">
+                                    <div class="panel-title">
+                                         Employees Gender Ratio
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+
+                                    <br />
+                                    <div class="fc-toolbar">
+                                        <div class="col-md-12 fc-left">
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 Pie1">
+                                                </div>
+                                                <div class="col-md-1">Male</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 Pie2">
+                                                </div>
+                                                <div class="col-md-1">Female</div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                    <br />
+                                    <br />
+
+                                    <div class="panel-body">
+                                        <div class="text-center"><span class="pie-large"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        }
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.DepartmentRatio.GetHashCode())
+                        {
+                        
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(51, 204, 204);">
+                                    <div class="panel-title">
+                                        Employees Department Ratio
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="fc-toolbar">
+
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <div class="panel-body">
+                                            <div class="text-center"><span class="pie-large2"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.HoursChart.GetHashCode())
+                        {
+
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 158, 63);">
+                                    <div class="panel-title">
+                                     Employee Working Hours Bar Chart
+                                    </div>
+                                     <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="form-group">
+                                       @* @Html.DropDownListFor(x => x.Month, Model.Month, "--Select--", new { @id = "Month1", @onchange = "ChangeMonth(this.value)" })*@                                     
+                                        <div class="chart" id="HoursChart" style="width: 100%; height: 250px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        }
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.AttendanceBarchart.GetHashCode())
+                        {
+
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 158, 63);">
+                                    <div class="panel-title">
+                                        Employee Attendance Bar Chart
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="form-group">
+
+
+                                       @* @Html.DropDownListFor(x => x.Month, Model.Month, "--Select--", new { @id = "Month2", @onchange = "ChangeMonth1(this.value)" })*@
+
+                                        <div class="chart" id="AttendanceBarchart" style="width: 100%; height: 250px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        }
+
+
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.EmployeesUpcomingLeave.GetHashCode())
+                        {
+                            //  if (Model.leaveRequestsResult != null)
+                            //  {
+                            //   if (Model.leaveRequestsResult.ToArray().Count() > 0)
+                            //   {
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(0, 192, 293);">
+                                    <div class="panel-title" color="White">
+                                      Employees Upcoming Leaves
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="form-group">
+                                    </div>
+                                    <div class="clear">
+                                    </div>
+                                    <div id="_UpcomingLeavesGrid">
+                                        @Html.Partial("_UpcomingLeaves", Model.leaveRequestsResult)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            // }
+                            // }
+                        }
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.TeamWorkingHours.GetHashCode())
+                        {
+                            //if (Model.EmployeeData.Count > 0)
+                            // {
+                            string Date = (Model.EmployeeData.Count != 0 ? Model.EmployeeData[0].Date.ToString(System.Globalization.CultureInfo.InvariantCulture) : "");
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(178, 0, 255)";>
+                                    <div class="panel-title" color="white">
+                                        Team Working Hours (Top 5 Ascending)
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="chart-horiz">
+                                        <!-- Actual bar chart -->
+                                        <ul class="chart">
+                                            <li class="title" title='Team Entry @Date'></li>
+                                            @foreach (var Employee in Model.EmployeeData)
+                                            {
+                                                string Bgcolor = Employee.hoursWorked >= 8 ? "green" : Employee.hoursWorked >= 7 ? "orange" : "red";
+                                                <li class="current" style="margin-top: 20px;"><span class="bar" style="background-color:@Bgcolor;" data-number="@Employee.hoursWorked"></span><span class="number">@Employee.hoursWorked</span></li>@Employee.empName
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            //}
+                        }
+                    }
+
+                </div>
+                
+                <script type="text/javascript">
+                    var JsonLeaveData = @Html.Raw(Json.Encode(Model.JsonWorkedData))
+                         function PageReady() {
+
+
+                             //activaTab("home");
+                             if ($('#chart3').length > 0) {
+                                 try {
+                                     var obj = Morris.Bar({
+                                         element: 'chart3',
+                                         //axes: true,
+                                         data: JsonLeaveData,
+                                         xkey: 'date',
+                                         ykeys: ['hoursWorked'],
+                                         labels: ['Date', 'Day', 'In Time', 'Out Time'],
+                                         hideHover: 'true',
+                                         resize: true,
+                                         //resize:false,
+                                         //vertical:true,
+                                         hoverCallback: function (index, options, content) {
+                                             //this.xlabelAngle = 50;
+                                             $(".morris-hover").html("<div>" + "<p style='color:Green;'> Hours worked: " + options.data[index].hoursWorked + "</p>" + "<p style='color:Blue;'> Date: " + options.data[index].date + "</p>" + "<p style='color:Grey;'>" + options.labels[1] + ": " + options.data[index].Day + "</p>" + "<p style='color:brown;'>" + options.labels[2] + ": " + options.data[index].InTime + "</p>" + "<p style='color:Navy;'>" + options.labels[3] + ": " + options.data[index].OutTime + "</p>" + "</div>");
+                                         },
+                                         stacked: true,
+                                         barColors: function (row, series, type) {
+                                             var valWorked = row.y;
+                                             if (JsonLeaveData[row.x]["Day"] == "Sunday" || JsonLeaveData[row.x]["Day"] == "Saturday")
+                                                 return "gray";
+                                             if (valWorked == undefined)
+                                                 return "green";
+                                             if (valWorked >= 8)
+                                                 return "green";
+                                             if (valWorked >= 7)
+                                                 return "orange";
+                                             if (valWorked < 7)
+                                                 return "red";
+
+                                         }
+                                     });
+
+                                     //    $('#tabDashboard:first a[href="#' + tab + '"]').tab('show');
+
+
+                                     $('#tabDashboard:first a').on('shown.bs.tab', function (e) {
+                                         var target = $(e.target).attr("href");
+
+                                     });
+                                     var currentTab = $('#hdnTab').val();
+                                     if (currentTab !== undefined && currentTab.length > 0)
+                                         activaTab(currentTab);
+                                 }
+                                 catch (Ex) {
+
+                                 }
+
+                             }
+                         }
+                      
+
+                    @*  $(PageReady);
+                    function test(count) {
+                        var ele = document.getElementsByName("Comments")[count - 1];
+                        var ele1 = document.getElementsByName("Comments")[0];
+                        ele1.value = ele.value;
+                    }*@
+
+
+                    $(PageReady);
+                    //$('#ReplyOK').on('click', function () {
+
+                    //    $('#container').hide();
+                    //});
+                    function test(count, msgid) {
+                             @*@{ Response.Redirect("~/Home/Index");}*@
+
+                        //var ele = document.getElementsByName("Comments")[count - 1];
+                        //var ele1 = document.getElementsByName("Comments")[0];
+                        //$(".msgbut").remove();
+
+                        $.ajax({
+
+                            url: "../../Communication/Delete/",
+                            type: 'GET',
+                            cache: false,
+                            data: { DepartmentId: count, msgid: msgid },
+                            success: function (result) {
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+                        });
+                    }
+
+
+                </script>
+                <br />
+                <br />
+                    int counter = 0;
+                    if (Model.messages != null)
+                    {
+                        foreach (var Messages in Model.messages)
+                        {
+                            counter += 1;
+                <div class="col-sm-3" style="height: 250px; overflow: auto; top: 20px;">
+                    <div class="tile-stats tile-blue">
+                        <div class="icon">
+                            <i class="entypo-mail"></i>
+                        </div>
+                        @if (true)
+                        {
+                            <p>
+                                @Html.Raw(Messages.messageText)
+                            </p>
+@*   <p> @Html.Label(Messages.messageText)</p>*@
+                        }
+                        <br />
+                        @if (Messages.showComments)
+                        {
+                            <h3>Comments :</h3>
+                            <div class="chat-textarea">
+                                @*@Html.TextArea(Messages.Comments, new { @class = "form-control autogrow",@id="cmt"   })*@
+                                @Html.TextArea("Comments", Messages.Comments, new { @class = "form-control autogrow", @id = string.Format("cmt{0}", counter), @maxlength = 500 })
+                                @*  @Html.Hidden("Comments","",new {@id="cmt"})*@
+                            </div>
+                        }
+                        @switch (Messages.messageType)
+                        {
+
+                            case DSRCManagementSystem.Models.commMessageType.Yesorno:
+            
+                            <br />
+                            <div class="center-block">
+                                <p class="bs-example">
+                                    @* <button type="submit" class="btn btn-success" value="@Messages.messageId" name="ReplyYes" id="ReplyYes" onclick="test()">
+                                        Yes</button>*@
+                                    <button type="button" class="btn btn-success" value="@Messages.messageId" name="ReplyYes" id="ReplyYes" onclick="test(@counter,@Messages.messageId)">
+                                        Yes</button>
+
+                                    @*<button type="submit" value="@Messages.messageId" class="btn btn-danger" name="ReplyNo" id="ReplyNo" onclick="test()">
+                                        No</button>*@
+                                    <button type="button" class="btn btn-success" value="@Messages.messageId" name="ReplyYes" id="ReplyYes" onclick="test()">
+                                        No</button>
+                                </p>
+                            </div>
+                                break;
+
+
+                            case DSRCManagementSystem.Models.commMessageType.Message:
+                            <div class="center-block">
+                                <p class="bs-example">
+                                    <button type="button" class="btn btn-success" value="@Messages.messageId" name="ReplyOk" id="ReplyOK" onclick="test(@counter,@Messages.messageId)">
+                                        Ok</button>
+                                </p>
+                            </div>
+                                break;
+
+                        }
+                    </div>
+                </div>
+                        }
+                    }
+            }
+            <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="tools">
+                        <div id="PartialSection">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                //jQuery(document).ready(function ($) {
+                function LeaveDetails(userId, leaveTypeId) {
+                    $.ajax({
+                        url: "../../Home/LeaveDetails/",
+                        type: 'GET',
+                        cache: false,
+                        data: { userId: userId, leaveTypeId: leaveTypeId },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+
+                function LOPLeaveDetails(userId, Monthly) {
+                    $.ajax({
+                        url: "../../Home/LOPLeaveDetails/",
+                        type: 'GET',
+                        cache: false,
+                        data: { userId: userId, Monthly: Monthly },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+                
+
+                function HardwareDetails() {
+
+                    $.ajax({
+                        url: "../../Home/HardwareDetails/",
+                        type: 'GET',
+                        cache: false,
+                        //                        data: { userId: userId },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+                function ServerDetails() {
+
+                    $.ajax({
+                        url: "../../Home/ServerDetails/",
+                        type: 'GET',
+                        cache: false,
+                        //                        data: { userId: userId },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+                function ComputerDetails() {
+
+                    $.ajax({
+                        url: "../../Home/ComputerDetails/",
+                        type: 'GET',
+                        cache: false,
+                        //                        data: { userId: userId },
+                        success: function (result) {
+                            $('#PartialSection').html(result);
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    });
+                }
+                //});
+            </script>
+        </div>
+         
+
+
+@*       <div class="tab-pane " id="MyDashboard">
+
+            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered" }))
+            {
+            
+                <div class="row">
+
+
+
+                    @foreach (var items in checkGrid)
+                    {
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.LeaveBalanceDashboard.GetHashCode())
+                        {
+                          
+                        <div class="col-md-12">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(183, 155, 222);">
+                                    <div class="panel-title">
+                                        My Leave Balance Dashboard
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    @{
+                            Html.RenderAction("LeaveBalanceDashboard", "Leave");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.WorkingHours.GetHashCode())
+                        {
+                            if (Model.JsonWorkedData.Count > 0)
+                            {
+                       
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 158, 63);">
+                                    <div class="panel-title">
+                                        My Attendance
+                                    </div>
+                                    <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="form-group">
+                                        <div style="text-align: right; margin-right: 30px">
+                                            L-Leave
+                                        <br />
+                                            OEM-Out Entry
+                                        </div>
+                                        <div class="chart" id="chart3" style="width: 100%; height: 250px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                  
+                            }
+
+                        }
+
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.MyAttendance.GetHashCode())
+                        {
+
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(92, 149, 183);">
+                                    <div class="panel-title">
+                                     My Attendance Calender
+                                    </div>
+                                     <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <div class="fc-toolbar">
+                                        <div class="col-md-12 fc-left">
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 square7">
+                                                </div>
+                                                <div class="col-md-1">Present</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 square8">
+                                                </div>
+                                                <div class="col-md-1">Absent</div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 square9">
+                                                </div>
+                                                <div class="col-md-1">Holiday</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div id="Monthcalendar" style="max-height: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+                        if (items.GridID == DSRCManagementSystem.Models.MasterEnum.Master_Tab_Grid.MyAttendanceRatioForLastMonth.GetHashCode())
+                        {
+                        <div class="col-md-6">
+                            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                <div class="panel-heading" style="background-color: rgb(224, 164, 164);">
+                                    <div class="panel-title" color="White">
+                                        My Working Hours Ratio For @Session["Lastmonth"]
+                                    </div>
+                                     <div class="panel-options">
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="height: 500px;">
+                                    <br />
+                                    <div class="fc-toolbar">
+                                        <div class="col-md-12 fc-left">
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 Pie3">
+                                                </div>
+                                                <div class="col-md-1">Present</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-1 Pie4">
+                                                </div>
+                                                <div class="col-md-1">Absent</div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="text-center"><span class="pie-largechart"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+
+                    }
+
+                </div>
+                             
+            }
+        </div>*@
+       
+        
+
+        <div class="tab-pane " id="cal">
+            <div class="fc-toolbar">
+                <div class="fc-left">
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="fc-toolbar">
+                        <div class="col-md-12 fc-left">
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square1">
+                                </div>
+                                <div class="col-md-1">Sick</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square2">
+                                </div>
+                                <div class="col-md-1">Earned</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square3">
+                                </div>
+                                <div class="col-md-1">Casual</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square4">
+                                </div>
+                                <div class="col-md-1">Comp&nbsp;Off</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square5">
+                                </div>
+                                <div class="col-md-1">Marriage</div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-1 square6">
+                                </div>
+                                <div class="col-md-1">Maternity</div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="fc-center">
+                </div>
+                <div class="fc-right" style="padding: 5px;">
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Leave Type", new { @class = "control-label", @style = "padding:5px;" })
+                        </div>
+                        <div class="col-md-3  col-centered">
+                            @Html.DropDownList("LeaveType", ViewBag.LeaveTypeList as SelectList, new
+                       {
+                           @id = "LeaveTypeList",
+                           @name = "LeaveType",
+                           @class = "form-control",
+                           @style = "width:170px"
+                       })
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fc-clear">
+            </div>
+            <br />
+            <div>
+                <div id='calendar'>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane " id="RAG">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default panel-shadow" data-collapsed="0">
+                        <div class="panel-heading">
+                            <div class="panel-title" color="White">
+                                Projects
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="clear">
+                            </div>
+                            <br />
+                            <table class="table table-bordered datatable" id="tblProjects2">
+                                <thead>
+                                    <tr>
+                                        <th>S.No
+                                        </th>
+                                        <th>Project Name
+                                        </th>
+                                        <th>RAG Status
+                                        </th>
+                                        <th>Comments
+                                        </th>
+                                        <th>Commented By
+                                        </th>
+
+                                        <th>&nbsp&nbsp&nbsp&nbsp
+                                        </th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.RAG)
+                                {
+                                    <tr>
+                                        <td style="text-align: center">
+                                            @(SNo++)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => item.ProjectName)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <img src="@Html.Raw((item.CurrentRAGStatus == 3) ? "../../Content/Template/images/Circle_Green.png" : (item.CurrentRAGStatus == 2) ? "../../Content/Template/images/Circle_Orange.png" : "../../Content/Template/images/Circle_Red.png")"
+                                            alt="RAG Status"   />
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(x => item.RAGStatusComments)*@
+                                            @Html.Raw(Html.Encode(item.RAGStatusComments ?? string.Empty).Replace("\n", "<br />"))
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => item.CommentedBy)
+                                        </td>
+
+                                        <td style="text-align: center; width: 10%;">
+                                            
+
+                                             <a href="#" data-toggle="tooltip" title="Add RAG Status">
+                                                <button type="button" class="btn btn-info" onclick='ChangeRAGStatus("@item.ProjectID")'>
+                                                    <i class="entypo-plus-squared"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="tab-pane" id="MYL">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        My Training
+                    </div>
+         
+                </div>
+                <div class="panel-body" id="MyTraining">
+                    <div class="row">
+                      <div class="col-md-12">
+                            @*<form class="text-right" method="get" action="/LDTraining/WorkList">
+                                <div class="btn-group" style="float: right; padding-right: 10px !important">
+                                    <button type="submit" class="btn btn-blue" style="font-weight: bold;">
+                                        <i class="entypo-list"></i>Work List</button>
+                                </div>
+                            </form>*@
+                            <form class="text-right" method="get" action="/LDR/TrainingCalendar">
+                                <div class="btn-group" style="float: right; padding-right: 10px !important">
+                                    <button type="submit" class="btn btn-blue" style="font-weight: bold">
+                                        <i class="entypo-calendar"></i>Training Calendar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="tile-stats tile-red">
+                                <div class="num">
+                                    <h3 style="height: 30px;">@ViewBag.scor</h3>
+                                    <h3 style="height: 30px;">My Training points
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-blue">
+                                <div class="num">
+                                    @*@ViewBag.totalCourseCompleted/@ViewBag.CourseCompletedScore*@
+
+                                    <h3 style="height: 30px;">No.of Trainings Attended       @ViewBag.totalCourseCompleted</h3>
+                                    <h3 style="height: 30px;">Points      @ViewBag.CourseCompletedScore</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-aqua">
+                                <div class="num">
+                                    @*@ViewBag.totalCourseConducted/@ViewBag.CourseConductedScore*@
+
+                                    <h3 style="height: 30px;">No.of Trainings Conducted     @ViewBag.totalCourseConducted</h3>
+
+                                    <h3 style="height: 30px;">Points    @ViewBag.CourseConductedScore</h3>
+                                    @*<div class="num">
+                                 @ViewBag.CourseConductedScore
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 ">
+                            <div class="tile-stats tile-green">
+                                <div class="num">
+
+                                    <h3 style="height: 30px;">No.of Trainings Absent    @ViewBag.totalCourseabsented</h3>
+
+                                    <h3 style="height: 30px;">Points    @ViewBag.courseabsentscore </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(102, 158, 225);">
+                                <div class="panel-title" color="White">
+                                    Upcoming Trainings
+                                </div>
+                              <div class="panel-options">
+                             <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                          </div>
+                            </div>
+                            <div class="panel-body " id="ut">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                
+                                <table class="table table-bordered datatable" id="tblCmptr">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Seats
+                                            </th>
+                                            <th>Start Time
+                                            </th>
+                                            <th>End Time
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            <th>Nominate
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.upcomingTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.HiddenFor(modelItem => item.TrainingId, new { @id = "TrainingID" })
+                                                @Html.DisplayFor(modelItem => item.TrainingName, new { @id = "TrainingName", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName, new { @id = "TechnologyName", @name = "TimeSlot1", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="width: 15%; text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.Seatingcapacity, new { @id = "Capacity", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="text-align: center; font-weight: Bold;">
+                                                @Html.DisplayFor(modelItem => item.StartTime, new { @id = "StartTime", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.EndTime, new { @id = "EndTime", @name = "TrainingName", @class = "form-control", @autocomplete = "off" })
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                                @Html.HiddenFor(modelitem => item.instructorid)
+                                            </td>
+
+                                            <td style="text-align: center;">
+                                                @if (Convert.ToInt32(Session["UserId"]) == @item.instructorid)
+                                                {                                   
+                                                    <a href="#" data-toggle="tooltip" title="Nominate" class="btn btn-info" onclick='function2(@item.TrainingId)', disabled = "disabled">
+                                                        <i class="entypo-user-add"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" data-toggle="tooltip" title="Nominate" class="btn btn-info" onclick='function2(@item.TrainingId)'>
+                                                        <i class="entypo-user-add"></i></a>
+                                                }
+                                            </td>
+                                        </tr> 
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(54, 207, 203);">
+                                <div class="panel-title" color="White">
+                                    Nominated Trainings
+                                </div>
+                                     <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                            </div>
+                            <div class="panel-body " id="nt">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="nomi">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Start Time
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            @* <th>Status
+                                            </th>*@
+                                            <th>Cancel</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.nominatedTrainings)
+                                    {
+                                           
+                                        <tr>
+                                            <td class="align">
+                                                @Html.HiddenFor(modelItem => item.NominationId, new { @id = "NominationId" })
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center; width: 15%;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                        
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @Html.DisplayFor(modelItem => item.Starttime)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                            @*<td class="align">
+                                                @if (item.IsCompleted == true)
+                                                {
+                                                    <label>Completion Form Submitted</label>
+                                                }
+                                                else
+                                                {
+                                                    <label>Completion Form not Submitted</label>
+                                                }
+                                            </td>*@
+                                            <td style="text-align: center;">
+                                                <a href="#" data-toggle="tooltip" title="Cancel">
+                                                    <button type="button" 
+                                            class="btn btn-red" onclick='Delete("@item.NominationId")'
+                                                        
+                                                     @if (@item.test)
+                                                     {
+                                                                                                            <text>disabled</text>
+                                                     }
+                                                     else
+                                                     {
+                                                                                                           <text>enabled</text>
+                                                     }
+                                                                                                         >
+                                                        <i class="entypo-cancel"></i>
+                                                        </button>
+                                                        
+                                                    </a></td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" >
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(100, 210, 100);">
+                                <div class="panel-title" color="White">
+                                    Trainings Attended
+                                </div>
+                                   <div class="panel-options" >
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           </div>
+                            </div>
+                            <div class="panel-body " id="ta">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="history">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            <th>Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.historyTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                            
+                                             <td style="text-align:center;">
+                                                @* @if (@item.FeedbackCount == 0)*@
+                                                      @if (@item.flag==false)
+                                                      {
+                                                <form class="text-right" style="text-align:center;" method="get" action="/LDTraining/Feedback/@item.TrainingId">
+                                              <button type="submit" class="btn btn-blue" style="font-weight: bold;" title="Feedback">
+                                              <i class="entypo-chat"></i></button>
+                                                </form>
+                                                      }
+                                                      else
+                                                      {
+                                                   <button type="submit" class="btn btn-blue" style="font-weight: bold;" title="Feedback" disabled="disabled">
+                                                   <i class="entypo-chat"></i></button>
+                                                      }
+                                
+                            
+                                                 
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>  
+                        </div>
+                    </div>
+                    </div>
+                     
+
+                 
+               @* addedd on 10/13*@
+
+                <div class="row" style="min-width: 50% !important;">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="overflow: auto;margin-left:20px; ">
+                            <div class="panel-heading" style="background-color: rgb(223, 134, 233);">
+                                <div class="panel-title" color="White">
+                                    Trainings Conducted
+                                </div>
+                                     <div class="panel-options"  >
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                            </div>
+                            <div class="panel-body " id="tc">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="conduct">
+                                    <thead>
+                                        
+                                    <th style="text-align: center;">
+                                       Training Name
+                                    </th>
+                                    
+                                    <th style="text-align: center;">
+                                       Technology
+                                    </th>
+                                    <th style="text-align: center;">
+                                    
+                                        Scheduled Date
+                                    </th>
+                                    
+                                    @*<th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Instructor)
+                                    </th>*@
+
+
+                              <th style="text-align: center;">
+                                    
+                                       Start Time
+                                    </th>
+                                     <th style="text-align: center;">
+                                    
+                                     End Time
+                                    </th>
+                                        
+                                     <th style="text-align: center;">
+                                    
+                                       Nominations
+                                    </th>
+@*                                    <th>
+                                    Attendees
+                                    </th>*@
+                                    <th>
+                                    Feedback Submitted
+                                    </th>
+                                    <th>
+                                    Feedback Pending
+                                    </th>
+                                   <th>
+                                   Action
+                                   </th>
+                                  </tr>
+                                    </thead>
+                                    @foreach (var item in Model.conductedtrainings)
+                                    {
+                                        <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TrainingName)
+                                    </td>
+                                 
+                                     <td >
+                                        @Html.DisplayFor(modelItem => item.TechnologyName)
+                                    </td>
+                                     
+                                    <td style="text-align: center;">
+                                       @if (item.ScheduledDate.HasValue)
+                                       {
+                        <label>
+                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                        </label>
+                                       }
+                                     
+                                    </td>
+                                    <td>                                                                         
+                                        @Html.DisplayFor(modelItem => item.Starttime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Endtime)
+                                    </td>
+                                            
+                                 
+                                     <td style="text-align: center;">
+                                        <a style=" text-decoration:underline"  onclick='Popup(@item.TrainingId)'>@item.Nominations.ToString()</a>  
+                                    </td>
+                                  
+@*                                    <td style="text-align: center;">
+                                        @Html.DisplayFor(modelItem => item.Attendees)
+                                    </td>*@
+                                    
+                                    <td style="text-align:center;">
+                                     @Html.DisplayFor(modelItem => item.submit)
+                                    </td>
+
+                                    <td style="text-align:center;">
+                                     @Html.DisplayFor(modelItem => item.pending)
+                                    </td>
+
+                                    <td style="text-align: center;">
+
+                                   @* @if (@item.IsCompleted == true)*@
+                                   @if (@item.IsCompleted == true)
+                                    {
+                                        <a data-toggle="tooltip" title="Action" class="btn btn-info" >
+                                           
+                                            @*<button type="button" class="btn btn-info btn-icon icon-left" onclick="Completion(@item.TrainingID)" >*@
+                                           
+                                                <i class="entypo-publish" onclick="@("window.location.href='" + @Url.Action("Form", "LDR", new { id = @item.TrainingId }) + "'");"></i>
+                                             
+                                        </a>
+                                    }
+                                    else
+                                    { 
+                                       <a data-toggle="tooltip" title="Action" class="btn btn-info" >
+                                         
+                                                <i class="entypo-publish" onclick="Msg()"></i>
+                                            
+                                        </a> 
+                                    }
+                                    </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                 @* addedd on 10/13*@
+
+
+
+
+                     <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-left:20px;overflow: auto">
+                            <div class="panel-heading" style="background-color: rgb(226, 69, 141);">
+                                <div class="panel-title" color="White">
+                                    Trainings  Unattended
+                                </div>
+                                   <div class="panel-options" >
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           </div>
+                            </div>
+                            <div class="panel-body " id="tu">
+                                <div class="clear">
+                                </div>
+                                <br />
+                                <table class="table table-bordered datatable" id="UnAttended">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Name
+                                            </th>
+                                            <th>Technology
+                                            </th>
+                                            <th>Scheduled Date
+                                            </th>
+                                            <th>Instructor
+                                            </th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.unattendedTrainings)
+                                    {
+                                        <tr>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TrainingName)
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.TechnologyName)
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @if (item.ScheduledDate.HasValue)
+                                                {
+                                                    <label>
+                                                        @item.ScheduledDate.Value.ToString("dd/MM/yyyy")
+                                                    </label>
+                                                }
+                                            </td>
+                                            <td class="align">
+                                                @Html.DisplayFor(modelItem => item.Instructor)
+                                            </td>
+                                           
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane " id="Asset">
+
+  <div class="row">
+                    
+                        <div class="col-sm-4 col-xs-6 ">
+                            <div class="tile-stats tile-red">
+                               
+                              <h3 style="font-size:x-large ;height:30px">Manage Computers</h3>
+                                <h3 style="height: 30px;">
+                                   Total No.of Computers: <b style="font-size:xx-large">&nbsp&nbsp&nbsp @ViewBag.TotalComputers</b>  </h3> 
+                                   
+                                   @if (@ViewBag.ActiveComputers > 0)
+                                   {
+                                  <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Active Computers:<b style="font-size:xx-large">&nbsp&nbsp&nbsp&nbsp<a style="color: White; cursor:pointer;" href="../AssetManagement/ManageComputers">@ViewBag.ActiveComputers</a></b></h3></div>
+                                   }
+                                   else
+                                   {
+                                       <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Active Computers:<b style="font-size:xx-large">&nbsp&nbsp&nbsp @ViewBag.ActiveComputers </b></h3></div>
+                                   }
+                                   @if (@ViewBag.AssignedComputers > 0)
+                                   {
+                                  <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Computers Assigned:<b style="font-size:xx-large">&nbsp<a style="color: White; cursor:pointer;" onclick="ComputerDetails('@Session["UserID"]')">@ViewBag.AssignedComputers </a> </b></h3></div>
+                                   }
+                                   else
+                                   {
+                                       <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Computers Assigned:<b style="font-size:xx-large"> @ViewBag.AssignedComputers  </b></h3></div>
+                                   }
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-6 ">
+                            <div class="tile-stats tile-green">
+                               
+                                <h3 style="font-size:x-large ;height:30px">Manage Hardware's</h3>
+                                <h3 style="height: 30px;">
+                                   Total No.of Hardwares:<b style="font-size:xx-large">&nbsp&nbsp&nbsp&nbsp @ViewBag.TotalHardwares</b></h3>
+                                   @if (@ViewBag.Inuse > 0)
+                                   {
+                                  <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Hardware's Inuse:<b style="font-size:xx-large">&nbsp&nbsp&nbsp&nbsp<a style="color: White; cursor:pointer;" href="../ManageHardware/ManageHardware">@ViewBag.Inuse</a></b></h3></div>
+                                   }
+                                   else
+                                   {
+                                          <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Hardware's Inuse:<b style="font-size:xx-large">&nbsp&nbsp&nbsp @ViewBag.Inuse </b></h3></div>
+                                   }
+                                   @if (@ViewBag.AssignedHardwares > 0)
+                                   {
+                                  <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Hardware's Assigned:<b style="font-size:xx-large">&nbsp<a style="color: White; cursor:pointer;" onclick="HardwareDetails('@Session["UserID"]')">@ViewBag.AssignedHardwares</a></b></h3></div>
+                                   }
+                                   else
+                                   {
+                                      <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Hardware's Assigned:<b style="font-size:xx-large"> @ViewBag.AssignedHardwares </b></h3></div>
+                                   }
+                            </div>
+                        </div>
+                      <div class="col-sm-4 col-xs-6 ">
+                            <div class="tile-stats tile-blue">
+                              
+                               <h3 style="font-size:x-large ;height:30px">Manage Servers</h3>
+                                <h3 style="height: 30px;">
+                                   Total No.of Servers:<b style="font-size:xx-large">&nbsp&nbsp&nbsp&nbsp @ViewBag.TotalServers</b></h3>
+                                   @if (@ViewBag.ActiveServer > 0)
+                                   {
+                                 <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Active Servers:<b style="font-size:xx-large">&nbsp&nbsp&nbsp&nbsp<a style="color: White; cursor:pointer;" href="../ManageServer/ManageServer">@ViewBag.ActiveServer</a></b></h3></div>
+                                   }
+                                   else
+                                   {
+                                       <div class="num">
+                                <h3 style="height: 30px;">
+                                   No.of Active Servers:<b style="font-size:xx-large">&nbsp&nbsp&nbsp @ViewBag.ActiveServer </b></h3></div>
+                                   }
+                                   @if (@ViewBag.AssignedServer > 0)
+                                   {
+                                  <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Servers Assigned:<b style="font-size:xx-large">&nbsp<a style="color: White; cursor:pointer;" onclick="ServerDetails('@Session["UserID"]')">@ViewBag.AssignedServer</a></b></h3></div>
+                                   }
+                                   else
+                                   {
+                                        <div class="num">
+                                 <h3 style="height: 30px;">
+                                   No.of Servers Assigned:<b style="font-size:xx-large"> @ViewBag.AssignedServer </b></h3></div> 
+                                   }
+                            </div>
+                        </div>
+                    </div>
+
+
+
+</div>
+
+                              
+
+    
+
+</div>
+ </div>
+
+
+
+
+<div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection1">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 50%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<link href="~/Content/Calender/LeaveBalanceCalendar/StyleSheet1.css" rel="stylesheet" />*@
+
+
+@* //Below scripts are moved to Top of the page... Just to assemble all the scripts in one place *@
+
+@*<script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+<script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+    type="text/javascript"></script>
+
+
+
+<script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+<link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="~/Content/moment.js" type="text/javascript"></script>*@
+   
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".tile").height($("#tile1").width());
+        $(".carousel").height($("#tile1").width());
+        $(".item").height($("#tile1").width());
+
+        $(window).resize(function () {
+            if (this.resizeTO) clearTimeout(this.resizeTO);
+            this.resizeTO = setTimeout(function () {
+                $(this).trigger('resizeEnd');
+            }, 10);
+        });
+
+        $(window).bind('resizeEnd', function () {
+            $(".tile").height($("#tile1").width());
+            $(".carousel").height($("#tile1").width());
+            $(".item").height($("#tile1").width());
+        });
+
+
+        //Keep the current tab active on page load
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            sessionStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = sessionStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#tabDashboard a[href="' + activeTab + '"]').tab('show');
+        }
+
+
+    });
+
+
+    function Popup(Id) {
+
+        $("#tblEmployees").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "bStateSave": false,
+            "bAutoWidth": false
+        });
+
+        $.ajax({
+            url: "../../ManageTraining/GetEmployee/",
+            type: 'GET', cache: false,
+            data: { TrainingID: Id },
+            success: function (result) {
+
+
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+            }
+        });
+    }
+
+    function Msg() {
+
+        toastr.warning("Completion Form Already Filled");
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $("#LeaveTypeList").select2({
+        minimumResultsForSearch: -1
+    });
+  
+
+    jQuery(document).ready(function ($) {
+
+
+
+
+
+        // loadCalendar1();
+        loadCalendar();
+
+
+
+             @if (ViewBag.IsAssetManagement != null && ViewBag.IsAssetManagement)
+             {
+                @Html.Raw("$('ul.nav a[href=\"#Asset\"]').tab('show');");
+             }
+        $('.chart').horizBarChart({
+            selector: '.bar',
+            speed: 1000
+        });
+
+        $("#tblProjects").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "bStateSave": false,
+            "pageLength": 5
+            //"columnDefs": [{ "width": "30%", "targets": 0}]
+        });
+
+        $("#tblProjects1").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "bStateSave": false,
+            //"columnDefs": [{ "width": "20%", "targets": 0 }, { "width": "20%", "targets": 2}],
+            "pageLength": 5
+        });
+        $("#tblProjects12").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "bStateSave": false,
+            "columnDefs": [{ "width": "20%", "targets": 0 }, { "width": "20%", "targets": 2 }],
+            "pageLength": 5
+        });
+        $("#tblProjects13").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "bStateSave": false,
+            "columnDefs": [{ "width": "20%", "targets": 0 }, { "width": "20%", "targets": 2 }],
+            "pageLength": 5
+        });
+        $("#tblSubmittedLeaveRequest").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "bStateSave": false,
+            //"columnDefs": [{ "width": "20%", "targets": 0 }, { "width": "20%", "targets": 2}],
+            "pageLength": 5
+        });
+
+        //            $("#tblProjects2").dataTable({
+        //                "sPaginationType": "bootstrap",
+        //                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        //                "bStateSave": false,
+        //                "bAutoWidth": false,
+        //                "columnDefs": [{ bSortable: false, 'aTargets': [2]}],
+        //                'aoColumns': [{ 'sWidth': '10%' }, { 'sWidth': '20%' }, { 'sWidth': '20%' }, { 'sWidth': '60%'}],
+        //                "pageLength": 10
+        //            });
+
+        $("#tblProjects2").dataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "sPaginationType": "bootstrap",
+            "bStateSave": false,
+            "bAutoWidth": false,
+            //"aoColumns": [{ 'sWidth': '10%' }, { 'sWidth': '20%' }, { 'sWidth': '20%' }, { 'sWidth': '60%'}],
+            "columnDefs": [{ bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [5] }],
+            "pageLength": 10
+        });
+
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        $('thead>tr>th').css('text-align', 'center');
+
+
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('#calendar').fullCalendar('render');
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('#Monthcalendar').fullCalendar('render');
+        });
+
+
+        $("#LeaveTypeList").change(function () {
+            //$('#calendar').fullCalendar("removeEvents");
+            $('#calendar').fullCalendar('removeEventSource', '/Leave/CalendarEvents');
+            $('#calendar').fullCalendar("addEventSource", { url: "/Leave/CalendarEvents", type: "GET", data: function () { return { LeaveTypeId: parseInt($("#LeaveTypeList").val()) }; } });
+            //$('#calendar').fullCalendar("refetchEvents"); 
+        });
+
+    });
+
+    function loadCalendar() {
+        var c = 0;
+        $('#calendar').fullCalendar({
+
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            //allDay: false,
+            defaultDate: new Date(),
+            editable: false,
+            eventLimit: true,
+            displayEventTime: false,
+
+            events: {
+                url: "/Leave/CalendarEvents",
+                type: "GET",
+                data: function () { return c; }
+            },
+            eventRender: function (event, element) {
+                $(element).tooltip({ title: event.Detail });
+            }
+        });
+
+
+
+        $('#Monthcalendar').fullCalendar({
+
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            //allDay: false,
+            defaultView: 'month',
+            // numberOfMonths: 2,
+            defaultDate: new Date(),
+            editable: false,
+            eventLimit: true,
+            displayEventTime: false,
+            viewRender: function (view, element) {
+
+                var b = $('#Monthcalendar').fullCalendar('getDate');
+                c = b.format('L');
+                //alert(c);
+            },
+            events: {
+
+                url: "/Leave/LeaveCalender",
+                type: "GET",
+                data: function () { return { Month: c }; },
+                tooltip: 'This is a cool event'
+                //data: function () { return { LeaveTypeId: parseInt($("#IdReportingPerson").val()) }; },
+            },
+            eventMouseover: function (calEvent, jsEvent) {
+
+
+
+                var val = calEvent.className;
+                var flag = calEvent.sample;
+                if (val == "colorClass8") {
+                    var tooltip = '<div class="tooltipevent" style="background:black;color:White;position:absolute;z-index:10001;">' + "Present" + '</div>';
+                } else if (val == "colorClass9") {
+                    if (flag == null) {
+                        var tooltip = '<div class="tooltipevent" style="background:black;color:White;position:absolute;z-index:10001;">' + "Weekend" + '</div>';
+                    }
+                    else {
+                        var tooltip = '<div class="tooltipevent" style="background:black;color:White;position:absolute;z-index:10001;">' + flag + '</div>';
+                    }
+
+
+                }
+                else if (val == "colorClass7") {
+                    if (flag == null) {
+                        var tooltip = '<div class="tooltipevent" style="background:black;color:White;position:absolute;z-index:10001;">' + "Absent" + '</div>';
+                    } else {
+                    var tooltip = '<div class="tooltipevent" style="background:black;color:White;position:absolute;z-index:10001;">' + flag + '</div>';
+                     }
+                }
+
+                $("body").append(tooltip);
+                $(this).mouseover(function (e) {
+                    $(this).css('z-index', 10000);
+                    $('.tooltipevent').fadeIn('500');
+                    $('.tooltipevent').fadeTo('10', 1.9);
+                }).mousemove(function (e) {
+                    $('.tooltipevent').css('top', e.pageY + 10);
+                    $('.tooltipevent').css('left', e.pageX + 20);
+                });
+            },
+
+            eventMouseout: function (calEvent, jsEvent) {
+                $(this).css('z-index', 8);
+                $('.tooltipevent').remove();
+            }
+        });
+
+
+
+
+
+        var x = new Date();
+        x.setDate(1);
+        x.setMonth(x.getMonth() - 1);
+
+        //var d = new Date();
+        //var date = new Date(d.getYear, d.getMonth(-1),d.getDay);
+        //$('#SecondMonthcalendar').fullCalendar({
+
+        //    header: {
+        //        left: 'prev,next today',
+        //        center: 'title',
+        //        right: 'month,basicWeek,basicDay'
+        //    },
+        //    //allDay: false,
+        //    defaultView: 'month',
+        //    defaultDate: x,
+        //    editable: false,
+        //    eventLimit: true,
+        //    displayEventTime: false,
+        //    viewRender: function (view, element) {
+
+        //        var b = $('#SecondMonthcalendar').fullCalendar('getDate');
+        //        c = b.format('L');
+        //        //alert(c);
+        //    },
+        //    events: {
+
+        //        url: "/MyCalendar/LeaveCalender",
+        //        type: "GET",
+        //        data: function () { return { Month: c }; },
+        //        //data: function () { return { LeaveTypeId: parseInt($("#IdReportingPerson").val()) }; },
+
+
+        //    }
+        //});
+    }
+
+    //function loadCalendar1() {
+
+    //    var c = 0;
+
+    //    $('#Monthcalendar').fullCalendar({
+
+    //        header: {
+    //            left: 'prev,next today',
+    //            center: 'title',
+    //            right: 'month,basicWeek,basicDay'
+    //        },
+    //        //allDay: false,
+    //        defaultView: 'month',
+    //        defaultDate: new Date(),
+    //        editable: false,
+    //        eventLimit: true,
+    //        displayEventTime: false,
+    //        viewRender: function (view, element) {
+
+    //            var b = $('#calendar').fullCalendar('getDate');
+    //            c = b.format('L');
+    //            alert(c);
+    //        },
+    //        events: {
+
+    //            url: "/Leave/LeaveCalender",
+    //            type: "GET",
+    //            data: function () { return { Month: c }; },
+    //            //data: function () { return { LeaveTypeId: parseInt($("#IdReportingPerson").val()) }; },
+
+
+    //        }
+    //    });
+
+    //}
+
+    function ChangeRAGStatus(pid) {
+
+        $.ajax({
+            url: "../../Projects/ChangeRAGStatus/",
+            type: 'GET', cache: false,
+            data: { ID: pid },
+            success: function (result) {
+
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal('show');
+            }
+        });
+    }
+
+
+    //        var names = [];
+    //        function check(id, control) {
+    //            if ($(control).is(':checked')) {
+    //                names.push(id);
+    //            }
+    //            else
+    //                names.pop(id);
+
+
+    //        }
+    function function3() {
+
+        $('input:checkbox[name=vehicle]').attr('checked', false);
+        names = [];
+    }
+
+    function Delete(NominationId) {
+
+        bootbox.confirm("Do you want to cancel your nominated training ?", function (conform) {
+            if (conform) {
+
+                $.ajax({
+                    url: "../LDHome/DeleteNominate/",
+                    type: 'POST', cache: false,
+                    data: { NominationId: NominationId },
+                    success: function (result) {
+                        if (result.Result === "Success") {
+                            toastr.success(" Nominated Training  Canceled Successfully!");
+                            setTimeout(function () {
+                                window.location.reload(true);
+                            }, 1000);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+    function activaTab(tab) {
+       
+        $('#tabDashboard:first a[href="#' + tab + '"]').tab('show');
+    };
+
+    var json = (function () {
+        var json = null;
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Finance/ChartData/",
+            'dataType': "json",
+            'success': function (data) {
+                json = data;
+            }
+        });
+        return json;
+    })
+();
+
+
+    var usage_graph = Morris.Bar({
+
+        element: 'myfirstchart',
+
+        data: json,
+        barColors: function (row, series, type) {
+            if (series.key == 'b') {
+                if (row.y < 0)
+                    return "red";
+                else
+                    return "green";
+            }
+            else {
+                return "green";
+            }
+        },
+        xkey: 'y',
+        ykeys: ['b'],
+        labels: [''],
+        resize: true,
+        hideHover: 'true',
+        hoverCallback: function (index, options, content) {
+
+            $(".morris-hover").html("<div>" + "<p style='color:Green;'> Year: " + options.data[index].y + "</p>" + "<p style='color:Blue;'>  " + options.data[index].b + "</p>" + "</div>");
+        },
+
+    });
+    $("#myfirstchart").children().attr("width", "939");
+    $('ul.nav a').on('shown.bs.tab', function (e) {
+        usage_graph.redraw();
+    });
+
+
+    var Attendance = jQuery(document).ready(function ($) {
+
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/ChartAttendance/",
+            'dataType': "json",
+            'success': function (data) {
+                Attendance = data;
+                // alert(data);
+            }
+        });
+        return Attendance;
+    })
+
+    $(function () {
+
+        var Attendancedetails = Attendance;
+
+        $(".pie-largechart").sparkline(Attendancedetails, {
+            type: 'pie',
+            width: '250px',
+            height: '250px',
+            sliceColors: ['rgb(204, 255, 204)', 'rgb(255, 112, 77)'],
+            borderWidth: 7,
+            borderColor: '#f5f5f5',
+            text: {
+                0: 'Present',
+                1: 'Absent'
+            },
+            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:names}} ({{percent.2}}%)',
+            tooltipValueLookups: {
+                names: {
+                    0: 'Present',
+                    1: 'Absent'
+                    // Add more here
+                }
+
+            }
+        });
+    });
+
+    ////////////////////////////////////////////
+    var json4 = (function () {
+
+        var json4 = null;
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/ChartData/",
+            'dataType': "json",
+            'success': function (data) {
+                json4 = data;
+            }
+        });
+        return json4;
+    })();
+
+
+    $(function () {
+        //var myvalues = [10, 8, 5, 7, 4, 4, 1];
+        var myvalues = json4;
+        $(".pie-large").sparkline(myvalues, {
+            type: 'pie',
+            width: '250px',
+            height: '250px',
+            sliceColors: ['rgb(77, 184, 255)', 'rgb(255, 221, 153)'],
+            //sliceName: Male,
+            borderWidth: 7,
+            borderColor: '#f5f5f5',
+            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:names}} ({{percent.2}}%)',
+            tooltipValueLookups: {
+                names: {
+                    0: 'Male',
+                    1: 'Female'
+                    // Add more here
+                }
+            }
+        });
+    });
+
+    ////////////////////////////////////////
+    var json1 = (function () {
+
+        var json1 = null;
+
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/DepartmentPiechart1/",
+            'dataType': "json",
+            'success': function (data) {
+                json1 = data;
+            }
+        });
+        return json1;
+    })();
+
+
+    var json2 = (function () {
+
+        var json2 = null;
+
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/DepartmentPiechart2/",
+            'dataType': "json",
+            'success': function (data) {
+                json2 = data;
+            }
+        });
+        return json2;
+    })();
+
+
+    var json3 = (function () {
+
+        var json3 = null;
+
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/DepartmentPiechart3/",
+            'dataType': "json",
+            'success': function (data) {
+                json3 = data;
+            }
+        });
+        return json3;
+    })();
+
+
+    $(function () {
+        //var myvalues = [10, 8, 5, 7, 4, 4, 1];
+        var myvalues1 = json1;
+        var myvalues2 = json2;
+        //var myvalues2 = json2;
+
+        $(".pie-large2").sparkline(myvalues1, {
+
+            type: 'pie',
+            width: '250px',
+            height: '250px',
+            sliceColors: json3,
+            borderWidth: 6,
+            borderColor: '#f5f5f5',
+            tooltipFormat: '<span style="color: {{color}}">&#9679;</span> {{offset:names}} ({{percent.2}}%)',
+            tooltipValueLookups: {
+                names: myvalues2
+            }
+        }
+        )
+    }
+    )
+
+    $("#ABS").click(function () {
+
+        $('#calendar').fullCalendar('removeEventSource', '/Leave/CalendarEvents');
+        $('#calendar').fullCalendar("addEventSource", { url: "/Leave/CalendarEvents", type: "GET", data: function () { return { LeaveTypeId: parseInt($("#LeaveTypeList").val()) }; } });
+
+    });
+    
+  
+    //if (Session["ChartValue"] = "1") {
+        var flag2 = (function () {
+           
+            var flag2 = null;
+            $.ajax({
+                'async': false,
+                'global': false,
+                url: "../../Home/HoursChart/",
+                type: 'GET',
+                'dataType': "json",
+                'success': function (data) {
+                    flag2 = data;
+                }
+            });
+            return flag2;
+        })
+    ();
+
+        if ($('#HoursChart').length > 0) {
+            Morris.Bar({
+                element: 'HoursChart',
+                data: flag2,
+                xkey: 'Date1',
+                ykeys: ['Green', 'Orange', 'Red'],
+                labels: ['Above 8 hours', 'Above 7 Hours', 'Below 7 Hours'],
+                stacked: true,
+                barColors: ["#00b359", "#ff8533", "#ff4d4d"],
+                hideHover: 'true',
+                resize: true,
+                //resize:false,
+                //vertical:true,
+                xlabelAngle: 50,
+
+            });
+        }
+    //}
+    var flag = (function () {
+        var flag = null;
+       
+        $.ajax({
+            'async': false,
+            'global': false,
+            url: "../../Home/AttendanceBarchart/",
+            type: 'GET',
+            'dataType': "json",
+            'success': function (data) {
+                flag = data;
+            }
+        });
+        return flag;
+    })
+();
+
+    if ($('#AttendanceBarchart').length > 0) {
+        Morris.Bar({
+            element: 'AttendanceBarchart',
+            data: flag,
+            xkey: 'Date2',
+            ykeys: ['Came', 'NotCame'],
+            labels: ['Present', 'Absent'],
+            stacked: true,
+            barColors: ["#00b359", "#ff4d4d"],
+            hideHover: 'true',
+            resize: true,
+            //resize:false,
+            //vertical:true,
+            xlabelAngle: 50,
+        });
+    }
+
+    function ManageTab() {
+        $.ajax({
+            url: "../../Home/ManageTab/",
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+    ////////////////////////////////////////////////////////////
+
+    //function ChangeMonth(Values) {
+    //    debugger;
+    //    $.ajax({
+    //        url: "../../Home/HoursChart/" + Values,
+    //        type: 'POST',
+    //        cache: false,
+    //        data: { value: Values }
+    //    });
+
+    //    var flag2 = (function () {
+    //        debugger;
+    //        var flag2 = null;
+    //        $.ajax({
+    //            'async': false,
+    //            'global': false,
+    //            url: "../../Home/HoursChart/",
+    //            'dataType': "json",
+    //            'success': function (data) {
+    //                flag2 = data;
+    //            }
+    //        });
+    //        return flag2;
+    //    })
+    //();
+
+    //    if ($('#HoursChart').length > 0) {
+    //        Morris.Bar({
+    //            element: 'HoursChart',
+    //            data: flag2,
+    //            xkey: 'Date1',
+    //            ykeys: ['Green', 'Orange', 'Red'],
+    //            labels: ['Above 8 hours', 'Above 7 Hours', 'Below 7 Hours'],
+    //            stacked: true,
+    //            barColors: ["#00b359", "#ff8533", "#ff4d4d"],
+    //            hideHover: 'true',
+    //            resize: true,
+    //            //resize:false,
+    //            //vertical:true,
+    //            xlabelAngle: 50,
+
+    //        });
+    //    }
+    //}
+    function ChangeMonth(Values) {
+        var flag2 = (function () {
+           
+            var flag2 = null;
+            $.ajax({
+                'async': false,
+                'global': false,
+                url: "../../Home/HoursChart/",
+                type: 'POST',
+                'dataType': "json",
+                data: { value: Values },
+                'success': function (data) {
+                    flag2 = data;
+                }
+            });
+            return flag2;
+        })
+     ();
+
+        if ($('#HoursChart').length > 0) {
+            Morris.Bar({
+                element: 'HoursChart',
+                data: flag2,
+                xkey: 'Date3',
+                ykeys: ['Green', 'Orange', 'Red'],
+                labels: ['Above 8 hours', 'Above 7 Hours', 'Below 7 Hours'],
+                stacked: true,
+                barColors: ["#00b359", "#ff8533", "#ff4d4d"],
+                hideHover: 'true',
+                resize: true,
+                //resize:false,
+                //vertical:true,
+                xlabelAngle: 50,
+
+            });
+        }
+    }
+    function ChangeMonth1(Values)
+    {
+        var flag = (function () {
+            var flag = null;
+
+            $.ajax({
+                'async': false,
+                'global': false,
+                url: "../../Home/AttendanceBarchart/",
+                type: 'POST',
+                'dataType': "json",
+                data: { value: Values },
+                'success': function (data) {
+                    flag = data;
+                }
+            });
+            return flag;
+        })
+();
+
+        if ($('#AttendanceBarchart').length > 0) {
+            Morris.Bar({
+                element: 'AttendanceBarchart',
+                data: flag,
+                xkey: 'Date4',
+                ykeys: ['Came', 'NotCame'],
+                labels: ['Present', 'Absent'],
+                stacked: true,
+                barColors: ["#00b359", "#ff4d4d"],
+                hideHover: 'true',
+                resize: true,
+                //resize:false,
+                //vertical:true,
+                xlabelAngle: 50,
+            });
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////
+
+    function ManageGrid() {
+        $.ajax({
+            url: "../../Home/ManageWidget/",
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+
+</script>
+
+@*<style>
+    .align {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0;
+        font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+        font-size: 14px;
+    }
+
+    #tblSubmittedLeaveRequest td:nth-child(1) {
+        text-align: center;
+    }
+
+    #tblSubmittedLeaveRequest td:nth-child(6) {
+        text-align: center;
+    }
+
+    #tblProjects2 td:nth-child(3) {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .colorClass1 {
+        background-color: rgb(245,105,84);
+        border-color: rgb(245,105,84);
+    }
+
+    .colorClass2 {
+        background-color: rgb(0,141,76);
+        border-color: rgb(12,158,55);
+    }
+
+    .colorClass3 {
+        background-color: rgb(0,115,183);
+        border-color: rgb(0,84,168);
+    }
+
+    .colorClass4 {
+        background-color: rgb(153,50,204);
+        border-color: rgb(153,50,204);
+    }
+
+    .colorClass5 {
+        background-color: rgb(255,105,180);
+        border-color: rgb(255,105,180);
+    }
+
+    .colorClass6 {
+        background-color: rgb(50,200,200);
+        border-color: rgb(50,200,200);
+    }
+
+    .colorClass7 {
+        background-color: lightcoral;
+        border-color: red;
+        position: relative;
+        margin-top: -20px;
+        width: auto;
+        min-height: 1000px;
+        height: 42px;
+        opacity: 0.5;
+    }
+
+    .colorClass8 {
+        background-color: lightgreen;
+        border-color: green;
+        position: relative;
+        margin-top: -20px;
+        width: auto;
+        min-height: 1000px;
+        height: auto;
+        opacity: 0.5;
+    }
+
+    .colorClass9 {
+        background-color: lightgray;
+        border-color: gray;
+        position: relative;
+        margin-top: -20px;
+        width: auto;
+        height: 42px;
+        min-height: 1000px;
+        opacity: 0.5;
+    }
+
+
+
+    .square8 {
+        width: 10px;
+        height: 10px;
+        background: red;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .square9 {
+        width: 10px;
+        height: 10px;
+        background: Lightgray;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .square7 {
+        width: 10px;
+        height: 10px;
+        background: green;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .square4 {
+        width: 10px;
+        height: 10px;
+        background: #9932CC;
+        margin-top: 1.5px;
+    }
+
+    .square5 {
+        width: 10px;
+        height: 10px;
+        background: #FF69B4;
+    }
+
+    .square6 {
+        width: 10px;
+        height: 10px;
+        background: #32C8C8;
+        margin-top: 1.5px;
+    }
+
+    .num {
+        height: 150px;
+    }
+
+    .Pie1 {
+        width: 20px;
+        height: 10px;
+        background: rgb(26, 163, 255);
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .Pie2 {
+        width: 20px;
+        height: 10px;
+        background: Orange;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .Pie3 {
+        width: 20px;
+        height: 10px;
+        background: green;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .Pie4 {
+        width: 20px;
+        height: 10px;
+        background: red;
+        margin-top: 1.5px;
+        opacity: 0.5;
+    }
+
+    .fc-view, .fc-view > table {
+        max-height: 350px;
+    }
+
+    .fc-view-container {
+        overflow: auto;
+    }
+
+    .fc-basic-view .fc-body .fc-row {
+        max-height: 50px !important;
+    }
+    .dropdown-menu {
+        background-color:@Session["Background"];
+    }
+     .nav-tabs li a {
+    line-height: 2.5;
+   border: transparent;
+}*@
+
+@*</style>*@
+
+
+
+@section scripts
+{
+       <script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>  
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            $("#tblCmptr").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [7] }],
+                //"scrollX": "200px",
+                // "scrollCollapse": true,
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        jQuery(document).ready(function ($) {
+
+            $("#nomi").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [5] }],
+                // "scrollX": "200px",
+                // "scrollCollapse": true,
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+  
+
+        jQuery(document).ready(function ($) {
+            $("#history").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [4] }]
+                //"scrollX": "200px",
+                // "scrollCollapse": true,
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        jQuery(document).ready(function ($) {
+            $("#UnAttended").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+                //"scrollX": "200px",
+                // "scrollCollapse": true,
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        jQuery(document).ready(function ($) {
+            $("#conduct").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[5, 10, 15, 50, -1], [5, 10, 15, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 5,
+                "aaSorting": [],
+
+                "columnDefs": [{ bSortable: false, 'aTargets': [8] }],
+
+
+                //"scrollX": "200px",
+                // "scrollCollapse": true,
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+    </script>
+    <script type="text/javascript">
+        function function2(id) {
+
+            var values =
+                           {
+                               "Trainingid": id
+                           }
+
+            var opts =
+                    {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+
+            // $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+            $.ajax({
+                url: "../../Home/Mylearning/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result === "Null") {
+                        toastr.warning("Please Select The Trainee");
+                        // $('#portlet-config').appendTo("body").modal('hide');
+                    }
+                    if (result.Result === "Instructor") {
+                        $('#portlet-config').appendTo("body").modal('hide');
+                        toastr.warning("Instructor does Not Allow To Nominate");
+                    }
+                    if (result.Result === "Already") {
+                        bootbox.alert("You already nominated for the trainingid&nbsp;&nbsp;" + result.id + "&nbsp;&nbsp;");
+                        // $('#portlet-config').appendTo("body").modal('hide');
+                    }
+                    if (result.Result === "NoSeat") {
+                        toastr.warning("Seats not Available");
+                        // $('#portlet-config').appendTo("body").modal('hide');
+                    }
+                    if (result.Result === "Success") {
+                        toastr.success("Nomination added successfully", opts);
+                        setTimeout(function () {
+                            $('#portlet-config').appendTo("body").modal('hide');
+                            window.location.reload(true);
+                        }, 1000);
+                    }
+
+                }
+
+            });
+            // $('#portlet-config').appendTo("body").modal('hide');
+        }
+
+        function Delete(NominationId) {
+            //            var x = new Date();
+            //            var today = new Date();
+            //          if (x === today) {
+            //    btnAdd.style.visibility = 'hidden';  
+            //} else if {
+            //    btnAdd.style.visibility = 'visible';
+
+            //}
+
+
+
+            bootbox.confirm("Do you want to cancel your nominated training ?", function (conform) {
+                if (conform) {
+                    $.ajax({
+                        url: "../LDHome/DeleteNominate/",
+                        type: 'POST', cache: false,
+                        data: { NominationId: NominationId },
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                toastr.success(" Nominated Training  Cancelled Successfully!");
+                                setTimeout(function () {
+                                    window.location.reload(true);
+                                }, 1000);
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}
+
+<style>
+    .num {
+        height:80px;
+    }
+</style>
+
+
+

@@ -1,0 +1,29 @@
+﻿@model DSRCManagementSystem.Models.Template
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+   <div class="col-md-12">
+		
+		<div class="panel panel-default panel-shadow" data-collapsed="0">
+			
+			<!-- panel head -->
+			<div class="panel-heading">
+				<div class="panel-title" color="White">My Profile</div>
+		
+			</div>
+			
+			<!-- panel body -->
+			<div class="panel-body">
+              <div class="col-md-1" align="center">
+						 @Html.Display("Projects")
+						</div>
+						<div class="col-md-3">
+							@Html.DropDownList("ProjectList", ViewBag.ProjectTypeList as SelectList, new { @id = "ProjectList", @name = "ProjectList", @class = "form-control" })
+    
+						 </div>
+            </div>
+            </div>
+            </div>

@@ -1,0 +1,167 @@
+﻿@model  DSRCManagementSystem.Models.GetEmployeeModel
+@{
+    Layout = null;    
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employee Details</title>
+    <style>
+        
+       #myModalContent {
+   max-height: 400px;
+   overflow-y: auto;
+}
+        
+        th
+        {
+            font-weight: bold;
+            text-align: center;
+        }
+
+       
+      .dropdown-menu {
+    background-color: white;
+}    
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="modal-content"   height: 400px">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Nominations</h4>
+        </div>
+        @using (Html.BeginForm("GetEmployeeModel", "ManageTraining", FormMethod.Post))
+        { 
+            <div  id="myModalContent">
+            <div class="clear">
+            </div>
+            <br />            
+            <br/>
+            <div class="table table-bordered datatable">
+                <table class="table table-bordered datatable" id="tblEmployees">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">
+                                @Html.DisplayName("Employee Id")
+                            </th>
+                            <th style="text-align: center;">
+                                @Html.DisplayName("Employee Name")
+                            </th>
+                              <th style="text-align: center;">
+                                @Html.DisplayName("Department Name")
+                            </th>
+                            <th style="text-align: center;">
+                                @Html.DisplayName("Status")
+                            </th>
+
+                             <th style="text-align: center;">
+                                @Html.DisplayName("Feedback Status")
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.AttendeesResult)
+                    {
+                     <tr>
+                            <td style="text-align:center;">
+                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                            </td>
+                            <td style="text-align:left;">
+                                @Html.DisplayFor(modelItem => item.EmployeeName)
+                            </td>
+                         <td style="text-align:left;">
+                                @Html.DisplayFor(modelItem => item.Department)
+                            </td>
+                            @if (item.status == 0)
+                            {
+                               <td style="text-align:left;">
+                               -
+                               </td> 
+                            }
+                            else
+                            {
+                           <td style="text-align:left;">
+                               Present 
+                            </td>
+                            }
+                        <td style="text-align:left;">
+                                @Html.DisplayFor(modelItem => item.FeedbackStatus)
+                            </td>
+                       
+                        </tr> 
+                    }
+
+                     @foreach (var item in Model.NonAttendeesResult)
+                     {
+                          <tr>
+                            <td style="color:Red;text-align:center;">
+                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                            </td>
+                            <td style="color:Red;text-align: left;">
+                                @Html.DisplayFor(modelItem => item.EmployeeName)
+                            </td>
+                         <td style="color:Red;text-align: left;">
+                                @Html.DisplayFor(modelItem => item.Department)
+                            </td>
+                                <td style="color:Red;text-align:Center;">
+                                Absent
+                            </td>
+                         <td style="color:Red;text-align:Center;">
+                                @Html.DisplayFor(modelItem => item.FeedbackStatus)
+                            </td>
+                        </tr>
+
+  
+                     }
+
+                </table>
+            </div>  
+                       
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close</button>
+            </div>
+
+            </div>
+                           
+        }
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    @*Content goes here*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @section scripts
+{          
+
+
+        <script type="text/javascript"> 
+
+            jQuery(document).ready(function ($) {
+
+                $("#tblEmployees").dataTable({
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "bStateSave": false,
+                    "bAutoWidth": false                    
+                });   
+             
+            });
+    </script>
+    }
+</body>
+</html>

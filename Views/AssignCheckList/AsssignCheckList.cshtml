@@ -1,0 +1,425 @@
+﻿@model DSRCManagementSystem.Models.AssignCheckList
+
+@{
+    ViewBag.Title = "Assign Check List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" />
+
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+}
+
+<style>
+    .dropdown-menu {
+        background-color: white;
+    }
+</style>
+
+@{
+    int counter = 0;
+}
+
+
+<p>
+    <a href="@Url.Action("ViewProjects", "Projects" + "") " style="color:black ">Projects
+    </a>
+    &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Assign Check List(s)</b>
+</p>
+<br />
+<style>
+   
+     body {
+        overflow-y: auto;
+    }
+
+    .Icon {
+        width: 24px;
+        height: 24px;
+        background: url("~/ImagesAndIcons/Icons/Add_New.png") no-repeat;
+    }
+
+</style>
+
+@{
+    int count = @Model.Gridlist.Count();
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Assign Check List(s)
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+
+                <p>
+        <b>@Html.TextBoxFor(x=> x.Projectname, new { style = "width:200px",@id = "RoleName", @class = "form-control", disabled = "disabled"})</b>
+        </p>
+            @if(ViewBag.value=="true"){
+            <button class="btn btn-default" style="float: right" onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "?ID="+@ViewBag.value+"'");")>
+             Back
+           </button>
+            }else{
+            <button class="btn btn-default" style="float: right"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "'")    ;">
+             Back
+           </button>
+            }
+
+                
+            <button  type ="button" class="btn btn-blue" style="margin-right: 10px ; float: right";  onclick='Assign()'>
+             Assign Category
+           </button>
+                <br />
+                <br />
+                <br />
+
+
+
+                @using (Html.BeginForm("AsssignCheckList", "AssignCheckList", FormMethod.Get))
+                {
+                    if (count == 0)
+                    {
+                    <label style="color: #303641">No Categories found for the Corresponding Project</label>
+                    }
+                    else
+                    {
+                        for (int j = 0; j < @Model.Gridlist.Count(); j++)
+                        {
+
+                         
+                    <div class="panel panel-default panel-shadow" data-collapsed="0">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <img alt="" src="~/Images/Icon.png" class="Icon" style="max-width: 100px; max-height: 100px;" />
+                                @Html.HiddenFor(modelitem => @Model.Gridlist[j].CategoryID, new { @id = "gridid" + j })
+                                @Html.DisplayFor(modelitem => @Model.Gridlist[j].CategoryName, new { @id = "Category" + j })
+                                @Html.HiddenFor(modelitem => @Model.ProjectId, new { @id = "projectid" })
+                            </div>
+
+                            <div class="panel-options">
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                            </div>
+                        </div>
+                        @*  }*@
+                        <div class="clear">
+                        </div>
+
+                        @if (@Model.catcheck.Count() != null)
+                     {
+
+                         for (int i = 0; i < @Model.catcheck.Count(); i++)
+                         {
+                   
+                   
+                            <table class="table table-bordered datatable" id="tblProjects">
+                                @if (@Model.Gridlist[j].CategoryID == @Model.catcheck[i].CategoryID)
+                  {
+                      
+                                    <tr>
+                                        <td>
+
+                                            @if (@Model.catcheck[i].IsChecked == true)
+                     {
+                                                @Html.HiddenFor(modelitem => @Model.catcheck[i].CheckListID, new { @id = "CheckListID" + counter + i })
+                                                @Html.CheckBox("Category", new { @id = "Category" + counter + i, @class = "cb-wrapper", @name = "Category", @value = "Category", @style = "padding-right:50px ;height:15px; width:15px;", @checked = "checked" })<label>&nbsp;&nbsp;&nbsp;</label>       
+                                                @Html.DisplayFor(modelitem => @Model.catcheck[i].CheckListItems)
+                     }
+                     else if (@Model.catcheck[i].IsChecked == false)
+                     {
+                            
+                                                @Html.HiddenFor(modelitem => @Model.catcheck[i].CheckListID, new { @id = "CheckListID" + counter + i })
+                                                @Html.CheckBox("Category", new { @id = "Category" + counter + i, @class = "cb-wrapper", @name = "Category", @value = "Category", @style = "padding-right:50px ;height:15px; width:15px;" })<label>&nbsp;&nbsp;&nbsp;</label>       
+                                                @Html.DisplayFor(modelitem => @Model.catcheck[i].CheckListItems)
+                     }
+                     else if (@Model.catcheck[i].IsChecked == null)
+                     {
+                                                @Html.HiddenFor(modelitem => @Model.catcheck[i].CheckListID, new { @id = "CheckListID" + counter + i })
+                                                @Html.CheckBox("Category", new { @id = "Category" + counter + i, @class = "cb-wrapper", @name = "Category", @value = "Category", @style = "padding-right:50px ;height:15px; width:15px;" })<label>&nbsp;&nbsp;&nbsp;</label>       
+                                                @Html.DisplayFor(modelitem => @Model.catcheck[i].CheckListItems)
+                     }
+
+
+
+                                        </td>
+                </tr>
+                  }
+                  
+                 
+               </table>
+                         }
+                     }
+                 
+        
+            </div>
+                     counter++;
+
+                        }
+     
+               <div class="modal-footer">
+              <button type="reset" id="btnAdd" class="btn btn-default" data-dismiss="modal" onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "'")" >
+               Cancel
+              </button>
+
+              <button id="btnSubmit" type="button" style="margin-right: -10px"  class="btn btn-info" onclick="SaveDetails()">
+                                            Save
+              </button>
+              </div>
+                    }
+                }
+               
+                
+
+            </div>
+        </div>
+                    
+    </div>
+</div>
+                   
+                    
+
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+       
+
+        jQuery(document).ready(function ($) {
+
+
+         
+
+        });
+
+
+        function SaveDetails(c) {
+
+           
+
+            var List =[];
+            var UnList=[];
+            var check = new Array();
+            var UnCheck = new Array();
+            var k=@Model.catcheck.Count();
+            var l=@Model.Gridlist.Count();
+            var projectid=$("#projectid").val();
+           
+            var v=0;
+
+            var checklist = [];
+            
+
+            for (var i = 0; i < l; i++) {
+                var gridId = $("#gridid" + i).val();
+                
+                var Carray = new Array();
+                var Unchecked = new Array();
+
+                for(var j=0;j<k;j++)
+                {
+
+                    if(  $("#Category"+v + j).prop("checked")==true)
+                    {
+
+                        var list = new Array();
+
+                        var gridId = $("#gridid" + i).val();
+
+
+                        var checkid = $("#CheckListID"+v + j).val();
+
+                        if (j == 0) {
+                            Carray += checkid;
+                           
+
+                        }
+                        else {
+
+                            Carray += "," + checkid;
+                        }
+
+                        
+                     
+                    }
+                    else if(  $("#Category"+v + j).prop("checked")==false){
+                        var list = new Array();
+
+                        var gridId = $("#gridid" + i).val();
+
+
+                        var checkid = $("#CheckListID"+v + j).val();
+
+                        if (j == 0) {
+                            Unchecked += checkid;
+                           
+
+                        }
+                        else {
+
+                            Unchecked += "," + checkid;
+                        }
+                    }
+                   
+               
+                }
+
+
+
+                
+                v++;
+                if(Carray.length != 0)
+                {
+                    List[i]=
+                    {
+                        "ProjectID":projectid,
+                        "GridID":gridId,
+                        "CheckID":Carray
+
+                    }
+                }
+                if(Unchecked.length!= 0)
+                {
+                    UnList[i]=
+                        {
+                            "UnProjectID":projectid,
+                            "UnGridID":gridId,
+                            "UnCheckID":Unchecked
+                        }
+                }
+
+                Unchecked="";
+                Carray="";
+              
+            }
+            var val = {
+                Check: List,
+                
+            };
+
+            var Unval={
+                UnCheck:UnList
+
+            };
+            var opts =
+                {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+               
+
+            $.ajax({
+                
+                url: "/AssignCheckList/SaveCheck/",
+                type: 'POST',
+                dataType: "json",
+                traditional: true,
+                data: { List: JSON.stringify(val), Pid:projectid,UnList:JSON.stringify(Unval) },
+
+
+                success: function (result) {
+                        
+                    toastr.success("CheckList Assigned Successfully", opts);
+                    setTimeout(function () { location.reload(); }, 1000);
+                        
+                        
+                }
+
+            });
+
+
+
+            return true;
+        
+        }
+
+
+        function Assign() {
+           
+
+            $.ajax({
+                url: "../../AssignCheckList/Assign/",
+                type: 'GET',
+                cache: false,
+                
+                success: function (result) {
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                }
+            });
+        }
+
+
+
+        var opts =
+                           {
+                               "closeButton": true,
+                               "debug": false,
+                               "positionClass": "toast-top-right",
+                               "toastClass": "White",
+                               "onclick": null,
+                               "showDuration": "300",
+                               "hideDuration": "1000",
+                               "timeOut": "2000",
+                               "extendedTimeOut": "1000",
+                               "showEasing": "swing",
+                               "hideEasing": "linear",
+                               "showMethod": "fadeIn",
+                               "hideMethod": "fadeOut"
+                           }
+
+   
+
+
+    </script>
+}
+
+
+
+
+
+

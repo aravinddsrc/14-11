@@ -1,0 +1,291 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.AddVehicle>
+@{
+    ViewBag.Title = "ManageVehicle";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead {
+
+   <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+}
+@{
+    int SNO = 1;
+}               
+<p>
+        <a href=""style="color:black ">
+           Transportation
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Vehicles</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Vehicle
+                </div>
+
+            </div>
+           
+                <!-- panel body -->                   
+                  
+                <div class="panel-body" style="overflow: auto">  
+                     <div class="form-group">
+                                    <div class="row">
+                                  <div class="col-md-2" style="width: 181px; padding-top: 7px;">
+                                             
+                            @Html.Label("Vehicle No",new { @class = "control-label" })                       
+                             @Html.DropDownList("Vehicle_No", ViewBag.Vehicles as SelectList,"--Select--", new { @id = "no", @class = "select2-container select2-container-multi select2 visible", @style = "Width:200Px;Height:30px" })
+                            <span id="s1" style="color: Red;"></span>
+                                            </div>
+                              <div class="col-md-4" style="margin-top: 30px;margin-left: 30px;">
+                            <button id="btn_Submit" type="Button" name="btn_Submit" class="btn btn-info btn-icon" onclick="Search()">
+                                Search<i class="entypo-search"></i>
+                            </button>
+                            <button type="button"  id="btnAdd" style="margin-left: 4px;" class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                        </div>  
+                                      <div class="col-md-3" style="float: right" id="btnAdd2">
+                                           <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddNew()'>
+                                            Add vehicle
+                                                </button>
+                                        </div>                                          
+                   
+                                        </div>
+                                       
+                          
+                                        
+                                                  
+                                    </div>
+                                    <br />              
+                         
+
+                    @using (Html.BeginForm("administrationsetup","manage", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblRoles">
+                            <thead>
+                                <tr>
+                                     <th style="text-align:center;">
+                                       @Html.DisplayName("SNo")
+                                    </th>
+                                    <th style="text-align:center;">
+                                       @Html.DisplayName("Vechicle Number")
+                                    </th>
+                                  
+                                     <th style="text-align:center;">
+                                     @Html.DisplayName("Model")
+                                    </th>
+                                  
+                                    <th style="text-align:center;">
+                                        @Html.DisplayName("Make")
+                                    </th>
+                                    <th style="text-align:center;">
+                                         @Html.DisplayName("Assign Driver/Co-Driver")
+                                    </th>
+                                        
+                                    
+                                        <th style="text-align:center;">
+                                         @Html.DisplayName("Edit")
+                                    </th>
+                        
+                                        <th style="text-align:center;">
+                                         @Html.DisplayName("Delete")
+                                    </th>
+                                </tr>
+                            </thead>
+                               @foreach (var item in Model)
+                                   {
+                                       if (item.Vehicle_No != null && item.VehicleMake != null && item.VehicleModel_Id!=null)
+                                       {
+                                        <tr>
+                                           <td style="text-align: center;">
+                                               @(SNO++)
+                                           </td>
+                                          <td>                                                          
+                                             @Html.DisplayFor(modelitem => item.Vehicle_No)
+                                           </td>                                                             
+                                            <td>                                            
+                                              @Html.DisplayFor(modelitem => item.VehicleModel_Id)                                               
+                                              
+                                            </td>
+                                             <td>                                            
+                                              @Html.DisplayFor(modelitem => item.VehicleMake)                                              
+                                              
+                                            </td>
+                                             <td style="text-align: center">                                               
+                                           <a>
+                                           
+                                            <button type="button" class="btn btn-blue" style= font-weight: bold;" onclick="AssignDriver(@item.vehicleid)">
+                                             Assign Driver & Co-Driver
+                                                </button>
+         
+                                               </a>
+                                    </td>
+                                             <td style="text-align: center"> 
+                                                                                               
+                                           <a >
+                                            <button type="button" class="btn btn-info"onclick='Edit(@item.vehicleid)'>
+                                                    <i class="entypo-pencil"></i>
+                                           </button>
+                                           </a>                                           
+                                          </td>   
+                                             <td style="text-align: center">                                                 
+
+                                                   <a href="#" data-toggle="tooltip" title="Delete">
+                                                        <button type="button" class="btn btn-red" onclick='Delete(@item.vehicleid)'>
+                                                            <i class="entypo-cancel"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>  
+                                            </tr>
+                                            }
+                                        }
+                          
+
+                            </table>
+                    }
+                         </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+         
+        $(document).ready(function () {
+            
+            localStorage.clear();
+            var table = $("#tblRoles").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6] }],
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+              
+    
+        function AddNew() {
+           
+           
+        
+              $.ajax({
+                  url: "../../Transportation/AddVehicle/",
+                  type: 'GET', cache: false,
+                  success: function (result) {
+                      $('#PartialSection').html(result);
+                      $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                  }
+              });
+
+        }
+
+        function Edit(Id) {
+            
+            $.ajax({
+                url: "../../Transportation/EditVehicle/"+Id,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+
+        }
+        function Delete(Id) {
+            
+            bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                if (conform) {
+                    $.ajax({
+                        url: "../Transportation/DeleteVehicle/"+Id,
+                        type: 'POST', cache: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                toastr.success("Vehicle  deleted successfully!");
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+
+      
+       
+
+        function Cancel() {
+            var url = '@Url.Action("ManageVehicle", "Transportation")';
+              window.location.href = url;
+          }
+
+                function Search() {      
+                  
+
+            var vehicle = ($("#no").find("option:selected").text());
+
+            window.location.href = '@Url.Action("ManageVehicle", "Transportation")' + '?value=' + vehicle;
+                 
+
+
+         }
+      
+
+
+
+        function AssignDriver(Id) {
+          
+            debugger;
+
+            $.ajax({
+                url: "../../Transportation/AssignDriver/" + Id,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+
+        }
+
+     
+         </script>
+         
+
+

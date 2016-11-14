@@ -1,0 +1,246 @@
+﻿@model DSRCManagementSystem.Models.ManageGrid
+
+@{
+    ViewBag.Title = "Control Grid";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<ol class="breadcrumb bc-3">
+    <li><a href="#">Administration Setup</a></li>
+    <li class="active"><strong>Manage Grid</strong></li>
+</ol>
+
+
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+    
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("ControlGrid", "ManageGrid", FormMethod.Post))
+                {
+        <div class="row">
+            <div class="form-group">
+                    @Html.LabelFor(x => x.User_Role, new { @class = "col-sm-1 control-label",@style="margin-top:1em"})
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.User_Role, new SelectList(Model.typelist, "Value", "Text", Model.type),
+                         new { @id = "Assigntype", @name = "Assigntype", @class = "form-control select2"})
+                </div>
+            </div>
+        </div>
+            <br />
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Manage Grid
+                </div>
+            </div>
+            <div class="panel-body">
+                
+                    <br />
+    <div class="row">
+        <div class="col-md-12" style="text-align: right">
+            @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+        </div>
+    </div>
+                    <div class="row">
+                        @if (Model.type == "0")
+                        {
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.UserId)
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(x => x.UserId, Model.Users, new { @class = "select2", @id = "IDuserslist" })
+                                @Html.ValidationMessageFor(x => x.UserId, "", new { @style = "color:red" })
+                                 <span id="span_User" style="color: Red;"></span>
+                            </div>
+                        }
+                        else if (Model.type == "1")
+                        {
+                            <div class="col-md-2">
+                                @Html.LabelFor(x => x.RoleId)
+                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(x => x.RoleId, Model.Roles, new { @class = "select2", @id = "IDroleslist" })
+                                @Html.ValidationMessageFor(x => x.RoleId, "", new { @style = "color:red" })
+                                 <span id="span_Role" style="color: Red;"></span>
+                            </div>
+                        }
+                        @*<div class="col-md-2">
+                            @Html.LabelFor(x => x.Grids)
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ListBoxFor(x => x.Grids, ViewBag.TabList as MultiSelectList, new { @id = "IDtabs", @class = "form-control", @style = "height:300px" })
+                            @Html.ValidationMessageFor(x => x.Grids, "", new { @style = "color:red" })
+                        </div>
+                    </div>*@
+                        <div class="col-md-2">
+                            @Html.LabelFor(x => x.Grids)
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ListBoxFor(x => x.Grids, ViewBag.TabList as MultiSelectList, new { @id = "IDtabs", @class = "form-control", @style = "height:300px" })
+                            @Html.ValidationMessageFor(x => x.Grids, "", new { @style = "color:red" })
+                             <span id="span_Tab" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-4" style="text-align: left">
+                                <a type="button" class="btn btn-default" href="@Url.Action("Index", "Home")">Cancel</a>
+                                <button type="submit" class="btn btn-info" onclick="return Savetab(this)">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear">
+                    </div>
+            </div>
+        </div>
+                }
+    </div>
+</div>
+<script type="text/javascript">
+    $('#Assigntype').change(function () {
+        SwitchType(this.value);
+    function SwitchType(type)
+    {
+        if (type == "0")
+        { window.location.href = '@Url.Action("ControlGrid", "ManageGrid")' + '?type=users'; }
+        else if (type == "1")
+        { window.location.href = '@Url.Action("ControlGrid", "ManageGrid")' + '?type=roles'; }
+    }
+    });
+    $(document).ready(function () {
+        if(@Convert.ToInt32(Session["TabAssigned"]) == 1)
+        {
+            toastr.success("Details has been saved successfully")
+        }
+    });
+</script>
+<script type="text/javascript">
+    
+    var opts = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "toastClass": "White",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "1000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    
+    $('#IDuserslist').change(function () {
+        
+        var dropdownElement = $("#IDtabs");
+        //dropdownElement.find('option[value=' + $('#IDuserslist').val() + ']').remove();
+        if ($('#IDuserslist').val() === "0") {
+            $("#IDtabs option").each(function (i, value) {
+                this.selected = false;
+            });
+            return false;
+        }
+        else {
+            $("#span_User").html("").show();
+            $("#IDtabs option").each(function (i, value) {
+                this.selected = false;
+            });
+            $.ajax({
+                url: "/ManageGrid/GetAssignedTabs",
+                type: "GET",
+                data: { Uid: $("#IDuserslist").val(), Rid: null },
+                success: function (result) {
+
+                    $(result).each(function (i, value) {
+                        console.log(value);
+                        $("#IDtabs option[value=" + value + "]").prop("selected", true);
+                    });
+                }
+            });
+            $("#IDtabs").focus();
+        }
+    });
+
+    $('#IDroleslist').change(function () {
+        var dropdownElement = $("#IDtabs");
+        //dropdownElement.find('option[value=' + $('#IDroleslist').val() + ']').remove();
+        if ($('#IDroleslist').val() === "0") {
+            $("#IDtabs option").each(function (i, value) {
+                this.selected = false;
+            });
+            return false;
+        }
+        else {
+            $("#span_Role").html("").show();
+            $("#IDtabs option").each(function (i, value) {
+                this.selected = false;
+            });
+            $.ajax({
+                url: "/ManageGrid/GetAssignedTabs",
+                type: "GET",
+                data: { Uid: null, Rid: $("#IDroleslist").val() },
+                success: function (result) {
+
+                    $(result).each(function (i, value) {
+                        $("#IDtabs option[value=" + value + "]").prop("selected", true);
+                    });
+                }
+            });
+            $("#IDtabs").focus();
+        }
+    });
+    function Savetab(){
+    
+        var Username = $("#IDuserslist").val();
+        var Userrole = $("#IDroleslist").val();
+        var type = $("#Assigntype").val();
+        if (type == "0")
+        {
+            if (Username == "0" || Username== undefined)
+            {
+                $("#span_User").html("Select User Name").show();
+               
+                return false;
+            }
+            else
+                $("#span_Role").html("").show();
+        }
+        else if(type == "1")
+        {
+            if (Userrole=="0" || Userrole== undefined )
+            {
+                
+                $("#span_Role").html("Select Role Name").show();
+              
+                return false;
+            }
+            else
+                $("#span_Role").html("").show();
+        }
+       
+    }
+  
+</script>

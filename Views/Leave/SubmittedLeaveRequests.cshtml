@@ -1,0 +1,215 @@
+﻿@model IEnumerable<DSRCManagementSystem.LeaveRequest>
+@{
+    ViewBag.Title = "Leave Requests";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    
+<style>
+        tr td:nth-child(1) { 
+   text-align: center;
+}
+       tr td:nth-child(8) { 
+   text-align: center;
+}
+
+
+    .dropdown-menu {
+    background-color:white;
+}
+
+
+</style>
+}
+@{
+    int SNO = 1;
+}
+@*<ol class="breadcrumb bc-3">    
+   <li><a href="@Url.Action("ApplyLeave", "Leave")">Leave Management</a></li>
+    <li><strong>Employee Leave Requests</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ApplyLeave","Leave")"style="color:black ">
+            Leave Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Employee Leave Requests</b>
+    </p>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Employee Leave Requests</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+
+            <div class="row">
+              <div class="col-md-2" style="float:right">
+                <div class="btn-group" style="float: right">
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='AddEmpLeaveEntry()'>
+                        Employee Leave Entry
+                    </button>                  
+                </div>
+              </div>
+            </div>
+
+                @using (Html.BeginForm("SubmittedLeaveRequests", "Leave", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="row">
+                             <div class="col-md-2" style="width:102px; padding-top:7px;">
+                            Leave Status
+                        </div>
+                            <div class="col-md-3">
+                                @Html.DropDownList("LeaveStatus", ViewBag.LeaveStatusList as SelectList, new { @id = "LeaveStatus", @name = "LeaveStatus", @class = "form-control" })
+                            </div>
+                            <div class="col-md-4" style="margin-top: 8px;margin-left: 0px;">
+                            <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                            Search<i class="entypo-search"></i>
+                        </button>
+                                <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                     </div> 
+                        @*<button type="button" class="btn btn-red btn-icon icon-left" onclick="Cancel()">
+                          <i class="entypo-cancel"></i>Cancel</button>*@
+                     </div>                        
+                    </div>
+                    <div class="clear">
+                    </div>
+
+                    <div id="_SubmittedLeaveRequestsGrid">
+                        @Html.Partial("_SubmittedLeaveRequests", Model)
+                    </div>
+          
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config"  role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            SetupGrid();
+            $('.profile-info').click(function () {
+                $('.img.circle').parent().parent().toggleClass('open');
+            });
+            //$('a.dropdown-toggle').click(function () {
+            //    $(this).parent().toggleClass('open');
+            //});
+        });
+
+        function EditLeaveRequestStatus(leaveRequestId) {
+            $.ajax({
+                url: "../../Leave/UpdateLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function(result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function RejectLeaveRequest(leaveRequestId) {
+            $.ajax({
+                url: "../../Leave/RejectLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function(result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function ApproveLeaveRequest(leaveRequestId) {
+            $.ajax({
+                url: "../../Leave/ApproveLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function(result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function ReloadGrid() {
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function() {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+            $.ajax({
+                url: "../../Leave/SubmittedLeaveRequests/",
+                type: 'GET',
+                cache: false,
+                success: function(result) {
+                    $('#_SubmittedLeaveRequestsGrid').html(result);
+                    SetupGrid();
+                }
+            });
+        }
+
+        function SetupGrid() {
+            var leaveStatus
+            Id = $("#LeaveStatus").find("option:selected").prop("value");
+            var table = $("#tblSubmittedLeaveRequest").DataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                "columnDefs": [
+                    { "width": "6%", "targets": 0 }, { "width": "15%", "targets": 1 }, { "width": "12%", "targets": 2 }, { "width": "10%", "targets": 3 }, { "width": "15%", "targets": 4 }, { "width": "15%", "targets": 5 },
+                    { "width": "15%", "targets": 6 }, { "width": "5%", "targets": 7 }, { "width": "7%", "targets": 8, bSortable: false }, { "width": "7%", "targets": 9, bSortable: false }, { "width": "7%", "targets": 10, bSortable: false }
+                ]
+            });
+        $(".dataTables_wrapper select").select2({
+            //minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    }
+
+    function AddEmpLeaveEntry() {
+       
+        $.ajax({
+            url: "../../Leave/EmployeeLeaveEntry/",
+            type: 'GET',
+            cache: false,            
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+
+    }
+
+    $("#LeaveStatus").select2();
+
+
+    function Cancel() {
+        var url = '@Url.Action("SubmittedLeaveRequests", "Leave")';
+      window.location.href = url;
+  }
+    </script>
+}

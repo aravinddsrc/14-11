@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "Calendar Events";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />    
+      
+    <style>
+        #calendar
+        {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande" ,Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+        .tooltip-inner
+        {
+            max-width:350px;
+           
+         }        
+       .square1
+        {
+            width: 10px;
+            height: 10px;
+            background: #009900;
+            margin-top:1.5px;
+        }
+       .square2
+        {
+            width: 10px;
+            height: 10px;
+            background: #FF0000;
+            margin-top:1.5px;
+        }
+       .square3
+        {
+            width: 10px;
+            height: 10px;
+            background: #000000; 
+            margin-top:1.5px;
+        }
+       .square4
+        {
+            width: 10px;
+            height: 10px;
+            background: #0000FF;
+            margin-top:1.5px;
+        }
+       .square5
+        {
+            width: 10px;
+            height: 10px;
+            background: #990066;
+            margin-top:1.5px;
+        }
+       
+    </style>
+}
+
+<div class="row">
+ <div class="fc-toolbar">
+    <div class="fc-left">
+         <ol class="breadcrumb bc-3">
+            <li><a>Learning and Development</a> </li>
+            <li><b> Calendar Events</b> </li>
+        </ol>
+    </div>
+ </div>
+</div>
+
+<div class="row">
+ <div class="fc-toolbar">
+  <div class="col-md-12"> 
+    <div class=" col-md-1 ">
+    </div>  
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square1">
+        </div> 
+        <div class="col-md-1">Attended</div> 
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square2">
+        </div>  
+        <div class="col-md-1">Not&nbsp;Attended</div> 
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square3">
+        </div>
+        <div class="col-md-1">Not&nbsp;Conducted</div>   
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square4">
+        </div>
+        <div class="col-md-1">Nominated</div>   
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square5">
+        </div> 
+        <div class="col-md-1">Not&nbsp;Nominated</div>  
+    </div> 
+    
+     <div class=" col-md-1 ">
+       <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("Index", "Home", new { Tab = ViewBag.Tab })+"'")">
+         Back
+       </button>
+     </div>
+       
+  </div>
+ </div>
+</div>
+<br />
+<br />
+
+@*<div class="row">
+ <div class="fc-toolbar">
+  <div class="col-md-12">  
+      
+      <div class=" col-md-1 "></div>    
+      
+      <div  class="col-md-2">
+      <div class="col-md-1">
+      Attended
+      </div>
+      </div>
+      <div  class="col-md-2">Not Attended </div>
+      <div  class="col-md-2">Not Conducted</div>     
+      <div  class="col-md-2">Nominated </div>
+      <div  class="col-md-2">Not Nominated </div>
+
+     <div class=" col-md-1 ">
+       <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("Mylearning", "LDHome") + "'");" ) >
+         Back
+       </button>
+     </div>
+
+  </div>
+</div>
+</div>*@
+
+@section Scripts 
+{
+    <script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    
+        $(document).ready(function () { 
+
+            loadCalendar();
+
+            $("#LeaveTypeList").change(function () {
+                $('#calendar').fullCalendar("removeEvents");
+                $('#calendar').fullCalendar("addEventSource", { url: "/LDR/CalendarEvents", type: "GET", data: function () { return {}; } });
+                //$('#calendar').fullCalendar("refetchEvents"); 
+            });
+        });
+        function loadCalendar() {
+//          var colorPickerList = ['#DEB887', '#6495ED', '#A9A9A9', '#7FFFD4', '#F0FFFF', '#F5F5DC', '#FFE4C4', '#000000', '#FFEBCD'];
+//            var dictionaryList = {};
+//           var intKey = -1;
+
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                //allDay: false,
+                defaultDate: new Date(),
+                editable: false,
+                eventLimit: true,
+                events: {
+                    url: "/LDR/CalendarEventsResult",
+                    type: "GET",
+                    data: function () { return {}; }
+                },
+                eventRender: function (event, element) {
+
+                    var dataHoje = new Date();
+                    var todaysDate = new Date(dataHoje.getYear(), dataHoje.getMonth(), dataHoje.getDate());
+                    var eventD = event.start._d;
+                    var eventDate = new Date(eventD.getYear(), eventD.getMonth(), eventD.getDate())
+
+                    if (eventDate <= todaysDate) {
+                        $(element).tooltip({ title: event.Detail });
+                    }
+                    else {
+                        $(element).tooltip({ title: event.Detail });
+                        $(element).attr("href", "/LDTraining/Nomination/" + event.TrainingId);
+                    }
+                },
+
+                eventAfterRender: function (event, element, view) {
+
+                    var dataHoje = new Date();
+                    var todaysDate = new Date(dataHoje.getYear(), dataHoje.getMonth(), dataHoje.getDate());
+                    var eventD = event.start._d;
+
+                    var eventDate = new Date(eventD.getYear(), eventD.getMonth(), eventD.getDate());
+
+                    if (eventDate < todaysDate) {
+
+                        if (event.IsCompleted) {
+                                if (event.IsAttended) {
+                                    element.css('background-color', '#009900'); //Conducted attended green
+                                }
+                                else {
+                                    element.css('background-color', '#FF0000'); // Conducted not attended red
+                                }
+                        }
+                        else
+                            element.css('background-color', '#000000'); //not Conducted black
+                    }
+
+                    else if (eventDate >= todaysDate) {
+                        
+                        //element.css('background-color', '#009900');
+
+                        if (event.IsCompleted) {
+                                if (event.IsAttended) {
+                                    element.css('background-color', '#009900'); //Conducted attended green
+                                }
+                                else {
+                                    element.css('background-color', '#FF0000'); // Conducted not attended red
+                                }
+                        }
+                        else {
+
+                            if (event.IsNominated)
+                                element.css('background-color', '#0000FF'); //future nominated blue
+                            else
+                                element.css('background-color', '#990066'); //future not nominated purple 
+                        }
+
+                    }
+
+                }
+
+            });
+        }
+        
+    </script>
+}
+<div id='calendar'>
+</div>
+

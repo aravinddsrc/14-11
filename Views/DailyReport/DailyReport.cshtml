@@ -1,0 +1,345 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.ManageLevel>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+}
+@{
+    int SNO = 1;
+}
+<style type="text/css">
+    /*.txtbox {
+ border: none;
+ width: 100%;
+}
+input {
+ font-size: 17px;
+ height: 30px;
+}*/
+    #color {
+        background: none repeat scroll 0 0 #b3b3b3;
+        /*border: 1px solid #000;*/
+        font-size: 15px;
+        line-height:30px;
+    }
+
+ .test
+    {
+     border: none;
+    }
+
+
+
+
+</style>
+<ol class="breadcrumb bc-3">
+    <li>Daily Report</li>
+    <li class="active"><strong>Daily Report</strong> </li>
+</ol>
+<br />
+<div class="row" style="height: 500px;">
+
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Daily Report
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body" style="overflow: auto">
+
+
+                <div class="row" style="margin:4px">
+             
+                    
+                        <a href="#" data-toggle="tooltip" title="Add">
+                                                <button value="Remove" class="btn btn-green" id="plusbtn"  >
+                                                    <i class="entypo-plus"></i>
+                                                </button>
+                                            </a>
+
+
+
+                    
+                     <a href="#" data-toggle="tooltip" title="Remove">
+                                                <button value="Remove" class="btn btn-danger" id="minusbtn"  >
+                                                    <i class="entypo-cancel"></i>
+                                                </button>
+                                            </a>
+
+                   
+
+ <input type="button" value="Generate Excel" class="btn btn-info" id="getButtonValue" />
+
+
+                    <a href="#" data-toggle="tooltip" title="Download">
+                                                <button value="Remove" class="btn btn-black" id="Download"  >
+                                                    <i class=" entypo-download"></i>
+                                                </button>
+                                            </a>
+                </div>
+
+                <div>
+ 
+
+
+                      @Html.Hidden("paths", (string)@ViewBag.paths, new { @id = "paths" })
+
+</div>
+ <br/>
+<table width="50%" border="1" cellpadding="1" cellspacing="1" class="test">
+ <tr id="color">
+    
+ <td style="text-align: center; width: 10%;">Description</td>
+ <td style="text-align: center; width: 10%;">Start Date</td>
+ <td style="text-align: center; width: 10%;">End Date</td>
+ <td style="text-align: center; width: 10%;">Expected Date</td>
+ <td style="text-align: center; width: 10%;">Status</td>
+        
+ </tr>
+ <tr>
+ <td  class="col-md-3">@Html.TextBox("DES", "", new { @id = "DES1", @name = "DES", @class = "form-control", @style = "Height:42px;Width:150px" })</td>
+ <td  class="col-md-3">@Html.TextBox("SDate", "", new { @id = "SDate1", @name = "SDate", @class = "form-control datetimepicker", @style = "Width:150px;Height:42px" })</td>
+ <td  class="col-md-3">@Html.TextBox("EDate", "", new { @id = "EDate1", @name = "EDate", @class = "form-control datetimepicker", @style = "Width:150px;Height:42px" })</td>
+ <td  class="col-md-3">@Html.TextBox("EXDate", "", new { @id = "EXDate1", @name = "EXDate", @class = "form-control datetimepicker", @style = "Width:150px;Height:42px" })</td>
+ @*<td  class="col-md-3">@Html.TextBox("Status", "", new { @id = "Status1", @name = "Status", @class = "form-control", @style = "Width:150px;Height:42px" })</td>*@
+ <td  class="col-md-3">
+    @* @Html.DropDownList("ActionList", ViewBag.ActionList as SelectList,  "---Select---",new { @id = "sp", @class = "select2-container select2-container-multi select2 visible", @style = "Width:200Px" })*@
+   <select  style="Height:42px;Width:150px" id="Status1" class = "form-control" name="Status"> <option value="Completed">Completed</option><option value="In Progress">In Progress</option><option value="Not Completed">Not Completed</option></select>
+ 
+ </td>
+ 
+ </tr>
+</table>
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts
+{
+ 
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+       
+        $(document).ready(function () {
+
+
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                //startDate: '1d',
+                todayHighlight: true,
+                autoclose: true,
+                //endDate: '1d'
+
+            });
+
+           
+           
+            $('#Download').click(function () {
+                $('#Download').hide();
+            });
+
+             
+            
+           
+            $('#Download').hide();
+            
+
+
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            //startDate: '1d',
+            todayHighlight: true,
+            autoclose: true,
+            //endDate: '1d'
+
+        });
+
+
+
+        $(document).ready(function () {
+
+     
+
+            //var counter = 2;
+
+            $('#plusbtn').click(function () {
+
+                var counter=$(".test tr").length;
+                $(".test").append('<tr><td  class="col-md-3"><input type="text" style="Height:42px;Width:150px" name="" id="DES' + counter + '" value="" class = "form-control" ></td><td  class="col-md-3"><input type="text" style="Height:42px;Width:150px" name="" id="SDate' + counter + '" value="" class = "form-control datetimepicker" ></td><td  class="col-md-3"><input type="text" style="Height:42px;Width:150px" name="" id="EDate' + counter + '"value="" class = "form-control datetimepicker" ></td><td  class="col-md-3"><input type="text" style="Height:42px;Width:150px" name="" id="EXDate' + counter + '" value="" class = "form-control datetimepicker" ></td><td  class="col-md-3">       <select id="Status' + counter + '" style="Height:42px;Width:150px" class = "form-control" name="Status"> <option value="Completed">Completed</option><option value="In Progress">In Progress</option><option value="Not Completed">Not Completed</option></select> </td></tr>');
+                counter++;
+                $(".datetimepicker").datepicker({
+                    format: 'dd-mm-yyyy',
+                    //startDate: '1d',
+                    todayHighlight: true,
+                    autoclose: true,
+                    //endDate: '1d'
+                   
+                });
+            });
+            $('#minusbtn').click(function () {
+
+                if ($(".test tr").length != 2) {
+                    $(".test tr:last-child").remove();
+                }
+                else {
+                    alert("You cannot delete first row");
+                }
+            });
+
+         
+            $("#getButtonValue").click(function () {
+
+                var DES = [];
+                var SDate = [];
+                var EDate = [];
+                var EXDate = [];
+                var Status = [];
+                
+
+                var counter=$(".test tr").length;
+                
+                $('#Download').show();
+                var msg = '';
+                for (i = 1; i < counter; i++) {
+                    msg += "\n DES #" + i + " : " + $('#DES' + i).val();
+
+
+                    DES.push($('#DES' + i).val())
+
+                }
+
+                for (i = 1; i < counter; i++) {
+                    msg += "\n SDate #" + i + " : " + $('#SDate' + i).val();
+
+            
+
+
+                    SDate.push($('#SDate' + i).val())
+                    
+                }
+
+                for (i = 1; i < counter; i++) {
+                    msg += "\n EDate #" + i + " : " + $('#EDate' + i).val();
+
+
+                    EDate.push($('#EDate' + i).val())
+
+                }
+
+                for (i = 1; i < counter; i++) {
+                    msg += "\n EXDate #" + i + " : " + $('#EXDate' + i).val();
+
+
+                    EXDate.push($('#EXDate' + i).val())
+
+                }
+                for (i = 1; i < counter; i++) {
+                    msg += "\n Status #" + i + " : " + $('#Status' + i).val();
+
+
+                    Status.push($('#Status' + i).val())
+
+                }
+                //alert(msg);
+
+                var values =
+       {
+           "DES": DES.toString(),
+           "SDate": SDate.toString(),
+           "EDate": EDate.toString(),
+           "EXDate": EXDate.toString(),
+           "Status": Status.toString(),
+       }
+                $.ajax({
+                    url: "../../DailyReport/DailyReport/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+                        if (result == "Warning") {
+
+                        }
+                    }
+                });
+            });
+
+
+
+        });
+
+
+       
+        var data = @Html.Raw(Json.Encode(ViewData["paths"]));
+        var x=$('#paths').val()
+        $('#Download').click(function () {
+
+
+            
+            
+
+            window.location.href = '@Url.Action("Download", "DailyReport")' + '?ID=' + x;
+        });
+
+
+
+    </script>
+}

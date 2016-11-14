@@ -1,0 +1,599 @@
+﻿@model DSRCManagementSystem.Models.AdministrationSetup
+@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@{
+    int a=0,b=0,c=0;
+}
+@section AddToHead{
+<script src="~/Scripts/jquery.ui.position.js"></script>
+<script src="~/Scripts/jquery.contextMenu.js"></script>
+<script src="~/Scripts/screen.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link rel="stylesheet" href="/resources/demos/style.css">
+<link href="~/Content/ContextMenu/src/jquery.contextMenu.css" rel="stylesheet" />
+}
+
+@*<ol class="breadcrumb bc-3">
+   <li>
+        <a href="@Url.Action("ManageStops","Stops")">
+            <i class="fa-home1"></i>Administration Setup
+        </a>
+    </li>
+    <li class="active"><strong>Edit Roles</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("","")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Permission</b>
+    </p>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Permission
+                </div>
+            </div> 
+                <div class="panel-body">
+                    @using (Html.BeginForm("Roles", "Administration", FormMethod.Post))
+                    { 
+                        <div class="row">
+                            <div class="btn-group" style="float: right;margin-top:-10px;" id="AddNewMenu">
+                                <button type="button" class="btn btn-blue" style="font-weight: bold; top: 10px; margin-right:5px;border-radius:3px;" onclick='AddFunction()'>
+                                    Add Menu
+                                </button>
+                                <button type="button" class="btn btn-blue" style="font-weight: bold; top: 10px; margin-right:50px;border-radius:3px;" onclick='AddSubFunction()'>
+                                    Add Sub Menu
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                @Html.Label("Role Name")
+                               
+                            </div>
+                            <div class="col-md-2">
+                                @if ((@ViewBag.RoleNamedisplay) == null) {
+                                    @Html.TextBoxFor(x => x.RoleName, new { @id = "RoleName", @class = "form-control", disabled = "disabled",@style="float:left;margin-left: -87px;" })
+                                    @Html.HiddenFor(x => x.RoleTypeID, new { @id = "RoleTypeID" })
+                                    
+                                }
+                                else {
+                                    @Html.TextBox("a", (String)@ViewBag.RoleNamedisplay, new { @id = "RoleName", @class = "form-control", disabled = "disabled",@style="float:left;margin-left: -87px;"})
+                                    @Html.HiddenFor(x => x.RoleTypeID, new { @id = "RoleTypeID" })
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <div class="clear"> </div>
+                        <br />
+                        <div id="#target">
+                        <table class="table table-bordered datatable" id="tree">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 40%">Main Menu</th>
+                                    <th style="text-align: center; width: 40%">Sub Menu</th>
+                                    <th style="text-align: center; width: 20%">Arrows</th>
+                                    <th style="text-align: center; width: 20%">Edit</th>
+                                    <th style="text-align: center; width: 20%">Delete</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model.Menu)
+                            {
+                                
+                                var submenu = Model.MenuList.Where(x => x.FunctionId == item.FunctionID).ToList();
+                                int flag = submenu.Count();
+                                a++;
+                                var val = Model.CheckVal.Where(x => x.FunctionID == item.FunctionID).FirstOrDefault();
+                               
+                                <tr>
+                                        @if (val != null)
+                                        {
+                                           
+                                           
+                                                <td id="@item.FunctionID " name="F">
+                                                     <p id="#title">
+                                            <input class="title" type="checkbox" id="F@(item.FunctionID)"  name="Switch" checked="true" onchange="CMenu(@ViewBag.RoleId,@item.FunctionID)"/>
+                                            @Html.DisplayFor(x => item.FunctionName)
+                                                         </p> 
+                                                    </td>
+                                                
+                                        }
+                                        else
+                                        {
+
+                                                <td id="@item.FunctionID" name="F">
+                                               <p id="#target">
+                                            <input class="title" type="checkbox" id="F@(item.FunctionID)"  name="Switch" onchange="CMenu(@ViewBag.RoleId,@item.FunctionID)"/>
+                                            @Html.DisplayFor(x => item.FunctionName)
+                                                    </p>
+                                                    </td>
+                                        }
+                                        
+                                    
+                                    <td></td>
+                                    <td style="text-align:center">
+                                         @if (a == 1)
+                                         {
+                                             <img src="~/Images/down.png" onclick="MenuDown(@item.FunctionID)" data-toggle="tooltip" title="Down" style="cursor:pointer"/>
+                                             <img src="~/Images/blank.png" />
+                                         }
+                                         else if (a == Model.Menu.Count())
+                                         {
+                                             <img src="~/Images/blank.png" data-toggle="tooltip"/>
+                                             <img src="~/Images/top.png" onclick="MenuUp(@item.FunctionID)" data-toggle="tooltip" title="UP" style="cursor:pointer">
+                                         }
+                                         else
+                                         {
+                                             <img src="~/Images/down.png" onclick="MenuDown(@item.FunctionID)" data-toggle="tooltip" title="Down" style="cursor:pointer"/>
+                                             <img src="~/Images/top.png" onclick="MenuUp(@item.FunctionID)" data-toggle="tooltip" title="UP" style="cursor:pointer">
+                                         }
+                                    </td>
+
+                                      <td>
+                                              <button type="button" class="btn btn-info" onclick="EditMenuItem(0,@item.FunctionID,'F')">
+                                               <i class="entypo-pencil"></i>
+                                              </button>
+                                       </td>
+                                      
+                                       <td>
+                                               <button type="button" class="btn btn-red" onclick="Delete(0,@item.FunctionID,'F')">
+                                               <i class="entypo-cancel"></i>
+                                               </button>
+                                         </td>
+                                        @if (submenu.Count() > 0)
+                                        {
+                                            foreach (var User in submenu)
+                                            {
+                                                b++; 
+                                                var v = Model.CheckVal.Where(x => x.PageModuleId == User.PageModuleId).FirstOrDefault();
+                                                 <tr>
+                                                     <td></td>
+                                                     
+                                                         @if (v != null)
+                                                         {
+                                                             <td id="@User.PageModuleId" name="S">
+                                                                 <p id="#target">
+                                                             <input class="switch-input" type="checkbox" id="S@(User.PageModuleId)"  name="Switch" checked="true" onchange="CSubMenu(@ViewBag.RoleId,@User.PageModuleId,@item.FunctionID)"/>
+                                                            @Html.DisplayFor(x => User.ModuleName)
+                                                                     </p> 
+                                                                 </td>
+                                                         }
+                                                         else
+                                                         {<td id="@User.PageModuleId" name="S">
+                                                             <p id="#target">
+                                                            <input class="switch-input" type="checkbox" id="S@(User.PageModuleId)"  name="Switch" onchange="CSubMenu(@ViewBag.RoleId,@User.PageModuleId,@item.FunctionID)"/>
+                                                            @Html.DisplayFor(x => User.ModuleName)
+                                                                 </p> 
+                                                             </td>
+                                                         }
+                                                    
+                                                     <td style="text-align:center">
+                                                          @if (b == 1)
+                                                          {
+                                                              <img src="~/Images/down.png" onclick="SubMenuDown(@User.PageModuleId,@User.FunctionId)" data-toggle="tooltip" title="Down" style="cursor:pointer"/>
+                                                              <img src="~/Images/blank.png" />
+                                                          }
+                                                          else if (b == submenu.Count())
+                                                          {
+                                                              <img src="~/Images/blank.png" />
+                                                              <img src="~/Images/top.png" onclick="SubMenuUP(@User.PageModuleId,@User.FunctionId)" data-toggle="tooltip" title="UP" style="cursor:pointer">
+                                                          }
+                                                          else
+                                                          {
+                                                              <img src="~/Images/down.png" onclick="SubMenuDown(@User.PageModuleId,@User.FunctionId)" data-toggle="tooltip" title="Down" style="cursor:pointer"/>
+                                                              <img src="~/Images/top.png" onclick="SubMenuUP(@User.PageModuleId,@User.FunctionId)" data-toggle="tooltip" title="UP " style="cursor:pointer" />
+                                                          }
+                                                     </td>
+                                                     <td>
+                                                         <button type="button" class="btn btn-info" onclick="EditMenuItem(@User.PageModuleId,@User.FunctionId,'S')">
+                                                         <i class="entypo-pencil"></i>
+                                                         </button>
+                                                     </td>
+                                                     <td>
+                                                         <button type="button" class="btn btn-red" onclick="Delete(@User.PageModuleId,@User.FunctionId,'S')">
+                                                         <i class="entypo-cancel"></i>
+                                                         </button>
+                                                     </td>
+                                                 </tr>
+                                            }
+                                            b = 0;
+                                        }                                
+                            </tr>     
+                            }
+                        </table>
+                        </div>
+                 // added new
+                          <div class="col-md-offset-2">
+                        <div class="row">
+                            <div class="col-md-10" style="text-align: right;margin-left: 132px;">
+                                <button type="reset" id="btnAdd" class="btn btn-default" onclick="Reset()">
+                                    Reset
+                                </button>
+
+                                <button id="btnSubmit" type="submit" class="btn btn-success">
+                                    Save
+                                </button>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                        //end
+                    }
+                </div>
+           
+             <button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:5px;"   onclick="@("window.location.href='" + @Url.Action("ViewRoles", "ManageRole") + "'")    ;">
+                Back
+            </button>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var opts = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "onclick": null,
+        "showDuration": "500",
+        "hideDuration": "1000",
+        "timeOut": "1500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+
+
+    function MenuUp(FunctionID) {
+      //  window.location.href = '@Url.Action("TestRoles", "Administration")';
+        $.ajax({
+            url: "../../Administration/MenuUP/",
+            type: 'POST',
+            cache: false,
+            data: { FunctionID: FunctionID },
+            success:
+               function (Result) {
+                   if (Result == "Success") {
+                       //toastr.success("Menu moved Successfully", opts);
+                       setTimeout(function () { location.reload(); }, 1000);
+                   }
+               }
+        });
+    }
+
+    function MenuDown(FunctionID) {
+       // debugger;
+        //window.location.href = '@Url.Action("TestRoles", "Administration")';
+        $.ajax({
+            url: "../../Administration/MenuDown/",
+            type: 'POST',
+            cache: false,
+            data: { FunctionID: FunctionID },
+            success:
+               function (Result) {
+                   if (Result == "Success") {
+                       toastr.success("Menu moved Successfully", opts);
+                       setTimeout(function () { location.reload(); }, 1000);
+                      
+                   }
+               }
+        });
+    }
+
+
+    function SubMenuDown(PageModuleId, FunctionId) {
+        @*window.location.href = '@Url.Action("TestRoles", "Administration")';*@
+        $.ajax({
+            url: "../../Administration/SubMenuDown/",
+            type: 'POST',
+            cache: false,   
+            data: { FunctionId: FunctionId, PageModuleId: PageModuleId },
+            success:
+               function (result) {
+                   if (result == "Success") {
+                       toastr.success("Menu moved Successfully", opts);
+                       setTimeout(function () { location.reload(); }, 1000);
+
+                   }
+               }
+        });
+    }
+
+    function SubMenuUP(PageModuleId, FunctionId) {
+        @*window.location.href = '@Url.Action("TestRoles", "Administration")';*@
+        $.ajax({
+            url: "../../Administration/SubMenuUP/",
+            type: 'POST',
+            cache: false,
+            data: { FunctionId: FunctionId, PageModuleId: PageModuleId },
+            success:
+               function (result) {
+                   if (result == "Success") {
+                       toastr.success("Menu moved Successfully", opts);
+                       setTimeout(function () { location.reload(); }, 1000);
+
+                   }
+               }
+        });
+    }
+
+
+    function CMenu(RoleId, FunctionId) {
+      //  debugger;
+      //  alert("Alert in Cmenu");
+        var u = '@Url.Action("GetMenuListCount", "Administration")';
+        $.get(u, { FunctionId: FunctionId }, function (data) {
+            $.each(data, function () {
+            //    debugger;
+                if ($('#F'+FunctionId).prop("checked")==true) {
+                    $('#S' + this.Value).prop("checked", true);
+                    SelectMenu(RoleId, FunctionId, this.Value);
+                } else if ($('#F' + FunctionId).prop("checked")==false)  {
+                    $('#S' + this.Value).prop("checked", false);
+                    UnSelectMenu(RoleId, FunctionId, this.Value);
+                }
+            });
+        });
+
+    }
+
+    function CSubMenu(RoleId, PageModuleId, FunctionId) {
+     //   debugger;
+        var b = 0;
+        var u = '@Url.Action("GetSubMenuListCount", "Administration")';
+        $.get(u, { FunctionId: FunctionId }, function (data) {
+            $.each(data, function () {
+                if ($('#S' + this.Value).prop("checked") == true) {
+                    $('#F' + FunctionId).prop("checked", true);
+                    b++;
+                } else {
+                 //   $('#F' + FunctionId).prop("checked", false);
+                }
+                if (b == 0) {
+                    $('#F' + FunctionId).prop("checked", false);
+                }
+            });
+        });
+        if ($('#S' + PageModuleId).prop("checked") == true) {
+         //   debugger;
+            SelectSubMenu(RoleId, FunctionId, PageModuleId);
+        } else {
+            UnSelectSubMenu(RoleId, FunctionId, PageModuleId);
+        }
+    }
+
+    function SelectMenu(RoleId, FunctionId, PageModleId) {
+        var u = '@Url.Action("SelectMenu", "Administration")';
+        $.get(u, { RoleId: RoleId, FunctionId: FunctionId, PageModuleId:PageModleId },
+            function (data) {         });
+    }
+    function UnSelectMenu(RoleId, FunctionId, PageModleId) {
+        var u = '@Url.Action("UnselectMenu", "Administration")';
+        $.get(u, { RoleId: RoleId, FunctionId: FunctionId, PageModuleId: PageModleId },
+            function (data) { });
+    }
+    function SelectSubMenu(RoleId, FunctionId, PageModleId) {
+        var u = '@Url.Action("SelectSubMenu", "Administration")';
+                $.get(u, { RoleId: RoleId, FunctionId: FunctionId, PageModuleId: PageModleId },
+                    function (data) { });
+    }
+    function UnSelectSubMenu(RoleId, FunctionId, PageModleId) {
+        var u = '@Url.Action("UnselectSubMenu","Administration")';
+        $.get(u, { RoleId: RoleId, FunctionId: FunctionId, PageModuleId: PageModleId },
+            function (data) { });
+    }
+
+    function AddFunction() {
+        $.ajax({
+            url: "../../AdministrationSetup/AddFunction/",
+            type: 'GET', cache: false,
+
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+    function AddSubFunction() {
+
+        $.ajax({
+            url: "../../AdministrationSetup/AddSubFunction/",
+            type: 'GET', cache: false,
+
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+    //////
+
+    //edit menu
+
+    function EditMenuItem(PageModuleId, FunctionId,menu) {
+        debugger;
+        $.ajax({
+            url: "../../Administration/EditMenuItem/",
+            type: 'GET', 
+            cache: false,
+            data: { PageModuleId: PageModuleId, FunctionId: FunctionId,menutype:menu},
+            success: function (result) {
+               
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+    // Delete
+    function Delete(PageModuleId, FunctionId, menu) {
+        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+            if (conform) {
+                $.ajax({
+                    url: "../Administration/DeleteFunction/",
+                    type: 'POST', cache: false, data: { fid: FunctionId, mid: PageModuleId,menutype:menu }, success: function (result) {
+                        var opts = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "onclick": null,
+                            "showDuration": "500",
+                            "hideDuration": "1000",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.success("Deleted successfully!", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                });
+            }
+        });
+
+    }
+
+
+    $(function () {
+       // debugger;
+        $("#target").contextMenu({
+            selector: 'p',
+            autoHide: true,
+            zIndex: 10,
+            items: {
+                "edit": {
+                    name: "Rename",
+                    icon: "edit",
+                    accesskey: "e",
+                    disabled: function (key, opt) {
+                        return this.data('editdisable');
+                    },
+                    callback: function () {
+                        var text = $(this).text().trim();
+                        var input = $('<input id="attribute" type="text" class="form-control" value="' + text + '" />')
+                        $(this).text('').append(input);
+                        input.focus();
+                        this.data('cutDisabled', !this.data('cutDisabled'));
+                        this.data('editdisable', !this.data('editdisable'));
+                        return false;
+                    }
+                },
+                "Save": {
+                    name: "Save",
+                    icon: "paste",
+                    accesskey: "s",
+                    disabled: function (key, opt) {
+                        return !this.data('cutDisabled');
+                    },
+                    callback: function () {
+                        var Changedtext = $('#attribute').val();
+                        $('#attribute').parent().text(Changedtext);
+                        $('#attribute').remove();
+                        var s = $(this).closest('td').attr('name');
+                        if (s == "F") {
+                            var fid = $(this).closest('td').attr('id');
+                            mid = 0;
+                        }
+                        if (s == "S") {
+                            var mid = $(this).closest('td').attr('id');
+                            fid = 0;
+                        }
+                     //   debugger;
+                        $.ajax({
+                            type: 'GET',
+                            url: "../../Administration/EditMenu",
+                            data: { text: Changedtext, fid: fid, mid: mid },
+                            success: function (result) {
+                                if (result == "Success") {
+                                    var opts = {
+                                        "closeButton": true,
+                                        "debug": false,
+                                        "positionClass": "toast-top-right",
+                                        "onclick": null,
+                                        "showDuration": "500",
+                                        "hideDuration": "1000",
+                                        "timeOut": "1500",
+                                        "extendedTimeOut": "1000",
+                                        "showEasing": "swing",
+                                        "hideEasing": "linear",
+                                        "showMethod": "fadeIn",
+                                        "hideMethod": "fadeOut"
+                                    };
+                                    toastr.success("Saved successfully", opts);
+                                }
+                                setTimeout(function () { location.reload(); }, 1000);
+                            },
+                        });
+                        this.data('cutDisabled', !this.data('cutDisabled'));
+                        this.data('editdisable', !this.data('editdisable'));
+                        return false;
+                    }
+                },
+                "Delete": {
+                    name: "Delete",
+                    icon: "delete",
+                    callback: function () {
+                        var s = $(this).closest('td').attr('name');
+                        var fid = 0; mid = 0;
+                        if (s == "F") {
+                            var fid = $(this).closest('td').attr('id');
+                        }
+                        if (s == "S") {
+                            var mid = $(this).closest('td').attr('id');
+                        }
+                        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                            if (conform) {
+                                $.ajax({
+                                    url: "../Administration/DeleteFunction/",
+                                    type: 'POST', cache: false, data: { fid: fid, mid: mid }, success: function (result) {
+                                        var opts = {
+                                            "closeButton": true,
+                                            "debug": false,
+                                            "positionClass": "toast-top-right",
+                                            "onclick": null,
+                                            "showDuration": "500",
+                                            "hideDuration": "1000",
+                                            "timeOut": "1500",
+                                            "extendedTimeOut": "1000",
+                                            "showEasing": "swing",
+                                            "hideEasing": "linear",
+                                            "showMethod": "fadeIn",
+                                            "hideMethod": "fadeOut"
+                                        };
+                                        toastr.success("Deleted successfully!", opts);
+                                        setTimeout(function () { location.reload(); }, 1000);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },
+            }
+        });
+    });
+
+</script>

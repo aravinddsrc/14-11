@@ -1,0 +1,959 @@
+﻿@model DSRCManagementSystem.Models.communicationModel
+@{
+    ViewBag.Title = "Messages";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="../../Content/Template/js/jquery.multi-select.js" type="text/javascript"></script>
+
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" />
+
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+ <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+@*<link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />*@
+<script src="../../Content/Template/js/jquery.multi-select.js" type="text/javascript"></script>
+
+<script src="../../Content/JS/date.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<script src="../../Content/Template/js/fileinput.js" type="text/javascript"></script>
+
+ <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+ <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+ <link href="../../Content/themes/base/minified/jquery.ui.datepicker.min.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+   
+<script type="text/javascript">
+    function PopUp(message) {
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.success(message, opts);
+    }
+    function WarningPopUp(message) {
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.warning(message, null, opts);
+    }
+</script>
+<style type="text/css" id="treeViewStyle">
+    #tree
+    {
+        width: 350px;
+        height: 150px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+    }
+    
+    ul
+    {
+        list-style-type: none;
+    }
+    .dept
+    {
+        margin-left: 60px;
+        font-weight: bolder;
+    }
+    .expand
+    {
+        vertical-align: top;
+        margin-top: 2px;
+        width: 16px;
+        height: 16px;
+        border: 0;
+    }
+    .expand:hover
+    {
+        cursor: pointer;
+    }
+    .expandImage
+    {
+        background-image: url(../../Images/toggle_plus.png);
+        background-repeat: no-repeat;
+    }
+    .collapseImage
+    {
+        background-image: url(../../Images/toggle_minus.png);
+        background-repeat: no-repeat;
+    }
+    #selectedMembers
+    {
+        margin-left: 10px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+
+
+        $('#submit').on('click', function () {
+            
+
+
+            if ($("#dateFrom").val() == "") {
+                var Message = 'Please Choose Date From.!';
+                WarningPopUp(Message);
+                return false;
+            }
+            
+
+            @* var Did = $("#Department").find("option:selected").prop("value");
+            if (Did == null) {
+                var Message = 'Please select the department!';
+                WarningPopUp(Message);
+                return false;
+            }*@
+            @*var grpid = $('#grp1').val();
+            if (grpid == null) {
+                var Message = 'Please select the Group!';
+                WarningPopUp(Message);
+                return false;
+            }*@
+            if ($("#dateTo").val() == "") {
+                var Message = 'Please Choose Date To.!';
+                WarningPopUp(Message);
+                return false;
+            }
+            if ($("#Department").val() == "") {
+                var Message = 'Please Choose Department';
+                WarningPopUp(Message);
+                return false;
+            }
+
+
+            var messsageToSend = $('#message').val();
+            if (messsageToSend == "") {
+                var Message = 'Please enter the message.!';
+                WarningPopUp(Message);
+                return false;
+            }
+
+            var value = $("#dateFrom").val();
+            var value = $("#dateTo").val();
+
+            var startDate = $("#dateFrom").val();
+            var splitedStartDate = startDate.split("-");
+
+            var endDate = $("#dateTo").val();
+            var splitedEndDate = endDate.split("-");
+
+
+            
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (startDateTime > endDateTime) {
+                
+                var Message = 'From date is greater.!';
+                WarningPopUp(Message);
+                return false;
+            }
+        });
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+            $("#Department").select2();
+            //$("#DepGroup").select2();
+        });
+        $("#Department").select2();
+        $("#ManagedBy").select2();
+    });
+
+    $('.expand').click(function () {
+        $(this).toggleClass('expandImage');
+        $(this).toggleClass('collapseImage');
+        $(this).parent().find('ul').slideToggle();
+    });
+
+    var dateTo = $(".form-control datepicker").datepicker(
+    {
+        format: 'dd/mm/yyyy',
+        startDate: '1d',
+        autoclose: true
+
+    }).on('changeDate', function (e) {
+
+    });
+
+    var dateFrom = $(".form-control datepicker").datepicker(
+    {
+        format: 'dd/mm/yyyy',
+        startDate: '1d',
+        autoclose: true
+    }
+    ).on('changeDate', function (e) {
+        dateTo.datepicker('setStartDate', e.date);
+        var parts = dateTo[0].value.split("/");
+        var toDate = new Date(parts[2], parts[1] - 1, parts[0]);
+        if (toDate < e.date)
+            $('#dateTo').val($('#dateFrom').val());
+        var toDate = new Date(dateTo[0].value);
+    });
+
+        @*function ViewMessage() {
+            $.ajax({
+                type: "POST",
+                url: "/Communication/ViewMessage"
+            });
+        }*@
+
+
+    $('#dateFrom').change(function () {
+        //alert($(this).val());
+        $('#dateTo').attr('data-end-date', $(this).val());
+    });
+    $.extend($.expr[':'], {
+        unchecked: function (obj) {
+            return ((obj.type == 'checkbox' || obj.type == 'radio') && !$(obj).is(':checked'));
+        }
+    });
+
+    $("#tree input:checkbox").on('change', function () {
+        $(this).next('ul').find('input:checkbox').prop('checked', $(this).prop("checked"));
+
+        for (var i = $('#tree').find('ul').length - 1; i >= 0; i--) {
+            $('#tree').find('ul:eq(' + i + ')').prev('input:checkbox').prop('checked', function () {
+                return $(this).next('ul').find('input:unchecked').length === 0 ? true : false;
+            });
+        }
+    });
+
+
+
+
+    function GetGroups() {
+
+        
+        var Did = $("#Department").find("option:selected").prop("value");
+
+        // $('ul li').empty();
+        $('#tree').empty();
+
+        $.ajax({
+            // url: "../../Communication/mailInvites/",
+            url: "../../Communication/GetGroups/",
+            type: 'GET',
+            cache: false,
+            data: { depid: Did },
+            success: function (result) {
+                //$:each(result, function (i, item) 
+                //{
+
+               // console.log(result.FirstList);
+               // console.log(result.SecondList);
+                for (var i = 0; i < result.FirstList.length; i++) {
+
+                    $("#tree").append("<li><input id='grp" + i + "' type='checkbox' checked onchange='GetGroup(" + result.FirstList[i].GroupId + ")' value='" + result.FirstList[i].GroupId + "'  /><label>" + result.FirstList[i].GroupName + "</label></li>");
+
+                    $('#grp' + i).on("change", function () {
+
+                    });
+                }
+
+
+                result.SecondList.forEach(function (valArr) {
+
+                    //console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1));
+                   // $("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1);
+                    //$("#ManagedBy").select2();
+                  $("#ManagedBy").select2("val", $("#ManagedBy").select2("val").concat(valArr.Userid));
+                });
+
+                //}
+                //}
+                
+            }
+            
+        });
+    }
+
+
+
+
+
+
+    @* function GetGroups() {
+
+            
+
+
+            var Did = $("#Department").find("option:selected").prop("value");
+
+            // alert(Did);
+
+            //$('ul li').empty();
+            $('#tree').empty();
+
+            $.ajax({
+                // url: "../../Communication/mailInvites/",
+                url: "../../Communication/GetGroups/",
+                type: 'GET',
+                cache: false,
+                data: { depid: Did },
+                success: function (result) {
+                    // if (result.success) {
+
+
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        $("#tree").append("<li><input id='grp" + i + "' type='checkbox' checked onchange='GetGroup(" + result[i].GroupId + ")' value='" + result[i].GroupId + "'  /><label>" + result[i].GroupName + "</label></li>");
+                        //$("#tree").append("<li><input id='grp" + i + "' type='checkbox' onchange='GetGroup(" + result[i].GroupId + ","+ result.depid +")' value='" + result[i].GroupId + "'  /><label>" + result[i].GroupName + "</label></li>");
+
+                        $('#grp' + i).on("change", function () {
+                            
+                           
+                        });
+                    }
+                }
+            });
+        }*@
+    @* function GetUsers() {
+
+        var DeptID = $("#Department").find("option:selected").prop("value");
+       
+
+        if (DeptID !== "") {
+
+            var url2 = '@Url.Action("GetUser", "Communication")';
+
+                $.get(url2, { DepartmentId: DeptID }, function (data) {
+
+                    data.forEach(function (valArr) {
+                        console.log(valArr);
+                        $("#ManagedBy option[value='" + valArr + "']").attr("selected", 1);
+                    })
+
+                    $("#ManagedBy").select2();
+
+                });
+            }
+        }*@
+    //function GetGroup(groupid,departmentid)
+    @* function GetGroup(groupid) {
+        
+        var Did = $("#Department").find("option:selected").prop("value");
+       
+        $.ajax({
+            // url: "../../Communication/mailInvites/",
+            url: "../../Communication/GetUsers/",
+            type: 'GET',
+            cache: false,
+            data: { DepartmentId: Did, groupid: groupid },
+            success: function (result) {
+                
+                
+
+               
+                    result.forEach(function (valArr) {
+                        console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected",1));
+                        $("#ManagedBy option[value='" + valArr.UserId + "']").attr("selected", 1);
+                    })
+                
+                
+
+                
+                    result.forEach(function (valArr) {
+                        console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1));
+                        $("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1);
+                        $(this).removeClass("selected")
+                    })
+               
+                    $("#ManagedBy").select2();
+            }
+        });
+    } *@
+
+
+    @*function GetGroups() {
+        
+        //$('#portlet-config1').show();
+        var Did = $("#Department").find("option:selected").prop("value");
+
+        $('#tree').empty();
+
+        $.ajax({
+
+            url: "../../Communication/GetGroups/",
+            type: 'GET',
+            cache: false,
+            data: { depid: Did },
+            success: function (result) {
+
+                //console.log(result.FirstList);
+                //console.log(result.SecondList);
+
+                for (var i = 0; i < result.FirstList.length; i++) {
+
+                    $("#tree").append("<li><input id='grp" + i + "' type='checkbox' checked onchange='GetGroup(" + result.FirstList[i].GroupId + "," + i + ")' value='" + result.FirstList[i].GroupId + "'  /><label>" + result.FirstList[i].GroupName + "</label></li>");
+
+                    $('#grp' + i).on("change", function () {
+
+                    });
+                }
+
+                for (var i = 0; i < result.SecondList.length; i++) {
+                    result.SecondList.forEach(function (valArr) {
+
+                       // console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1));
+                        $("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1);
+                        $("#ManagedBy").select2();
+
+                      //  console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1));
+                      //  $("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1);
+                      //  $("#ManagedBy").select2();
+                        $("#ManagedBy").select2("val", $("#ManagedBy").select2("val").concat(valArr.Userid));
+
+                    });
+                }
+               // $('#portlet-config1').hide();
+            }
+        });
+    }
+
+
+
+    function GetGroup(groupid, i) {
+
+        
+        var Did = $("#Department").find("option:selected").prop("value");
+        var groupChkID = $('#grp' + i).prop('checked');
+
+        $.ajax({
+
+            url: "../../Communication/GetUsers/",
+            type: 'GET',
+            cache: false,
+            data: { DepartmentId: Did, groupid: groupid },
+            success: function (result) {
+
+
+                for (var i = 0; i < result.length; i++) {
+
+                    console.log($("#ManagedBy option[value='" + result[i].Userid + "']").attr("selected"));
+
+                    if ($('#grp' + i).prop('checked')) {
+                        $("#ManagedBy option[value='" + result[i].Userid + "']").prop("selected", true);
+                    }
+                    else {
+                        $("#ManagedBy option[value='" + result[i].Userid + "']").prop("selected", false);
+                    }
+
+                    $("#ManagedBy").select2();
+
+                }
+                
+                //  });
+
+
+            }
+        });
+    }*@
+
+
+
+
+
+    function GetGroups() {
+
+
+        var DepartmentName = $('#DepartmentID').find("option:selected").prop("value");
+
+        $("#hide").hide();
+
+
+        var url2 = '@Url.Action("GetAvailEmployees")';
+
+        $.get(url2, { DepartmentName: DepartmentName }, function (data) {
+            GetUsers(DepartmentName);
+            $(".test").html("");
+
+            var items = [];
+            items.push("");
+            items.push("<option value=0>--Select--</option>");
+
+            //var items1 = [];
+            //items1.push("");
+            //items1.push("<option value=0>--Select--</option>");
+
+            $.each(data, function () {
+                
+                var counter = $(".test tr").length;
+
+                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                $(".test").append('<tr><td><input type="checkbox" class="CheckBox" unchecked onchange="GetUsers(this.Value)" value="' + this.Value + '" id="Check' + counter + '" ></td><td>' + this.Text + '</td></tr>');
+
+            });
+
+           // items1.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+           // $(".test").append('<tr><td><input type="checkbox" class="CheckBox" checked onchange="GetUsers(this.Value)" value="' + this.Value + '" id="CheckUn" ></td><td>' + "Ungrouped" + '</td></tr>');
+            $("#UID").html(items.join(' '));
+          //  $("#UID").html(items1.join(' '));
+
+            $("#UID").select2();
+            // setTimeout(GetUsers, 3);
+            GetUsers(DepartmentName);
+
+
+
+
+        });
+    }
+
+
+
+    function GetUsers(Dep) {
+
+
+
+
+
+        var DepartmentName = Dep;
+        //var Dep = $('#DepartmentID').find("option:selected").prop("value");
+
+        var counter = $(".test tr").length;
+        var msg = '';
+        GROUP = [];
+        for (i = 0; i < counter; i++) {
+
+            msg += "\n Check #" + i + " : " + $('#Check' + i).prop("checked");
+
+
+
+            //alert(msg);
+
+            if ($('#Check' + i).prop("checked") == true) {
+                GROUP.push($('#Check' + i).val())
+            }
+        }
+
+
+        var DepartmentName = $('#DepartmentID').find("option:selected").prop("value");
+
+        if (DepartmentName != null) {
+
+            var url6 = '@Url.Action("GetUsers")';
+                  //url6 : "../../Communication/GetUsers/",
+                $.get(url6, { GroupName: JSON.stringify(GROUP), DepartmentName: DepartmentName },
+                   function (data) {
+                       var items = [];
+                       items.push("");
+
+                       $("#hide").show();
+                       items.push("<option value=0>--Select--</option>");
+
+                       $.each(data, function () {
+
+                           items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                       });
+                       $("#ManagedBy").html(items.join(' '));
+                       $("#ManagedBy").select2();
+
+
+                       $.each(data, function () {
+                            
+                           $("#ManagedBy option[value=" + this.Value + "]").prop("selected", true);
+                           $("#ManagedBy option[value='" +this.Value + "']").attr("selected", 1);
+                           $("#ManagedBy").select2();
+                       });
+                       
+
+
+
+                   });
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @* function GetGroup(groupid) {
+        
+        var Did = $("#Department").find("option:selected").prop("value");
+        //for (var i = 0; i < length; i++) {
+        //if (($('#grp'+i).is(":unchecked")) == true) {
+
+        //}
+        //}
+
+        $.ajax({
+            // url: "../../Communication/mailInvites/",
+            url: "../../Communication/GetUsers/",
+            type: 'GET',
+            cache: false,
+            data: { DepartmentId: Did, groupid: groupid },
+            success: function (result) {
+                
+
+                if (result.length > 0) {
+                    
+                    $("#ManagedBy option:selected").removeAttr("selected");
+                    $("#ManagedBy").select2();
+                    //$(this).removeClass("selected");
+                    //$(this).removeClass("valArr.Userid");
+                }
+                result.forEach(function (valArr) {
+                    
+                    console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected"));
+                    $("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected");
+                    $("#ManagedBy").select2();
+
+                    @* result.forEach(function (valArr) {
+                        var selectobject = document.getElementById("ManagedBy")
+                        //for (var i = 0; i < selectobject.length; i++) {
+                        if (selectobject.options[i].value == 'valArr.Userid')
+                            selectobject.remove(i);
+                        //}
+
+                    })*@
+
+
+    @* if (($('#grp' + i).is(":checked")) == true) {
+
+                    result.forEach(function (valArr) {
+                    console.log($("#ManagedBy option[value='" + valArr.Userid + "']").attr("selected", 1));
+                    $("#ManagedBy option[value='" + valArr.UserId + "']").attr("selected", 1);
+                    $("#ManagedBy").select2();
+               })
+                }*@
+    @*  });
+
+
+            }
+        });
+    }*@
+
+</script>
+@*<ol class="breadcrumb bc-3">
+    @* <li><a><i class="entypo-home"></i>Home</a>
+    </li>*@
+    @*<li><a>Communication</a> </li>
+    <li class="active"><strong>Send Messages</strong> </li>
+</ol>*@
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("Messages", "Communication")">Communication</a></li>
+    <li class="active"><strong>DashBoard(s) Messages</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Messages","Communication")"style="color:black ">
+            Communication
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Dashboard Message(s)</b>
+    </p>
+<div>
+    @if (Model.ErrorSuccessMessage != null)
+    {
+
+      
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var Message = 'Message sent successfully.!';
+                PopUp(Message);
+            });
+
+            function update() {
+
+            }
+
+        </script>
+   
+    }
+
+
+    <button class="btn btn-blue" style="float: right; padding-right:10px;margin-top:25px;"   onclick="@("window.location.href='" + @Url.Action("ViewMessage", "Communication") + "'");">
+            View Sent Message(s)
+           </button>
+    @using (Html.BeginForm("Messages", "Communication", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered" }))
+    {
+        <div class="row">
+            <div class="col-md-12" style="text-align: right; float: right; margin-top:30px">
+                @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+            </div>
+        </div>
+        
+           <div class="form-group">
+            <label class="col-sm-3 control-label">
+               @* @Html.Label( "Department:",(string)ViewBag.Lbl_department )  @Html.Label("*", new { @style = "color:#FF0000" })*@
+                Department: @Html.Label("*", new { @style = "color:#FF0000" })
+            </label>
+            <div class="col-sm-6 ">
+             @*  @Html.DropDownListFor(m => m.Department, ViewBag.DepartmentList as SelectList, "---Select---", new { @id = "Department", @name = "Department", @class = "form-control", @onchange = "GetUsers()"  @onchange = "GetGroups()" })*@
+                 @Html.DropDownListFor(m => m.Department, ViewBag.Department as SelectList, "---Select---", new
+          {
+               @id = "DepartmentID",
+              @name = "DepartmentId",
+              @class = "select2-container select2-container-multi select2 visible",
+              @onchange = "GetGroups()"
+          })
+                <span id="dep" style="color: Red;"></span>
+            </div>
+        </div>
+        
+      @*  if (Model.dep != null)
+        { 
+            <div class="form-group">
+            <label class="col-sm-3 control-label">
+                To Groups @Html.Label("", new { @style = "color:#FF0000" })</label>
+                <div id="tree" class="col-lg-9">
+                <ul>*@
+                   
+                @*   @foreach (var Grp in Model.selGroup)
+                   {
+                        
+                           <ul>
+                               
+                                    <li>
+                                        <input type="checkbox"  tabindex="5" value="@Grp.GroupId" name="selectedMembers" id="grp" onchange="update()" />
+                                        @Grp.GroupName
+                                    </li>
+                                
+                            </ul>
+                      
+                   }*@
+                    
+              @*  </ul>
+            </div>
+          
+        </div>
+        }
+
+        else
+        {
+
+                       <div class="form-group">
+            <label class="col-sm-3 control-label">
+                To Groups: @Html.Label("*", new { @style = "color:#FF0000" })</label>
+            <div id="tree" class="col-lg-9">
+                <ul>
+                   @foreach (var Grp in Model.Groups)
+                   {
+                        
+                           <ul>
+                               
+                                    <li>
+                                       @* <input type="checkbox"  tabindex="5" value="@Grp.gID" name="selectedMembers" id="grp" />
+                                        @Grp.gName*@
+                                  @*  </li>
+                                
+                            </ul>
+                      
+                   }
+                    
+                </ul>
+            </div>
+        </div>
+    
+        }*@
+        
+        @* <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Department Group: @Html.Label("", new { @style = "color:#FF0000" })
+            </label>
+            <div class="col-sm-6 ">
+                 @Html.DropDownListFor(m => m.Group, ViewBag.GroupList as SelectList, "---Select---", new { @id = "DepGroup", @name = "DepGroup", @class = "form-control" })
+                <span id="depgroup" style="color: Red;"></span>
+            </div>
+        </div>*@
+        
+        
+        
+        
+        <div class="form-group">
+        <label class="col-sm-3 control-label">
+            To Groups @Html.Label("*", new { @style = "color:#FF0000" })</label>
+        <div id="tree" class="col-lg-9">
+             <table width="50%" class="test">
+                                    <tr>
+                                        <td>
+                                            </td>
+                                        <td>
+                                            </td>
+                                        </tr>
+                                    </table>
+                     </div>
+
+    </div>
+        
+        
+        
+        
+         <div class="form-group">
+            <label class="col-sm-3 control-label">
+                User List: @Html.Label("*", new { @style = "color:#FF0000" })
+            </label>
+            <div class="col-sm-6 ">
+              @* @Html.DropDownListFor(m => m.UserList, ViewBag.Leaders as MultiSelectList, "---Select---", new { @id = "ManagedBy", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })*@
+                @Html.DropDownListFor(m => m.UserList, ViewBag.Users as MultiSelectList,  new { @id = "ManagedBy", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Message <b>@Html.Label("*", new { @style = "color:#FF0000" })</b></label>
+            <div class="col-sm-6">
+                @Html.TextAreaFor(m => m.Message, new { @class = "form-control", @id = "message", @maxlength = 1000, @cols = 100, @rows = 15, @wrap = "hard" })
+                @*@Html.TextArea(name: "Message", value: Model.Message, htmlAttributes: new { @rows = 15, @cols = 150, @class = "form-control", @id = "message" })*@
+            </div>
+        </div>
+       @* <div class="form-group">
+            <label class="col-sm-3 control-label">
+                To Users <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+            </label>
+            @* <div class="col-sm-7">
+                @Html.DropDownListFor(m => m.selectedUsers, Model.users.Select(f => new SelectListItem
+           {
+               Text = f.userName,
+               Value = f.userId.ToString(),
+               Selected = f.isSelected
+           }), new { @Multiple = "multiple", @class = "form-control multi-select" })
+            </div>*@
+           @* <div id="tree" class="col-sm-7">
+                <ul>
+                    @foreach (var Dept in Model.departments)
+                    {
+
+                        var UserList = Model.users.Where(x => x.departmentId == Dept.departmentId).ToList();
+
+                        if (UserList.Count > 0)
+                        {
+                        <li class="dept">@* <img class="expand expandImage" />*@
+                          @*  <img class="expand collapseImage" />
+                            <input type="checkbox"  value="@Dept.departmentId" name="selectedDepartments" id="selectedDepartments" />
+                            @Dept.departmentName
+                            <ul>
+                                @foreach (var User in UserList)
+                                {
+                                    <li>
+                                        <input type="checkbox" value="@User.userId" name="selectedMembers" id="selectedMembers" />
+                                        @User.userName
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        }
+                    }
+                </ul>
+            </div>*@
+       @* </div>*@
+       
+        
+        
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Valid From</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(m => m.dateFrom, "{0:dd/MM/yyyy}", new {  @class = "form-control datepicker", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+            </div>
+            <label class="col-sm-1 control-label">
+                Valid To</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(m => m.dateTo, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker", @data_start_date = "d", @data_format = "dd-mm-yyyy" })
+                <span id="date" style="color: Red;"></span>
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Message Type</label>
+            @for (int i = 0; i < Model.messageType.Count; i++)
+            {
+
+                if (Model.messageType[i].typeId == 1)
+                {
+                @Html.RadioButtonFor(m => m.messageTypeId, Model.messageType[i].typeId, new { @checked = "true" })
+                }
+                else
+                {
+                @Html.RadioButtonFor(m => m.messageTypeId, Model.messageType[i].typeId)
+                }
+                <label class="control-label">
+                    @Model.messageType[i].description</label>
+            
+            }
+        </div>
+        <br />
+        <div class="center-block" style="margin-left: 30%;">
+            @Html.CheckBoxFor(m => m.showComments)
+            <span>Include Comments</span> @*  @Html.CheckBoxFor(m => m.showToAll)
+            <span>Show to all</span>*@
+        </div>
+        <div>
+            <button id="submit" type="submit" class="btn btn-success center-block">
+                Send Message</button>
+        </div>
+@*  <div class="col-sm-7">
+            <select multiple="multiple" name="my-select[]" class="form-control multi-select">
+                <option value="elem_1">elem 1</option>
+                <option value="elem_2">elem 2</option>
+                <option value="elem_3">elem 3</option>
+                <option value="elem_4">elem 4</option>
+                <option value="elem_5">elem 5</option>
+                <option value="elem_6">elem 6</option>
+                <option value="elem_7">elem 7</option>
+                <option value="elem_8" selected>Selected element</option>
+                <option value="elem_9" selected>Selected element 2</option>
+            </select>
+        </div>*@
+
+    }</div>
+
+
+<div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                      <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%; margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

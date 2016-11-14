@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DSRCManagementSystem.Holiday>
+@{          
+     
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+<style>
+.table tr td:nth-child(1)
+{
+    text-align: center;
+} 
+</style>
+@{
+    Func<int, string> editFunc = delegate(int i)
+    {
+        var outputLink = "<button type=\"button\" class=\"btn  btn-default btn-block\" onclick=\"EditHoliday('" + i + "')\">Edit</button>";
+        return outputLink;
+    };
+    Func<int, string> deleteFunc = delegate(int i)
+    {
+        var outputLink = "<button type=\"button\" class=\"btn  btn-default btn-block\" onclick=\"DeleteHoliday('" + i + "')\">Delete</button>";
+        return outputLink;
+    };
+
+    Func<DateTime, string> dateTimeFunc = delegate(DateTime dateTime)
+    {
+        return String.Format("{0:MMM d, yyyy - ddd}", dateTime);
+    };
+}
+@grid.GetHtml(tableStyle: "table table-bordered datatable", headerStyle: "head",
+                columns: grid.Columns(
+                grid.Column("S.No", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                grid.Column("Date", style: "datePickers", format: item => Html.Raw(dateTimeFunc(item.Date))),
+                grid.Column("Detail"),
+                //grid.Column("Day", format: item => item.Date.DayOfWeek),
+                grid.Column("", format: @<text><button type="button" class="btn btn-info btn-icon icon-left" onclick="EditHoliday('@item.HolidayId')"><i class="fa fa-edit"></i>Edit</button></text>),
+                grid.Column("", format: @<text><button type="button" class="btn btn-red btn-icon icon-left" onclick="DeleteHoliday('@item.HolidayId')"><i class="entypo-cancel"></i>Delete</button></text>)), 
+                htmlAttributes: new {@id = "tblHoliday"})

@@ -1,0 +1,887 @@
+﻿@model DSRCManagementSystem.Models.skilllist
+@{                                
+    ViewBag.Title = "Add Skill";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+}
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Skills","Skills")">Skills</a></li>
+    <li class="active"><strong>Skills Declaration</strong> </li>
+</ol>*@
+     <p>
+        <a href="@Url.Action("Skills","Skills")"style="color:black ">
+            Skills
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Skills Declaration</b>
+    </p>
+<br />
+@using (Html.BeginForm("Skills", "Skills", FormMethod.Post, new { @id = "form" }))
+{
+    <div class="row" style="height: 400px;">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                        Add Skills</div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="clear">
+                    </div>
+                    <br />
+                    <div class="lft-spacing">
+                        <div class="table" id="Courseloop">
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right">
+                                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2" style="text-align: center">
+                                    @Html.LabelFor(x => x.SKL.Technology, new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-2" style="text-align: left">
+                                    Specialization
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-2" style="text-align: center">
+                                    Level
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-1" style="text-align: center">
+                                    Primary
+                                </div>
+                                @* <div class="col-md-1">
+                                    @Html.LabelFor(x => x.SKL.Secondary, new { @class = "control-label" })
+                                </div>*@
+                                <div class="col-md-2" style="text-align: center">
+                                    @Html.LabelFor(x => x.SKL.DateAssessed, new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-2" style="text-align: center">
+                                    @Html.LabelFor(x => x.SKL.LastUsed, new { @class = "control-label" })
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                                <div class="col-md-1" style="text-align: center">
+                                    Experience
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                </div>
+                            </div>
+                            <br />
+                            @for (int i = 0; i < Model.skilllists.Count; i++)
+                            {
+                                // @class ="selectSearch" is replaced by "form-control"
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.skilllists[i].Id, Model.SKL.TechIDList, "--Select--", new { @id = "TechnologyId" + i, @name = "TechnologyId", @class = "form-control", @onchange = "SelectLoad($(this).val()," + i + ")" })
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].Id, " ", new { @style = "color:red" })
+                                        <span id="tech" style="color: Red"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.skilllists[i].SpecificationId, Model.SKL.speciIdList, "--Select--", new { @id = "spl" + i, @name = "spl", @class = "form-control" })  @*@style = "Width:130px"*@
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].SpecificationId, " ", new { @style = "color:red" })
+                                         @*<span id="specification" style="color: Red"></span>*@
+                                        <span id="speli" style="color: Red"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.skilllists[i].LevelId, Model.SKL.LevelIDList, "--Select--", new { @id = "LevelId" + i, @name = "LevelId", @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].LevelId, " ", new { @style = "color:red" })
+                                        <span id="lev" style="color: Red"></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.CheckBoxFor(x => x.skilllists[i].Primary, new { @id = "primary" + i, @class = "form-control", @style = "height:20px" })
+                                    </div>
+                                    @* <div class="col-md-1">
+                                        @Html.CheckBoxFor(x => x.skilllists[i].Secondary, new { @id = "secondary" + i, @class = "form-control", @style = "height:20px" })
+                                    </div>*@
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(x => x.skilllists[i].DateAssessed, " ", new { @id = "DateAssessed" + i, @class = "form-control datetimepicker", @style = "height:42px", @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].DateAssessed, " ", new { @style = "color:red" })
+                                        <span id="date" style="color: Red"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.skilllists[i].yearid, Model.SKL.yearidlist, "", new { @id = "yearId" + i, @name = "yearId", @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].yearid, " ", new { @style = "color:red" })
+                                        <span id="last" style="color: Red"></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.TextBoxFor(x => x.skilllists[i].experiance, new { @id = "experiance" + i, @class = "form-control", @onpaste = "return false", @maxlength = 3, autocomplete = "off" })
+                                        @Html.ValidationMessageFor(x => x.skilllists[i].experiance, " ", new { @style = "color:red" })
+                                        <span id="exp" style="color: Red"></span>
+                                    </div>
+                                    
+                                     <div class="col-md-2">
+                                         <br />
+                                       @Html.Label("Reporting Person", new { @class = "control-label" })
+                                         @Html.Label("*", new { @style = "color:#FF0000" })
+                                       @Html.DropDownListFor(x=>x.skilllists[i].ApprovedBy, Model.SKL.ApprovedList,"--Select--", new { @id = "ApprovedBy"+i, @name = "ApprovedBy", @class = "form-control" })
+                                     @Html.ValidationMessageFor(x => x.skilllists[i].ApprovedBy, " ", new { @style = "color:red" })
+                                        <span id="Status" style="color: Red"></span>
+                                    </div>
+                                </div>
+                                <br />
+                            }
+                        </div>
+                        <div id="courseRows" class="table">
+                            @*  <div class="row">
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.SKL.Id, Model.SKL.TechIDList, "", new { @name = "skilllists[x].TechnologyId", @id = "TechnologyId", @class = "selectSearch" })
+                                    @Html.ValidationMessageFor(x => x.SKL.Id, " ", new { @style = "color:red" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.SKL.SpecificationId, Model.SKL.speciIdList, "", new { @name = "skilllists[x].spl", @id = "spl", @class = "selectSearch", @style = "height:42px" })
+                                    @Html.ValidationMessageFor(x => x.SKL.SpecificationId, " ", new { @style = "color:red" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.SKL.LevelId, Model.SKL.LevelIDList, "", new { @name = "skilllists[x].LevelId", @id = "LevelId", @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.SKL.LevelId, " ", new { @style = "color:red" })
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.CheckBoxFor(x => x.SKL.Primary, new { @name = "skilllists[x].primary", @id = "primary", @class = "form-control", @style = "height:20px" })
+                                </div>
+                                @* <div class="col-md-1">
+                                    @Html.CheckBoxFor(x => x.SKL.Secondary, new { @name = "skilllists[x].secondary", @id = "secondary", @class = "form-control", @style = "height:20px" })
+                                </div>*@ @*<div class="col-md-2">
+                                    @Html.TextBoxFor(x => x.SKL.DateAssessed, new { @name = "skilllists[x].DateAssessed", @id = "DateAssessed", @class = "form-control datetimepicker", @style = "height:42px" })
+                                    @Html.ValidationMessageFor(x => x.SKL.DateAssessed, " ", new { @style = "color:red" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(x => x.SKL.yearid, Model.SKL.yearidlist, "", new { @name = "skilllists[x].yearId", @id = "yearId", @class = "selectSearch" })
+                                    @Html.ValidationMessageFor(x => x.SKL.yearid, " ", new { @style = "color:red" })
+                                </div>
+                            </div>*@
+                            <br />
+                        </div>
+                    </div>
+                    @* <div style="float: left; font-weight: bold;">
+                        <button class="btn btn-blue" style="font-weight: bold" id="addBtn">
+                            Add New Row
+                        </button>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="success" value="@TempData["success"]"/>
+        <input type="hidden" id="validation" value="@TempData["validation"]"/>
+        <div style="float: right; margin-right: 15px;">
+        <button  type="button" class="btn btn-info"
+            id="btnsub" name="submitbutton1" onclick="doValidation()">
+            Submit</button>
+        <button type="reset" id="btnAdd" class="btn btn-default"
+            onclick="Clear()">
+            Reset</button>
+            </div>
+    </div>      
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>       
+}
+
+@* added on 10/20*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                   Approved Skills </div>
+            </div>
+            
+@{
+    int SNO = 1;
+}
+
+            <div class="panel-body">
+                <div class="table table-bordered datatable">
+                    <table class="table table-bordered datatable" id="tblCmptr1">
+                        <thead>
+                            <tr>
+                             <td>
+                                   S.No
+                                </td>
+                                <th>
+                                    Technology
+                                </th>
+                                <th>
+                                    Specialization
+                                </th>
+                                <th>
+                                    Level
+                                </th>
+                                <th>
+                                    Primary
+                                </th>
+                                @*<th>
+                    Secondary
+                </th>*@
+                                <th>
+                                    Date Assessed
+                                </th>
+                                <th>
+                                    Last Used
+                                </th>
+                                <th>
+                                    Experience
+                                </th>
+                                <th>
+                                   Details
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                          @foreach (var item in ViewBag.userSkills1)
+                        {
+                            <tr>
+                             <td>
+                                     @(SNO++)
+                                </td>
+                                <td>
+                                    @item.Technology
+                                </td>
+                                <td>
+                                    @item.Specification
+                                </td>
+                                <td>
+                                    @item.level
+                                </td>
+                                <td>
+                                    @(item.Primary ? "Primary" : "Secondary")
+                                </td>
+                                @*<td>
+                    @item.Secondary
+                </td>*@
+                                <td style="text-align: center">
+                                    @item.DateAssessed
+                                </td>
+                                <td style="text-align: center">
+                                    @item.LastUsed
+                                </td>
+                                <td style="text-align: center">
+                                    @item.experiance
+                                </td>
+                                <td style="text-align: center">
+                   <center><a class="btn btn-info" data-toggle="tooltip" title="Details" onclick='AddSkill(@item.Id)'><i class="entypo-doc-text"></i></a></center>
+                                </td>
+                                
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+     
+  @{
+     SNO = 1;
+}
+                 @*added on 10/20*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Rejected/Pending Approvals</div>
+            </div>
+            <div class="panel-body">
+                 @using (Html.BeginForm("Skills", "Skills", FormMethod.Post, new { @id = "ViewRoleSearch" }))
+                {
+                      <div class="clear">
+                    </div>
+                    <br />
+                 <div class="form-group">
+                        <div class="col-md-1" style="width: 102px; padding-top: 7px;">
+                            @Html.DisplayName("Skill Status")
+                        </div>
+                        <div class="col-md-2">
+                            @Html.DropDownList("skillstatus", ViewBag.skillstatus  as SelectList, "All", new { @id = "AssessmentStatusID", @name = "statusType", @class = "form-control" })
+                        </div>
+                        <div class="col-md-3" style="margin-top: 1px; margin-left: 0px;">
+                            <button type="button" name="btn_Submit" class="btn btn-info btn-icon" onclick = "Get()" >
+                                Search <i class="entypo-search"></i>
+                            </button>
+                        </div>
+                       
+                    </div>
+                <div class="table table-bordered datatable" style="margin-top:50px;">
+                    <table class="table table-bordered datatable" id="tblCmptr">
+                        <thead>
+                            <tr>
+                             <td>
+                                   S.No
+                                </td>
+                                <th>
+                                    Technology
+                                </th>
+                                <th>
+                                    Specialization
+                                </th>
+                                <th>
+                                    Level
+                                </th>
+                                <th>
+                                    Primary
+                                </th>
+                                @*<th>
+                    Secondary
+                </th>*@
+                                <th>
+                                    Date Assessed
+                                </th>
+                                <th>
+                                    Last Used
+                                </th>
+                                <th>
+                                    Experience
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Edit
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in ViewBag.userSkills)
+                        {
+                            <tr>
+                             <td>
+                                     @(SNO++)
+                                </td>
+                                <td>
+                                    @item.Technology
+                                </td>
+                                <td>
+                                    @item.Specification
+                                </td>
+                                <td>
+                                    @item.level
+                                </td>
+                                <td>
+                                    @(item.Primary ? "Primary" : "Secondary")
+                                </td>
+                                @*<td>
+                    @item.Secondary
+                </td>*@
+                                <td style="text-align: center">
+                                    @item.DateAssessed
+                                </td>
+                                <td style="text-align: center">
+                                    @item.LastUsed
+                                </td>
+                                <td style="text-align: center">
+                                    @item.experiance
+                                </td>
+                                <td style="text-align: center">
+                                     @if (item.Status == 1)
+                                    {
+                                        <p> Approved</p>
+                                    }
+                                    @if (item.Status == 2)
+                                    {
+                                        <p> Pending</p>
+                                    }
+                                   @if (item.Status == 3)
+                                   {
+                                    <p> Rejected</p>
+                                   }
+                                     @if (item.Status == 4)
+                                    {
+                                        <p> Cancelled</p>
+                                    }
+                                    
+                                       
+                                </td>
+                              @* @if(item.Status != 3)
+                                {
+                                *@<td style="text-align:center">
+                                    @*<a class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='EditSkill(@item.Id)'>
+                                        <i class="entypo-pencil"></i>Edit</a>*@
+                                    <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='EditSkill(@item.Id)'>
+                                            <i class="entypo-pencil"></i></a>
+                                </td>
+                                <td style="text-align:center">
+                                    @*<a class="btn btn-danger btn-sm btn-block btn-icon icon-left" onclick='DeleteSkill(@item.Id)'>
+                                        <i class="entypo-cancel"></i>Delete</a>*@
+                                    <a class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick='DeleteSkill(@item.Id)'>
+                                            <i class="entypo-cancel"></i></a>
+                                </td>
+                               @* }*@
+                            </tr>
+                        }
+                    </table>
+                </div>
+                 }
+            </div>
+                 
+        </div>
+    </div>
+</div>
+<br />
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+ 
+        jQuery(document).ready(function ($) {
+            
+            $("#tblCmptr").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9]}]
+            });
+
+            $("#tblCmptr1").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [7]} ]
+            });
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+        </script>
+
+        <script type="text/javascript">
+            function Clear() {
+                $("input:text").val('');
+                
+                $(".panel-body select").select2("val", "0");
+                $("#speli select").select2("val", "0");
+                //$("#speli").empty();
+          
+                $("#date").text('');
+                $("#last").text('');
+                $("#tech").text('');
+                // $("#speli").val('-1');
+                // $("#spl").text('');
+                $("#lev").text('');
+                $("#exp").text('');
+                $("#speli").SelectLoad($(this).val())  //i removed
+
+               // $('#speli').text('');
+
+              
+
+            
+                //$('#Presentstate').empty();
+                //$('#Presentstate').select2();
+            
+            }
+            
+        
+        function doValidation() {
+
+            var errorcount = 0;
+
+            
+            var count = $("#Courseloop > div").length;
+
+            count = count - 2;
+
+
+
+            for (i = 0; i < count; i++) 
+            {
+                if ($("#TechnologyId" + i).val() != '') 
+                {
+                  if ( $("#spl" + i).val() == 0) {
+                      
+                        $("#speli").html("Select Specification");
+                        errorcount++;
+                    }
+                    else 
+                    {
+                        $("#speli").html(" ");
+
+                    }
+                }
+
+                // ApprovedBy
+
+                if ($("#ApprovedBy" + i).val() == '') 
+                {
+                   
+                        $("#Status").html("Select Reporting Person");
+                        errorcount++;
+                    }
+                    else {
+                    $("#Status").html(" ");
+
+                    }
+                
+    
+                if ($("#TechnologyId" + i).val() == '') 
+                {
+
+                    $("#tech").html("Select Technology");
+                    errorcount++;
+
+                }
+                else 
+                {
+                    $("#tech").html(" ");
+                }
+                
+               //// if ($("#spl" + i).val() == '') {
+                 
+                   
+               ////     $("#speli").html("Select Specification");
+               ////    errorcount++;
+
+               ////}
+
+               ////else 
+               //// {
+               ////     $("#speli").html(" ");
+               //// }
+
+                if ($("#experiance" + i).val() == 0) {
+                    $("#exp").html("Enter Experience");
+                    errorcount++;
+                }
+                else {
+                    $("#exp").html(" ");
+                }
+
+                if ($("#LevelId" + i).val() == '') {
+
+                    $("#lev").html(" Select Level");
+                    errorcount++;
+
+                }
+                else {
+                    $("#lev").html(" ");
+                }
+
+                if ($("#DateAssessed" + i).val() == '') {
+
+                    $("#date").html(" Select Date Assessed");
+                    errorcount++;
+
+                }
+                else {
+                    $("#date").html(" ");
+                }
+
+                if ($("#yearId" + i).val() == '') {
+
+                    $("#last").html(" Select Last Used");
+                    errorcount++;
+
+                }
+                else {
+                    $("#last").html(" ");
+                }
+            }
+
+
+            if (errorcount == 0) {
+               // $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                $("#form").submit();
+            }
+        }
+      
+
+        $(document).ready(function () {
+
+            var data = @Html.Raw(Json.Encode(ViewData["Phase"]));
+            //if(data==0)
+            //{
+            //    data=2;
+            //}
+
+           
+           
+            $("#AssessmentStatusID").select2();
+            $("#AssessmentStatusID").val(data);
+            $("#AssessmentStatusID").select2();
+
+            var count = $("#Courseloop > div").length;
+
+            count = count - 2;
+
+            for (i = 0; i < count; i++) {
+                $("#experiance" + i).keypress(function (e) {
+                    var regex = new RegExp("^[0-9\\.\\s]+$");
+                    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                    if (regex.test(str)) {
+                        return true;
+                    }
+
+                    $("#exp").html("Enter Valid Experiance").show();
+                    return false;
+                });
+            }
+        });
+
+
+        $("#spl0").on("change", function () {
+       // $("#TechnologyId0").on("change",function(){
+            $.ajax({
+                url: "../../Skills/schedule/",
+                dataType: 'json',
+                data: { 'Specialization': $("#spl0").val() },
+                success: function (data) {
+
+                    if (data.Name == 'available') {
+                        $('#speli').html('Specialization already exists');
+                        document.getElementById("btnsub").disabled = true;
+                        Submitform = false;
+                    }
+
+                    else {
+                        $('#speli').text('');
+                        document.getElementById("btnsub").disabled = false;
+                        Submitform = true;
+                    }
+                    
+                }
+
+            });
+        });
+
+
+        function SelectLoad(val, techID) {
+            $.ajax({ url: "../../Skills/DropDown/" + (val == "" ? 0 : val),
+                type: 'GET', cache: false,
+                success: function (result) {
+
+                    if (result != null) {
+
+                        $("#spl" + techID).empty();
+                                                
+                        for (i = 0; i < result.length; i++) {
+
+
+                            $("#spl" + techID).append($('<option>', {
+                                value: result[i].Item1,
+                                text: result[i].Item2
+                            }));
+                        }
+
+                        $("#spl" + techID).select2();
+                        $('#speli').text('');
+
+
+                    }
+                }
+            });
+        }
+      
+
+        function EditSkill(Id) {
+            $.ajax({ url: "../../Skills/EditSkill/" + Id,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo('body').modal('show');
+                    $(".datetimepicker").datepicker({
+                        format: 'dd-mm-yyyy',
+                        showTodayButton: true,
+                      //  collapse: true,
+                        autoclose: true
+                    });
+                }
+            });
+        }
+        debugger;
+        //function AddSkill(Id) {
+        //    $.ajax({
+        //        url: "../../Skills/Details/",
+        //        type: 'GET',
+        //        cache: false,
+        //        data: { Id: Id },
+        //        success: function (result) {
+        //            $('#PartialSection').html(result);
+        //            $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+        //        }
+        //    });
+        //}
+
+        function AddSkill(Id) {
+            $.ajax({
+                url: "../../Skills/Details/",
+                type: 'GET',
+                cache: false,
+                data: { skillid: Id },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+
+        function DeleteSkill(Id) {
+            bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                if (conform) {
+                    $.ajax({ url: "../Skills/Delete/",
+                        type: 'GET', cache: false, data: { Id: Id },
+                        success: function (result) {
+                            var opts = {
+                                "closeButton": true,
+                                "debug": false,
+                                "positionClass": "toast-top-right",
+                                "onclick": null,
+                                "showDuration": "500",
+                                "hideDuration": "1000",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Skill detail has been deleted successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    });
+                }
+            });
+        }
+
+        $(function () {
+
+            $("#Courseloop > div.row > div > select:not(.selectSearch)").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('#Courseloop > div.row > div > select.selectSearch').select2();
+            $('#courseRows').hide();
+            newrowcount = 0;
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd/mm/yyyy',
+           // startDate: 'd',
+            todayHighlight: true,
+            autoclose: true
+        });
+
+        $("#addBtn").on("click", function () {
+
+            var Text = $('#courseRows').html();
+            var rowNumber = newrowcount + 1;
+            Text = Text.replace(/SKL./g, 'skilllists[' + rowNumber + '].');
+            var newRow = $(Text);
+
+            $("#Courseloop").append(Text);
+            var CourseRow = $('#Courseloop div.row:last');
+            $(CourseRow).find('select:not(.selectSearch)').select2({
+                //minimumResultsForSearch: -1
+            });
+            $(CourseRow).find('select.selectSearch').select2();
+
+            $(CourseRow).find('.datetimepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+
+            newrowcount = newrowcount + 1;
+            return false;
+        });
+
+        $(document).ready(function () {
+            if ($('#success').val()) {
+
+             $("#portlet-config").modal('hide');
+                displayMessage($('#success').val(), 'success');
+                setTimeout(function () { location.reload(); }, 1000);
+            }
+        });
+        var displayMessage = function (message, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "500",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            toastr[msgType](message);
+        };
+
+        $(function () {
+            $("#btnAdd").click(function () {
+                $("#Courseloop > div.row > div >").select2('val', '');
+            });
+        });     
+
+
+
+
+        function Get() {
+
+            var ID = $("#AssessmentStatusID").find("option:selected").prop("value");
+            
+           
+            //$.ajax({
+            //    url: "../../Skills/Skills/",
+            //    type: 'GET',
+            //    cache: false,
+            //    data: { ID: ID },
+            //    success: function (result) {
+                    window.location.href = '@Url.Action("Skills", "Skills")' + '?ID=' + ID;
+                //    }
+                //});
+
+                }
+    </script>
+}

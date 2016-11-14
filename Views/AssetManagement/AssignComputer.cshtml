@@ -1,0 +1,323 @@
+﻿@model DSRCManagementSystem.Models.AssignComputers
+@{
+    Layout = null;
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<div class="modal-content">
+    <div class="modal-header" style="background-color: #f0f0f1;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <h4 class="modal-title">
+            Assign Computer
+        </h4>
+    </div>
+    @using (Html.BeginForm("AssignComputer", "AssetManagement", FormMethod.Post))
+    {
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6" style="text-align: right">
+                    @Html.Label(" *", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.EmployeeName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.DropDownList("UserId", (IList<SelectListItem>)ViewBag.Detail3, "--Select--", new { @id = "UserID", @name = "UserID", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.EmployeeName, " ", new { @style = "color:red" })
+                        <span id="EmpName" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Department,(string)ViewBag.Lbl_department, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                        @Html.TextBoxFor(x => x.Departmentvalue, new { @id = "Department", @class = "form-control", @style = "height:42px;", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(x => x.Departmentvalue, " ", new { @style = "color:red" })
+                        <span id="dept" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Location, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.DropDownList("locationid", ViewBag.LocationIDList as SelectList, new { @id = "locationid", @name = "locationid", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Location, " ", new { @style = "color:red" })
+
+                        <span id="loct" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ComputerName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.DropDownList("Managementid", ViewBag.ManagementIdList as SelectList,
+             new { @id = "Managementid", @name = "Managementid", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ComputerName, " ", new { @style = "color:red" })
+                        <span id="ComputerName" style="color:Red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.WorkstationNumber, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.WorkstationNumber, new { @id = "WOS", @class = "form-control", @style = "height:42px;", @maxlength = 200 })
+                        <span id="WS" style="color:Red"></span>
+
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.PenDriveAcess, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.DropDownList("PDAID", ViewBag.PenDriveAcessList as SelectList, new { @id = "PDAID", @name = "PDAID", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.PenDriveAcess, " ", new { @style = "color:red" })
+                        <span id="PDA" style="color:Red"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ComponentId, new { @class = "control-label" })
+                        @Html.DropDownList("assetid", ViewBag.ComponentIdList as MultiSelectList, new { @id = "cmpId", @name = "cmpId", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })
+                        <span id="ED" style="color:Red"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.UPSID, new { @class = "control-label" })
+                        @Html.DropDownList("UPSID", ViewBag.UpsList as SelectList, "", new { @id = "DDLUps", @class = "form-control" })
+                        <span id="UPSID" style="color: Red"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick=" Asign() ">
+                Save
+            </button>
+        </div>
+    }
+
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                    <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    jQuery(document).ready(function ($) {
+        if ($.ui && $.ui.dialog && $.ui.dialog.prototype._allowInteraction) {
+            var ui_dialog_interaction = $.ui.dialog.prototype._allowInteraction;
+            $.ui.dialog.prototype._allowInteraction = function (e) {
+                if ($(e.target).closest('.select2-dropdown').length) return true;
+                return ui_dialog_interaction.apply(this, arguments);
+            };
+        }
+    });
+
+
+    $("#UserID").change(function () {
+        var u = $("#UserID").val();
+
+        $.ajax({
+            url: "../../AssetManagement/GetDepartmentName",
+            cache: false,
+            data: { userId: u },
+            success: function (result) {
+
+                $("#Department").val(result.dept);
+
+            }
+
+
+        });
+    });
+
+
+
+
+    $(function () {
+
+
+        $('select').select2();
+    });
+
+
+
+    function Asign() {
+
+        var WOSName = $("#WOS").val();
+
+        var WOSNametrim = WOSName.replace(/\s/g, "").length;
+
+        if (document.getElementById('UserID').value == 0 || document.getElementById('Department').value == 0 || document.getElementById('locationid').value == 0 || document.getElementById('Managementid').value == 0 || WOSNametrim == 0) {
+
+            if (document.getElementById('UserID').value == 0)
+                document.getElementById("EmpName").innerHTML = " Select Employee Name";
+            else
+                document.getElementById("EmpName").innerHTML = "";
+
+            if (document.getElementById('Department').value == 0)
+                document.getElementById("dept").innerHTML = " Select Department Name";
+            else
+                document.getElementById("dept").innerHTML = "";
+
+            if (document.getElementById('locationid').value == 0)
+                document.getElementById("loct").innerHTML = " Select Location Name";
+            else
+                document.getElementById("loct").innerHTML = "";
+
+            if (document.getElementById('Managementid').value == 0)
+                document.getElementById("ComputerName").innerHTML = "Select Computer Name";
+            else
+                document.getElementById("ComputerName").innerHTML = "";
+
+            if (WOSNametrim == 0)
+                document.getElementById("WS").innerHTML = "Enter Workstation Number";
+            else
+                document.getElementById("WS").innerHTML = "";
+        }
+        else {
+
+            //$('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var values =
+         {
+
+             "UserId": $("#UserID").find("option:selected").val(),
+             "EmployeeName": $("#UserID").find("option:selected").text(),
+             "Departmentvalue": $("#Department").val(),
+             "DepartmentName": $("#Department").find("option:selected").text(),
+             "locationid": $("#locationid").val(),
+             "Location": $("#locationid").find("option:selected").text(),
+             "Managementid": $("#Managementid").val(),
+             "ComputerName": $("#Managementid").find("option:selected").text(),
+             "Pendrive": $("#PDAID").val(),
+             "UpsList": $("#DDLUps").val(),
+             "UPSID": $("#DDLUps").find("option:selected").text(),
+             "WorkstationNumber": $("#WOS").val(),
+             "ComponentId": $("#cmpId").val() == null ? "" : $("#cmpId").val().toString()
+
+         }
+
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+
+
+
+            $.ajax({
+                url: "../../AssetManagement/AssignComputer/",
+                type: 'POST',
+                traditional: true,
+                cache: false,
+                data: values,
+                success: function (result) {
+
+                    if (result === "Success") {
+                        $("#portlet-config").modal("hide");
+                        toastr.success("Assigned Computer details has been added successfully", opts);
+
+                        setTimeout(function () { location.reload(); }, 1000);
+
+
+                    }
+
+                    //if (result === "AlreadyEmp") {
+
+                    //    toastr.warning("Person Already having  Computer ", opts);
+                    //}
+
+
+                    if (result === "AlreadyComp") {
+
+                        toastr.warning("Computer Already Assigned to Some one ", opts);
+
+
+                    }
+                }
+
+
+
+
+
+            });
+
+        }
+
+
+    }
+
+    //$("#Managementid").change(function () {
+    //    var CompId = $("#Managementid").val();
+
+    //    $.ajax({
+    //        url: "../../AssetManagement/GetComponent",
+    //        cache: false,
+    //        data: { ComputerId: CompId },
+    //        success: function (result) {
+
+    //            $("#cmpId").val(result.Name_Model_No);
+
+    //        }
+
+
+    //    });
+    //});
+
+</script>

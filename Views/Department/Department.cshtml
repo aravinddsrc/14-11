@@ -1,0 +1,778 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.Department>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+}
+@{
+    int SNO = 1;
+    
+}
+@{
+    int SNOs = 1;
+    
+}
+@*        <ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ViewRoles", "ManageRole")">Administration Setup</a></li>
+    <li class="active"><strong>Manage Department</strong> </li>
+        </ol>  *@
+    <p>
+        <a href="@Url.Action("ViewRoles","ManageRole")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Department</b>
+    </p>
+<div class="row">
+    @{      
+
+        
+        if(Session["Tab"] == "one")
+        {
+            <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#DepartmentManagement" data-toggle="tab" role="tab">Department</a></li>
+            <li class="active"><a href="#GroupManagement" data-toggle="tab" role="tab">Group</a></li>
+        </ul>
+            
+        }
+        else
+        {
+            <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li  class="active"><a href="#DepartmentManagement" data-toggle="tab" role="tab">Department</a></li>
+            <li><a href="#GroupManagement" data-toggle="tab" role="tab">Group</a></li>
+        </ul>
+        }
+    }
+    <br />
+    <div class="panel-body">
+
+        <div class="clear">
+        </div>
+
+        <br />
+
+        <div class="tab-content">
+
+               
+        @if(Session["Tab"] == "one")
+        {
+           <div class="tab-pane" id="DepartmentManagement">
+
+                <div class="row" style="height: 500px;">
+
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0">
+                            <!-- panel head -->
+                            <div class="panel-heading">
+                                <div class="panel-title" color="White">
+                                    Department
+                                </div>
+                            </div>
+                            <!-- panel body -->
+                            <div class="panel-body" style="overflow: auto">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3" style="float: right" id="btnAdd2">
+                                            <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddDepartment()'>
+                                            Add Department
+                                        </div>
+                                    </div>
+                                    <br />
+
+                                    <table class="table table-bordered datatable" id="tblRoles">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">S.No
+                                                </th>
+
+                                                @*<th style="text-align: center;">@Html.DisplayName("Branch Name",(string)ViewBag.Lbl_branch)*@
+                                                <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_branch)
+                                                </th>
+                                                <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_department)
+                                                </th>
+                                                <th style="text-align: center;">Edit</th>
+                                                <th style="text-align: center;">Delete</th>
+
+                                            </tr>
+                                        </thead>
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.DepartmentID != null && item.DepartmentName != null)
+                                            {
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    @(SNO++)
+                                                </td>
+                                                 <td>
+                                                    @Html.DisplayFor(modelitem => item.BranchName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelitem => item.DepartmentName)
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @* <button type="button" class="btn btn-info"  onclick='EditDepartment(@item.DepartmentID,"@item.DepartmentName")'>
+                                                        <i class="entypo-pencil"></i>
+                                                        Edit*@
+
+
+                                                    <a href="#" data-toggle="tooltip" title="Edit">
+                                                        <button type="button" class="btn btn-info" onclick='EditDepartment(@item.DepartmentID,"@item.DepartmentName.Replace("\"","-")")'>
+                                                            <i class="entypo-pencil"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @* <a class="btn btn-danger" onclick='Delete(@item.DepartmentID,"@item.DepartmentName")'>
+                                                        <i class="entypo-cancel"></i>Delete</a>*@
+
+
+                                                    <a href="#" data-toggle="tooltip" title="Delete">
+                                                        <button type="button" class="btn btn-red" onclick='Delete(@item.DepartmentID,"@item.DepartmentName")'>
+                                                            <i class="entypo-cancel"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            }
+                                        }
+                                    </table>
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="tab-pane active" id="GroupManagement">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-heading">
+                        </div>
+
+                        <div class="row" style="height: 500px;">
+
+                            <div class="col-md-12">
+                                <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                    <!-- panel head -->
+                                    <div class="panel-heading">
+                                        <div class="panel-title" color="White">
+                                            Group
+                                        </div>
+                                    </div>
+                                    <!-- panel body -->
+                                    <div class="panel-body" style="overflow: auto">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-3" style="float: right" id="btnAdds">
+                                                    <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddGroup()'>
+                                                    Add Group
+                                                </div>
+                                            </div>
+                                            <br />
+
+                                            <table class="table table-bordered datatable" id="Group">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align: center;">S.No
+                                                        </th>
+
+                                                        <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_department) @*@Html.DisplayName("Department Name")*@
+                                                        </th>
+                                                        <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_depgroup) @*@Html.DisplayName("Group Name")*@
+                                                        </th>
+                                                        <th style="text-align: center;">Edit</th>
+                                                        <th style="text-align: center;">Delete</th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                @foreach (var item in Model)
+                                                {
+                                                    if (item.DPName != null && item.GroupName != null)
+                                                    {
+                                                    <tr>
+                                                        <td style="text-align: center;">
+                                                            @(SNOs++)
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(modelitem => item.GroupID)
+                                                            @Html.HiddenFor(modelitem => item.DepartmentID)
+                                                            @Html.DisplayFor(modelitem => item.DPName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelitem => item.GroupName)
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            @* <button type="button" class="btn btn-info"  onclick='EditGroup(@item.DepartmentID,@item.GroupID,"@item.DPName","@item.GroupName")'>
+                                                                <i class="entypo-pencil"></i>
+                                                            Edit*@
+                                                            <a href="#" data-toggle="tooltip" title="Edit">
+                                                                <button type="button" class="btn btn-info" onclick='EditGroup(@item.DepartmentID,@item.GroupID,"@item.DPName","@item.GroupName")'>
+                                                                    <i class="entypo-pencil"></i>
+                                                                </button>
+                                                            </a>
+
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            @* <a class="btn btn-danger" onclick='DeleteGroup(@item.GroupID)'>
+                                                                <i class="entypo-cancel"></i>Delete</a>*@
+
+                                                            <a href="#" data-toggle="tooltip" title="Delete">
+                                                                <button type="button" class="btn btn-red" onclick='DeleteGroup(@item.GroupID)'>
+                                                                    <i class="entypo-cancel"></i>
+                                                                </button>
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+                                                    }
+                                                }
+                                            </table>
+
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="tab-pane active" id="DepartmentManagement">
+
+                <div class="row" style="height: 500px;">
+
+                    <div class="col-md-12">
+                        <div class="panel panel-default panel-shadow" data-collapsed="0">
+                            <!-- panel head -->
+                            <div class="panel-heading">
+                                <div class="panel-title" color="White">
+                                    Department
+                                </div>
+                            </div>
+                            <!-- panel body -->
+                            <div class="panel-body" style="overflow: auto">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3" style="float: right" id="btnAdd2">
+                                            <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddDepartment()'>
+                                            Add Department
+                                        </div>
+                                    </div>
+                                    <br />
+
+                                    <table class="table table-bordered datatable" id="tblRoles">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">S.No
+                                                </th>
+
+                                                @*<th style="text-align: center;">@Html.DisplayName("Branch Name",(string)ViewBag.Lbl_branch)*@
+                                                <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_branch)
+                                                </th>
+                                                <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_department)
+                                                </th>
+                                                <th style="text-align: center;">Edit</th>
+                                                <th style="text-align: center;">Delete</th>
+
+                                            </tr>
+                                        </thead>
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.DepartmentID != null && item.DepartmentName != null)
+                                            {
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    @(SNO++)
+                                                </td>
+                                                 <td>
+                                                    @Html.DisplayFor(modelitem => item.BranchName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelitem => item.DepartmentName)
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @* <button type="button" class="btn btn-info"  onclick='EditDepartment(@item.DepartmentID,"@item.DepartmentName")'>
+                                                        <i class="entypo-pencil"></i>
+                                                        Edit*@
+
+
+                                                    <a href="#" data-toggle="tooltip" title="Edit">
+                                                        <button type="button" class="btn btn-info" onclick='EditDepartment(@item.DepartmentID,"@item.DepartmentName.Replace("\"","-")")'>
+                                                            <i class="entypo-pencil"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @* <a class="btn btn-danger" onclick='Delete(@item.DepartmentID,"@item.DepartmentName")'>
+                                                        <i class="entypo-cancel"></i>Delete</a>*@
+
+
+                                                    <a href="#" data-toggle="tooltip" title="Delete">
+                                                        <button type="button" class="btn btn-red" onclick='Delete(@item.DepartmentID,"@item.DepartmentName.Replace("\"","-")")'>
+                                                            <i class="entypo-cancel"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            }
+                                        }
+                                    </table>
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="tab-pane" id="GroupManagement">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-heading">
+                        </div>
+
+                        <div class="row" style="height: 500px;">
+
+                            <div class="col-md-12">
+                                <div class="panel panel-default panel-shadow" data-collapsed="0">
+                                    <!-- panel head -->
+                                    <div class="panel-heading">
+                                        <div class="panel-title" color="White">
+                                            Group
+                                        </div>
+                                    </div>
+                                    <!-- panel body -->
+                                    <div class="panel-body" style="overflow: auto">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-3" style="float: right" id="btnAdds">
+                                                    <button type="button" class="btn btn-blue" style="float: right; font-weight: bold;" onclick='AddGroup()'>
+                                                    Add Group
+                                                </div>
+                                            </div>
+                                            <br />
+
+                                            <table class="table table-bordered datatable" id="Group">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align: center;">S.No
+                                                        </th>
+
+                                                        <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_department) @*@Html.DisplayName("Department Name")*@
+                                                        </th>
+                                                        <th style="text-align: center;">@Html.Raw((string)ViewBag.Lbl_depgroup) @*@Html.DisplayName("Group Name")*@
+                                                        </th>
+                                                        <th style="text-align: center;">Edit</th>
+                                                        <th style="text-align: center;">Delete</th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                @foreach (var item in Model)
+                                                {
+                                                    if (item.DPName != null && item.GroupName != null)
+                                                    {
+                                                    <tr>
+                                                        <td style="text-align: center;">
+                                                            @(SNOs++)
+                                                        </td>
+                                                        <td>
+                                                            @Html.HiddenFor(modelitem => item.GroupID)
+                                                            @Html.HiddenFor(modelitem => item.DepartmentID)
+                                                            @Html.DisplayFor(modelitem => item.DPName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelitem => item.GroupName)
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            @* <button type="button" class="btn btn-info"  onclick='EditGroup(@item.DepartmentID,@item.GroupID,"@item.DPName","@item.GroupName")'>
+                                                                <i class="entypo-pencil"></i>
+                                                            Edit*@
+                                                            <a href="#" data-toggle="tooltip" title="Edit">
+                                                                <button type="button" class="btn btn-info" onclick='EditGroup(@item.DepartmentID,@item.GroupID,"@item.DPName","@item.GroupName")'>
+                                                                    <i class="entypo-pencil"></i>
+                                                                </button>
+                                                            </a>
+
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            @* <a class="btn btn-danger" onclick='DeleteGroup(@item.GroupID)'>
+                                                                <i class="entypo-cancel"></i>Delete</a>*@
+
+                                                            <a href="#" data-toggle="tooltip" title="Delete">
+                                                                <button type="button" class="btn btn-red" onclick='DeleteGroup(@item.GroupID)'>
+                                                                    <i class="entypo-cancel"></i>
+                                                                </button>
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+                                                    }
+                                                }
+                                            </table>
+
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+         
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        //$(document).ready(function () {
+        //    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                
+        //        localStorage.setItem('lastTab', $(this).attr('href'));
+        //    });
+        //    var lastTab = localStorage.getItem('lastTab');
+        //    if (lastTab) {
+        //        $('[href="' + lastTab + '"]').tab('show');
+        //    }
+        //    if (window.onunload) {
+        //        window.onunload = function () {
+        //            localStorage.clear();
+        //        }
+        //    }
+        //});
+
+        $(document).ready(function () {
+            localStorage.clear();
+
+
+            //$("#tblRoles").dataTable({
+            //    "sPaginationType": "bootstrap",
+            //    "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+            //    "columnDefs": [{ bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }]
+
+            //});
+
+            var table = $("#tblRoles").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                //"lengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                "sPaginationType": "bootstrap",
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: false, 'aTargets': [2] }, { bSortable: false, 'aTargets': [3] }],
+
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                    localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+                },
+                stateLoadCallback: function (settings) {
+                    return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+                }
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+
+
+        $(document).ready(function () {
+
+
+            $("#Group").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                "columnDefs": [{ bSortable: false, 'aTargets': [3] }, { bSortable: false, 'aTargets': [4] }]
+
+            });
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+
+
+        });
+
+        var opts =
+               {
+                   "closeButton": true,
+                   "debug": false,
+                   "positionClass": "toast-top-right",
+                   "toastClass": "White",
+                   "onclick": null,
+                   "showDuration": "3000",
+                   "hideDuration": "1000",
+                   "timeOut": "2000",
+                   "extendedTimeOut": "1000",
+                   "showEasing": "swing",
+                   "hideEasing": "linear",
+                   "showMethod": "fadeIn",
+                   "hideMethod": "fadeOut"
+               }
+
+
+        function CreateDatatable() {
+            $("#tblMeeting").dataTable({
+                "bDestroy": true,
+                "sClass": "table table-bordered datatable",
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "pageLength": 10,
+                "aaSorting": []
+            });
+        }
+
+        function Clear() {
+
+            window.location.href = '@Url.Action("DashBoard", "CustomReports")';
+
+        }
+
+        function AddDepartment() {
+
+            $.ajax({
+                url: "../../Department/AddDepartment/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function EditDepartment(uid, pName) {
+
+            $.ajax({
+                url: "../../Department/EditDepartment/",
+                type: 'GET',
+                cache: false,
+                data: { ID: uid, DepartmentName: pName },
+                success: function (result) {
+                    if (result == "DeleteWarning") {
+
+                        $("#portlet-config").modal('hide');
+                        toastr.warning("Cannot Edit Unassigned Role", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    }
+                }
+            });
+        }
+
+
+        function AddGroup() {
+
+            $.ajax({
+                url: "../../Department/AddGroup/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+            });
+        }
+        function EditGroup(UIDD, UID, pName1, pName) {
+
+
+            $.ajax({
+                url: "../../Department/EditGroup/",
+                type: 'GET',
+                cache: false,
+                data: { UIDD: UIDD, UID: UID, DPName: pName1, GroupName: pName },
+                success: function (result) {
+                    if (result == "DeleteWarning") {
+
+                        $("#portlet-config").modal('hide');
+                        toastr.warning("Cannot Edit Unassigned Role", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                    }
+                }
+            });
+        }
+
+        function Delete(uid) {
+
+            var opts =
+                   {
+                       "closeButton": true,
+                       "debug": false,
+                       "positionClass": "toast-top-right",
+                       "toastClass": "White",
+                       "onclick": null,
+                       "showDuration": "3000",
+                       "hideDuration": "1000",
+                       "timeOut": "2000",
+                       "extendedTimeOut": "1000",
+                       "showEasing": "swing",
+                       "hideEasing": "linear",
+                       "showMethod": "fadeIn",
+                       "hideMethod": "fadeOut"
+                   }
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+
+                    $.ajax({
+                        url: "../../Department/Delete/",
+                        type: 'GET',
+                        cache: false,
+                        data: { ID: uid },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+                                   toastr.success("Department Deleted Successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else if (result == "Warning") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   setTimeout(function () { location.reload(); }, 3000);
+                                   toastr.warning("This Department cannot be deleted as there are one or more employees associated with it  ", opts);
+                               }
+
+                           }
+
+                    });
+
+                }
+
+            });
+        }
+
+        function DeleteGroup(pName1) {
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "../../Department/DeleteGroup/",
+                        type: 'GET',
+                        cache: false,
+                        data: { DPName: pName1 },
+                        success:
+                           function (result) {
+                               if (result == "Success") {
+                                   toastr.success("Group Deleted successfully", opts);
+                                   setTimeout(function () { location.reload(); }, 1000);
+                               }
+                               else if (result == "Warning") {
+                                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                                   setTimeout(function () { location.reload(); }, 3000);
+                                   toastr.warning("This Group cannot be deleted as there are one or more employees associated with it", opts);
+                                   
+                               }
+                           }
+                    });
+                }
+            });
+        }
+        function Show() {
+
+
+            if (document.getElementById('TimeZone').value == '') {
+                document.getElementById("span_TimeZone").innerHTML = "Select Name";
+            }
+            else {
+                document.getElementById("span_TimeZone").innerHTML = "";
+            }
+        }
+
+
+        //$(document).ready(function () {
+        //    //alert('tab');
+        //    //$(".nav-tab a").click(function () {
+        //    //$(this).tab('show');
+        //    //  });
+        //    $('.nav-tabs a').on('shown.bs.tab', function (event) {
+        //        var x = $(event.target).text();         // active tab
+        //        // alert(x);
+        //        if (x == "Department") {
+        //            $('.nav-tabs a[href="#DepartmentManagement"]').tab('show')
+        //        }
+        //        if (x == "Group") {
+        //            $('.nav-tabs a[href="#GroupManagement"]').tab('show')
+        //        }
+
+        //        //var y = $(event.relatedTarget).text();  // previous tab
+        //        //alert(y);
+        //    });
+        //});
+
+    </script>
+}

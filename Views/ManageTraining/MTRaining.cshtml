@@ -1,0 +1,711 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.ManageTrainingModel>
+@{
+    // ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+ 
+}
+
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <style>
+        .abc {
+            font-weight: bold;
+        }
+    </style>
+
+    <style>
+        .dropdown-menu {
+            background-color: white;
+        }
+    </style>
+}
+@{
+    int SNO = 1;
+}
+
+<style>
+    tr td:nth-child(6) {
+        text-align: center;
+    }
+
+    tr td:nth-child(7) {
+        text-align: center;
+    }
+
+    tr td:nth-child(8) {
+        text-align: center;
+    }
+
+    tr td:nth-child(9) {
+        text-align: center;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+            -webkit-transition: inherit;
+            -moz-transition: inherit;
+            -o-transition: inherit;
+            transition: inherit;
+        }
+
+        .switch-label:before {
+            content: attr(data-off);
+            right: 11px;
+            color: #aaaaaa;
+            text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .switch-label:after {
+            content: attr(data-on);
+            left: 11px;
+            color: #FFFFFF;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+        }
+
+    .switch-input:checked ~ .switch-label {
+        background: #E1B42B;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-input:checked ~ .switch-label:before {
+            opacity: 0;
+        }
+
+        .switch-input:checked ~ .switch-label:after {
+            opacity: 1;
+        }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .switch-handle:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -6px 0 0 -6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+            border-radius: 6px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+    .switch-input:checked ~ .switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+</style>
+
+
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Mylearning","LDHome")">Learning and Development</a></li>
+    <li class="active"><strong>Manage Training</strong> </li>
+</ol>*@
+<p>
+    <a href="@Url.Action("Mylearning", "LDHome")"style="color:black ">Training Management
+    </a>
+    &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Training</b>
+</p>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Manage Training
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="btn-group" style="float: right">
+                    @* @if (Convert.ToInt32(Session["RoleId"]) == 4 || Convert.ToInt32(Session["RoleId"]) == 70)
+                   {
+                    <button class="btn btn-blue" style="font-weight: bold" onclick='Dashboard()'>
+                       Dashboard
+                    </button>
+                   }*@
+                    <br />
+                </div>
+
+
+                @using (Html.BeginForm("MTRaining", "ManageTraining", FormMethod.Post))
+                { 
+                    <div class="row">
+
+                        <div class="col-md-4" style="width: 200px; float: right; padding-top: 10px;">
+
+                            <button class="btn btn-blue" style="font-weight: bold; float: right" type="button" onclick='AddDetails()'>
+                                Add New Training
+                            </button>
+                        </div>
+                        @* @if(ViewBag.toggle!=null)
+                        {
+
+                        <div class="col-md-6" style="width:200px; float:right; padding-top: 30px; padding-left:140px ">
+                                <label class="switch">
+                                    @Html.CheckBox("Block", new { @id = "switch-input", @class = "switch-input" })
+                                    <span class="switch-label" data-on="Filtered" onclick="checks()"  data-off="All" style="width:100px"></span>
+                                    <span class="switch-handle">
+                                    </span>
+                                </label>
+                            </div>
+                        }*@
+
+                        @if (ViewBag.toggle != null)
+                        {
+                            //if(@Session["TRUEORFALSE"].ToString() == "false")\
+                            if (ViewBag.Value == "false")
+                            {
+                            <div class="col-md-6" style="width: 200px; float: right; padding-top: 10px; padding-left: 140px">
+                                <label class="switch">
+                                    @* @Html.CheckBox("Block", new { @id = "switch-input", @class = "switch-input" })*@
+                                    <input class="switch-input" type="checkbox" id="switch-input" />
+                                    <span class="switch-label" data-on="Filtered" onclick="checks()" data-off="All" style="width: 100px"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            }
+                            else
+                            {
+                            <div class="col-md-6" style="width: 200px; float: right; padding-top: 10px; padding-left: 140px">
+                                <label class="switch">
+                                    @* @Html.CheckBox("Block", new { @id = "switch-input", @class = "switch-input" })*@
+                                    <input class="switch-input" type="checkbox" id="switch-input" checked="checked" />
+                                    <span class="switch-label" data-on="Filtered" onclick="checks()" data-off="All" style="width: 100px"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                            }
+                        }
+
+
+                    </div>
+                    <br />
+                    
+                    <div class="table table-bordered datatable table-responsive" style="width: 100%; overflow:auto">
+                        <table class="table table-bordered datatable table-responsive" id="tblUsers" style="width: 100%; ">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">S.No   
+                                    </th>
+                                    <th style="text-align: center; width: 266px;">
+                                        @Html.DisplayNameFor(model => model.TrainingName)
+                                    </th>
+                                   @* <th style="text-align: center;width:200px;">
+                                        @Html.DisplayNameFor(model => model.Level)
+                                    </th>*@
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Technology)
+                                    </th>
+                                    <th style="text-align: center;">Scheduled Date
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Instructor)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Status)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.SeatingCapacity)
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.DisplayNameFor(model => model.Nominations)
+                                    </th>
+                                    <th>Feedback Aggregate
+                                    </th>
+                                    <th style="text-align: center;">
+                                       Notify Users
+                                    </th>
+                                    <th>Edit
+                                    </th>
+                                 
+
+
+                                    @* @if (Convert.ToInt32(Session["RoleId"]) == DSRCManagementSystem.Models.MasterEnum.Roles.Admin.GetHashCode())
+                                    {
+                                     <th>
+                                         View
+                                   </th>
+                                    }*@
+                                    @if (Convert.ToInt32(Session["RoleId"]) == DSRCManagementSystem.Models.MasterEnum.Roles.Admin.GetHashCode())
+                                    {
+                                        <th>Delete
+                                        </th>
+                                    }
+
+                                </tr>
+                            </thead>
+
+                            @foreach (var item in Model)
+                            {
+                  
+                                <tr class="@Html.Raw((item.color != false) ? "abc" : "")">
+
+                                    @* @if ((Convert.ToInt32(Session["RoleId"]) == 1)||(Convert.ToInt32(Session["RoleId"]) == 50))
+                                  {*@
+                                    <td style="text-align: center;">
+                                        @(SNO++)
+                                    </td>
+                                    <td style="width: 266px;">
+                                        @Html.DisplayFor(modelItem => item.TrainingName)
+                                    </td>
+                               @*     <td style="width:200px;">
+                                        @Html.DisplayFor(modelItem => item.Level)
+                                    </td>*@
+                                    <td style="">
+                                        @Html.DisplayFor(modelItem => item.Technology)
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @if (item.ScheduledDate.HasValue)
+                                        {
+                                            <label>@item.ScheduledDate.Value.ToString("dd/MM/yyyy") </label>
+                                        }
+@* @Html.DisplayFor(modelItem => item.ScheduledDate)*@
+                                    </td>
+                                    <td style="">
+                                        @Html.DisplayFor(modelItem => item.Instructor)
+                                    </td>
+                                    <td style="">
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @Html.DisplayFor(modelItem => item.SeatingCapacity)
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @if (@item.Nominations > 0)
+                                        {                                      
+                                            <a style=" text-decoration:underline"  onclick='Popup(@item.TrainingID)'>@item.Nominations.ToString()</a>                                       
+                                        }
+                                        else
+                                        {
+                                            <label>-</label>
+                                        }
+                                    </td>
+                                    @* }*@
+                                    <td style="text-align: center;">
+                                        @if (@item.StatusID == 4 || @item.StatusID == 3 || @item.StatusID == 6)
+                                        {                                      
+                                            <a href="#" data-toggle="tooltip" title="Aggregate" class="btn btn-info" onclick='feedback(@item.TrainingID)'>
+                                                <i class="entypo-chart-pie"></i></a>
+                                        }
+                                        else
+                                        { 
+                                            <a href="#" data-toggle="tooltip" title="Aggregate" class="btn btn-info" disabled="disabled" onclick='feedback(@item.TrainingID)'>
+                                                <i class="entypo-chart-pie"></i></a>
+                                        }
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="#" data-toggle="tooltip" title="Notify Departments / Users" class="btn btn-info" onclick='Mail(@item.TrainingID)'>
+                                            <i class="entypo-mail"></i></a>
+                                    </td>
+                                    <td style="text-align: center;">
+
+                                        @if (@item.StatusID == 3 || @item.StatusID == 4 || @item.StatusID == 5 || @item.StatusID == 6 || @item.IsToday == true)
+                                        {      
+@*<a>
+                                           <button type="button" class="btn btn-info btn-icon icon-left"   onclick='Edit(@item.TrainingID)'>
+                                                <i class="entypo-pencil"></i>View
+                                            </button>
+                                        </a>*@
+                                            <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='Edit(@item.TrainingID)'>
+                                                <i class="entypo-pencil"></i></a>
+                                        }
+                                        else
+                                        { 
+@*<a>
+                                           <button type="button" class="btn btn-info btn-icon icon-left"   onclick='Edit(@item.TrainingID)'>
+                                                <i class="entypo-pencil"></i>Edit
+                                            </button>
+                                        </a>*@
+                                            <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='Edit(@item.TrainingID)'>
+                                                <i class="entypo-pencil"></i></a>
+                                        }
+
+                                    </td>
+
+                                    @if (Convert.ToInt32(Session["RoleId"]) == DSRCManagementSystem.Models.MasterEnum.Roles.Admin.GetHashCode())
+                                    {
+                                        <td style="text-align: center;">
+                                            @if (@item.StatusID == 3 || @item.StatusID == 4 || @item.StatusID == 5 || @item.StatusID == 6)
+                                            {      
+                                                <a>
+                                                    <button type="button" class="btn btn-red" disabled="disabled">
+                                                        <i class="entypo-cancel"></i>
+                                                    </button>
+                                                </a>
+                                            }
+
+                                            else
+                                            { 
+                                                <a>
+                                                    <button type="button" class="btn btn-red"   onclick='Delete(@item.TrainingID)'>
+                                                        <i class="entypo-cancel"></i>
+                                                    </button>
+                                                </a>
+                                            }
+
+                                        </td>      
+                                    }
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                        
+                }
+
+
+                <br />
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function SuccessPopUp(message) {
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success(message, null, opts);
+        }
+
+        jQuery(document).ready(function ($) {
+
+           
+            var x = window.location.pathname;
+            if (x == "/ManageTraining/MTRaining/1")
+            {
+               SuccessPopUp('Details Saved successfully');
+
+
+            }
+
+
+            // GridHeaderStructure();
+
+            $('.img-circle').click(function () {
+                $('.img-circle').parent().parent().toggleClass('open');
+            });
+
+            $('#leftusers').change(function () {
+                $('#newusers').prop('checked', false);
+                $('#notice').prop('checked', false);
+                $('#form').submit();
+            });
+
+            $('#newusers').change(function () {
+                $('#leftusers').prop('checked', false);
+                $('#notice').prop('checked', false);
+                $('#form').submit();
+            });
+
+            $('#notice').change(function () {
+                $('#leftusers').prop('checked', false);
+                $('#newusers').prop('checked', false);
+                $('#form').submit();
+            });
+
+            if ($('#leftusers').prop('checked') || $('#newusers').prop('checked') || $('#notice').prop('checked')) {
+                $('#AddNewUser').hide();
+            }
+            else {
+                $('#AddNewUser').show();
+            }
+
+
+            $("#tblUsers").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "aaSorting": [],
+                "columnDefs": [{ bSortable: true, 'aTargets': [0] }, { bSortable: true, 'aTargets': [1] }, { bSortable: true, 'aTargets': [2] }, { bSortable: true, 'aTargets': [3] }, { bSortable: true, 'aTargets': [4] }, { bSortable: true, 'aTargets': [5] }, { bSortable: true, 'aTargets': [6] }, { bSortable: true, 'aTargets': [7] }, { bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [9] }, { bSortable: false, 'aTargets': [10] }]//, { bSortable: false, 'aTargets': [11] }],
+                //"columnDefs": [{ bSortable: false, 'aTargets': [7] }],
+                //"scrollX": "100px",
+
+                //"scrollCollapse": true,
+            });
+
+            //            $("#tblEmployees").dataTable({
+            //                "sPaginationType": "bootstrap",
+            //                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            //                "bStateSave": false,
+            //                "bAutoWidth": false
+            //            });   
+
+
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+
+
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "500",
+            "hideDuration": "1000",
+            "timeOut": "1500",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+
+
+        function AddDetails() {
+
+            //window.location.href = "/LDCourse1/AddCoursedetails";
+
+          
+
+
+            $.ajax({
+                url: "../../LDCourse2/AddCoursedetails/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+
+    @* function Dashboard() {
+
+        window.location.href = "/LDAdmin/LDAdmin";
+
+    }*@
+        function Popup(Id) {
+            $("#tblEmployees").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false
+            });
+
+            $.ajax({
+                url: "../../ManageTraining/GetEmployee/",
+                type: 'GET', cache: false,
+                data: { TrainingID: Id },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function calculate(id) {
+
+
+            $.ajax({
+                url: "../../ManageTraining/CalculateAggregate/",
+                type: 'GET', cache: false,
+                data: { TrainingID: id },
+                success: function (result) {
+
+
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                }
+            });
+
+        }
+        function checks() {
+
+
+            var Year = ($('#switch-input').prop("checked") == true);
+
+            window.location.href = '@Url.Action("MTRaining", "ManageTraining")' + '?ID=' + Year;
+
+
+          }
+
+          //function checks() {
+
+
+          //    if ($('#switch-input').prop("checked") == true) {
+          //        $.ajax({
+          //            url: "../../ManageTraining/ManageTRaining/",
+          //            type: 'GET', cache: false,
+
+          //            success: function (result) {
+          //                $('#PartialSection').html(result);
+          //                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+          //            }
+          //        })
+          //    }
+          //    if ($('#switch-input').prop("checked") == false) {
+          //        $.ajax({
+          //            url: "../../ManageTraining/MTRaining/",
+          //            type: 'GET', cache: false,
+
+          //            success: function (result) {
+          //                $('#PartialSection').html(result);
+          //                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+          //            }
+          //        })
+          //    }
+          //}
+
+
+
+
+          function Edit(id) {
+
+              $.ajax({
+                  url: "../../ManageTraining/Edit/",
+                  type: 'GET', cache: false,
+                  data: { TrainingID: id },
+                  success: function (result) {
+                      $('#PartialSection').html(result);
+                      $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                  }
+              });
+          }
+
+
+          function Mail(id) {
+
+              $.ajax({
+                  url: "../../ManageTraining/MailDepartments/",
+                  type: 'GET', cache: false,
+                  data: { TrainingID: id },
+                  success: function (result) {
+                      $('#PartialSection').html(result);
+                      $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                  }
+              });
+          }
+
+
+          function feedback(id) {
+              debugger;
+              $.ajax({
+                  url: "../../ManageTraining/CalculateAggregate/",
+                  type: 'GET', cache: false,
+                  data: { TrainingID: id },
+                  success: function (result) {
+                      $('#PartialSection').html(result);
+                      $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                  }
+              });
+          }
+
+
+
+
+          function Delete(id) {
+              debugger;
+              bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                  if (conform) {
+                      $.ajax({
+                          url: "../ManageTraining/Delete/",
+                          type: 'POST', cache: false,
+                          data: { TrainingID: id },
+                          success: function (result) {
+                              toastr.success(" Training details deleted successfully!", opts);
+                              setTimeout(function () { location.reload(); }, 1000);
+                          }
+                      });
+                  }
+              });
+          }
+    </script>
+}
+

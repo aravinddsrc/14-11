@@ -1,0 +1,237 @@
+﻿@model DSRCManagementSystem.LeaveRequest
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Update Leave Request</title>
+  
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+   
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+</head>
+<body>
+<div class="modal-content">
+    <div class="modal-header"  style="background-color:#f0f0f1;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×</button>
+        <h4 class="modal-title">
+            Approve Leave Request</h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("UpdateLeaveRequestStatus", "Leave", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Comments, new {@class = "control-label"})
+                        @Html.TextAreaFor(x => x.Comments, new { @id = "Comments", @maxlength = 250 , @class = "form-control", @placeholder = Resources.Resource.DN_LeaveRequest_CommentsForApproval, @autocomplete = "off", @style = "height:75px" })
+                        @Html.LabelFor(x => x.Details, new {@class = "control-label"})
+                        @Html.TextAreaFor(x => x.Details, new { @id = "Details", @maxlength = 250, @class = "form-control", @disabled = "disabled", @style = "height:auto" })
+                        @Html.HiddenFor(x => x.LeaveTypeId)
+                        @Html.HiddenFor(x => x.UserId)                        
+                    </div>
+                    <div class="form-control" style="margin-top: -10px" id="LeaveBalanceDays">
+                    </div>
+                    <div class="form-control" style="margin-top: 10px" id="LOPDays">
+                    </div>
+                </div>
+                <div class="col-md-6" id="avail">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-info btn-icon icon-left" onclick="GetLeaveBalance(@Model.LeaveRequestId)" style="margin-top: 9%;">
+                            <i class="entypo-info"></i>Check Availability</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel </button>
+        <button type="button" id="btnApproveLeaveRequest" class="btn btn-info" onclick=" ApproveLeaveRequestStatus(@Model.LeaveRequestId) ">
+            Save </button>
+    </div>
+</div>
+<script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+
+    
+    $(document).ready(function() {
+        $("#LeaveBalanceDays").hide();
+        $("#LOPDays").hide();
+       $('#LeaveTypeId').each(function() {
+       if ($(this).val() == 4)
+          {
+           $("#avail").hide();
+          }
+    
+        else
+        { 
+       
+        $("#avail").show();
+        } 
+      });     
+    });
+
+
+    function ApproveLeaveRequestStatus(leaveRequestId) {
+        var button = $('button#btnApproveLeaveRequest');
+        $(button).prop('disabled', true);
+        var values =
+        {
+            "leaveStatusId": 2,
+            "leaveRequestId": leaveRequestId,
+            "reportingUserID": @Session["UserId"],
+            "comments": $("#Comments").val()
+        };
+        var toastrOptions = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }       
+        $("#portlet-config").modal('hide'); 
+        $.ajax({            
+            url: "../../Leave/ApproveLeaveRequestStatus/",
+            type: 'POST',
+            cache: false,
+            data: values,
+            success: function (result) {
+                if (result.Result === "Success") {
+                    $("#portlet-config").modal('hide');
+                    toastr.success("The leave request has been approved successfully", toastrOptions);
+                    $(button).prop('disabled', false);
+                    ReloadGrid();
+                }
+                else
+                {
+                    $('#PartialSection').html(result);
+                    $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+
+                    $(button).prop('disabled', false);
+                }
+            }});
+    }
+
+    function GetLeaveBalance(leaveRequestId) {
+   
+        var leaveTypeId = $("#LeaveTypeId").val();
+        var userId = $("#UserId").val();
+
+        if(leaveTypeId==5)
+            { 
+           var values =
+            {
+                "leaveRequestID":leaveRequestId
+            };
+
+               $.ajax({
+                    url: "../../Leave/GetAvailBalance/",
+                    cache: true,
+                    type: "GET",
+                    data: values,
+                    datatype: 'JSON',
+                    success: function (result) {
+                   
+                                if (result.Result !=0.0) {
+                                    $("#LeaveBalanceDays").css({"background-color": "#bdedbc", "border-color": "#b4e8a8", "color": "#045702"});                               
+                                    outputStr = "Total " + result.Result + " days available.";   
+                                    $("#LeaveBalanceDays").html(outputStr).show();                                 
+                                }
+                                else
+                                {
+                                   $("#LeaveBalanceDays").html("").hide(); 
+                                }
+                     
+                         }
+                    });                         
+                
+            }
+
+            else
+            {
+             $.ajax({
+                url: "../../Leave/GetLeaveBalance/",
+                cache: true,
+                type: "GET",
+                data: {  year : new Date().getFullYear(),leaveTypeId: leaveTypeId, userId : userId },
+                datatype: 'JSON',
+                success: function (result) {
+          
+                    if (result.RemainingDays > 0) {
+                        $("#LeaveBalanceDays").css({"background-color": "#bdedbc", "border-color": "#b4e8a8", "color": "#045702"});   
+                        $("#LeaveBalanceDays").html(result.RemainingDays + " days available").show();
+                    } else {
+                        $("#LeaveBalanceDays").css({"background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818"});   
+                        $("#LeaveBalanceDays").html("No days available on selected leave type").show();
+                    }
+                
+                }
+            });     
+        }   
+                       
+             if(leaveTypeId!=4 && leaveTypeId!=6)
+             {              
+
+               $.ajax({
+                    url: "../../Leave/GetLOPDays/",
+                    cache: true,
+                    type: "GET",
+                    data: { leaveRequestId: leaveRequestId } ,
+                    datatype: 'JSON',
+                    success: function (result) {
+
+                    console.log(result.Result);
+            
+                        if(leaveTypeId!=4 && leaveTypeId!=6)
+                            { 
+                                if (result.Result !=0.0) {
+                                    $("#LOPDays").css({"background-color": "#ffc9c9", "border-color": "#ffafbd", "color": "#ac1818"});                               
+                                    outputStr = result.Result + " days will be LOP.";   
+                                    $("#LOPDays").html(outputStr).show();                                 
+                                }
+                                else
+                                {
+                                   $("#LOPDays").html("").hide(); 
+                                }
+                            }  
+                         }
+                    });  
+              }            
+    };
+
+
+
+
+</script>
+</body>
+</html>

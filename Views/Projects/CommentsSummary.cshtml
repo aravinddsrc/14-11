@@ -1,0 +1,171 @@
+﻿@*@model DSRCManagementSystem.Models.RAGHistory*@
+@model IEnumerable<DSRCManagementSystem.Models.RAGHistory>
+@{
+    //ViewBag.Title = "Comments History";
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+        
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <style>
+ .dropdown-menu {
+    background-color: white;
+}
+        </style>
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        th
+        {
+            text-align: center;
+        }
+        table td:nth-child(4)
+        {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        
+    </style>
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+        <li><a>Projects</a></li>
+        <li class="active"><strong>Status Summary</strong></li>
+    </ol>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <h4 class="modal-title">
+                Status Summary</h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered datatable" id="tblProjects">
+             <colgroup>
+       <col span="1" style="width: 10%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 10%;">
+       <col span="1" style="width: 50%;">
+       <col span="1" style="width: 15%;">
+    </colgroup>
+                <thead class="RagStatus">
+                    <tr>
+                        <th>
+                            S.No
+                        </th>
+                        <th>
+                            Date Created
+                        </th>
+                        <th>
+                            RAG Status 
+                        </th>                        
+                        <th>
+                            Comments
+                        </th>
+                        <th>
+                        Commented By
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int srno = 1;}
+                    @foreach (var item in Model)
+                    { 
+                        <tr>
+                            <td align="center">
+                                @(srno++)
+                            </td>
+                            <td align="center">
+                                @Html.Raw(item.CommentsCreated)
+                            </td>
+                            <td align="center">
+                                <img src="@Html.Raw((item.StatusID == 3) ? "../../Content/Template/images/Circle_Green.png" : (item.StatusID == 2) ? "../../Content/Template/images/Circle_Orange.png" : "../../Content/Template/images/Circle_Red.png")"
+                                      alt="RAG Status" />
+                            </td>                            
+                            <td>
+                               @* @Html.Raw(item.StatusComments)*@
+                               @Html.Raw(Html.Encode(item.StatusComments ?? string.Empty).Replace("\n", "<br />"))
+                            </td>
+                            <td>
+                            @Html.Raw(item.Commented)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            @if (ViewBag.val3 == "true")
+            {
+             <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "?ID="+@ViewBag.val3+"'");") >
+                Back
+            </button>
+            }
+            else{
+            <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "'");" ) >
+                Back
+            </button>
+ 
+            }       </div>
+    </div>
+         
+    <script type="text/javascript">
+//        $(document).ready(function () {
+//            $('#tblProjects').after('<div id="nav"></div>');
+//            var rowsShown = 10;
+//            var rowsTotal = $('#tblProjects tbody tr').length;
+//            var numPages = rowsTotal / rowsShown;
+//            for (i = 0; i < numPages; i++) {
+//                var pageNum = i + 1;
+//                $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+//            }
+//            $('#tblProjects tbody tr').hide();
+//            $('#tblProjects tbody tr').slice(0, rowsShown).show();
+//            $('#tblProjects a:first').addClass('active');
+//            $('#tblProjects a').bind('click', function () {
+
+//                $('#nav a').removeClass('active');
+//                $(this).addClass('active');
+//                var currPage = $(this).attr('rel');
+//                var startItem = currPage * rowsShown;
+//                var endItem = startItem + rowsShown;
+//                $('#tblProjects tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+//                        css('display', 'table-row').animate({ opacity: 1 }, 300);
+//            });
+        //        });
+        jQuery(document).ready(function ($) {
+            $("#tblProjects").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [1] }, { bSortable: false, 'aTargets': [2]}]
+            });
+           
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            $('thead>tr>th').css('text-align', 'center');
+        });
+    </script>
+</body>
+</html>

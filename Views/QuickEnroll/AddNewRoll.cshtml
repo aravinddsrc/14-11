@@ -1,0 +1,699 @@
+﻿@*@model IEnumerable<DSRCManagementSystem.Models.QuickEnrollment>*@
+@model DSRCManagementSystem.Models.QuickEnrollment
+
+@{
+    ViewBag.Title = "Add New Enrole";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+     <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+         <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+         <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/css/neon.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+    type="text/css" />
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+<body>
+    <style>
+        .abc {
+            background-color: #ffb3b3;
+        }
+    </style>
+    <style type="text/css">
+        table td:nth-child(2) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        table td:nth-child(3) {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        body {
+            overflow-y: auto;
+        }
+        
+       .dropdown-menu {
+    background-color: white;
+}        
+
+      
+ </style>  
+   
+}
+    @{
+        int SNO = 1;
+        SNO++;
+   
+        
+}
+
+
+
+<div class="row">
+    <div class="panel panel-default panel-shadow" 
+
+data-collapsed="0">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            @*<div class="modal-header" style="background-color: #f0f0f1;">*@
+            <h4 class="modal-title" >
+                Add New Quick Enroll</h4>
+        </div>
+            @*</div>*@
+        <div class="modal-body" style="padding:0px;">
+            @using (Html.BeginForm("AddNewRoll", "QuickEnroll", FormMethod.Post))
+            {                   
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                  
+                   
+                               <div class="row" >
+    <div class="col-md-12" ,style="text-align: right" >
+        @Html.Label("*", new { @style = "color:#FF0000;margin-left:480px" }) Required field(s)
+        </div>
+    </div>@*
+                
+                <div class="panel-body" style="display: block;">
+                        <div class="row">                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Employee ID")
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+
+                               @Html.TextBoxFor(x => x.QuickEnroll, new { @id = "QuickEnroll", @name = "PhoneNumber", disabled = "disabled", @class = "form-control", @Value = ViewBag.EmpID, @autocomplete = "off", @minlength = "10", @maxlength = "10" })       
+                                
+                            <span id="EmpID" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+               
+                @Html.HiddenFor(x => x.QuickEnroll, new { @value = ViewBag.EmpID })
+
+                <div class="panel-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("First Name")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                    
+                                    @Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @name = "First Name", @class = "form-control", @placeholder = "First Name", @autocomplete = "off", @maxlength = "50" })
+                            <span id="span_ID1" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Last Name")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                   @Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @name = "LastName", @class = "form-control", @placeholder = "Last Name", @autocomplete = "off", @maxlength = "50" })
+                                    <span id="span_ID2" style="color: Red;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                 <div class="panel-body" style="display: block;">
+                        <div class="row">                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Department", (string)ViewBag.Lbl_department)
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+
+                                    
+                                   @Html.DropDownList("DepartmentId", ViewBag.DepartmentList as SelectList, "--Select--", new { @id = "Department", @name = "DepartmentId", @class = "form-control", @onchange = "GetGroups()" })
+                                    
+                            <span id="dep" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                     @Html.Label("Group")
+                                  @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                   @Html.DropDownList("GroupId", ViewBag.GroupList as SelectList, "--Select--", new { @id = "DepGroup", @name = "GroupId", @class = "form-control" })
+                                     
+                            <span id="depgroup" style="color: Red;"></span>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                <div class="panel-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   @Html.Label("Date Of Enquiry")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+
+                                   @Html.TextBoxFor(x => x.DateOfEnquiry, "{dd/MM/yyyy}", new { @id = "DateEnquiry", @name = "DateEnquiry", @class = "form-control", disabled = "disabled", @Value = Session["currDate"].ToString(), @autocomplete = "off" })  
+                            <span id="doE" style="color: Red;"></span>
+                                     <br />
+                                <span id="#span_HostErrors" style="color: Red;"></span>
+                               
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   @Html.Label("Date Of Join")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                     @Html.TextBoxFor(x => x.DateOfJoin, new { @name = "Date", @id = "Date", @class = "form-control datetimepicker" }) 
+                                 @*  @Html.TextBoxFor(x => x.DateOfJoin, new { @id = "Date", @name = "DateOfBirth", @class = "form-control datetimepicker", @placeholder = "Date Of Join", @autocomplete = "off" })  *@
+                            <span id="doj" style="color: Red;"></span>
+                                     <br />
+                                <span id="#span_HostError" style="color: Red;"></span>
+                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                
+               
+                <div class="panel-body" style="display: block;">
+                        <div class="row">
+                           <div class="col-md-6">
+                                <div class="form-group">
+                                     @Html.Label("Gender")
+                                  @Html.Label("*", new { @style = "color:#FF0000" })
+                                    
+                                     @Html.DropDownListFor(x => x.GenderID, ViewBag.Gender as SelectList, "--Select--",
+                                                            new { @id = "GenderID", @name = "GenderID", @class = "form-control" })
+                                <span id="span_gender" style="color: Red;"></span>
+                            <span id="span_ID6" style="color: Red;"></span>
+                                    
+                                    
+                                </div>
+                            </div>
+                             <div class="col-md-6">
+                                 <div class="form-group">
+                                   @Html.Label("Designation")
+                                   @Html.Label("*", new { @style = "color:#FF0000" })
+                                    
+                                     @Html.DropDownListFor(x => x.RollID, ViewBag.usertype as SelectList, "--Select--",
+                                                            new { @id = "UserType", @name = "RoleID", @class = "form-control" })
+                            <span id="span_ID4" style="color: Red;"></span>
+                                    
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+             
+                
+                       <div class="panel-body" id="WorkExperience" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Experience, new { @class = "control-label" })
+                                @Html.Label("Year", new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:#FF0000" })
+                                @Html.DropDownList("YearId", ViewBag.YearsList as SelectList, "--Select--", new { @id = "Idexpyear", @name = "YearId", @class = "form-control" })
+                                <span id="span_expyear" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Experience Month", new { @class = "control-label" })
+                                @Html.Label("*", new { @style = "color:#FF0000" })
+                                @Html.DropDownList("MonthId", ViewBag.MonthList as SelectList,"--Select--", new { @id = "Idexpmonth", @name = "MonthId", @class = "form-control" })
+                                <span id="span_expmonth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             
+                
+                
+                <div class="panel-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                 <div class="form-group">
+                                    @Html.Label("Phone Number")
+                                    @Html.Label("*", new { @style = "color:#FF0000" })
+                                   @Html.TextBoxFor(x => x.PhoneNumber, new { @id = "PhoneNumber", @maxlength = 15, @name = "PhoneNumber", @class = "form-control", @placeholder = "Phone Number", @autocomplete = "off" }) 
+                            <span id="span_ID5" style="color: Red;"></span>
+                                    <br />
+                                     <span id="contactNo_Error" style="color: Red;"></span>
+                                   
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Personal Email Address")
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                                    
+                                  @Html.TextBoxFor(x => x.PersonalEmailAddress, new { @id = "email", @name = "PersonalEmailAddress", @class = "form-control", @placeholder = "Personal Email Address", @autocomplete = "off", @maxlength = "50" }) 
+                            <span id="emails" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              
+                <div class="panel-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   @Html.LabelFor(x => x.Address, new { @class = "control-label" }) 
+                                  @* @Html.Label("*", new { @style = "color:#FF0000" })*@
+                                    
+                                   @Html.TextAreaFor(x => x.Address, new { @id = "Address", @name = "Address", @class = "form-control", @style = "height:100px", @placeholder = "Address", @maxlength = "250" }) 
+                            <span id="span_ID3" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   @*@Html.LabelFor(x => x.Comments, new { @class = "control-label" })*@
+                              
+                                  @* @Html.Label("*", new { @style = "color:#FF0000" })*@
+                                  @Html.Label("Comment")
+                                  @Html.TextAreaFor(x => x.Comments, new { @id = "Comments", @name = "Address", @class = "form-control", @style = "height:100px", @maxlength = "250" })
+                            <span id="span" style="color: Red;"></span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                
+                    <br />
+                
+                
+                <div class="modal-footer">
+                                        <button type="reset" id="btnAdd" class="btn btn-default" data-dismiss="modal">
+                                            Cancel
+                                        </button>
+
+                                        <button id="btnSubmit" type="button" style="margin-right: -10px"  class="btn btn-info" onclick="SaveDetails()">
+                                            Save
+                                        </button>
+                                        
+                                    </div>
+                              
+            }
+                
+            </div>
+        </div>
+   @* </div>*@
+@*</div>*@
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    $(".datetimepicker").datepicker({
+        format: 'dd-mm-yyyy',
+        //startDate: '+1d',
+        //endDate: 'today',
+        daysOfWeekDisabled: [0, 6],
+        autoclose: true
+    });
+              
+
+
+    $(document).ready(function () {
+        $(function () {
+            $(".modal-body select").select2({
+
+            });
+        });
+
+      
+     
+
+      
+        $('#FirstName').keypress(function (e) {
+            var regex = new RegExp("^[A-Za-z\\.]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                
+                return true;
+            }
+            return false;
+        });
+        $('#LastName').keypress(function (e) {
+            var regex = new RegExp("^[A-Za-z\\.]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+               
+                return true;
+            }
+            return false;
+        });
+        $('#Location').keypress(function (e) {
+            var regex = new RegExp("^[A-Za-z\\.]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                
+                return true;
+            }
+            return false;
+        });
+
+
+
+      
+       
+    });
+
+    $("#PhoneNumber").keypress(function (e) {      
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!/^[0-9.]{1,999}$/.test(value)) {
+            e.preventDefault();
+        }
+    });
+    function GetDepartments() {
+       
+
+        var Bid = @Session["BranchID"];
+
+        if (Bid !== "") {
+
+            var url2 = '@Url.Action("GetDepartments", "QuickEnroll")';
+
+            $.get(url2, { BranchId: Bid }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>---Select---</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#Department").html(items.join(' '));
+                $("#Department").select2();
+            });
+        }
+    }
+
+    function GetGroups() {
+
+        var Did = $("#Department").find("option:selected").prop("value");
+
+        if (Did !== "") {
+
+            var url2 = '@Url.Action("GetGroups", "QuickEnroll")';
+
+            $.get(url2, { DepartmentId: Did }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>---Select---</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#DepGroup").html(items.join(' '));
+                $("#DepGroup").select2();
+            });
+        }
+    }
+    function SaveDetails() {
+       
+       
+        
+        var contactexp = /^[7-9][0-9]{9}$/;
+        var phone = $("#PhoneNumber").val();
+        var emailfilter = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        var email = $("#email").val();
+        var BranchID = @Session["BranchID"];
+        if (document.getElementById('FirstName').value == 0 ||document.getElementById('Department').value == ""||document.getElementById('GenderID').value == 0|| document.getElementById('UserType').value == 0||  document.getElementById('PhoneNumber').value == 0 || phone.length<10|| document.getElementById('LastName').value == 0 || document.getElementById('email').value == 0 || document.getElementById('Date').value == "" ) {
+            if (document.getElementById('FirstName').value == 0) {
+                document.getElementById("span_ID1").innerHTML = "Enter the First Name";
+            }
+            else {
+                document.getElementById("span_ID1").innerHTML = "";
+            }
+            if (document.getElementById('LastName').value == 0) {
+                document.getElementById("span_ID2").innerHTML = "Enter the Last Name";
+            }
+            else {
+                document.getElementById("span_ID2").innerHTML = "";
+            }
+            //if (document.getElementById('Idbranchname').value == 0) {
+            //    document.getElementById("Branch").innerHTML = "Enter the Branch Name";
+            //}
+            //else {
+            //    document.getElementById("Branch").innerHTML = "";
+            //}
+            if (document.getElementById('Department').value == "") {
+                document.getElementById("dep").innerHTML = "Select department";
+            }
+            else {
+                document.getElementById("dep").innerHTML = "";
+            }
+            if (document.getElementById('GenderID').value == 0) {
+                document.getElementById("span_ID6").innerHTML = "Select Gender";
+            }
+            else {
+                document.getElementById("span_ID6").innerHTML = "";
+            }
+            if (document.getElementById('UserType').value == 0) {
+                document.getElementById("span_ID4").innerHTML = "Select User Type";
+            }
+            else {
+                document.getElementById("span_ID4").innerHTML = "";
+            }
+            if (document.getElementById('PhoneNumber').value == 0) {
+                document.getElementById("span_ID5").innerHTML = "Enter the Phone Number";
+            }
+            else if(phone.length <10)
+            {
+                document.getElementById("span_ID5").innerHTML = "Enter minimum 10 numbers";
+            }
+            else {
+                document.getElementById("span_ID5").innerHTML = "";
+            }
+            if (document.getElementById('Date').value == "") {
+                document.getElementById("doj").innerHTML = "Select date of join";
+            }
+           
+            else {
+                document.getElementById("doj").innerHTML = "";
+            }
+            //else  if (startDateTime > endDateTime) {
+            //    document.getElementById("span_HostError").innerHTML = "Joining date is greater than todays date";
+               
+            //}
+           
+            if (document.getElementById('Idexpyear').value == "") {
+                document.getElementById("span_expyear").innerHTML = "Select Year of Experience";
+            }
+            else {
+                document.getElementById("span_expyear").innerHTML = "";
+            }
+
+            if (document.getElementById('Idexpmonth').value == "") {
+                document.getElementById("span_expmonth").innerHTML = "Select Month of Experience";
+            }
+            else {
+                document.getElementById("span_expmonth").innerHTML = "";
+            }
+
+            //if (document.getElementById('Email').value == 0) {
+            //    document.getElementById("emails").innerHTML = "Enter the personal mail ID";
+            //}
+            //else {
+            //    document.getElementById("emails").innerHTML = "";
+            //}
+            //if (document.getElementById('Experience').value == 0) {
+            //    document.getElementById("exp").innerHTML = "Enter the Experience";
+            //}
+            //else {
+            //    document.getElementById("exp").innerHTML = "";
+            //}
+            if (document.getElementById('email').value == 0 || document.getElementById('email').value ==  "") {
+                document.getElementById("emails").innerHTML = "Enter the Personal Email Address";
+            }
+            else {
+                document.getElementById("emails").innerHTML = "";
+            }
+
+
+        }
+        else if ( !emailfilter.test(email) && (!email == 0)) {
+            //else if (!contactexp.test(phone) ||(!email == 0)) {
+            //if (!contactexp.test(phone)) {
+            //    document.getElementById("contactNo_Error").innerHTML = "Invalid Phone Number";
+            //}
+            //else {
+            //    document.getElementById("contactNo_Error").innerHTML = "";
+            //}
+
+            if (!emailfilter.test(email) && (!email == 0)) {
+                document.getElementById("emails").innerHTML = "Invalid Email Id";
+            }
+            else {
+                document.getElementById("emails").innerHTML = "";
+            }
+
+        }
+       
+        else {
+            
+
+            
+
+            var values =
+                         {
+                             
+                             "FirstName": $("#FirstName").val(),
+                             "LastName": $("#LastName").val(),
+                             "Address": $("#Address").val(),
+                             "Location": $("#Location").val(),
+                             "PhoneNumber": $("#PhoneNumber").val(),
+                             "DateOfBirth": $("#DateOfBirth").val(),
+                             "DateOfJoin": $("#Date").val(),
+                             //"Experience": $("#Experience").val(),
+                             "PersonalEmailAddress": email,
+                             //"ExperienceYear": $("#Exyear").find("option:selected").val(),
+                             //"ExperienceMonth": $("#Exmonth").find("option:selected").val(),
+                             "BranchID": BranchID,
+                             "RollID":$("#UserType").find("option:selected").val(),
+                             "GenderID":$("#GenderID").find("option:selected").val(),
+                             "DateOfEnquiry":$("#DateEnquiry").val(),
+                             "Experience":$("#Idexpyear").find("option:selected").val()+"."+$("#Idexpmonth").find("option:selected").val(),
+                             
+                             "DepartmentGroup": $("#DepGroup").find("option:selected").val(),
+                             "Comments": $("#Comments").val(),
+                             "DepartmentName":$("#Department").find("option:selected").val()
+                         }
+            var opts =
+                        {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "toastClass": "White",
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+            $.ajax({
+               
+                url: "../../QuickEnroll/AddNewRoll/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+
+                    if (result.Result === "Success") {
+
+                        $("#portlet-config").modal('hide');
+                        toastr.success("Detail's saved successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("Quick Enroll saved successfully", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+
+                }
+
+            });
+
+        }
+    }
+      
+</script>
+@*@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '1d'
+        });
+
+
+ </script>*@
+        <style>
+             .panel-body {
+                padding-top: 0px;
+    padding-bottom: 0px;
+        }
+        </style>
+            
+    </body>
+   

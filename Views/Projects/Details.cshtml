@@ -1,0 +1,254 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Learning>
+@{
+    ViewBag.Title = "Learning";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Calender/fullcalendar.print.css" rel="stylesheet" type="text/css"
+        media="print" />
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <style>
+        #calendar
+        {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande" ,Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+        
+        #tblSubmittedLeaveRequest td:nth-child(1)
+        {
+            text-align: center;
+        }
+        
+        #tblSubmittedLeaveRequest td:nth-child(6)
+        {
+            text-align: center;
+        }
+        #tblProjects2 td:nth-child(3)
+        {
+            word-wrap: break-word ; word-break: break-all;
+        }
+        
+        .colorClass1
+        {
+            background-color: rgb(245,105,84);
+            border-color: rgb(245,105,84);
+        }
+        .colorClass2
+        {
+            background-color: rgb(0,141,76);
+            border-color: rgb(12,158,55);
+        }
+        .colorClass3
+        {
+            background-color: rgb(0,115,183);
+            border-color: rgb(0,84,168);
+        }
+         .dropdown-menu {
+    background-color: white;
+}
+    </style>
+      
+@{
+   /// int SNO = 1;
+    //int sno = 1;
+    int SNo = 1;
+}
+@{
+    int ForPagination = @Session["PaginationNumber"] != null ? Convert.ToInt32(@Session["PaginationNumber"].ToString()) : 0;
+}
+
+<div class="row">
+    @{
+        if (ForPagination > 0)
+        {
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li><a href="#enrollment" data-toggle="tab" role="tab">Current Enrollment</a></li>
+            <li class="active"><a href="#learning" data-toggle="tab" role="tab">Learning History</a></li>
+        </ul>
+        }
+        else
+        {
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li class="active"><a href="#enrollment" data-toggle="tab" role="tab">Current Enrollment</a></li>
+            <li><a href="#learning" data-toggle="tab" role="tab">Learning History</a></li>
+        </ul>
+        
+        }}
+        <br />
+                       
+                        <div class="panel-body">
+                            <div class="clear">
+                            </div>
+                            <br />
+       
+     <div class="tab-content">
+     
+     
+     
+      
+    @* Current Enrollment*@
+
+
+     <div class="tab-pane active" id="enrollment">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="panel-heading">
+@*                            <div class="panel-title" color="White">
+                                Current Enrollment</div>*@
+                        </div>
+                    @{
+                        Html.RenderAction("Enrollment", "LDR");
+                    }
+                </div>
+            </div>
+            </div>
+
+
+
+      @*      Learning Hisrory*@
+
+
+      
+
+
+         <div class="tab-pane" id="learning">
+          <ol class="breadcrumb bc-3">
+           <li>Learning and Development</li>
+        <li class="active"><strong>Learning History</strong></li>
+    </ol>  
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default panel-shadow" data-collapsed="0">
+                        <div class="panel-heading">
+                            <div class="panel-title" color="White">
+                                Learning History</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="clear">
+                            </div>
+                            <br />
+                                @using (Html.BeginForm("Learning", "LDR", FormMethod.Post))
+                                { 
+                            <table class="table table-bordered datatable" id="tblProjects2">
+                                <thead>
+                                    <tr>
+                                       <th style="text-align:center;">
+                                        S.No
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Training Name")
+                                    </th>
+                                     <th >
+                                        @Html.DisplayName("Training Id")
+                                    </th>
+                                    <th>
+                                      @Html.DisplayName("Level")
+                                    </th>
+                                     <th >
+                                         @Html.DisplayName("Registered On")
+                                    </th>
+                                    <th >
+                                        @Html.DisplayName("Completed On")
+                                    </th>
+                                    <th >
+                                        @Html.DisplayName("Status")
+                                    </th>
+                                    <th >
+                                       @Html.DisplayName("Score")
+                                    </th>
+                                    </tr>
+                                </thead>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td style="text-align: center">
+                                            @(SNo++)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelitem => item.TrainingName)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelitem => item.TrainingId)
+                                        </td>
+                                         <td>
+                                        @Html.DisplayFor(modelitem => item.Level)
+                                        </td>
+                                        @if(item.RegisteredOn.HasValue)
+                                       {
+                                      <td>
+                                    @item.RegisteredOn.Value.ToString("dd/MM/yyyy")
+                                   </td>
+                                      }
+                                      @if (item.CompletedOn.HasValue)
+                                      {
+                                        <td>
+                                          @* @Html.DisplayFor(modelitem => item.RegisteredOn.Value.ToString("dd/MM/yyyy"))*@
+                                          @item.CompletedOn.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                      }
+                                        <td>
+                                        @Html.DisplayFor(modelitem => item.Status)
+                                        </td>
+                                        <td>
+                                        @Html.DisplayFor(modelitem => item.Score)
+                                        </td>
+                                      
+                                    </tr>
+                                    }
+                                }
+                            </table>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        </div>
+        </div>
+        </div>
+   <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+ 
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        var columnDefs;
+        //        if ($("aTargets")[6]) {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6]}];
+        //        } else {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5]}];
+        //        }
+        $("#tblProjects2").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]]
+            //            "bStateSave": false,
+            //            "columnDefs": columnDefs
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+    </script>
+        
+

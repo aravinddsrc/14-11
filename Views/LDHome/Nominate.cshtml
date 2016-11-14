@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<body>
+<div class="row" style="height:300px;"></div>
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-shadow"  data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                       Training Nominated</div>
+                </div>
+                <!-- panel body -->
+                <div class="panel-body">   
+                @if (ViewBag.Null == "Null")
+                {
+                    
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">Please Select The Trainee.</h5>
+                    </div>
+                }
+                else if (ViewBag.Instructor == "Instructor")
+                { 
+                   
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">Instructor does Not Allow To Nominate.</h5>
+                    </div>
+                }
+                else if ( ViewBag.NoSeat == "NoSeat")
+                {
+                     
+                    <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">Seats Filled.</h5>
+                    </div>
+                }
+                else if(ViewBag.Already == "Already")
+                {
+                      <div style="text-align: center;font-weight:bold;color:Red;" class="danger">
+                       <h5 style="font-weight:bold;color:red;">You have Already Nominated to this Training.</h5>
+                    </div>
+                }
+                else
+                {
+                    <div style="text-align: center;font-weight:bold;color:Green;" class="success">
+                        <h5 style="font-weight:bold;color:Green;">Leave Request has been Approved</h5>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</body>
+
+
+ 

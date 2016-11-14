@@ -1,0 +1,234 @@
+﻿@model DSRCManagementSystem.Models.Assets
+@{
+    ViewBag.Title = "Reject HwSwRequest";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Approve Request</title>
+
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        
+        #ComputerName,#Networkheadname
+        {
+            height: 42px;
+        }
+        
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>    
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    
+      
+
+</head>
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+<body>
+
+<div class="modal-content">        
+        
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Approve Request</h4>
+        </div>
+
+        <div class="modal-body">      
+
+      @using (Html.BeginForm("HarwareSoftwareRequest", "RejectHwSwRequest", FormMethod.Post))
+      {
+            <div class="row">
+               <div class="col-md-12" style="text-align: right">
+                  @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                  @Html.HiddenFor(x => x.RequestedId, new { @id = "RequestedId" })                  
+               </div>
+            </div>
+          
+           
+          if (Convert.ToInt32(Session["RoleId"]) == DSRCManagementSystem.Models.MasterEnum.Roles.Admin.GetHashCode() || Convert.ToInt32(Session["RoleId"]) == 42)
+                {          
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">                        
+                        @Html.Label("Comments", new { @class = "control-label" })
+                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>  
+                        @Html.TextAreaFor(x => x.FirstStageApproval, new { @id = "FirstStageApproval", @name = "FirstStageApproval", @class = "form-control", @placeholder = "First Stage Approval", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })                        
+                        <span id="FirstStageApproval_ID" style="color: Red;"></span> 
+                    </div>
+                </div>                
+            </div>
+                }
+                else
+                { 
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">                        
+                        @Html.Label("Comments", new { @class = "control-label" })
+                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>  
+                        @Html.TextAreaFor(x => x.SecondStageApproval, new { @id = "SecondStageApproval", @name = "SecondStageApproval", @class = "form-control", @placeholder = "Second Stage Approval", @autocomplete = "off", @style = "height:70px", @maxlength = 1000 })
+                        <span id="SecondStageApproval_ID" style="color: Red;"></span> 
+                    </div>
+                </div>                
+            </div>
+                }
+
+
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal" >
+                Cancel
+               </button>
+
+                @if (Convert.ToInt32(Session["RoleId"]) == DSRCManagementSystem.Models.MasterEnum.Roles.Admin.GetHashCode() || Convert.ToInt32(Session["RoleId"]) == 42)
+                {                          
+               <button type="button" id="btnAdd" class="btn btn-info" onclick="RejectRequest_Stage1()" >
+                Reject
+               </button>
+                }
+                else
+                {                          
+               <button type="button" id="btnAdd1" class="btn btn-info" onclick="RejectRequest_Stage2()" >
+                Reject
+               </button>
+                }
+               
+            </div>
+      }
+   </div>
+</div>
+
+    <script type="text/javascript">
+
+        var toastrOptions = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+
+
+        });
+
+        
+
+        function RejectRequest_Stage1() {
+
+            var errorsCount = 0;
+
+            //FirstStageApproval Required Field Validation
+
+            if ($("#FirstStageApproval").val() == '') {
+                $("#FirstStageApproval_ID").html("Enter Comments");
+                errorsCount++;
+            }
+            else {
+                $("#FirstStageApproval_ID").html("");
+            }
+
+            if (errorsCount == 0) {
+
+                var values =
+            {
+                "RequestedId": $("#RequestedId").val(),
+                "FirstStageApproval": $("#FirstStageApproval").val()
+            };
+
+            $.ajax({
+                url: "../../HarwareSoftwareRequest/RejectHwSwRequest/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    if (result.Result === "Success") {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("Hardware/Software request rejected successfully", toastrOptions);
+
+                        setTimeout(function () { // wait 2 seconds and reload
+                            window.location.reload(true);
+                        }, 1000);
+                    }
+                }
+            });
+
+            }
+    }
+
+    function RejectRequest_Stage2() {
+
+        var errorsCount = 0;
+
+        //FirstStageApproval Required Field Validation
+
+        if ($("#SecondStageApproval").val() == '') {
+            $("#SecondStageApproval_ID").html("Enter Comments");
+            errorsCount++;
+        }
+        else {
+            $("#SecondStageApproval_ID").html("");
+        }
+
+        if (errorsCount == 0) {
+
+            var values =
+            {
+                "RequestedId": $("#RequestedId").val(),
+                "SecondStageApproval": $("#SecondStageApproval").val()
+            };
+
+            $.ajax({
+                url: "../../HarwareSoftwareRequest/RejectHwSwRequest/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                success: function (result) {
+                    if (result.Result === "Success") {
+                        $("#portlet-config").modal('hide');
+                        toastr.success("Hardware/Software request rejected successfully", toastrOptions);
+
+                        setTimeout(function () { // wait 2 seconds and reload
+                            window.location.reload(true);
+                        }, 1000);
+                    }
+                }
+            });
+
+        }
+    }
+
+    </script>  
+
+</body>
+</html>
+
+

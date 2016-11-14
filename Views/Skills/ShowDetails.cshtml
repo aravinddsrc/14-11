@@ -1,0 +1,97 @@
+﻿@model DSRCManagementSystem.Models.userdetails
+@{
+    Layout = null;
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UserDetail</title>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+</head>
+<div class="modal-content">
+    <div class="modal-header" style="background-color: #f0f0f1;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×</button>
+        <h4 class="modal-title">
+            Employee Detail
+        </h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12" style="text-align: right">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    Emp ID
+                    @Html.TextBoxFor(x => x.empid, new { @id = "EmpID", @name = "EmpID", @class = "form-control", @placeholder = Resources.Resource.DN_ProfileModel_EmpID, @autocomplete = "off", @maxlength = "10", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    First Name
+                    @Html.TextBoxFor(x => x.firstname, new { @id = "FirstName", @name = "FirstName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    Last Name
+                    @Html.TextBoxFor(x => x.lastname, new { @id = "LastName", @name = "LastName", @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    Date of joining
+                    @Html.TextBoxFor(x => x.doj, "{0:dd/MM/yyyy}", new { @disabled = "disabled", @id = "DateOfJoin", @name = "DateOfJoin", @class = "form-control datetimepicker", })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    Date of birth
+                    @Html.TextBoxFor(x => x.dob, "{0:dd/MM/yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    Email address
+                    @Html.TextBoxFor(x => x.email, new { @class = "form-control datetimepicker", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    IP Address
+                    @Html.TextBoxFor(x => x.ip, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    Machine Name
+                    @Html.TextBoxFor(x => x.machinename, new { @class = "form-control datetimepicker", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    Permanent Address
+                    @Html.TextBoxFor(x => x.permanentaddress, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

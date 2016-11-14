@@ -1,0 +1,287 @@
+﻿
+@model DSRCManagementSystem.Models.Inbox
+@{
+    ViewBag.Title = "Forward Mail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <link href="~/Content/TokenField/css/bootstrap-tokenfield.css" rel="stylesheet" />
+    <link href="~/Content/TokenField/css/bootstrap-tokenfield.min.css" rel="stylesheet" />
+    <link href="~/Content/TokenField/css/tokenfield-typeahead.css" rel="stylesheet" />
+    <link href="~/Content/TokenField/css/tokenfield-typeahead.min.css" rel="stylesheet" />
+    <script src="~/Content/TokenField/Js/bootstrap-tokenfield.js"></script>
+    <script src="~/Content/TokenField/Js/bootstrap-tokenfield.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+
+            $(".tokenfield").tokenfield({
+                autocomplete: {
+                    source: ['red', 'blue', 'green', 'yellow', 'violet', 'brown', 'purple', 'black', 'white'],
+                    delay: 100
+                },
+                showAutocompleteOnFocus: true
+            })
+            //$(".tokenfieldcc").tokenfield({
+            //    autocomplete: {
+            //        source: ['red', 'blue', 'green', 'yellow', 'violet', 'brown', 'purple', 'black', 'white'],
+            //        delay: 100
+            //    },
+            //    showAutocompleteOnFocus: true
+            //})
+        });
+
+</script>
+    <style>
+        .page-body .select2-container .select2-choices {
+           padding-left: 34px;
+        }
+        .mail-env .mail-body .mail-compose .form-group input {
+            padding-left:5px;
+        }
+    </style>
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+    <li>Communication</li>
+        <li class="active"><strong>Forward Mail</strong></li>
+    </ol>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            
+            <h4 class="modal-title">
+           Forward Mail</h4>
+           
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("ComposeMail", "Communication", FormMethod.Post))
+            {
+                 @Html.HiddenFor(x => x.From, new { @id = "from" });
+                @Html.HiddenFor(x => x.Attachment, new  { @id = "Attachment" });
+                @Html.HiddenFor(x => x.message, new { @id = "Message" });
+               <div class="mail-env"> 
+                   <!-- compose new email button --> <div class="mail-sidebar-row visible-xs"> <a href="#" class="btn btn-success btn-icon btn-block">
+Forward Mail
+<i class="entypo-pencil"></i> </a> </div> 
+                   <!-- Mail Body --> <div class="mail-body" style="width:100%;"> <div class="mail-header"> 
+                       <!-- title --> <div class="mail-title">
+Forward Mail <i class="entypo-pencil"></i> </div> 
+   <div class="mail-links"> <a href="/Communication/Inbox" class="btn btn-default"> <i style="    font-style: inherit;">Cancel</i>  <a class="btn btn-success btn-icon" type="button" id="btnAdd"  onclick='AddNewMeeting()'>
+Send
+<i class="entypo-mail"></i> </a> </div> </div> <div class="mail-compose">
+     <form method="post" role="form"> 
+         <div class="form-group"> 
+             <label for="to">To:<span style="color:Red;">*</span></label> <div>@Html.DropDownList("Id", ViewBag.Email3 as MultiSelectList, new { @id = "to", @class = "select2-container select2-container-multi select2 visible",value=@Model.ToEmail ,@multiple = "multiple" })<span style="color:Red;" id="span_ID9"></span></div> 
+             @*<div class="field-options"> <a href="javascript:;" onclick="$(this).hide(); $('#cc').parent().removeClass('hidden'); $('#cc').focus();">CC</a> <a href="javascript:;" onclick="$(this).hide(); $('#bcc').parent().removeClass('hidden'); $('#bcc').focus();">BCC</a> </div>*@
+
+         </div> @*<div class="form-group hidden"> <label for="cc">CC:</label> @Html.DropDownList("Id1", ViewBag.Email4 as MultiSelectList, new { @id = "cc", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" }) </div> *@
+        @* <div class="form-group hidden"> <label for="bcc">BCC:</label> @Html.DropDownList("Id2", ViewBag.Email5 as MultiSelectList, new { @id = "bcc", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple" })     </div> *@
+         <div class="form-group"> <label for="subject">Subject:<span style="color:Red;">*</span></label> <input type="text" class="form-control" style="padding-left:66px;" id="subject" maxlength="100" @*value="Fw:@Session["ForwardMessage"]" *@tabindex="1"> <span style="color:Red;" id="span_ID10"> </div> <div class="compose-message-editor" style="font-size: initial;"> 
+<label for="subject" style="font-size: small;">Body:<span style="color:Red;">*</span></label> 
+        <textarea name="sample_wysiwyg" id="sample_wysiwyg" style="height:400px;width:100%;" maxlength="4000">@*>@Model.message*@</textarea></div> </form> </div> </div> 
+                   <span style="color:Red;    margin-left: 20px;" id="span_ID11"> 
+             </div>
+                
+                
+            }
+         </div>
+        </div>   
+    
+        
+       </body>
+             </html>
+
+
+<script type="text/javascript">
+
+    function AddNewMeeting() {
+     
+
+
+        var check = $("#to").val();
+
+        if (($("#to").val() == '') || ($("#to").val() == null) || ($("#subject").val() == '') || ($("#subject").val() == null) || $("#sample_wysiwyg").val() == '' || $("#sample_wysiwyg").val() == null) {
+
+            if ($("#to").val() == '' || $("#to").val() == null) {
+                document.getElementById("span_ID9").innerHTML = "Enter the to email address";
+            }
+            else if ($("#subject").val() == '' || $("#subject").val() == null) {
+
+                document.getElementById("span_ID10").innerHTML = "Enter the subject";
+            }
+            else if ($("#sample_wysiwyg").val() == '' || $("#sample_wysiwyg").val() == null) {
+                document.getElementById("span_ID11").innerHTML = "Enter the Body";
+            }
+        }
+
+
+
+
+        else {
+
+            var cc = $("#cc").val();
+            var bc = $("#bcc").val();
+            var k = 1;
+            try {
+
+                if (cc != null && bc != null) {
+                    var values =
+                                   {
+                                       "From": $("#from").val(),
+                                       "To": $("#to").val().toString(),
+                                       "CC": $("#cc").val().toString(),
+                                       "BCC": $("#bcc").val(),
+                                       "Subject": $("#subject").val(),
+                                       "Message": $("#sample_wysiwyg").val()
+                                   }
+                }
+                else if (cc != null && bc == null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val().toString(),
+                                   "CC": $("#cc").val().toString(),
+                                   "BCC": null,
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+                else if (cc == null && bc != null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val().toString(),
+                                   "CC": null,
+                                   "BCC": $("#bcc").val(),
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+                else if (cc == null && bc == null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val().toString(),
+                                   "CC": null,
+                                   "BCC": null,
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+            }
+            catch (ex) {
+
+                if (cc != null && bc != null) {
+                    var values =
+                                   {
+                                       "From": $("#from").val(),
+                                       "To": $("#to").val(),
+                                       "CC": $("#cc").val(),
+                                       "BCC": $("#bcc").val(),
+                                       "Subject": $("#subject").val(),
+                                       "Message": $("#sample_wysiwyg").val()
+                                   }
+                }
+                else if (cc != null && bc == null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val(),
+                                   "CC": $("#cc").val(),
+                                   "BCC": null,
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+                else if (cc == null && bc != null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val(),
+                                   "CC": null,
+                                   "BCC": $("#bcc").val(),
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+                else if (cc == null && bc == null) {
+                    var values =
+                               {
+                                   "From": $("#from").val(),
+                                   "To": $("#to").val().toString(),
+                                   "CC": null,
+                                   "BCC": null,
+                                   "Subject": $("#subject").val(),
+                                   "Message": $("#sample_wysiwyg").val()
+                               }
+                }
+            }
+
+
+
+
+            
+            var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+
+            $.ajax({
+
+                url: "../../Communication/ForwardMail/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function (result) {
+
+                    if (result === "Success") {
+
+                        toastr.success("Email sent successfully");
+                        location.href = "/Communication/Inbox";
+
+                    }
+                    if (result === "MailProcessingFailed") {
+                        toastr.warning("Enter the correct email address");
+                    }
+
+                }
+
+            });
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+</script>

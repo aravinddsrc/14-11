@@ -1,0 +1,263 @@
+﻿    @{
+    ViewBag.Title = "Calendar";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+      
+    <style>
+        #calendar
+        {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande" ,Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+        .tooltip-inner
+        {
+            max-width:350px;
+           
+         }
+     
+         .colorClass1
+        {
+            
+            background-color: rgb(255,0,0); 
+            border-color:rgb(255,0,0);            
+        }
+        .colorClass2
+        {
+            background-color:  rgb(0,141,76);
+            border-color: rgb(0,141,76);
+        }
+        .colorClass3
+        {
+            background-color:  rgb(0,115,183);
+            border-color: rgb(0,115,183);
+        }
+        .colorClass4
+        {
+           background-color: rgb(153,50,204);
+           border-color:rgb(153,50,204);
+        }
+      
+        .colorClass5
+        {
+           background-color: rgb(255,105,180);
+            border-color:rgb(255,105,180);
+        }
+        .colorClass6
+        {
+           background-color: rgb(50,200,200);
+            border-color:rgb(50,200,200);
+        }
+        
+        
+             .square1
+        {
+            width: 10px;
+            height: 10px;
+            background: red;
+            margin-top:1.5px;
+        }
+          .square2
+        {
+            width: 10px;
+            height: 10px;
+            background: #0073B7;
+            margin-top:1.5px;
+        }
+          .square3
+        {
+            width: 10px;
+            height: 10px;
+            background: green;
+            margin-top:1.5px;
+        }
+        .square4
+        {
+            width: 10px;
+            height: 10px;
+            background:#9932CC;           
+            margin-top:1.5px;
+        }
+        .square5
+        {
+            width: 10px;
+            height: 10px;
+            background:#FF69B4;
+        }
+        .square6
+        {
+            width: 10px;
+            height: 10px;
+            background:#32C8C8;
+            margin-top:1.5px;
+        }
+    </style>
+}
+<style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+
+<div class="fc-toolbar">
+    <div class="fc-left">
+@*         <ol class="breadcrumb bc-3">
+           <li>
+        <a href="@Url.Action("Attendance","TimeEntry")">
+            <i class="fa-home"></i>Attendance Management
+        </a>
+    </li>
+            <li class="active"><strong>Absence Calendar</strong> </li>
+        </ol>*@
+    <p>
+        <a href="@Url.Action("Attendance","TimeEntry")"style="color:black ">
+            Attendance Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Absence Calendar</b>
+    </p>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="row">
+ <div class="fc-toolbar">
+  <div class="col-md-12 fc-left">  
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square1">
+        </div> 
+        <div class="col-md-1">Sick</div> 
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square2">
+        </div>  
+        <div class="col-md-1">Earned</div> 
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square3">
+        </div>
+        <div class="col-md-1">Casual</div>   
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square4">
+        </div>
+        <div class="col-md-1">Comp&nbsp;Off</div>   
+    </div>
+
+    <div  class="col-md-2" >                
+        <div class="col-md-1 square5">
+        </div> 
+        <div class="col-md-1">Marriage</div>  
+    </div>    
+
+     <div  class="col-md-2" >                
+        <div class="col-md-1 square6">
+        </div> 
+        <div class="col-md-1">Maternity</div>  
+    </div>    
+
+       
+  </div>
+ </div>
+</div>
+ 
+<br />
+
+<div class="fc-toolbar">
+  <div class="fc-center"></div>
+   <div class="fc-right" style="padding:5px;">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                @Html.Label("Leave Type", new { @class = "control-label", @style="padding:5px;" })
+            </div>
+            <div class="col-md-3  col-centered">
+                @Html.DropDownList("LeaveType", ViewBag.LeaveTypeList as SelectList, new
+                {
+                    @id = "LeaveTypeList",
+                    @name = "LeaveType",
+                    @class = "form-control",
+                    @style = "width:170px"
+                })
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</div>
+
+<div class="fc-clear"></div>
+<br />
+<br />
+
+@section Scripts 
+{
+    <script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadCalendar();
+        });
+
+        $("#LeaveTypeList").change(function () {
+
+            $('#calendar').fullCalendar('removeEventSource', '/Leave/CalendarEvents');
+
+            $('#calendar').fullCalendar("addEventSource",
+            {
+                url: "/Leave/CalendarEvents",
+                type: "GET",
+                data: function () {
+                    return {
+                        LeaveTypeId: parseInt($("#LeaveTypeList").val())
+                    };
+                }
+            });
+
+        });
+
+        function loadCalendar() {
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+
+                },
+                defaultDate: new Date(),
+                editable: false,
+                eventLimit: true,
+                displayEventTime: false,
+                events: {
+                    url: "/Leave/CalendarEvents",
+                    type: "GET",
+                    data: function () { return { LeaveTypeId: parseInt($("#LeaveTypeList").val()) }; }
+                },
+                eventRender: function (event, element) {
+                    $(element).tooltip({ title: event.Detail });
+                }
+            });
+        }
+
+        $("#LeaveTypeList").select2({
+            //minimumResultsForSearch: -1
+        });  
+        
+    </script>
+}
+<div id='calendar'>
+</div>
+

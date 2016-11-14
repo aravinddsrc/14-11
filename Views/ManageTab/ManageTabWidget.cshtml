@@ -1,0 +1,244 @@
+﻿@model DSRCManagementSystem.Models.ManageTabWidget
+@{
+    ViewBag.Title = "ManageTabWidget";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+
+    @*<link href="~/Content/Calender/LeaveBalanceCalendar/StyleSheet1.css" rel="stylesheet" />*@
+
+    <link href="../../Content/Calender/fullcalendar.print.css" rel="stylesheet" type="text/css"
+        media="print" />
+    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="~/Scripts/jquery.sparkline.min.js"></script>
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+<style>
+    #label {
+        margin-bottom:0px;
+    }
+    #table1{
+    font-family: "Noto Sans",sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    /*line-height: 1.4em;*/
+    font-style: normal;
+    border-collapse:separate;
+}
+     #table2{
+    font-family: "Noto Sans",sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    /*line-height: 1.4em;*/
+    font-style: normal;
+    border-collapse:separate;
+}
+     .ClassTab {
+       background-color:gray;
+       color:white;
+       width:200px;
+       text-align:left;
+       height:40px;
+    }
+
+    .ClassTab:hover {
+    background-color: green;
+}
+    .ClassWidget {
+       background-color:gray;
+       color:white;
+       width:200px;
+       text-align:left;
+       height:40px;
+    }
+    .ClassWidget:hover {
+        background-color: green;
+    }
+
+</style>
+@*<ol class="breadcrumb bc-3">
+   <li><a href="@Url.Action("ControlTab", "ManageTab")">Administration Setup</a></li>
+    <li class="active"><strong>Manage Tab/Widget</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ControlTab","ManageTab")"style="color:black ">
+            Administration Setup
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Manage Tab/Widget</b>
+    </p>
+    </div>
+    
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <div class="panel-heading">
+                <div class="panel-title" color="White" >
+                    Manage Tab / Widget
+                </div>
+            </div>
+            <div class="panel-body">
+                  <div class="row" style="padding-left:20px;">
+                 <input type="radio" name="Manage" value="UserWise" id="User" /> User Wise &nbsp;&nbsp;&nbsp
+                 <input type="radio" name="Manage" value="TabWise" id="Tab" checked="checked" /> Tab Wise
+                 </div>
+                 <br />
+                    <div class="row">
+                     
+                        <div class="col-md-1" >
+                            @Html.Label("Tabs")
+                            
+                        </div>
+                        <div class="col-md-3">
+                            @*<div class="panel panel-default panel-shadow" style="height:150%;width:100%;">*@
+                             <table id="table1">
+                                  
+                           @for (int i = 0; i < @Model.TabUsers.Count(); i++)
+                           {
+
+                              <tr>
+                                 @*<td> @Html.HiddenFor(model => Model.TabUsers[i].TabId, new { id = "TabId" + i, @name = "TabId" })</td>*@
+                                 <td><button data-toggle="tooltip" title="Click To See Accessible User List"  data-placement="bottom", onclick="TabUsers(@Model.TabUsers[i].TabId,@Model.TabUsers[i].NoofUsers)" id="IDtabs + @i" class="ClassTab">@Model.TabUsers[i].TabName (@Model.TabUsers[i].NoofUsers)</button></td>
+                                 @*<span id = "NoofUsers" + @i></span></td>*@
+                                 </tr>
+                           }
+                                 </table>
+                           </div>
+                         <div class="col-md-1 " style="width:10%;">
+                            @Html.Label("Widgets")
+                            
+                        </div>
+                        <div class="col-md-3" style="width:22%;">
+                              @*<div class="panel panel-default panel-shadow">*@
+                              <table id="table2">
+                             @for (int i = 0; i < @Model.GridUsers.Count(); i++)
+                             {
+                                  <tr>
+                                  @*@Html.HiddenFor(model => Model.GridUsers[i].GridId, new { id = "GridId" + i, @name = "GridId" })*@
+                                   <td>
+                                  <button data-toggle="tooltip" title="Click To See Accessible User List"  data-placement="bottom", onclick="GridUsers(@Model.GridUsers[i].GridId,@Model.GridUsers[i].NoofUsers)" id="IDtabGrids + @i" class="ClassWidget">@Model.GridUsers[i].GridName (@Model.GridUsers[i].NoofUsers)</button></td>
+                                  @*<span id = "NoofUsers" + @i>(@Model.GridUsers[i].NoofUsers)</span>*@
+                                 </tr>
+
+                             }
+                                  
+                          </table>
+                          @*@Html.ListBoxFor(x => x.TabGrids, ViewBag.TabGridList as MultiSelectList, new { @id = "IDtabGrids", @class = "form-control", @style = "height:300px", @onclick ="GridUsers(this.value)",@title="Click To See Accessible User List"})
+                            @Html.ValidationMessageFor(x => x.TabGrids, "", new { @style = "color:red" })
+                             <span id="span_TabGrids" style="color: Red;"></span>*@
+                        </div>
+                         <br/>
+                    </div>
+                     <br/>
+                 <br/>
+                    <div class="form-group">
+                        <div class="row">
+                            
+                            <div class="col-md-2" style="margin-left:1480px;">
+                                <a type="button" class="btn btn-default" href="@Url.Action("ControlTab", "ManageTab")" >Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+            </div>
+        </div>
+                
+    </div>
+</div>
+
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function TabUsers(value, UserCount) {
+        $.ajax({
+            url: "../../ManageTab/TabUsers/",
+            type: 'GET',
+            data: {
+                Id: value,
+                UserCount:UserCount,
+            },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+
+    function GridUsers(value,UserCount) {
+       // var Grid = $("#IDtabGrids").val();
+        $.ajax({
+            url: "../../ManageTab/GridUsers/",
+            type: 'GET',
+            cache: false,
+            data: {
+                GridName: value,
+                UserCount: UserCount,
+            },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+
+    $("#User").change(function () {
+        var url = '@Url.Action("ControlTab", "ManageTab")';
+         window.location.href = url;
+     });
+
+        $("#Tab").change(function () {
+            var url = '@Url.Action("ManageTabWidget", "ManageTab")';
+       window.location.href = url;
+   });
+</script>
+
+<style>
+    #IDtabs {
+    text-decoration: underline;
+    color:blue;
+}
+  #IDtabGrids {
+    text-decoration: underline;
+    color:blue;
+}
+  #IDtabs:hover { 
+    cursor: pointer; 
+    
+}
+  #IDtabGrids:hover { 
+    cursor: pointer; 
+    
+}
+    title {
+       background-color: black;
+    }
+</style>

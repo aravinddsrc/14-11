@@ -1,0 +1,95 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Projects>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+          type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+          rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+          type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+          id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h4 class="modal-title">
+                Quick Projects Details
+            </h4>
+        </div>
+        <div class="modal-body">
+            @{int SNO = 1;}
+            <div>
+                @if (Model == null)
+                {
+                    <b>No Data Found</b>
+                }
+                else
+                { 
+                <table class="table table-bordered datatable">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">
+                                S.No
+                            </th>
+                            <th style="text-align: center;">
+                                @Html.DisplayNameFor(model => model.ProjectName)
+                            </th>
+                            <th style="text-align: center;">
+                                @Html.DisplayNameFor(model => model.ProjectCode)
+                            </th>
+                            <th style="text-align: center;">
+                                @Html.DisplayNameFor(model => model.ProjectType)
+                            </th>
+                            <th style="text-align: center;">
+                                RAG Status
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="@Html.Raw((item.ProjectType == "Fixed Price") ? "abc" : "")">
+                            <td style="text-align: center;">
+                                @(SNO++)
+                            </td>
+                            <td>
+                                @item.ProjectName
+                            </td>
+
+                            <td>
+                                @item.ProjectCode
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelitem => item.ProjectType)
+                            </td>
+                            <td style="text-align: center;">
+                                <img src="@Html.Raw((item.RAGStatus == 3) ? "../../Content/Template/images/Circle_Green.png" : (item.RAGStatus == 2) ? "../../Content/Template/images/Circle_Orange.png" : "../../Content/Template/images/Circle_Red.png")" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+                }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </body>
+</html>

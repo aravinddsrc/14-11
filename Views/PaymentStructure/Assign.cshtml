@@ -1,0 +1,457 @@
+﻿
+@model DSRCManagementSystem.Models.PaymentStructure
+@{
+  
+    Layout = null;
+}
+<!DOCTYPE html>
+<html> 
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Assign Task</title>
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+    <script src="../../Completion/3.34.js" type="text/javascript"></script>
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+   <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" />
+
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+    rel="stylesheet" type="text/css" />
+@*<link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />*@
+<script src="../../Content/Template/js/jquery.multi-select.js" type="text/javascript"></script>
+
+<script src="../../Content/JS/date.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+<script src="../../Content/Template/js/fileinput.js" type="text/javascript"></script>
+
+
+<link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+    type="text/css" />
+<link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/themes/base/minified/jquery.ui.datepicker.min.css" rel="stylesheet"
+    type="text/css" />
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+
+     <style>
+        .dropdown-menu {
+    background-color: white;
+}
+        </style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick='load()'>
+                ×</button>
+            <h4 class="modal-title">
+            Assign Payment Structure</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Assign", "PaymentStructure", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                        @Html.HiddenFor(x => x.PaymentID ,new {@id="PaymentId"})
+                    </div>
+                </div>
+                
+                <div class="row">
+
+                
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Branch", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                           @Html.DropDownListFor(x => x.Branch, ViewBag.BranchList as SelectList, new
+                           {
+                               @id = "Idbranchname",
+                               @name = "BranchName",
+                               @class = "form-control",
+                               @onchange = "GetDepartments()"
+                           })
+                            <span id="span_ID6" style="color: Red;"></span>
+                        </div>
+                    </div>
+                
+             
+                    @if (@Model.dbvalue == 0)
+                    {
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Departments", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownListFor(x => x.Department, ViewBag.DepartmentIdList as SelectList, new
+                           {
+                               @id = "Iddepartment",
+                               @name = "DepartmentId",
+                               @class = "form-control",
+                               @onchange = "GetGroups()"
+                           })
+                            <span id="span_ID7" style="color: Red;"></span>
+                        </div>
+                    </div>
+                    }
+                    @if (@Model.dbvalue == 1)
+                    {
+  <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Departments", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownListFor(x => x.Department, ViewBag.DepartmentIdList as SelectList, new
+                       {
+                           @id = "Iddepartment",
+                           @name = "DepartmentId",
+                           @class = "form-control",
+                           @onchange = "GetGroups()"
+                       })
+                            <span id="span_ID7" style="color: Red;"></span>
+                        </div>
+                    </div>
+
+
+                    }
+                </div>
+               
+                <div class="row">
+                   
+                    <div class="col-md-6">
+
+
+                       <div class="form-group">
+                            @Html.Label("Group ", new { @class = "control-label" })
+                            @Html.DropDownListFor(x => x.Group, ViewBag.Groups as SelectList,"--Select--", new
+                       {
+                           @id = "Idgroup",
+                           @name = "Group",
+                           @class = "form-control",
+                           @onchange="GetUsers()"
+                       })
+                            <span id="span_ID11" style="color: Red;"></span>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        
+                         <div class="form-group" style="height:42px;">
+                           @Html.Label("Assigned To", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            @Html.DropDownList("Userid", ViewBag.Employees as MultiSelectList, new { @multiple = "multiple", @class = "select2-container select2-container-multi select2 visible", @id = "multiselect", @style = "width: 250px; height: 47px; overflow: auto ;" })
+                            <span id="Emp" style="color: Red;"></span>
+                            
+                        </div>
+                    </div>
+                </div>
+               
+                
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                           
+                        </div>
+                    </div>
+                   
+                  
+                </div>
+                <br /> <br /> 
+                           
+                
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick='cancel()'>
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick='AssignEmployees()'>
+                Save
+            </button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+  
+    <script type="text/javascript">
+
+
+
+        function GetDepartments() {
+            $('#Iddepartment').empty();
+            $('#Iddepartment').select2();
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetDepartments", "Users")';
+
+                $.get(url2, { BranchId: Bid }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#Iddepartment").html(items.join(' '));
+                    $("#Iddepartment").select2();
+
+
+                });
+
+
+
+
+
+            }
+
+        }
+
+
+        function GetUsers() {
+
+         ///   alert("+++++");
+
+            $('#multiselect').empty();
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+            var Gid = $("#Idgroup").find("option:selected").prop("value");
+
+
+            if (Did != "" && Bid != "" && Gid != "") {
+
+                $.ajax({
+
+                    url: "../../PaymentStructure/GetUsers/",
+                    type: 'GET',
+                    cache: false,
+                    data: { BranchId: Bid, DepartmentId: Did, GroupId: Gid },
+                    success: function (result) {
+       
+                        for (var i = 0; i < result.ListValue.length; i++) {
+                            
+                            //result.ListValue.forEach(function (valArr) {
+                            $("#multiselect").append($('<option>', { value: result.ListValue[i].Userid, text: result.ListValue[i].UserName }));
+                            //$("#multiselect").append($('<option>', { value: result.ListValue[i].Userid, text: result.ListValue[i].UserName }));
+                            $("#multiselect option[value='" + result.ListValue[i].Userid + "']").attr("selected", 1);
+
+                            // });
+                        }
+                        $("#multiselect").html(items.join(' ')); 
+                        $("#multiselect").select2();            
+                    }
+                });
+
+            }
+
+        }
+
+
+
+
+
+
+
+        function GetGroupsonly() {
+
+
+
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+            if (Did !== "") {
+
+                var url2 = '@Url.Action("GetGroups", "Users")';
+
+
+                $.get(url2, { DepartmentId: Did }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#Idgroup").html(items.join(' '));
+                    //$("#Idgroup").select2();
+                });
+
+
+            }
+
+
+
+        }
+
+
+
+        function GetGroups() {
+
+            $('#multiselect').empty();
+            $('#Idgroup').empty();
+            $('#Idgroup').select2();
+
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+
+
+            if (Did !== "") {
+
+                var url2 = '@Url.Action("GetGroups", "Users")';
+
+
+                $.get(url2, { DepartmentId: Did }, function (data) {
+
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>---Select---</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#Idgroup").html(items.join(' '));
+                    $("#Idgroup").select2();
+                });
+
+
+            }
+
+
+            $.ajax({
+
+                url: "../../PaymentStructure/GetEmployees/",
+                type: 'GET',
+                cache: false,
+                data: { DepartmentId: Did, BranchId: Bid },
+                success: function (result) {
+
+                    for (var i = 0; i < result.ListValue.length; i++) {
+                        
+                        //result.ListValue.forEach(function (valArr) {
+                        $("#multiselect").append($('<option>', { value: result.ListValue[i].Userid, text: result.ListValue[i].UserName }));
+                       // $("#multiselect option[value='" + result.ListValue[i].Userid + "']").attr("selected", 1);
+
+
+
+                        // });
+                    }
+
+                    $("#multiselect").select2();
+                }
+            });
+
+
+
+
+
+
+        }
+        $("#Idbranchname").select2();
+        $("#Iddepartment").select2();
+        $("#Idgroup").select2();
+        $("#multiselect").select2();
+
+        function AssignEmployees() {
+
+
+         
+            if (document.getElementById('Idbranchname').value == '0' || document.getElementById('Iddepartment').value == '' || document.getElementById('multiselect').value == '') {
+
+                if (document.getElementById('Idbranchname').value == '0') {
+                    document.getElementById("span_ID6").innerHTML = "Select branch name";
+                }
+                else {
+                    document.getElementById("span_ID6").innerHTML = "";
+                }
+                if (document.getElementById('Iddepartment').value == '') {
+                    document.getElementById("span_ID7").innerHTML = "Select department name";
+                }
+                else {
+                    document.getElementById("span_ID7").innerHTML = "";
+
+                }
+                if (document.getElementById('multiselect').value == '') {
+                    document.getElementById("Emp").innerHTML = " Select users";
+                }
+                else {
+                    document.getElementById("Emp").innerHTML = "";
+
+                }
+
+            }
+
+
+
+
+            else {
+
+                var values =
+           {
+               "PaymentId": $("#PaymentId").val(),
+               "BranchId": $("#Idbranchname").val(),
+               "DepartmentId": $("#Iddepartment").val(),
+               "GroupId": $("#Idgroup").val(),
+               "Employees": $("#multiselect").val().toString()
+           }
+
+
+                var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                $.ajax({
+                    url: "../../PaymentStructure/Assign/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+
+                        if (result.Result === "Success") {
+                            toastr.success(" Payment assigned successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                    }
+                });
+
+            }
+
+        }
+             
+    </script>
+</body>
+</html>

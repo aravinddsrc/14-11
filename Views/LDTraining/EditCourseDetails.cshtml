@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Edit Course Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var grid = new WebGrid(source: Model, canSort: false);  
+}  
+
+@{
+    Func<DateTime, string> dateTimeFunc = delegate(DateTime dateTime)
+    {
+        return String.Format("{0:dd-MM-yyyy}", dateTime);         
+    };
+}
+<ol class="breadcrumb bc-3" style="font-size:medium">
+        <li><a>L&D Training</a> </li>
+        <li class="active"><strong>Manage Training</strong> </li>
+    </ol>
+<br />      
+   
+<div  id="gridContent" style=" padding:20px; " >  
+@grid.GetHtml(  
+        tableStyle: "table table-bordered datatable",
+        headerStyle: "webgrid-header",      
+        columns:  
+            grid.Columns(
+                              grid.Column("CourseName", "CourseName", format: @<text>  <span  class="display-mode">@item.Coursename </span> <label id="CourseName" class="edit-mode">@item.Coursename</label> <input id="TrainingId" type="hidden" value="@item.TrainingId" /> </text>, style: "col1Width" ),
+                              grid.Column("Level", "Level", format: @<text>  <span  class="display-mode">@item.Level </span> <label id="Level" class="edit-mode">@item.Level</label> </text>, style: "col1Width"),
+                              grid.Column("Technology", "Technology", format: @<text>  <span  class="display-mode">@item.Technology </span> <label id="Technology" class="edit-mode">@item.Technology</label> </text>, style: "col1Width"),
+                              grid.Column("Scheduled Date", "Scheduled Date", format: @<text> <span  class="display-mode"> <label id="lblScheduledate">@Html.Raw(dateTimeFunc(@item.ScheduledDate))</label> </span>  <input type="text" id="ScheduleDate" value="@item.ScheduledDate" class="edit-mode datetimepicker" /> </text>, style: "col2Width"),                                                                                                                                                                                                                     
+                              grid.Column("Instructor", "Instructor", format: @<text>  <span  class="display-mode">@item.Instructor </span> <label id="Instructor" class="edit-mode">@item.Instructor</label> </text>, style: "col1Width"),
+                              grid.Column("Action", format: @<text> 
+                                <button class="edit-user display-mode" >Edit</button>  
+                                <button class="save-user edit-mode"  >Save</button>  
+                                <button class="cancel-user edit-mode" >Cancel</button>  
+                            </text>, style: "col3Width", canSort: false),  
+                             grid.Column("Delete",format:@<text>
+                             <button class="delete-user display-mode" >Delete</button>  
+                             </text>, style: "col3Width", canSort: false)
+           )) 
+</div>
+
+<script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+<script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+<link href="../../Content/Plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>  
+
+<script type="text/javascript" >   
+
+    var toastrOptions = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "toastClass": "White",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    $(".datetimepicker").datepicker({
+        format: 'dd-mm-yyyy',
+        showTodayButton: false,
+        todayHighlight: false,
+        autoclose: true
+    });
+
+    $(function () {
+
+        $('.edit-mode').hide();
+
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });       
+
+        $('.save-user').on('click', function () {
+
+            var tr = $(this).parents('tr:first');
+
+            var sdate = tr.find("#ScheduleDate").val();
+            var Id = tr.find('#TrainingId').val();
+
+            tr.find("#lblScheduledate").text(sdate);
+
+            tr.find('.edit-mode, .display-mode').toggle();
+
+            var model =
+            {
+                "TrainingID": Id,
+                "ScheduledDate": sdate
+            };
+
+            $.ajax({
+                url: '/LDTraining/EditCourseDetails/',
+                data: model,
+                type: 'POST',
+                success: function (data) {
+                    toastr.success("Updated Successfully.", toastrOptions);
+                    setTimeout(null, 500);
+                }
+            });
+
+        });
+
+
+        $('.delete-user').on('click', function () {
+
+            var confirmationmessage = "Are you sure you want to delete?";
+
+            if (confirm(confirmationmessage)) {
+
+                var tr = $(this).parents('tr:first');
+                var Id = tr.find('#TrainingId').val();
+
+                var model =
+            {
+                "TrainingID": Id
+            };
+                $.ajax({
+                    url: '/LDTraining/DeleteCourseDetails/',
+                    data: model,
+                    type: 'GET',
+                    success: function (data) {
+                        toastr.success("Deleted Successfully.", toastrOptions);
+                        setTimeout(function () {
+                            window.location.reload(true);
+                        }, 500);
+                    }
+                });
+
+            }
+
+        });
+    }); 
+
+
+</script>  

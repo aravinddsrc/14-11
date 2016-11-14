@@ -1,0 +1,193 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.MetricHistory>
+@{
+    //ViewBag.Title = "History Of Metrics";
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>    
+    
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <style>
+            .dropdown-menu {
+    background-color: white;
+}
+    </style>
+}
+@{
+    int SNO = 1;    
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View Metrics</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+        <li><a>Projects</a></li>
+        <li class="active"><strong>View Metrics</strong></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                         View Metrics</div>
+                </div>
+                <div>
+                  @*<div class="row" >
+                  <div class="col-md-3">
+                    <div class="form-group">
+                       <label class="col-sm-3 control-label">
+                   &nbsp;&nbsp; Week  @Html.Label(" ", new { @style = "color:#FF0000" })                
+                     </label> 
+                      @Html.DropDownList("Week", ViewBag.Week as SelectList, new { @id = "Week", @name = "Week", @class = "form-control" })
+                     <span id="span_ID9" style="color: Red;"></span>
+                   </div>
+                   </div>
+                </div>  *@
+
+                 </div>
+                <!-- panel body -->
+                <div class="panel-body">
+
+                  <div class="row">
+                   <div class="btn-group" style="float: right; padding-left:50px;">
+                     <div class="form-group" >
+                        <button type="button" class="btn btn-info btn-icon icon-left" onclick='Metrics(@ViewBag.ProjectID)' >
+                            <i class="entypo-info"></i>Add Metrics
+                        </button>
+                     </div>
+                    </div>
+                  </div>
+                    @using (Html.BeginForm("ViewMetrics", "Projects", FormMethod.Post))
+                    { 
+                        <table class="table table-bordered datatable" id="tblMeeting">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;">
+                                        S.No
+                                    </th>
+                                    <th style="text-align:center;">
+                                       @Html.DisplayName("Date")
+                                    </th>
+                                     <th style="text-align:center;">
+                                        @Html.DisplayNameFor(i => i.Metrics)
+                                    </th>
+                                   
+                                </tr>
+                            </thead>
+                            @{
+                      
+                        foreach (var item in Model)
+                        {
+                          
+                                <tr>
+                                    <td style="text-align: center;">
+                                        @(SNO++)
+                                    </td>
+                                      @if (item.Date.HasValue)
+                                     {
+                                   <td style="width:200px;word-wrap:breakword;word-break:break-all;text-align:left;" >
+                                       @item.Date.Value.ToString("dd/MM/yyyy")
+                                    </td>
+                                     }
+                                  
+                                    <td style="width:1000px;word-wrap:breakword;word-break:break-all;text-align:left;">
+                                        @Html.DisplayFor(modelitem => item.Metrics)
+                                    </td>
+                                </tr>
+                       
+
+                        }
+                            }
+                        </table>
+
+                            
+                           
+                    }
+                </div>
+                <div class="modal-footer">
+                    @if (ViewBag.val4 == "true")
+                    {<button type="button" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "?ID="+@ViewBag.val4+"'");") >
+                Back
+            </button>}
+                    else
+                    {
+            <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "'");" ) >
+                Back
+            </button>
+                    }
+        </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+
+        var columnDefs;
+        //        if ($("aTargets")[6]) {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5] }, { bSortable: false, 'aTargets': [6]}];
+        //        } else {
+        //            columnDefs = [{ bSortable: false, 'aTargets': [4] }, { bSortable: false, 'aTargets': [5]}];
+        //        }
+        $("#tblMeeting").dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]]
+            //            "bStateSave": false,
+            //            "columnDefs": columnDefs
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+
+    function Metrics(id) {
+
+        $.ajax({
+            url: "../../Projects/Metrics/" + id,
+            type: 'GET', cache: false,
+            success: function (result) {               
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });                    
+            }
+        });
+    }
+
+    </script>
+        
+</body>
+</html>

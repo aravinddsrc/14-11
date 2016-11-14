@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Success</title>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick='ReloadGrid()'>
+                ×</button>
+            <h4 class="modal-title">
+                @ViewBag.ModalTitle
+            </h4>
+        </div>
+        <div class="modal-body">
+            @ViewBag.ModalContent
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick='ReloadGrid()'>
+                Close</button>
+        </div>
+    </div>
+</body>
+</html>

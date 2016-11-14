@@ -1,0 +1,287 @@
+﻿@model DSRCManagementSystem.LeaveType
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Leave Type</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+
+      <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Add Leave Type</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("CreateLeaveType", "Leave", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Leave Type", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.Name, new { @id = "LeaveType", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveType_LeaveType, @autocomplete = "off", @maxlength = 50 })
+                            <span id="Name_ID" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("No of Days Allowed", new { @class = "control-label" })
+                            <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                            @Html.TextBoxFor(x => x.DaysAllowed, new { @id = "DaysAllowed", @class = "form-control", @placeholder = Resources.Resource.DN_LeaveType_DaysAllowed, @autocomplete = "off", @maxlength = 2 })
+                            <span id="DaysAllowed_ID" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Calculate Leave Days
+                            @Html.HiddenFor(x => x.CalculateLeaveDays)
+                            <div class="radio radio-replace neon-cb-replacement checked" style="padding-left: 0px !important;
+                                margin-bottom: 10px; margin-top: 10px; display: block; min-height: 17px;">
+                                <label class="cb-wrapper">
+                                    @Html.RadioButtonFor(x => x.CalculateLeaveDays, "True", new { id = "CalculateLeaveDaysYes" })
+                                    <div class="checked">
+                                    </div>
+                                </label>
+                                <label>
+                                    Yes</label>
+                            </div>
+                            <div class="radio radio-replace neon-cb-replacement" style="padding-left: 0px !important;
+                                margin-bottom: 10px; margin-top: 10px; display: block; min-height: 17px;">
+                                <label class="cb-wrapper">
+                                    @Html.RadioButtonFor(x => x.CalculateLeaveDays, "False", new { id = "CalculateLeaveDaysNo" })
+                                    <div class="checked">
+                                    </div>
+                                </label>
+                                <label>
+                                    No</label>
+                            </div>
+                            <span id="CalculateLeaveDays_ID" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Applicable Employees
+                            @Html.HiddenFor(x => x.ApplicableEmployees)
+                            <div class="radio radio-replace neon-cb-replacement checked" style="padding-left: 0px !important;
+                                margin-bottom: 10px; margin-top: 10px; display: block; min-height: 17px;">
+                                <label class="cb-wrapper">
+                                    @Html.RadioButtonFor(x => x.ApplicableEmployees, "All", new { id = "ApplicableEmployeesAll" })
+                                    <div class="checked">
+                                    </div>
+                                </label>
+                                <label>
+                                    All</label>
+                            </div>
+                            <div class="radio radio-replace neon-cb-replacement" style="padding-left: 0px !important;
+                                margin-bottom: 10px; margin-top: 10px; display: block; min-height: 17px;">
+                                <label class="cb-wrapper">
+                                    @Html.RadioButtonFor(x => x.ApplicableEmployees, "Male", new { id = "ApplicableEmployeesMale" })
+                                    <div class="checked">
+                                    </div>
+                                </label>
+                                <label>
+                                    Male</label>
+                            </div>
+                            <div class="radio radio-replace neon-cb-replacement" style="padding-left: 0px !important;
+                                margin-bottom: 10px; margin-top: 10px; display: block; min-height: 17px;">
+                                <label class="cb-wrapper">
+                                    @Html.RadioButtonFor(x => x.ApplicableEmployees, "Female", new { id = "ApplicableEmployeesFemale" })
+                                    <div class="checked">
+                                    </div>
+                                </label>
+                                <label>
+                                    Female</label>
+                            </div>
+                            <span id="ApplicableEmployees_ID" style="color: Red;"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick=" AddNewLeaveType() ">
+                Save</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var submitForm = false;
+        jQuery(document).ready(function ($) {
+            $("#CalculateLeaveDaysYes").prop("checked", "true");
+            $("#ApplicableEmployeesAll").prop("checked", "true");
+            $('input#LeaveType').on('focusout', function () {
+                if ($('input#LeaveType').val() !== "") {
+                    $.ajax({
+                        url: "../../Leave/IsLeaveTypeExists",
+                        type: 'GET',
+                        cache: false,
+                        data: { 'leaveTypeName': $('input#LeaveType').val() },
+                        success: function (result) {
+                            if (result.Result === false) {
+                                document.getElementById("Name_ID").innerHTML = "";
+                                submitForm = true;
+                            }
+                            else {
+                                document.getElementById("Name_ID").innerHTML = "Leave type already exists";
+                                submitForm = false;
+                            }
+                        }
+                    });
+                }
+
+            });
+            $("#DaysAllowed").keypress(function (e) {
+                if (e.which != 8 && e.which != 0 && e.which != 46 && e.which != 190 && (e.which < 48 || e.which > 57)) {
+                    $("#DaysAllowed_ID").html("Digits Only");
+                    return false;
+                }
+                else {
+                    $("#DaysAllowed_ID").html("");
+                    return true;
+                }
+            });
+            $('input:radio[name="CalculateLeaveDays"]').on('change', function () {
+                $('input:radio[name="CalculateLeaveDays"]').each(function () {
+                    if ($(this).prop("checked")) {
+                        var parent = $(this).parent().closest('div');
+                        $(parent).removeClass().addClass("radio radio-replace neon-cb-replacement checked");
+                    } else {
+                        var parent = $(this).parent().closest('div');
+                        $(parent).removeClass().addClass("radio radio-replace neon-cb-replacement");
+                    }
+                });
+            });
+            $('input:radio[name="ApplicableEmployees"]').on('change', function () {
+                $('input:radio[name="ApplicableEmployees"]').each(function () {
+                    if ($(this).prop("checked")) {
+                        var parent = $(this).parent().closest('div');
+                        $(parent).removeClass().addClass("radio radio-replace neon-cb-replacement checked");
+                    } else {
+                        var parent = $(this).parent().closest('div');
+                        $(parent).removeClass().addClass("radio radio-replace neon-cb-replacement");
+                    }
+                });
+            });
+        });
+
+        function AddNewLeaveType() {
+            var flag = true;
+            if (document.getElementById('LeaveType').value == '') {
+                document.getElementById("Name_ID").innerHTML = "Enter Leave Type ";
+                flag = false;
+            } else {
+                if (submitForm) {
+                    document.getElementById("Name_ID").innerHTML = "";
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+            }
+            if (document.getElementById('DaysAllowed').value == '') {
+                document.getElementById("DaysAllowed_ID").innerHTML = "Enter No of Days Allowed";
+                flag = false;
+            } else {
+                var isNumber = $('#DaysAllowed').val();
+                if (isNaN(isNumber)) {
+                    document.getElementById("DaysAllowed_ID").innerHTML = "Numbers only allowed";
+                    flag = false;
+                } else {
+                    document.getElementById("DaysAllowed_ID").innerHTML = "";
+                }
+            }
+            if (flag === true && submitForm === true) {
+                var values =
+            {
+                "Name": $("#LeaveType").val(),
+                "DaysAllowed": $("#DaysAllowed").val(),
+                "CalculateLeaveDays": $('input:radio[name="CalculateLeaveDays"]:checked').val(),
+                "ApplicableEmployees": $('input:radio[name="ApplicableEmployees"]:checked').val()
+            };
+                var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.clear("", toastrOptions);
+                var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                $.ajax({
+                    url: "../../Leave/CreateLeaveType/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        if (result.Result === "Success") {
+                            $("#portlet-config").modal('hide');
+                            toastr.success("New leave type has been created successfully", toastrOptions);
+                            ReloadGrid();
+                        }
+                        else {
+                            $('#PartialSection').html(result);
+                            $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>

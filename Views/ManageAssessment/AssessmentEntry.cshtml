@@ -1,0 +1,940 @@
+﻿@model  IEnumerable<DSRCManagementSystem.Models.ManageAssessment>
+@{
+    ViewBag.Title = "Assessment Entry";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    @*    <link href="../../Content/horizontal%20barchart/css/horizBarChart.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/horizontal%20barchart/js/jquery.horizBarChart.min.js"
+        type="text/javascript"></script>*@
+
+}
+
+ <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+
+@{
+    int SNO = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+}
+
+<style>
+    th {
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+</style>
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ManageAssessment", "ManageAssessment")">Assessment Management</a></li>
+    <li><strong>Assessment Entry</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("ManageAssessment","ManageAssessment")"style="color:black ">
+            Assessment Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Assessment Entry</b>
+    </p>
+<br />
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    Assessment Entry
+                </div>
+            </div>
+            <!-- panel body -->
+           @* <div class="panel-body" style="overflow: auto">*@
+             <div class="panel-body">
+                <div class="form-group">
+                    <div class="panel-body" >
+                        @using (Html.BeginForm("AssessmentEntry", "ManageAssessment", FormMethod.Get, new { @id = "form" }))
+                        {
+                            if (ViewBag.UID != null)
+                            {
+                            @Html.Hidden("UIDS", (string)@ViewBag.UIDS, new { @id = "UID" })
+                            }
+                            <div class="form-group">
+
+
+                                <div class="row">
+                                        @if (branchcnt==1)
+                        
+                        {
+                                    <div class="visible-md">
+                                        @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                        @Html.DropDownList("Idbranchname", ViewBag.BranchList as SelectList,"", new { @id = "Idbranchname", @name = "BranchName", @class = "form-control", @onchange = "GetDepartments()" })
+
+                                        
+                                    </div>
+                                        }
+                                    else
+                                    {
+                                           <div class="col-md-2 col-lg-3" style="width: 280px; padding-top: 7px;">
+                                        @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                        @Html.DropDownList("Idbranchname", ViewBag.BranchList as SelectList,"", new { @id = "Idbranchname", @name = "BranchName", @class = "form-control", @onchange = "GetDepartments()" })
+
+                                        
+                                    </div> 
+                                        }
+                                    @*<div class="col-md-2 col-lg-3" style= "padding-top: 7px;">
+                                        @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                        @Html.DropDownList("Iddepartment", ViewBag.DepartmentIdList as SelectList, "--Select--", new { @id = "Iddepartment", @name = "DepartmentId", @class = "form-control", @onchange = "GetGroups()" })
+                                    </div>
+                                    <div class="col-md-2 col-lg-3" style= "padding-top: 7px;">
+                                        @Html.Label("Group", (string)ViewBag.Lbl_depgroup, new { @class = "control-label" })
+                                        @Html.DropDownList("Idgroup", ViewBag.Groups as SelectList, "--Select--", new { @id = "Idgroup", @name = "GroupName", @class = "form-control", @onchange = "GetAssessmentName()" })
+                                    </div>
+
+
+                                    <div class="col-md-2 col-lg-3" style= "padding-top: 7px;">
+                                        @Html.Label("Assessment Name", new { @class = "control-label" })
+                                        @Html.DropDownList("AssessmentID", ViewBag.AssessmentName as SelectList, "--Select--", new { @id = "AssessmentID", @class = "select2-container select2-container-multi select2 visible" }) @*, @onchange = "change(this.value)" *@@*
+                                        <span id="StartDateTime_ID" style="color: Red;"></span>
+                                    </div>*@
+
+
+
+
+
+
+                                      <div class="col-md-2 col-lg-3" style= "width: 280px; padding-top: 7px;">
+                                        @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                        @Html.DropDownList("Iddepartment", ViewBag.DepartmentIdList as SelectList, "--Select--", new { @id = "Iddepartment", @name = "DepartmentId", @class = "form-control", @onchange = "GetGroups()" })
+                                    </div>
+                                    <div class="col-md-2 col-lg-3" style= "width: 280px; padding-top: 7px;">
+                                        @Html.Label("Group", (string)ViewBag.Lbl_depgroup, new { @class = "control-label" })
+                                        @Html.DropDownList("Idgroup", ViewBag.Groups as SelectList, "--Select--", new { @id = "Idgroup", @name = "GroupName", @class = "form-control", @onchange = "GetAssessmentName()" })
+                                    </div>
+
+
+                                    <div class="col-md-2 col-lg-3" style="width: 280px; padding-top: 7px;">
+                                        @Html.Label("Assessment Name", new { @class = "control-label" })
+                                        @Html.DropDownList("AssessmentID", ViewBag.AssessmentName as SelectList, "--Select--", new { @id = "AssessmentID", @class = "select2-container select2-container-multi select2 visible" }) @*, @onchange = "change(this.value)" *@
+                                        <span id="StartDateTime_ID" style="color: Red;"></span>
+                                    </div>
+                                     
+
+                                <div class="col-md-4" style="width: 210px; padding-top: 7px;margin-top:30px;">
+                                <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                                    Search<i class="entypo-search"></i>
+                                </button>
+
+                                 <button type="button" id="btnAdd" class="btn btn-default" onclick="Clear()">
+                                     Reset
+                                </button>
+                                </div>
+                                @*<div class="clear"></div>*@
+
+                               </div>
+                                <br />
+                             
+
+                                
+                                  @*<div class="col-md-3" style="margin-top: 10px; margin-left:-40PX">
+                                        <button type="button" id="btnAdd" class="btn btn-default" onclick="Clear()" style="float: right">
+                                            Reset
+                                        </button>
+                                        <button id="btn_Submit" type="submit" name="btn_Submit" class="btn btn-info btn-icon" style="float: right;margin-right: 11px;">
+                                            Search<i class="entypo-search"></i>
+                                        </button>
+                                    </div> 
+                                <div class="clear"></div>*@
+
+                                    @*<div style="overflow: auto">*@
+                                <div>
+                                    <br />
+                                    <div class="table-responsive">
+                                    <table class="table table-bordered datatable" id="tblRoles">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">S.No
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Employee Name")
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Assessment Name")
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Assessment Date")
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Attendance")
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Pass Score/Total Score")
+                                                </th>
+                                                <th style="text-align: center; width: 100px">@Html.DisplayName("Score")
+                                                </th>
+                                                <th style="text-align: center;">@Html.DisplayName("Status")
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        @if (Model != null)
+                                        {
+                                            int j = 0;
+                                            foreach (var item in Model)
+                                            {
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    @(SNO++)
+                                                </td>
+                                                <td style="text-align: left;">
+                                                    @Html.HiddenFor(modelitem => item.AssessmentID, new { @id = "AssessmentID" })
+                                                    @Html.DisplayFor(modelitem => item.UserName)
+                                                    <span id="span_UserName" style="color: Red;"></span>
+                                                </td>
+                                                <td style="text-align: left;">@Html.DisplayFor(modelitem => item.AssessmentName)</td>
+                                                <td style="text-align: center;">@item.AssessmentDate.ToString("ddd, MMM d, yyyy")</td>
+                                                <td>@Html.HiddenFor(modelitem => item.TotalScore, new { @id = "TotalScoreID" + j })
+                                                    @Html.HiddenFor(modelitem => item.PassingScore, new { @id = "PassingScoreID" + j })
+                                                    @*@Html.DisplayFor(modelitem => item.UserAssessmentID)*@
+                                                    @Html.HiddenFor(modelitem => item.UserAssessmentID, new { @id = "UserAssessmentID" + j })
+                                                    <center> @Html.DropDownListFor(modelitem => item.Attendance, ViewBag.Attendance as SelectList, "",
+                                                                 new
+                                                                 {
+                                                                     @id = "Attendance" + j,
+                                                                     @class = "form-control",
+                                                                     @style = "Width:160Px",
+                                                                     @onchange = string.Format("Activity(this.value, {0})", j)
+                                                                 })</center>
+                                                    <span id="span_Attendance@(j)" style="color: Red;"></span>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <div id="donut-example@(j)" style="width: 120px; height: 120px; text-align: center">
+                                                        </div> </center>
+
+                                                    @*<h3 style="font-size: 15px;">@Html.DisplayFor(modelitem => item.PassingScore)/@Html.DisplayFor(modelitem => item.TotalScore)</h3>*@
+
+                                                </td>
+                                                <td>
+                                                    <center> @Html.TextBoxFor(modelitem => item.Score, new { @id = "TotalScore" + j, @name = "TotalScore", @class = "form-control", @style = "Width:100Px;Height:42px", @type = "number", @onchange = string.Format("Activity(this.value, {0})", j) })</center>
+                                                    <span id="span_Score@(j)" style="color: Red;"></span>
+                                                </td>
+                                                <td style="text-align: center" id="myfirstchart">
+                                                    @* <center>
+                                                  <div class="chart-horiz clearfix" style="width: 100%;" id="times"@(j)>
+                                                    <ul class="chart">
+                                                        <li class="current" style="margin-top: 20px;">
+
+                                                            <span class="bar" style="background-color: #ff6666; height: 20px;" data-number="10">
+                                                                <span id="span_Status@(j)" style="color: white;"></span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div></center>*@
+
+                                                    <span id="span_StatusG@(j)" style="color: green;"></span>
+                                                    <span id="span_StatusR@(j)" style="color: red;"></span>
+                                                    <span id="span_StatusN@(j)" style="color: blue;"></span>
+                                                    <span id="span_StatusS@(j)" style="color: black;"></span>
+
+
+
+
+
+
+                                                </td>
+
+                                            </tr>
+                                                j++;
+                                            }
+                                        }
+                                    </table>
+                                   </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @* <div class="col-md-12" style="text-align: right">
+                    <button type="reset" id="btnAdd" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("AssessmentEntry", "ManageAssessment") + "'")    ;">
+                        Reset
+                    </button>
+                    <button type="button" id="btnAdd" class="btn btn-info" onclick="Save(@Model.Count())">
+                        Save
+                    </button>
+                </div>*@
+            </div>
+            @*<button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;"   onclick="@("window.location.href='" + @Url.Action("Observation", "ManageObservation") + "'")    ;">
+                Back
+            </button>*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".modal-body select")
+                .select2({
+                    minimumResultsForSearch: -1
+                });
+            $("#sp").select2();
+            $("#roles").select2();
+            $("#Idbranchname").select2();
+            $("#Iddepartment").select2();
+            $("#Idgroup").select2();
+
+
+            //$(document).ready(function () {
+
+
+            //    $("#tblRoles").dataTable({
+            //        "sPaginationType": "bootstrap",
+            //        "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+            //        //"columnDefs": [{ bSortable: false, 'aTargets': [6] }, { bSortable: false, 'aTargets': [7] }]
+
+            //    });
+            //    $(".dataTables_wrapper select").select2({
+            //        minimumResultsForSearch: -1
+            //    });
+            //    $('thead>tr>th').css('text-align', 'center');
+
+            //});
+
+        });
+
+        function Clear() {
+
+            window.location.href = '@Url.Action("AssessmentEntry", "ManageAssessment")';
+
+        }
+
+        function Save(t) {
+
+            var data = @Html.Raw(Json.Encode(ViewData["ASSID"]));
+
+
+            for (var j = 0; j < t; j++) {
+                if (document.getElementById('Attendance' + j).value == "") {
+                    document.getElementById('span_Attendance' + j).innerHTML = "Select Attendance";
+                    return;
+                } else {
+                    document.getElementById('span_Attendance' + j).innerHTML = "";
+                }
+                if (document.getElementById('TotalScore' + j).value == "") {
+                    document.getElementById('span_Score' + j).innerHTML = "Enter Score";
+                    return;
+                } else {
+                    document.getElementById('span_Score' + j).innerHTML = "";
+                }
+                var v = parseInt($("#TotalScore" + j).val());
+                var T = $("#TotalScoreID" + j).val();
+                if (v > T) {
+                    document
+                        .getElementById('span_Score' + j)
+                        .innerHTML = "Score must be less than total score";
+                    return;
+                } else {
+                    document.getElementById('span_Score' + j).innerHTML = "";
+                }
+
+
+            }
+
+
+            var value = 0;
+            $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            var listOfObjects = [];
+            var list = [];
+            for (var k = 0; k < t; k++) {
+                value = $("#Attendance" + k).val();
+                listOfObjects.push(value);
+            }
+            //if (value == '') {
+            //    document.getElementById("value").innerHTML = "Enter ";
+            //}
+            var str = listOfObjects.toString();
+            var str_array = str.split(',');
+
+            for (var i = 0; i < str_array.length; i++) {
+
+                str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list.push(str_array[i].split(','))
+            }
+            ////////////////////////////////////
+            var value1 = 0;
+            var listOfObjects1 = [];
+            var list1 = [];
+            for (var k = 0; k < t; k++) {
+                value1 = $("#TotalScore" + k).val();
+                listOfObjects1.push(value1);
+            }
+            //for (var m = 0; m < t; m++) {
+            //    if ($("#TotalScore" + m).val() > data) {
+            //        document.getElementById('span_Score' + m).innerHTML = "Score Must be Lesser that Total Score-" + data;
+            //        return;
+            //    } else {
+            //        document.getElementById('span_Score' + m).innerHTML = "";
+            //    }
+            //}
+            var str1 = listOfObjects1.toString();
+            var str_array1 = str1.split(',');
+
+            for (var i = 0; i < str_array1.length; i++) {
+
+                str_array1[i] = str_array1[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list1.push(str_array1[i].split(','))
+            }
+
+
+            ////////////////////////////////////
+            var value2 = 0;
+            var listOfObjects2 = [];
+            var list2 = [];
+            for (var k = 0; k < t; k++) {
+                value2 = $("#UserAssessmentID" + k).val();
+                listOfObjects2.push(value2);
+            }
+            //if (value2 == '') {
+            //    document.getElementById("value2").innerHTML = "";
+            //}
+            var str2 = listOfObjects2.toString();
+            var str_array2 = str2.split(',');
+
+            for (var i = 0; i < str_array2.length; i++) {
+
+                str_array2[i] = str_array2[i].replace(/^\s*/, "").replace(/\s*$/, "");
+
+                list2.push(str_array2[i].split(','))
+            }
+
+            var values =
+            {
+                "Column": list.toString(),
+                "Column1": list1.toString(),
+                "Column2": list2.toString(),
+                //"UID": $("#UID").val(),
+
+            }
+            var opts =
+            {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            $.ajax({
+                url: "../../ManageAssessment/AssessmentEntry/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                traditional: true,
+                global: false,
+                success: function(result) {
+                    if (result == "Success") {
+                        toastr.success(" Assessment Updated successfully", opts);
+                        setTimeout(function() { location.reload(); }, 1000);
+
+                    }
+                    if (result == "Warning") {
+                        $("#portlet-config").modal("hide");
+                        toastr.warning(" Assessment Date Already Exist ", opts);
+
+                    }
+
+                }
+            });
+        }
+
+
+        $(document)
+            .ready(function() {
+
+                $("#tblRoles")
+                  .dataTable({
+                      "sPaginationType": "bootstrap",
+                      "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+                      "aaSorting": [],
+                      "columnDefs": [{ bSortable: true, 'aTargets': [0] },{ bSortable: true, 'aTargets': [1] },{ bSortable: true, 'aTargets': [2] },{ bSortable: true, 'aTargets': [3] },{ bSortable: true, 'aTargets': [4] },{ bSortable: true, 'aTargets': [5] },{ bSortable: true, 'aTargets': [6] },{ bSortable: true, 'aTargets': [7] }]
+                     
+                  });
+                $(".dataTables_wrapper select")
+                    .select2({
+                        minimumResultsForSearch: -1
+                    });
+                $('thead>tr>th').css('text-align', 'center');
+                var Pass = @Html.Raw(Json.Encode(ViewData["Pass"]));
+
+                var x = @Model.Count();
+
+
+                for (var n = 0; n < x; n++) {
+                    var P = parseInt($("#PassingScoreID" + i).val());
+                    var T = parseInt($("#TotalScoreID" + i).val());
+                    var t = parseInt($("#TotalScore" + i).val());
+                    var A = parseInt($("#Attendance" + i).val());
+
+                    if (t >= P) {
+
+                        document.getElementById('span_StatusG' + i).innerHTML = "Pass";
+
+
+                    }
+           
+            
+                    if ((t < P) &&(t!==0)) {
+
+                        document.getElementById('span_StatusR' + i).innerHTML = "Fail";
+
+
+                    }
+           
+                    if ((isNaN(t))) {
+
+                        document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+
+
+                    }
+                    if (A === 1) {
+                        $('#TotalScore' + i).prop('disabled', false);
+                    }
+                    if (A === 2) {
+                        $('#TotalScore' + i).prop('disabled', true);
+                        $('#TotalScore' + i).val("0");
+                        document.getElementById('span_StatusR' + i).innerHTML = "";
+                        document.getElementById('span_StatusG' + i).innerHTML = "";
+                        document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+                    }
+
+                    if (A === 3) {
+                        $('#TotalScore' + i).prop('disabled', true);
+                        $('#TotalScore' + i).val("0");
+                        document.getElementById('span_StatusR' + i).innerHTML = "";
+                        document.getElementById('span_StatusG' + i).innerHTML = "";
+                        document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+                    }
+
+                }
+
+
+                $(".datetimepicker")
+                    .datepicker({
+                        format: 'dd-mm-yyyy',
+                        //startDate: '1d',
+                        todayHighlight: true,
+                        autoclose: true,
+                        //endDate: '1d'
+
+                    });
+
+                var x = @Model.Count();
+                var data = @Html.Raw(Json.Encode(ViewData["ID"]));
+                for (var j = 0; j < x; j++) {
+
+                    $("#Attendance" + j).prop('selectedIndex', data[j]);
+                    $("#Attendance" + j).select2();
+
+                }
+
+                //var selectedId = $('#AssessmentID').val();
+                //if (selectedId == 0) {
+
+                //    $('#tblRoles').hide();
+                //} else {
+                //    $('#tblRoles').show();
+                //}
+
+                //$('.chart')
+                //    .horizBarChart({
+                //        selector: '.bar',
+                //        speed: 1000
+                //    });
+
+
+            });
+
+        function change(ID) {
+
+            $("#form").submit();
+            $('#tblRoles').show();
+        }
+
+
+        function Activity(id, start) {
+            
+            var Pass = @Html.Raw(Json.Encode(ViewData["Pass"]));
+            var x = @Model.Count();
+            var ID = parseInt(id);
+            var PASS = parseInt(Pass);
+
+
+            var P = parseInt($("#TotalScore" + start).val());
+            var U = parseInt($("#UserAssessmentID" + start).val());
+            var A = parseInt($("#Attendance" + start).val());
+            var T = parseInt($("#TotalScoreID" + start).val());
+            var PA = parseInt($("#PassingScoreID" + start).val());
+            if (P > T) {
+                document
+                    .getElementById('span_Score' + start)
+                    .innerHTML = "Score must be less than total score" ;
+                document.getElementById('span_StatusR' + start).innerHTML = "";
+                document.getElementById('span_StatusG' + start).innerHTML = "";
+                document.getElementById('span_StatusN' + start).innerHTML = "No Score";
+                return;
+            }
+            if (P <= T) {
+                document.getElementById('span_Score' + start).innerHTML = "";
+
+            }
+
+
+            if (P >= PA && !(P > T)) {
+
+                document.getElementById('span_StatusG' + start).innerHTML = "Pass";
+                document.getElementById('span_StatusR' + start).innerHTML = "";
+                document.getElementById('span_StatusN' + start).innerHTML = "";
+
+
+            }
+            if (P < PA || P > T) {
+
+                document.getElementById('span_StatusG' + start).innerHTML = "";
+
+
+            }
+            if (P < PA && !(P > T)) {
+
+                document.getElementById('span_StatusR' + start).innerHTML = "Fail";
+                document.getElementById('span_StatusN' + start).innerHTML = "";
+                document.getElementById('span_StatusG' + start).innerHTML = "";
+
+
+            }
+            if (P > PA || P > T) {
+
+                document.getElementById('span_StatusR' + start).innerHTML = "";
+
+
+            }
+            if (A === 1) {
+                $('#TotalScore' + start).prop('disabled', false);
+
+
+            }
+            if (A === 2) {
+                $('#TotalScore' + start).prop('disabled', true);
+                $('#TotalScore' + start).val("0");
+                document.getElementById('span_StatusR' + start).innerHTML = "";
+                document.getElementById('span_StatusG' + start).innerHTML = "";
+                document.getElementById('span_StatusN' + start).innerHTML = "No Score";
+
+            }
+            if (A === 3) {
+                $('#TotalScore' + start).prop('disabled', true);
+                $('#TotalScore' + start).val("0");
+                document.getElementById('span_StatusR' + start).innerHTML = "";
+                document.getElementById('span_StatusG' + start).innerHTML = "";
+                document.getElementById('span_StatusN' + start).innerHTML = "No Score";
+
+            }
+
+
+
+            if (isNaN(P)) {
+
+                document.getElementById('span_StatusN' + start).innerHTML = "No Score";
+                return;
+
+            }
+
+            document.getElementById('span_StatusS' + start).innerHTML = "Saved";
+            $("#span_StatusS" + start).show().delay(1000).fadeOut();
+
+            var url2 = '@Url.Action("AssessmentEntryTO")';
+
+            $.get(url2,
+                { TotalScore: P, UserAssessmentID: U, Attendance: A },
+                function(data) {
+                    //$('#TotalScore'+start).empty().load(window.location.href + '#TotalScore'+start);
+
+
+                    return;
+                });
+
+
+        }
+
+        function GetDepartments() {
+            
+
+
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetDepartments")';
+
+                $.get(url2,
+                    { BranchId: Bid },
+                    function(data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#Iddepartment").html(items.join(' '));
+                        $("#Iddepartment").select2();
+                    });
+                var url3 = '@Url.Action("GetAssessmentName")';
+
+                $.get(url3,
+                    { BranchId: Bid, DepartmentId: 0, GroupId: 0 },
+                    function(data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#AssessmentID").html(items.join(' '));
+                        $("#AssessmentID").select2();
+                    });
+                var url4 = '@Url.Action("GetGroups")';
+
+                $.get(url4,
+                    { DepartmentId: 0 },
+                    function(data) {
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#Idgroup").html(items.join(' '));
+                        $("#Idgroup").select2();
+                    });
+            }
+        }
+
+        function GetAssessmentName() {
+
+
+            var Bid = $("#Idbranchname").find("option:selected").prop("value");
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+            var Gid = $("#Idgroup").find("option:selected").prop("value");
+            
+            if (Bid !== "") {
+
+                var url2 = '@Url.Action("GetAssessmentName")';
+
+                $.get(url2,
+                    { BranchId: Bid, DepartmentId: Did, GroupId: Gid },
+                    function(data) {
+
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>--Select--</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#AssessmentID").html(items.join(' '));
+                        $("#AssessmentID").select2();
+                    });
+            }
+        }
+
+        function GetGroups() {
+            
+
+            var Did = $("#Iddepartment").find("option:selected").prop("value");
+
+            if (Did !== "") {
+
+                var url2 = '@Url.Action("GetGroups", "ManageAssessment")';
+
+                $.get(url2,
+                    { DepartmentId: Did },
+                    function(data) {
+
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>---Select---</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#Idgroup").html(items.join(' '));
+                        $("#Idgroup").select2();
+                    });
+
+                var Bid = $("#Idbranchname").find("option:selected").prop("value");
+                var url3 = '@Url.Action("GetAssessmentName", "ManageAssessment")';
+
+                $.get(url3,
+                    { BranchId: Bid, DepartmentId: Bid, GroupId: 0 },
+                    function(data) {
+
+                        var items = [];
+                        items.push("");
+                        items.push("<option value=0>---Select---</option>");
+
+                        $.each(data,
+                            function() {
+                                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            });
+                        $("#AssessmentID").html(items.join(' '));
+                        $("#AssessmentID").select2();
+                    });
+            }
+        }
+
+
+        var s1 = @Model.Count();
+        
+
+        for (var i = 0; i < s1; i++) {
+            var data = @Html.Raw(Json.Encode(ViewData["ID"]));
+
+
+            $("#Attendance" + i).prop('selectedIndex', data[i]);
+            $("#Attendance" + i).select2();
+
+            var data = [];
+            var P = parseInt($("#PassingScoreID" + i).val());
+            var T = parseInt($("#TotalScoreID" + i).val());
+            var t = parseInt($("#TotalScore" + i).val());
+            var A = parseInt($("#Attendance" + i).val());
+
+            if (t >= P) {
+
+                document.getElementById('span_StatusG' + i).innerHTML = "Pass";
+
+
+            }
+           
+            
+            if ((t < P) &&(t!==0)) {
+
+                document.getElementById('span_StatusR' + i).innerHTML = "Fail";
+
+
+            }
+           
+            if (isNaN(t)||t===0) {
+
+                document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+
+
+            }
+            if (A === 1) {
+                $('#TotalScore' + i).prop('disabled', false);
+            }
+            if (A === 2) {
+                $('#TotalScore' + i).prop('disabled', true);
+                $('#TotalScore' + i).val("0");
+                document.getElementById('span_StatusR' + i).innerHTML = "";
+                document.getElementById('span_StatusG' + i).innerHTML = "";
+                document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+            }
+
+            if (A === 3) {
+                $('#TotalScore' + i).prop('disabled', true);
+                $('#TotalScore' + i).val("0");
+                document.getElementById('span_StatusR' + i).innerHTML = "";
+                document.getElementById('span_StatusG' + i).innerHTML = "";
+                document.getElementById('span_StatusN' + i).innerHTML = "No Score";
+            }
+
+
+            var TotalScore = { label: "Total Score", value: T };
+            var PassingScore = { label: "Pass Score", value: P };
+
+            data.push(TotalScore);
+            data.push(PassingScore);
+
+            var output = "donut-example" + i;
+
+
+            Morris.Donut({
+                element: output,
+                data: data,
+            });
+
+        }
+
+        //$(document)
+        //    .ready(function() {
+        //        $("#tblRoles")
+        //            .dataTable({
+        //                "sPaginationType": "bootstrap",
+        //                "aLengthMenu": [[10, 15, 20, 25, -1], [10, 15, 20, 25, "All"]],
+        //                //"columnDefs": [{ bSortable: false, 'aTargets': [0] }]
+        //            });
+        //        $(".dataTables_wrapper select")
+        //            .select2({
+        //                minimumResultsForSearch: -1
+        //            });
+        //        $('thead>tr>th').css('text-align', 'center');
+
+        //    });
+
+    </script>
+}
+
+

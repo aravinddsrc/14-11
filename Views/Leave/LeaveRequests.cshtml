@@ -1,0 +1,600 @@
+﻿@model IEnumerable<DSRCManagementSystem.LeaveRequest>
+@{
+    ViewBag.Title = "Leave Requests";
+    Layout = null;
+}
+
+
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+   
+
+
+
+ <script type="text/javascript">
+
+       
+   
+
+
+     $("#LeaveStatus").select2({
+         minimumResultsForSearch: -1
+     });
+
+     jQuery(document).ready(function ($) {
+         $(".datetimepicker").datepicker({
+
+             format: 'dd/mm/yyyy',
+             todayHighlight: true,
+             daysOfWeekDisabled: [0, 6],
+             autoclose: true
+         });
+         SetupGrid();
+       
+     });
+      
+     function AddNewLeaveRequest() {
+         var isUnderNoticePeriod = (($("#isUnderNoticePeriod").val().toLowerCase()=="true")?true:false);
+         var status = false;
+         if(isUnderNoticePeriod){
+             bootbox.confirm("Loss of pay will be applicable as you are in notice period (or) There is a chance of extending the relieving date based on your manager decision.",function (result) {
+                 if(result==true)
+                     $.ajax({
+                         url: "../../Leave/CreateLeaveRequest/",
+                         type: 'GET',
+                         cache: false,
+                         success: function (result) {
+                            // $('#PartialSection').html(result);
+                           //  $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                             //$(".datetimepicker").datepicker({
+                             //    format: 'dd/mm/yyyy',
+                             //    todayHighlight: true,
+                             //    daysOfWeekDisabled: [0,6],
+                             //    autoclose: true
+                             //});
+                         }
+                     });
+             });
+         }
+         if((isUnderNoticePeriod && status)||(!isUnderNoticePeriod && !status)){
+             var toastrOptions = {
+                 "closeButton": true,
+                 "debug": false,
+                 "positionClass": "toast-top-right",
+                 "toastClass": "White",
+                 "onclick": null,
+                 "showDuration": "300",
+                 "hideDuration": "1000",
+                 "timeOut": "5000",
+                 "extendedTimeOut": "1000",
+                 "showEasing": "swing",
+                 "hideEasing": "linear",
+                 "showMethod": "fadeIn",
+                 "hideMethod": "fadeOut"
+             }
+             toastr.clear("", toastrOptions);
+             $.ajax({
+                 url: "../../Leave/CreateLeaveRequest/",
+                 type: 'GET',
+                 cache: false,
+                 success: function (result) {
+                     $('#PartialSection').html(result);
+                     $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                     $(".datetimepicker").datepicker({
+                         format: 'dd/mm/yyyy',
+                         todayHighlight: true,
+                         daysOfWeekDisabled: [0,6],
+                         autoclose: true
+
+                     });
+                 }
+             });
+         }
+     }
+     function CompOff() {
+         $.ajax({
+             url: "../../Leave/CreateCompOff/",
+             type: 'GET',
+             cache: false,
+             success: function (result) {
+
+                 $('#PartialSection').html(result);
+                 $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+             }
+         });
+     }
+     function CancelLeaveRequest(leaveRequestId) {
+         var UserId = '@Session["UserId"]';
+            bootbox.confirm("Are you sure you want to cancel ?", function (result) {
+                if (result) {
+                    var toastrOptions = {
+                        "closeButton": true,
+                        "debug": false,
+                        "positionClass": "toast-top-right",
+                        "toastClass": "White",
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    $.ajax({
+                        url: "../../Leave/CancelLeaveRequest/",
+                        type: 'POST',
+                        cache: false,
+                        data: {leaveRequestId: leaveRequestId,
+                            submittingUserId: UserId
+                        },
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                ReloadGrid();
+                                toastr.success("Your leave request has been cancelled successfully", toastrOptions);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function LeaveRequestDetail(leaveRequestId) {
+            $.ajax({
+                url: "../../Leave/UpdateLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function SetupGrid() {
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+
+            $.ajax({
+                url: "../../Leave/LeaveRequests/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#leaveRequestsGrid').html(result);
+                    SetupGrid();
+                }
+            });
+        }
+
+        function SetupGrid() {
+            var anyPendingLeaveRequests = $("#anyPendingLeaveRequests").val();
+            var table = $("#tblLeaveRequests").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                "bAutoWidth": false,
+                "columnDefs": [
+                    { "width": "10%", "targets": 0 }, { "width": "15%", "targets": 1 }, { "width": "15%", "targets": 2 }, { "width": "15%", "targets": 3 },
+                    { "width": "15%", "targets": 4 }, { "width": "12%", "targets": 5, bSortable: false }, { "width":"12%", "targets": 6, bSortable: false }
+                ]
+
+            }).api();
+
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        }
+    </script>
+  <script type="text/javascript">
+
+      function LeaveDetails(userId, leaveTypeId) {
+     
+          $.ajax({
+              url: "../../Home/LeaveDetails/",
+              type: 'GET',
+              cache: false,
+              data: { userId: userId, leaveTypeId: leaveTypeId },
+              success: function (result) {
+                  $('#PartialSection').html(result);
+                  $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+              }
+          });
+      }
+
+      function LOPLeaveDetails(userId, Monthly) {
+        
+          $.ajax({
+              url: "../../Home/LOPLeaveDetails/",
+              type: 'GET',
+              cache: false,
+              data: { userId: userId, Monthly: Monthly },
+              success: function (result) {
+                  $('#PartialSection').html(result);
+                  $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+              }
+          });
+      }
+
+    </script>
+ 
+   <script type="text/javascript">
+        
+       $("#LeaveStatus").select2({
+          
+           minimumResultsForSearch: -1
+       });
+
+       //jQuery(document).ready(function () {
+       //   PaginationGridView();
+       //    $('.profile-info').click(function () {
+       //        $('.img.circle').parent().parent().toggleClass('open');
+       //    });
+       //    $('a.dropdown-toggle').click(function () {
+       //        $(this).parent().toggleClass('open');
+       //    });
+       //});
+   
+       function AddNewLeaveRequest() {
+
+           var isUnderNoticePeriod = (($("#isUnderNoticePeriod").val().toLowerCase()=="true")?true:false);
+           var status = false;
+           if(isUnderNoticePeriod){
+               bootbox.confirm("Loss of pay will be applicable as you are in notice period (or) There is a chance of extending the relieving date based on your manager decision.",function (result) {
+                   if(result==true)
+                       $.ajax({
+                           url: "../../Leave/CreateLeaveRequest/",
+                           type: 'GET',
+                           cache: false,
+                           success: function (result) {
+                               $('#PartialSection').html(result);
+                               $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                               $(".datetimepicker").datepicker({
+                                   format: 'dd/mm/yyyy',
+                                   todayHighlight: true,
+                                   daysOfWeekDisabled: [0,6],
+                                   autoclose: true
+                               });
+                           }
+                       });
+               });
+           }
+           if((isUnderNoticePeriod && status)||(!isUnderNoticePeriod && !status)){
+               var toastrOptions = {
+                   "closeButton": true,
+                   "debug": false,
+                   "positionClass": "toast-top-right",
+                   "toastClass": "White",
+                   "onclick": null,
+                   "showDuration": "300",
+                   "hideDuration": "1000",
+                   "timeOut": "5000",
+                   "extendedTimeOut": "1000",
+                   "showEasing": "swing",
+                   "hideEasing": "linear",
+                   "showMethod": "fadeIn",
+                   "hideMethod": "fadeOut"
+               }
+               toastr.clear("", toastrOptions);
+               $.ajax({
+                   url: "../../Leave/CreateLeaveRequest/",
+                   type: 'GET',
+                   cache: false,
+                   success: function (result) {
+                       $('#PartialSection').html(result);
+                       $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                       $(".datetimepicker").datepicker({
+                           format: 'dd/mm/yyyy',
+                           todayHighlight: true,
+                           daysOfWeekDisabled: [0,6],
+                           autoclose: true
+
+                       });
+                   }
+               });
+           }
+       }
+       function CompOff() {
+           $.ajax({
+               url: "../../Leave/CreateCompOff/",
+               type: 'GET',
+               cache: false,
+               success: function (result) {
+
+                   $('#PartialSection').html(result);
+                   $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+               }
+           });
+       }
+       function CancelLeaveRequest(leaveRequestId) {
+        
+           bootbox.confirm("Are you sure you want to cancel ?", function (result) {
+               if (result) {
+                   var toastrOptions = {
+                       "closeButton": true,
+                       "debug": false,
+                       "positionClass": "toast-top-right",
+                       "toastClass": "White",
+                       "onclick": null,
+                       "showDuration": "300",
+                       "hideDuration": "1000",
+                       "timeOut": "5000",
+                       "extendedTimeOut": "1000",
+                       "showEasing": "swing",
+                       "hideEasing": "linear",
+                       "showMethod": "fadeIn",
+                       "hideMethod": "fadeOut"
+                   }
+                   var values =
+                   {
+                       "leaveRequestId": leaveRequestId,
+                       "submittingUserId": @Session["UserId"],
+                    }
+                    $.ajax({
+                        url: "../../Leave/CancelLeaveRequest/",
+                        type: 'POST',
+                        cache: false,
+                        data: values,
+                        success: function (result) {
+                            if (result.Result === "Success") {
+                                ReloadGrid();
+                                toastr.success("Your leave request has been cancelled successfully", toastrOptions);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function LeaveRequestDetail(leaveRequestId) {
+        
+            $.ajax({
+                url: "../../Leave/UpdateLeaveRequestStatus/",
+                type: 'GET',
+                cache: false,
+                data: { leaveRequestId: leaveRequestId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function ReloadGrid() {
+       
+            var tables = $.fn.dataTable.fnTables(true);
+            $(tables).each(function () {
+                $(this).dataTable().fnClearTable();
+                $(this).dataTable().fnDestroy();
+            });
+
+            $.ajax({
+                url: "../../Leave/LeaveRequests/",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#leaveRequestsGrid').html(result);
+                    SetupGrid();
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+ 
+        function LeaveDetails(userId, leaveTypeId) {
+          
+            $.ajax({
+                url: "../../Home/LeaveDetails/",
+                type: 'GET',
+                cache: false,
+                data: { userId: userId, leaveTypeId: leaveTypeId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function LOPLeaveDetails(userId, Monthly) {
+       
+            $.ajax({
+                url: "../../Home/LOPLeaveDetails/",
+                type: 'GET',
+                cache: false,
+                data: { userId: userId, Monthly: Monthly },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function LOPLeaveDetail(userId) {
+       
+            $.ajax({
+                url: "../../Home/LOPLeaveDetails/",
+                type: 'GET',
+                cache: false,
+                data: { userId: userId, Monthly: false },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        }
+
+        function Cancel() {
+            var url = '@Url.Action("ApplyLeave", "Leave")';
+            window.location.href = url;
+        }
+
+
+       @* function GetDepartments() {
+
+            var Bid = $("#BranchID").find("option:selected").prop("value");
+
+            if (Bid !== "") {
+
+                window.location.href = '@Url.Action("Applyleave","Leave")' + '?BId=' + Bid;
+
+            }
+        }
+
+        function GetGroups() {
+
+            var Did = $("#departmentType").find("option:selected").prop("value");
+
+              if (Did !== "") {
+
+                window.location.href = '@Url.Action("Applyleave","Leave")' + '?Did=' + Did;
+
+            }
+        }*@
+
+
+ function GetDepartments() {
+            var Bid = $("#Idbranchname1").find("option:selected").prop("value");
+            if (Bid !== "") {
+                var url2 = '@Url.Action("GetDepartments")';
+                $.get(url2, { BranchId: Bid }, function (data) {
+                    var items = [];
+                    items.push("");
+                    items.push("<option value=0>--Select--</option>");
+
+                    $.each(data, function () {
+                        items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                    });
+                    $("#DepartmentName").html(items.join(' '));
+                    $("#DepartmentName").select2();
+                });
+
+
+            }
+ }
+
+        function change() {
+
+            var DepartmentName = "";
+            value = $("#DepartmentName").val();
+            if (value == "") {
+                DepartmentName = 0;
+            }
+            else {
+
+                DepartmentName = $('#DepartmentName').find("option:selected").prop("value");
+            }
+            var url2 = '@Url.Action("GetAvailEmployees")';
+
+            $.get(url2, { DepartmentName: DepartmentName }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+                });
+                $("#GroupName").html(items.join(' '));
+                $("#GroupName").select2();
+            });
+        }
+        
+    </script>
+    
+
+       
+<body style="overflow: auto">
+</body>
+@*<ol class="breadcrumb bc-3">
+        <li><a>Leave Management</a> </li>
+        <li><b>My Leave Requests</b></li>
+    </ol>*@
+<div>
+    @{
+        Html.RenderAction("LeaveBalanceDashboard", "Leave");
+    }
+
+</div>
+@{
+    int SNO = 1;
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="panel-heading">
+                <div class="panel-title" color="White">
+                    My Leave Requests
+                </div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="btn-group" style="float: right">
+                    <button class="btn btn-blue" style="font-weight: bold" onclick="AddNewLeaveRequest()">
+                        New Leave Request
+                    </button>
+                    <br />
+                </div>
+                <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="tools">
+                            <div id="PartialSection">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @using (Html.BeginForm("ApplyLeave", "Leave", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="row">
+                             <div class="col-md-2" style="width:102px; padding-top:7px;">
+                            Leave Status
+                        </div>
+                            <div class="col-md-3">
+                                @Html.DropDownList("LeaveStatus", ViewBag.LeaveStatusList as SelectList, new { @id = "LeaveStatus", @name = "LeaveStatus", @class = "form-control" })
+                            </div>
+                         <input type="hidden" id="isUnderNoticePeriod" value="@{ @Html.Raw(ViewBag.isUnderNoticePeriod); }" />
+                         <div class="col-md-4" style="margin-left: 30px;">
+                        <button type="submit" name="btn_Submit" class="btn btn-info btn-icon">
+                            Search<i class="entypo-search"></i>
+                        </button>
+                          <button type="button" id="btnAdd" class="btn btn-default" onclick="Cancel()">
+                            Reset
+                        </button>
+                      </div>
+                     </div>                        
+                    </div>
+                   
+                    <div class="clear">
+                    </div>
+                    <br />
+
+                    <div id="leaveRequestsGrid">
+                        @Html.Partial("_LeaveRequests", Model)
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

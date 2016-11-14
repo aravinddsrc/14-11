@@ -1,0 +1,821 @@
+﻿@model DSRCManagementSystem.Models.LDCourse1List
+@{                                
+    ViewBag.Title = "Add Training ";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    int SNO = 1;
+}
+  <style>
+    
+   .select2-container select2-container-multi select2 visible      
+    {
+    width: 300px;
+    height: 40px; 
+    }
+ </style>  
+
+<style>
+
+.dropdown-menu {
+    background-color: white;
+}  
+
+   </style>      
+
+ 
+@section AddToHead{
+    <link href="../../Content/jquery-timepicker-master/jquery.timepicker.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+    <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+    }
+@*    <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Mylearning", "LDHome")">Learning and Development</a></li>
+         <li><a href="@Url.Action("MTRaining", "ManageTraining")">Manage Training</a></li>
+        <li class="active"><strong>Add Training</strong> </li>
+    </ol>*@
+    <p>
+        <a href="@Url.Action("Mylearning","LDHome")"style="color:black ">
+            Learning and Development
+        </a>
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        Manage Training
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Add Training</b>
+    </p>
+<br />
+    <div style="float:right;margin-top:-20px;"><button type="button" id="btnAdd1" class="btn btn-default" onclick="Back()">Back</button></div>
+<br />
+    @using (Html.BeginForm("AddCoursedetails", "LDCourse1", FormMethod.Post, new { @id = "form" }))
+    {
+        
+        <div class="row" style="height: 500px;">
+            <div class="col-md-12">
+                <div class="panel panel-default panel-shadow" data-collapsed="0">
+                    <!-- panel head -->
+                    <div class="panel-heading">
+                        <div class="panel-title" color="White">
+                            Add Training</div>
+                    </div>
+                    <!-- panel body -->
+                    <div class="panel-body" id="test">
+                        <div class="clear">
+                        </div>
+                        <br />
+                        <div>
+                            @*  <div class="table" id="Courseloop">*@
+                            <div id="Courseloop">
+                                <span id="Seating"></span>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: right">
+                                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                                    </div>
+                                </div>
+                                <div class="row" style="text-align: center; font-size: medium">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(x => x.LDM.Coursename, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-2" style="text-align: center;">
+                                        @Html.LabelFor(x => x.LDM.Technology, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-2" style="text-align: center;">
+                                        @Html.LabelFor(x => x.LDM.Level, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-1" style="text-align: center;">
+                                       Scheduled Date
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-1" style="text-align: center;">
+                                        @Html.LabelFor(x => x.LDM.Starttime, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-1" style="text-align: center;">
+                                        @Html.LabelFor(x => x.LDM.Endtime, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-2" style="text-align: center;">
+                                        @Html.LabelFor(x => x.LDM.Instructor, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.LabelFor(x => x.LDM.SeatingCapacity, new { @class = "control-label" })
+                                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                                    </div>
+                                     
+                              
+                                    
+
+                                  </div>
+                                <br />
+                                @for (int i = 0; i < Model.ldmlist.Count; i++)
+                                {                                   
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            @Html.TextBoxFor(x => x.ldmlist[i].Coursename, new { @id = "Course" + i, @class = "form-control", @style = "height:42px", @maxlength = 50 })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].Coursename, " ", new { @style = "color:red" })
+                                            <span id="course" style="color: Red"></span>     <span id="courseexist" style="color: Red"></span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DropDownListFor(x => x.ldmlist[i].TechnologyId, Model.LDM.TechIDList, "", new
+                                       {
+                                           @id = "TechnologyId" + i,
+                                           @name = "TechnologyId",
+                                           @class = "selectSearch",
+                                           @onpaste = "return false"
+                                       })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].TechnologyId, " ", new { @style = "color:red" })
+                                            <span id="tech" style="color: Red"></span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @*@Html.DropDownListFor(x => x.ldmlist[i].LevelId, Model.LDM.LevelIDList, "", new { @id = "LevelId" + i, @name = "LevelId", @class = "form-control", @style = "width:130px;" })*@
+                                            @Html.DropDownListFor(x => x.ldmlist[i].LevelId, Model.LDM.LevelIDList, "", new { @id = "LevelId" + i, @name = "LevelId", @class = "selectSearch", @style = "height:42px;" })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].LevelId, " ", new { @style = "color:red" })
+                                            <span id="level" style="color: Red"></span>
+                                        </div>
+                                        <div class="col-md-1">
+                                            @Html.TextBoxFor(x => x.ldmlist[i].Scheduledate, new { @id = "scheduledate" + i, @class = "form-control datetimepicker", @style = "height:42px" })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].Scheduledate, " ", new { @style = "color:red" })
+                                            <span id="date" style="color: Red"></span>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-controltimepicker">
+                                                @*@Html.TextBoxFor(x => x.ldmlist[i].Starttime, " ", new { @id = "start" + i, @class = "form-control timepicker ", @style = "height:42px;width:100px;", @autocomplete = "off" })*@
+                                                @Html.TextBoxFor(x => x.ldmlist[i].Starttime, " ", new { @id = "start" + i, @class = "form-control timepicker ", @style = "height:42px;" })
+                                                @Html.ValidationMessageFor(x => x.ldmlist[i].Starttime, " ", new { @style = "color:red" })
+                                                 <span id="courseexist1" style="color: Red"></span>
+                                                <span id="stime" style="color: Red"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-controltimepicker">
+                                                @*@Html.TextBoxFor(x => x.ldmlist[i].Endtime, " ", new { @id = "end" + i, @class = "form-control timepicker ", @style = "height:42px;width:100px;", @autocomplete = "off" })*@
+                                                @Html.TextBoxFor(x => x.ldmlist[i].Endtime, " ", new { @id = "end" + i, @class = "form-control timepicker", @style = "height:42px;" })
+                                                @Html.ValidationMessageFor(x => x.ldmlist[i].Endtime, " ", new { @style = "color:red" })
+                                                <span id="etime" style="color: Red"></span><span id="etime1" style="color: Red">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DropDownListFor(x => x.ldmlist[i].userid, Model.LDM.InstructorIDList, "", new { @name = "ldmlist[x].userid", @id = "UserID" + i, @class = "selectSearch" })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].userid, " ", new { @style = "color:red" })
+                                            <span id="ins" style="color: Red"></span>
+                                        </div>
+                                        <div class="col-md-1">
+                                            @*@Html.TextBoxFor(x => x.ldmlist[i].SeatingCapacity, " ", new { @id = "SeatingCapacity" + i, @class = "form-control ", @style = "height:42px;width:100px;" })*@
+                                            @Html.TextBoxFor(x => x.ldmlist[i].SeatingCapacity, " ", new { @id = "SeatingCapacity" + i, @class = "form-control ", @style = "height:42px;", @maxlength = 2 })
+                                            @Html.ValidationMessageFor(x => x.ldmlist[i].SeatingCapacity, " ", new { @style = "color:red" })
+                                            <span id="seat" style="color: Red"></span>
+                                        </div>
+                                           
+                            </div>
+                                }
+
+                                
+
+
+                                 <div class="panel panel-default panel-shadow" data-collapsed="0" style="margin-top:15px">
+                    <!-- panel head -->
+                    <div class="panel-heading">
+                        <div class="panel-title" color="White">
+                            Mailing</div>
+                    </div>
+                             <div class="panel-body" id="test">
+                        <div class="clear">
+                        </div>
+
+                                 @for (int i = 0; i < Model.ldmlist.Count; i++)
+                                {
+                                     
+
+                                     <div class="row" style="text-align:left; font-size: medium">
+
+                                            <div class="col-md-6">
+                                                @Html.LabelFor(x => x.MailDepartments, new { @class = "control-label"})
+                                      @* <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>*@
+                                              
+
+                                       @Html.DropDownList("MailDepartments", ViewBag.Departments as MultiSelectList, new { @id = "MailDepartments", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple", @maxlength = 50,@style = "width:auto;", @onchange=" FilterUser() "})   
+
+                                   
+
+                                         </div>
+
+                                     <div class="col-md-6">
+                                      
+                                 @Html.LabelFor(x => x.NotifyUsers, new { @class = "control-label" })
+                                     @* <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>*@
+
+                                          @Html.DropDownList("NotifyUsers", ViewBag.Users as MultiSelectList, new { @id = "NotifyUsers", @class = "select2-container select2-container-multi select2 visible", @multiple = "multiple", @maxlength = 50,@style = "width:auto;" })   
+                                   
+                                     </div>
+                               </div>
+                                   
+                             
+                                 }
+                                     </div>@*panel body*@
+                     </div>@*panel heading*@
+
+                                  </div>
+                                 
+                            @*<div id="courseRows"   class="table">*@
+                            <div id="courseRows">
+                                  @* <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(x => x.LDM.Coursename, new { @name = "ldmlist[x].Coursename", @id = "Course", @class = "form-control", @style = "height:42px", @maxlength = 50, @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.Coursename, " ", new { @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.LDM.TechnologyId, Model.LDM.TechIDList, "", new { @name = "ldmlist[x].TechnologyId", @id = "TechnologyId", @class = "form-control", @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.TechnologyId, " ", new { @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(x => x.LDM.LevelId, Model.LDM.LevelIDList, "", new { @name = "ldmlist[x].LevelId", @id = "LevelId", @class = "form-control", @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.LevelId, " ", new { @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.TextBoxFor(x => x.LDM.Scheduledate, new { @name = "ldmlist[x].Scheduledate", @id = "scheduledate", @class = "form-control datetimepicker", @style = "height:42px", @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.Scheduledate, " ", new { @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-controltimepicker">
+                                            @Html.TextBoxFor(x => x.LDM.Starttime, new { @name = "ldmlist[x].start", @id = "start", @class = "form-control timepicker ", @style = "height:42px;", @onpaste = "return false" })
+                                            @Html.ValidationMessageFor(x => x.LDM.Starttime, " ", new { @style = "color:red" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-controltimepicker">
+                                            @Html.TextBoxFor(x => x.LDM.Endtime, new { @name = "ldmlist[x].end", @id = "end", @class = "form-control timepicker ", @style = "height:42px;", @onpaste = "return false" })
+                                            @Html.ValidationMessageFor(x => x.LDM.Endtime, " ", new { @style = "color:red" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                             @Html.DropDownListFor(x => x.LDM.userid, Model.LDM.InstructorIDList, "", new { @name = "ldmlist[x].userid", @id = "UserID", @class = "selectSearch", @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.userid, " ", new { @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.TextBoxFor(x => x.LDM.SeatingCapacity, " ", new { @name = "ldmlist[x].SeatingCapacity", @id = "SeatingCapacity", @class = "form-control ", @style = "height:42px;", @maxlength = 2, @onpaste = "return false" })
+                                        @Html.ValidationMessageFor(x => x.LDM.SeatingCapacity, " ", new { @style = "color:red" })
+                                    </div>
+                                </div>*@
+                                <br />
+                            </div>
+                        </div>
+                        @* <div style="float: left; font-weight: bold;">
+                            <button class="btn btn-blue" style="font-weight: bold" id="addBtn">
+                                Add New Row
+                            </button>
+                        </div>*@
+                    </div>@* panel body*@
+                </div>   @* panel heading*@
+            </div>
+            <span id="training" style="color: Red"></span>
+            <input type="hidden" id="success" value="@TempData["success"]"/>
+            <input type="hidden" id="validation" value="@TempData["validation"]"/>
+            <input type="hidden" id="validation1" value="@TempData["validation1"]" />
+            <div class="modal-footer">
+                @Html.Partial("_AddCoursedetails", Model)
+                <div>
+                    <button type="button" id="btnAdd" class="btn btn-default" onclick="Clear()">
+                        Reset</button>
+                    <button type="submit" class="btn btn-info" id="btnsub" name="submitbutton1" onclick="doValidation()">
+                        Submit</button>
+                    
+                </div>
+            </div>
+        </div>
+                        
+    }
+ <style>
+    .select2-container-multi .select2-choices
+    {
+      min-height: 100px;
+    width: auto;
+    }
+    /*.page-body .select2-drop
+    {
+    width: 486px;
+    }
+
+    .select2-container .select2-container-multi .select2 visible .select2-dropdown-open .select2-drop-above
+    {
+    width: 486px;
+    }
+    .select2-drop-above
+    {
+    width: 486px;
+    }
+    #select2-drop
+    {
+     width: 486px;
+    }*/
+
+                                     </style>
+    @section scripts
+{
+        <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.js" type="text/javascript"></script>
+        <script src="../../Content/jquery-timepicker-master/jquery.timepicker.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+
+            var Submitform = true;
+
+            function doValidation() {
+                           
+                var errorcount = 0;              
+                var count = $("#Courseloop > div").length;
+                count = count - 2;
+                for (i = 0; i < count; i++) {
+                    if ($("#Course" + i).val() == 0) {
+                        $("#course").html("Enter Training Name");
+                        errorcount++;
+                        
+                    }
+                    else {
+                        $("#course").html(" ");
+                    }
+
+
+                    if ($("#TechnologyId" + i).val() == '') {
+
+                        $("#tech").html("Select Technology");
+                        errorcount++;
+                        
+                    }
+                    else {
+                        $("#tech").html(" ");
+                    }
+
+                    if ($("#spl" + i).val() == '') {
+
+                        $("#speli").html("Select Specification");
+                        errorcount++;
+
+                    }
+                    else {
+                        $("#speli").html(" ");
+                    }
+
+
+                    if ($("#LevelId" + i).val() == '') {
+
+                        $("#level").html(" Select Level");
+                        errorcount++;
+                       
+                    }
+                    else {
+                        $("#level").html(" ");
+                    }
+
+
+                    if ($("#scheduledate" + i).val() == '') {
+
+                        $("#date").html("Select Schedule Date");
+                        errorcount++;
+                        
+                    }
+                    else {
+         
+                        $("#date").html(" ");
+                    }
+
+                    if ($("#start" + i).val() == '') {
+
+                        $("#stime").html(" Select Start Time");
+                        errorcount++;
+                        
+                    }
+                    else {
+                        $("#stime").html(" ");
+                    }
+
+                    if ($("#end" + i).val() == '') {
+
+                        $("#etime").html(" Select End Time");
+                       
+                        errorcount++;
+                        
+                    }
+                    else {
+                        $("#etime").html(" ");
+                    }
+
+                    if ($("#UserID" + i).val() == '') {
+
+                        $("#ins").html("Select Instructor");
+                        errorcount++;
+                        
+                    }
+                    else {
+                        $("#ins").html(" ");
+                    }
+
+                    if ($("#SeatingCapacity" + i).val() == '') {
+
+                        $("#seat").html(" Enter Seats");
+                        errorcount++;
+
+                    }
+                    else if ($("#SeatingCapacity" + i).val() == '0') {
+
+                        $("#seat").html(" seat must be greater than the 0 ");
+                        errorcount++;
+                    }
+                    else if ($("#SeatingCapacity" + i).val() == '00') {
+
+                        $("#seat").html(" seat must be greater than the 0 ");
+                        errorcount++;
+                    }
+                    else {
+                        $("#seat").html(" ");
+                    }
+
+                    if ($("#end" + i).val().length > 0) {
+                         
+                        var strStartTime = $("#start" + i).val();
+                      
+                        var strEndTime = $("#end" + i).val();
+                      
+                        var stt = new Date("October 1, 2014 " + strStartTime);
+                        stt = stt.getTime();
+
+                        var endt = new Date("October 1, 2014 " + strEndTime);
+                        endt = endt.getTime();
+
+
+                        if (stt >= endt) {
+                            $("#etime1").html("End Time must be greater than Start time ").show();
+
+                            return false;
+                        }
+                                          
+                    }
+                }
+
+              
+
+                if (errorcount == 0  && Submitform==true) {
+                    $("#form").submit();
+                }
+
+            }
+
+            $(document).ready(function () {
+                var count = $("#Courseloop > div").length;
+
+                count = count - 2;
+
+                for (i = 0; i < count; i++) {
+                    $("#SeatingCapacity" + i).keypress(function (e) {
+                        var regex = new RegExp("^[0-9]+$");
+
+                        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                        
+                        
+                        if (regex.test(str)) {
+
+
+                            return true;
+                        }
+
+
+
+                        $("#seat").html("Enter Valid seats").show();
+                        return false;
+
+
+
+                    });
+                }
+            });
+
+
+           
+
+
+
+
+            $(document).ready(function () {
+                var count = $("#Courseloop > div").length;
+
+                count = count - 2;
+
+                for (i = 0; i < count; i++) {
+                    $("#Course" + i).keypress(function (e) {
+                        var regex = new RegExp("^[a-zA-Z0-9\\-\\.\\,\\:\\;\\)\\(\\&\\/\\#\\+\\!\\$\\%\\*\\@@\\^\\?\\<\\>\\{\\}\\[\\]\\s]+$");
+                        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                        if (regex.test(str)) {
+
+                            return true;
+                        }
+
+                        $("#course").html("Enter Valid Training Name").show();
+                        return false;
+
+                    });
+                }
+            });
+
+
+
+          
+
+             $(document).ready(function () {
+                var count = $("#Courseloop > div").length;
+
+                count = count - 2;
+
+                for (i = 0; i < count; i++) {
+
+                    $("#scheduledate" + i).keypress(function (e) {
+                var regex = new RegExp("^[0-9/////-]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#date").html("Select Valid Schedule Date").show();
+
+                return false;
+            });
+        }
+    });
+     $(document).ready(function () {
+                var count = $("#Courseloop > div").length;
+
+                count = count - 2;
+
+                for (i = 0; i < count; i++) {
+
+                    $("#start" + i).keypress(function (e) {
+                var regex = new RegExp("^[0-9//:]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#stime").html("Select Valid Start Time").show();
+                return false;
+           });
+        }
+    });
+
+             $(document).ready(function () {
+                var count = $("#Courseloop > div").length;
+
+                count = count - 2;
+
+                for (i = 0; i < count; i++) {
+
+                    $("#end" + i).keypress(function (e) {
+                var regex = new RegExp("^[0-9//:]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#etime").html("Select Valid End Time").show();
+                return false;
+            });
+        }
+    });
+
+
+    $("#scheduledate0").on("change", function () {
+
+        var schdt = $("#scheduledate0").val();
+       
+
+        $.ajax({
+            url: "../../LDCourse1/schedule/",
+            dataType: 'json',
+            data: { 'ID':0,'scheduledate': schdt, 'trainingname': $("#Course0").val() },
+            success: function (data) {
+
+                if (data.Name == 'available') {
+                  //  $("#etime").html("Select Valid End Time").show();
+                    $('#courseexist').html('Training Name already exists');
+                  
+                   // $("#course0").val('');
+                    Submitform = false;
+                   
+
+                }
+                else {
+                    $('#courseexist').text('');
+
+                    Submitform = true;
+                }
+            }
+
+
+        });
+
+    });
+
+    $("#start0").on("change", function () {
+
+        var schdt = $("#scheduledate0").val();
+
+        $.ajax({
+            url: "../../LDCourse1/scheduletime/",
+            dataType: 'json',
+            data: { 'trainingID': 0, 'scheduledate': schdt, 'trainingname': $("#Course0").val(), 'trainingtime': $("#start0").val(), 'endtime': null },
+            success: function (data) {               
+
+                //if (data.Name == 'availabletime') {
+                if (data == 'availabletime') {
+                    $('#training').html('Training has been scheduled for the same timing.Please select different timings');                    
+                    Submitform = false;
+                }
+                else {
+                    $('#courseexist').text('');
+                    Submitform = true;
+                }
+            }
+        });
+
+    });
+
+            $(function () {
+
+
+                $("#Courseloop > div.row > div > select:not(.selectSearch)").select2({
+                    minimumResultsForSearch: -1
+                });
+
+                $('#Courseloop > div.row > div > select.selectSearch').select2();
+                $('#courseRows').hide();
+                newrowcount = 0;
+
+                    $(".datetimepicker").datepicker({
+                    format: 'dd/mm/yyyy',
+                     startDate: '+1d',
+                     daysOfWeekDisabled: [0, 6],
+                    autoclose: true
+                });
+
+                $('.timepicker').timepicker
+
+            ({
+
+                'minTime': '9:00am',
+                'maxTime': '7:30pm',
+                'timeFormat': 'h:i A',
+                'showDuration': false,
+                'forceRoundTime': true
+               
+            });
+
+            });
+
+                 
+
+            $("#addBtn").on("click", function () {
+
+                var Text = $('#courseRows').html();
+                var rowNumber = newrowcount + 1;
+                Text = Text.replace(/LDM./g, 'ldmlist[' + rowNumber + '].');
+                var newRow = $(Text);
+                $("#Courseloop").append(Text);
+                var CourseRow = $('#Courseloop div.row:last');
+                $(CourseRow).find('select:not(.selectSearch)').select2({
+                    minimumResultsForSearch: -1
+                });
+                $(CourseRow).find('select.selectSearch').select2();
+
+
+                $(CourseRow).find('.datetimepicker').datepicker({
+                    format: 'dd/mm/yyyy',
+                    startDate: '+1d',
+                    daysOfWeekDisabled: [0, 6],
+                    autoclose: true
+                });
+
+                $(CourseRow).find(".timepicker").timepicker
+           ({
+
+               'minTime': '9:00am',
+               'maxTime': '7:30pm',
+               'timeFormat': 'h:i A',
+               'showDuration': false,
+               'forceRoundTime': true
+
+
+           });
+
+
+                newrowcount = newrowcount + 1;
+                return false;
+            });
+
+
+            function Clear()
+            {
+                
+                $("input:text").val('');
+                $(".panel-body select").select2("val", "0");
+                $("#course").text('');
+                $("#tech").text('');
+                $("#level").text('');
+                $("#date").text('');
+                $("#ins").text('');
+                $("#stime").text('');
+                $("#etime").text('');
+                $("#etime1").text('');
+                $("#seat").text('');
+                $("#NotifyUsers").text('');
+               
+            }
+
+
+            $(document).ready(function () {
+
+                    if ($('#success').val()) {
+                    displayMessage($('#success').val(), 'success');
+
+
+                    setTimeout(function () {
+                        window.location.href = "/ManageTraining/MTRaining";
+                    }, 1000);
+                }
+
+
+            });
+            var displayMessage = function (message, msgType) {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "500",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                toastr[msgType](message);
+            };
+
+              
+           
+
+            $(function () {
+                $("#btnAdd").click(function () {
+                    $("#Courseloop > div.row > div >").select2('val', '');
+                });
+            });
+
+
+            function Back() {
+                var url = '@Url.Action("MTRaining", "ManageTraining")';
+                      window.location.href = url;
+            }
+
+
+            function FilterUser() {
+              
+                var Cid = $("#MailDepartments").val().toString();
+                $.ajax({
+                    type: "POST",
+                    data: { Value: Cid },
+                    url: "/LDCourse1/NotifyUser/",
+                    success: function (data) {
+                        $("#NotifyUsers").empty();
+                        $("#NotifyUsers").select2();
+                        var items = [];
+                        items.push("");
+                        
+
+                        $.each(data, function () {
+                            items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                            $("#NotifyUsers").html(items.join(' '));
+                            $("#NotifyUsers").select2();
+                        });
+                        
+
+                    }
+
+                });
+
+            }
+
+
+
+
+
+        </script>
+       
+    }

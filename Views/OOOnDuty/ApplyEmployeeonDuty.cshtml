@@ -1,0 +1,468 @@
+﻿
+@model DSRCManagementSystem.Models.ApplyEmployeeOutDuty
+@{
+    ViewBag.Title = "Aplly Employee On Duty";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Approve Request</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        
+        #StartDate, #EndDate, #ODPlace, #Workingdays, #ODComments
+        {
+            height: 42px;
+        }
+
+     
+        .dropdown-menu {
+    background-color: white;
+}
+
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet" type="text/css" />
+     <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+                Apply Out Of Office</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("ApplyEmployeeonDuty", "OOOnDuty", FormMethod.Post))
+            {
+          
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                <div class="row">
+                    @*<div class="col-md-6">
+                   <div class="form-group">
+                @Html.Label("Employee Name", new { @class = "control-label" })
+                @Html.Label("*", new { @style = "color:#FF0000" })
+                @Html.DropDownList("Id5", ViewBag.Users as SelectList, "--Select--", new { @id = "Employee", @class = "select2-container select2-container-multi select2 visible" })
+                 <span id="span_ID7" style="color: Red;"></span>
+                   </div>
+                </div> *@
+                 <div class="col-md-6">
+                   <div class="form-group">
+                   @Html.Label("Employee Name", new { @class = "control-label" })
+                   @Html.Label("*", new { @style = "color:#FF0000" })
+                   @Html.DropDownList("Id5", ViewBag.Users as SelectList, "--Select--", new { @id = "ProjectName", @class = "form-control" })
+                  <span id="span_ID6" style="color: Red;"></span>
+                   </div>
+                   </div> 
+
+             
+              <div class="col-md-6">
+                   <div class="form-group">
+                @Html.Label("Out Of Office Type", new { @class = "control-label" })
+                @Html.Label("*", new { @style = "color:#FF0000" })
+                @Html.DropDownList("Id6", ViewBag.Type as SelectList, "--Select--", new { @id = "OutOfOfficeType", @class = "select2-container select2-container-multi select2 visible" })
+                <span id="span_ID8" style="color: Red;"></span>
+                   </div>
+                </div> 
+                       
+                </div> 
+          
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("Start Date", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @*@Html.TextBoxFor(x => x.StartDate, new { @id = "StartDate", @name = "StartDate", @class = "form-control datetimepicker", @Onchange = "CalculateWorkingDays()" })*@
+                            @Html.TextBoxFor(x => x.StartDate, new { @id = "StartDate", @name = "StartDate", @class = "form-control datetimepicker"})
+                            <span id="start" style="color: Red"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                       <div class="form-group">
+                            @Html.Label("End Date", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @*@Html.TextBoxFor(x => x.EndDate, new { @id = "EndDate", @name = "EndDate", @class = "form-control datetimepicker", @Onchange = "CalculateWorkingDays()" })*@
+                            @Html.TextBoxFor(x => x.EndDate, new { @id = "EndDate", @name = "EndDate", @class = "form-control datetimepicker"})
+                            <span id="end" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+          
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Comments", new { @class = "control-label" })
+                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                            @Html.TextAreaFor(x => x.Comments, new { @id = "ODComments", @name = "ODComments", @class = "form-control", @style = "height:100px", @maxlength = "150" })
+                            <span id="comments" style="color: Red"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-info" onclick="ApplyOnDuty()">
+                        Apply
+                    </button>
+                </div>
+            }
+             </div>
+        <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        var errorsCount = 0;
+
+        $("#EndDate").change(function () {
+
+            var startDate = $("#StartDate").val();
+            var splitedStartDate = startDate.split("/");
+            var endDate = $("#EndDate").val();
+            var splitedEndDate = endDate.split("/");
+            var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+            var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+
+            if (errorsCount === 0) {
+                if (startDateTime > endDateTime) {
+                    errorsCount++;
+                    $("#end").html("End Date should be greater than the Start Date");
+                } else {
+                    errorsCount = 0;
+                }
+
+            }
+
+            if (errorsCount === 0) {
+
+                $("#end").html("");
+            }
+        });
+
+        //        function CalculateWorkingDays() {
+
+        //            $.ajax({
+        //                url: "../../OOOnDuty/WorkingDaysCount/",
+        //                type: 'GET',
+        //                cache: false,
+        //                data: { startdate: $("#StartDate").val(), enddate: $("#EndDate").val() },
+        //                success: function (result) {
+        //                    $("#Workingdays").val(result.dept);
+
+        //                }
+
+        //            });
+        //        }        
+
+        $("#StartDate").datepicker({
+            format: 'dd/mm/yyyy',
+            //startDate: '+1d',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        }).on('changeDate', function (ev) {
+
+            var startDate = $("#StartDate").val();
+
+            $.ajax({
+                url: "../../OOOnDuty/IsHolyDay/",
+                type: 'GET',
+                cache: false,
+                data: { date: $("#StartDate").val() },
+                success: function (result) {
+                    if (result == "holiday")
+                        toastr.warning("Selected Start Date is a holiday");
+                }
+            });
+
+            $.ajax({
+                url: "../../OOOnDuty/WorkingDaysCount/",
+                type: 'GET',
+                cache: false,
+                data: { startdate: $("#StartDate").val(), enddate: $("#EndDate").val() },
+                success: function (result) {
+                    $("#Workingdays").val(result.dept);
+
+                }
+
+            });
+
+        });
+
+
+        $("#EndDate").datepicker({
+            format: 'dd/mm/yyyy',
+            //startDate: '+1d',
+            daysOfWeekDisabled: [0, 6],
+            autoclose: true
+        }).on('changeDate', function (ev) {
+            var startDate = $("#EndDate").val();
+
+            $.ajax({
+                url: "../../OOOnDuty/IsHolyDay/",
+                type: 'GET',
+                cache: false,
+                data: { date: $("#EndDate").val() },
+                success: function (result) {
+                    if (result == "holiday")
+                        toastr.warning("Selected End Date is a holiday");
+                }
+            });
+
+            $.ajax({
+                url: "../../OOOnDuty/WorkingDaysCount/",
+                type: 'GET',
+                cache: false,
+                data: { startdate: $("#StartDate").val(), enddate: $("#EndDate").val() },
+                success: function (result) {
+                    $("#Workingdays").val(result.dept);
+
+                }
+
+            });
+        });
+
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+
+        $(document).ready(function () {
+
+                    
+
+            $('#Alternateno').keypress(function (e) {
+
+                var regex = new RegExp("^[0-9]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+
+                var st = $('#Alternateno').val().length;
+
+
+                if (regex.test(str)) {
+                    return true;
+                }
+
+
+                else {
+                    $("#alternate").html("Alternate Vaild Contact Number").show();
+                    return false;
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+
+            $('#ProjectName').select2();
+            $('#OutOfOfficeType').select2();
+
+            $('#StartDate').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\-\\/]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#start").html("Enter Valid Start Date").show();
+                return false;
+            });
+        });  $(document).ready(function () {
+            $('#EndDate').keypress(function (e) {
+                var regex = new RegExp("^[0-9\\-\\/]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+
+                    return true;
+                }
+
+                $("#end").html("Enter Valid End Date").show();
+                return false;
+            });
+        });
+
+
+
+
+        function changewrkplace() {
+            var workingplace = $("#ODPlaceID").find("option:selected").val();
+            if (workingplace == 10) {
+                toAppend = "<input type='textbox' id='test' class='form-control'>"; $("#container").html(toAppend); return;
+            }
+            else {
+                toAppend = "<input type='textbox' id='test' class='form-control' style='visibility:hidden;'>"; $("#container").html(toAppend); return;
+
+            }
+
+
+        }
+
+
+
+        function ApplyOnDuty()
+         {
+
+           
+
+            if (document.getElementById('ProjectName').value == '' ||    document.getElementById('StartDate').value == 0 || document.getElementById('EndDate').value == 0  || document.getElementById('OutOfOfficeType').value == '' || document.getElementById('ODComments').value == '') {
+
+
+                if (document.getElementById('ProjectName').value == '') {
+                    document.getElementById("span_ID6").innerHTML = "Select employee Name";
+                }
+                else {
+                    document.getElementById("span_ID6").innerHTML = "";
+                }
+
+                if (document.getElementById('StartDate').value == 0) {
+
+                    document.getElementById("start").innerHTML = "Select Start Date";
+                }
+                else {
+
+                    document.getElementById("start").innerHTML = "";
+                }
+
+
+               
+
+                if (document.getElementById('EndDate').value == 0) {
+
+                    document.getElementById("end").innerHTML = " Select End Date ";
+                }
+                else {
+
+                    document.getElementById("end").innerHTML = "";
+
+                }
+
+                if (document.getElementById('OutOfOfficeType').value == '') {
+                    document.getElementById("span_ID8").innerHTML = "Select out of office Type ";
+                }
+                else {
+
+                    document.getElementById("span_ID8").innerHTML = "";
+                }
+
+
+                if (document.getElementById('ODComments').value == '') {
+                    document.getElementById("comments").innerHTML = "Enter comments";
+                }
+                else {
+
+                    document.getElementById("comments").innerHTML = "";
+                }
+
+
+
+            }
+
+
+
+            else {
+
+                $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                var values =
+
+          {
+              "StartDate": $("#StartDate").val(),
+              "EndDate": $("#EndDate").val(),
+              "EmployeeName": $("#ProjectName").val(),
+              "Type": $("#OutOfOfficeType").val(),
+              "Comments": $("#ODComments").val()
+          };
+
+
+
+
+                $.ajax({
+                    url: "../../OOOnDuty/ApplyEmployeeonDuty/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        if (result == "Already") {
+                            toastr.warning("You have already applied on this date");
+                        }
+                        else if (result == "InLeave") {
+                            toastr.warning("You have applied leave on these date.");
+                        }
+
+                        else if (result == "success") {
+                            $("#portlet-config").modal('hide');
+                            toastr.success("Your out of office request has been submitted successfully.", toastrOptions);
+                            setTimeout(function () { location.reload(); }, 1000);
+                            //                            setTimeout(function () { // wait 2 seconds and reload
+                            //                                window.location.reload(true);
+                            //                            }, 1000);
+
+
+                        }
+                    }
+                });
+
+            }
+
+            var toastrOptions = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+        }
+    </script>
+</body>
+</html>

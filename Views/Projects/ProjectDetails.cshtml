@@ -1,0 +1,312 @@
+﻿@model DSRCManagementSystem.Models.Projects
+@{
+    //ViewBag.Title = "EditProject";
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddUser</title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        } 
+            .dropdown-menu {
+    background-color: white;
+}    
+    </style>
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+        <li><a>Projects</a></li>
+        <li class="active"><strong> Details</strong></li>
+    </ol>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <h4 class="modal-title">
+                Details</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12" style="text-align: right">
+                    @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectName, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.ProjectName, new { @id = "ProjectName", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectCode, new { @class = "control-label" })
+                        @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.ProjectCode, new { @id = "Projectcode", @class = "form-control", @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.ProjectCode)
+                        @Html.ValidationMessageFor(X => X.ProjectCode, null, new { @style = "color:red" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectType, new { @class = "control-label" })
+                         @Html.Label("  *", new { @style = "color:red;font-weight:;" })
+                        @Html.TextBoxFor(x => x.ProjectType, new { @id = "ProjectName", @class = "form-control", @disabled = "disabled" })
+                        @*@Html.DisplayFor(x => x.ProjectType, new { @id = "EmployeeId", @autocomplete = "off", @disabled = "disabled" })*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.DateCreated, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.DateCreated, new { @id = "projDateCreated", @class = "form-control", @disabled = "disabled" })
+                        @*@Html.DisplayFor(x => x.ProjectType, new { @id = "EmployeeId", @autocomplete = "off", @disabled = "disabled" })*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SvnRepositoryUrl, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.SvnRepositoryUrl, new { @id = "svnurl", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.StartDateTime, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.StartDateTime, "{0:MM/dd/yyyy}", new { @id = "projStartDateTime", @class = "form-control datetimepicker", @disabled = "disabled" })
+                        @*@Html.DisplayFor(x => x.ProjectType, new { @id = "EmployeeId", @autocomplete = "off", @disabled = "disabled" })*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.EndDateTime, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.EndDateTime, "{0:MM/dd/yyyy}", new { @id = "projEndDateTime", @class = "form-control datetimepicker", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectDescription, new { @class = "control-label" })
+                        @Html.TextAreaFor(x => x.ProjectDescription, new { @id = "describtion", @class = "form-control", @disabled = "disabled", @style = "height:200px" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Project Plan", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var ProjectPlanLastIndex = Model.ProjectPlan.Count - 1;}
+                    @if (ProjectPlanLastIndex != -1)
+                    {
+                        foreach (var item in Model.ProjectPlan)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.ProjectPlan[ProjectPlanLastIndex])
+                            {
+                            @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { 
+                        @Html.Raw("-");
+                    }
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Members", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @for (int n = 1; n < 8; n++)
+                    {
+                        var members = Model.Members.Where(x => x.MemberTypeID == n);
+                        int MemberLastIndex = members.Count()-1;
+                        @Html.Label(Model.MemberType[n - 1], new { @class = "control-label" });
+                        @Html.Raw("&nbsp;&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp");                                                                                                                             
+                        if (MemberLastIndex != -1)
+                        {
+                            int m = 0;
+                            foreach (var item in members)
+                            {
+                                @Html.Label("", String.Format("{0} {1}", item.FirstName, item.LastName), new { @class = "control-label" })                                
+                                if (m++ < MemberLastIndex)
+                                {
+                                    @Html.Raw(",  ");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @Html.Label("  -  ", new { @class = "control-label" });
+                        }
+                        @Html.Raw("</br>");
+                    }
+                    @*@{var MemberLastIndex = Model.Members.Count - 1;}
+                    @foreach (var item in Model.Members)
+                    {
+                        @Html.Label(item, new { @class = "control-label" })
+                        
+                        if (item != Model.Members[MemberLastIndex])
+                        {
+                        @Html.Raw(", ");
+                        }
+
+                    }*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Technologies Used", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var TechLastIndex = Model.TechList.Count - 1;}
+                    @if (TechLastIndex != -1)
+                    {
+                        foreach (var item in Model.TechList)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.TechList[TechLastIndex])
+                            {
+                            @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { 
+                        @Html.Raw("-");
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Third Party Tools Used", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var ThirdPartyLastIndex = Model.ThirdPartyList.Count - 1;}
+                    @if (ThirdPartyLastIndex != -1)
+                    {
+                        foreach (var item in Model.ThirdPartyList)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.ThirdPartyList[ThirdPartyLastIndex])
+                            {
+                            @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { @Html.Raw("-");
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Source Controls Used", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var SourceControlLastIndex = Model.SourceControlList.Count - 1;}
+                    @if (SourceControlLastIndex != -1)
+                    {
+                        foreach (var item in Model.SourceControlList)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.SourceControlList[SourceControlLastIndex])
+                            {
+                                @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { @Html.Raw("-");
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Object Relation Mapping Used", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var ORMLastIndex = Model.ORMList.Count - 1;}
+                    @if (ORMLastIndex != -1)
+                    {
+                        foreach (var item in Model.ORMList)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.ORMList[ORMLastIndex])
+                            {
+                                @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { @Html.Raw("-");
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.Label("Database Used", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    @{var DBLastIndex = Model.DBList.Count - 1;}
+                    @if (DBLastIndex != -1)
+                    {
+                        foreach (var item in Model.DBList)
+                        {
+                            @Html.Label(item, new { @class = "control-label" })
+                            if (item != Model.DBList[DBLastIndex])
+                            {
+                                @Html.Raw(", ");
+                            }
+                        }
+                    }
+                    else
+                    { @Html.Raw("-");
+                    }
+                </div>
+            </div>
+
+            @*<div class="row">
+            </div>*@
+        </div>
+        <div class="modal-footer">
+            @if (ViewBag.v1 == "true")
+            {
+             <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "?ID="+@ViewBag.v1+"'");") >
+                Back
+            </button>
+            }
+            else{
+            <button type="button" class="btn btn-default"  onclick="@("window.location.href='" + @Url.Action("ViewProjects", "Projects") + "'");" ) >
+                Back
+            </button>
+            }
+        </div>
+    </div>
+</body>
+</html>

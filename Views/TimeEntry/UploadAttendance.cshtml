@@ -1,0 +1,166 @@
+﻿@model DSRCManagementSystem.Models.TimeEntry
+@{
+    ViewBag.Title = "Upload Attendance";
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
+}
+
+<script src="../../Content/Template/js/fileinput.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function WarningPopUp(message) {
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr.warning(message, null, opts);
+    }
+</script>
+<style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+
+<ol class="breadcrumb bc-3">
+    @*<li><a><i class="entypo-home"></i>Home</a> </li>*@
+    <li>Attendance</li>
+    <li class="active"><strong>Attendance Upload</strong> </li>
+</ol>
+
+
+<div>
+    @using (Html.BeginForm("Attendance", "TimeEntry", FormMethod.Post, new { @id="TimeEntry", @class = "form-horizontal form-groups-bordered", @enctype = "multipart/form-data" }))
+    {    
+        <div class="row">
+            <div class="col-md-12" style="text-align: right">
+                @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+            </div>
+     
+         <div class="row">
+
+         <div class="col-sm-2">
+                @Html.Label("Branch",(string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+         </div>
+            <div class="col-sm-4">         
+                @Html.DropDownListFor(x => x.BranchID, Model.BranchList, new { @class = "form-control", @id = "BranchID" })     
+                <span id="Branch_ER" style="color:red"></span>
+            </div>
+          </div>
+          <br />
+          <div class="col-sm-2">
+            </div>
+        <div class="row">
+            <div class="col-sm-2">
+                @Html.Label("Excel File", new { @class = "control-label" })                    
+                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+            </div>
+            <div class="col-sm-4">
+                <input type="file" name="excelFile" id="file" accept=".xls,.xlsx" style="width: 100%;" />
+                <br />
+                @*<input type="submit" value="Upload" class="submit" onclick="doValidation()" />  *@   
+                <input type="submit" value="Upload" class="submit" />         
+            </div>
+          </div>
+        </div>
+    }
+    <br />
+    <hr />
+    @using (Html.BeginForm("Attendance", "TimeEntry", FormMethod.Post, new { @class = "form-horizontal form-groups-bordered" }))
+    {
+        <div class="form-group">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <label class="control-label">
+                    Sample File</label>
+            </div>
+            <div class="col-sm-4">
+                <a>
+                    <input type="submit" value="Sample File Format"/></a>
+                @*<div class="forget-password">
+                    <p>
+                        Clik <a href="@Url.Action("SampleAttendanceFile", "TimeEntry")">here</a> to download
+                        sample file format</p>
+                </div>*@
+            </div>
+        </div>
+    }
+   @if (ViewBag.EmployeeId == null)
+   {
+    if (Model.ErrorSuccessMessage != null)
+    {
+        if (Model.ErrorSuccessMessage.Contains("Please select branch"))
+        { 
+        <script type="text/javascript">
+            WarningPopUp("Select branch.");
+        </script>
+        }
+         else if (Model.ErrorSuccessMessage.Contains("Please upload the excel file"))
+         { 
+        <script type="text/javascript">
+            WarningPopUp("Select the excel file.");
+        </script>
+        }
+         else if (Model.ErrorSuccessMessage.Contains("Please upload excel files only"))
+         {
+        <script type="text/javascript">
+            WarningPopUp("Must upload valid excel file only");
+        </script>
+         }
+        else if (Model.ErrorSuccessMessage.Contains("Error"))
+        {
+        <script type="text/javascript">
+            WarningPopUp("Error: The uploaded document does not contain the valid data");
+        </script>
+        }
+        else
+        {
+        <script type="text/javascript">
+            toastr.success("Excel file uploaded successfully");
+            $("#BranchID").prop('selectedIndex', 0);           
+        </script>
+        
+        }
+@*string className = Model.ErrorSuccessMessage.Contains("Error in excel upload ") ? "alert alert-error" : "alert alert-success";
+            
+        <div class="@className">
+            <a href="#" class="close" data-dismiss="alert">&times;</a> 
+            <strong>
+            @Model.ErrorSuccessMessage
+            </strong>
+        </div>*@
+   }
+    }
+</div>
+
+@*<script type="text/javascript">
+
+    function doValidation() {
+
+        var branch = $("#BranchID").find("option:selected").prop("value");
+
+        if (branch == 0 || branch == "undefined") {
+            $("#Branch_ER").html("Select Branch");           
+            $("#TimeEntry").submit(false);            
+        }
+        else {
+            $("#Branch_ER").html("");
+            $("#upload_btn").submit();            
+        }
+    }
+</script>*@

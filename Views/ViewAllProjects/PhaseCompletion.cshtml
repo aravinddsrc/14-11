@@ -1,0 +1,258 @@
+﻿@model DSRCManagementSystem.Models.Projects
+@{
+
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Phase Completion </title>
+    <style type="text/css">
+        textarea
+        {
+            resize: none;
+        }
+        .modal-dialog
+        {
+            width: 600px;
+        }
+     
+
+    .dropdown-menu {
+    background-color: white;
+          }  
+    
+    </style>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/JS/date.js" type="text/javascript"></script>
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/Template/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".datetimepicker").datepicker({
+                format: 'dd-mm-yyyy',
+                todayHighlight: true,
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true,
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h4 class="modal-title">
+                Phase Completion
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectName, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.ProjectName, new { @id = "ProjectName", @class = "form-control", @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.ProjectID, new { @id = "ProjectId" })
+                        @Html.HiddenFor(x => x.ProjectName)
+                        <span id="spnProjectName_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Managed Resources", new { @class = "control-label" })
+                        @Html.DropDownList("ResourcesList", ViewData["Resources"] as MultiSelectList, "Selet", new { @id = "Resources", @class = "select2-container select2 visible", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectCode, new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.ProjectCode, new { @id = "Projectcode", @class = "form-control", @maxlength = 50, @disabled = "disabled" })
+                        @Html.HiddenFor(x => x.ProjectCode)
+                        <span id="spnProjectCode_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ProjectType, new { @class = "control-label" })
+                        @Html.DropDownList("ProjectType", new SelectList(Model.ProjectTypeLIst), new { @id = "selectprojecttype", @name = "ProjectType", @class = "form-control", @disabled = "disabled" })
+                        <span id="spnProjectType_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Project Start Date", new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.StartDateTime, "{0:dd-MM-yyyy}", new { @id = "StartDateTime", @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @disabled = "disabled" })
+                        <span class="add-on"><i class="icon-remove"></i></span><span class="add-on"><i class="icon-th">
+                        </i></span><span id="spnStartDateTime_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.Label("Project End Date", new { @class = "control-label" })
+                        @Html.TextBoxFor(x => x.EndDateTime, "{0:dd-MM-yyyy}", new { @id = "EndDateTime", @class = "form-control datetimepicker", @data_start_date = "d", @autocomplete = "off", @disabled = "disabled" })
+                        <span class="add-on"><i class="icon-remove"></i></span><span class="add-on"><i class="icon-th">
+                        </i></span><span id="spnEndDateTime_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+                <label id="lblProjectinfo" style="color: red; margin-left: 20px;">
+                </label>
+            </div>
+            <div class="row ProjectPlanDiv">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.Label("Phase Name", new { @class = "control-label" })
+                        @Html.DropDownList("PhaseName", ViewBag.ProjectPlan as SelectList, "select", new { @class = "select2-container  select2 visible", @id = "PhaseName", @Onchange = "changeProject()" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.Label("Start Date", new { @class = "control-label" })
+                        @Html.TextBox("StartDate", null, new { @class = "form-control datetimepicker", @id = "StartDate", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.Label("End Date", new { @class = "control-label" })
+                        @Html.TextBox("EndDate", null, new { @class = "form-control datetimepicker", @id = "EndDate", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.Label("Completed Date", new { @class = "control-label" })
+                        @Html.TextBox("CompletedDate", string.Empty, new { @class = "form-control datetimepicker", @id = "CompletedDate", @autocomplete = "off" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnUpdate" class="btn btn-info" onclick="UpdateUser()">
+                Save
+            </button>
+        </div>
+    </div>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".modal-body select").select2({
+                minimumResultsForSearch: -1
+            });
+        });
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        $("#describtion").on('paste keypress', (function (e) {
+            var key;
+            if (e.which && e.which != 1) {
+                key = String.fromCharCode(e.which);
+            } else {
+                if (window.clipboardData && window.clipboardData.getData) { // IE
+                    key = window.clipboardData.getData('Text');
+                }
+                else if (e.originalEvent.clipboardData && e.originalEvent.clipboardData.getData) { // other browsers
+                    key = e.originalEvent.clipboardData.getData('text/plain');
+                }
+                //key = e.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^(\w|\s|\d|\.|\,|")*?$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        function changeProject() {
+            $("#StartDate").val("");
+            $("#EndDate").val("");
+            var value =
+                {
+                    "PhaseName": $("#PhaseName").val(),
+                    "ProjectID": $("#ProjectId").val()
+                }
+
+            if (value != 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "../../ViewAllProjects/PhaseDates/",
+                    data: value,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.StartDate == "failed") {
+                            alert("No Such Phase for this project");
+                        }
+                        else {
+                            $("#StartDate").val(result.StartDate);
+                            $("#EndDate").val(result.EndDate);
+                        }
+                    }
+                });
+            }
+        }
+
+        function UpdateUser(event) {
+            var values = {
+                "ProjectID": $("#ProjectId").val(),
+                "PhaseName": $("#PhaseName").val(),
+                "CompletedDates": $("#CompletedDate").val()
+            };
+
+            $.ajax({
+                url: "../../ViewAllProjects/PhaseCompletion/",
+                type: 'POST', cache: false,
+                traditional: true,
+                data: values,
+                success: function (result) {
+                    if (result == true) {
+
+                        $("#portlet-config").modal("hide");
+
+                        toastr.success("Actual date has been updated sucessfully.", opts);
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else {
+                        $('#PartialSection').html(result);
+                        $('#portlet-config').appendTo("body").modal('show');
+                    }
+                }
+            });
+
+        }
+
+    </script>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 50%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿@using Microsoft.SqlServer.Server
+@model IEnumerable<DSRCManagementSystem.LeaveRequest>
+@{          
+     
+    var grid = new WebGrid(source: Model, canPage: false, canSort: false);
+}
+
+@{
+    Func<DateTime, string> dateTimeFunc = delegate(DateTime dateTime)
+    {
+        return String.Format("{0:ddd, MMM d, yyyy}", dateTime);
+    };
+}
+
+@grid.GetHtml(tableStyle: "table table-bordered datatable", headerStyle: "head",
+                columns: grid.Columns(
+                grid.Column("S.No", format: item => item.WebGrid.Rows.IndexOf(item) + 1),
+                grid.Column("User", header: "Employee", format: @<text>@item.User1.FirstName</text>),
+                grid.Column("LeaveType", header: "Leave Type", format: @<text>@item.LeaveType.Name</text>),
+                grid.Column("LeaveStatus", header: "Leave Status", format: @<text>@item.Master_LeaveStatu.Status</text>),
+                grid.Column("StartDateTime", header: "Start Date", format: item => Html.Raw(dateTimeFunc(item.StartDateTime))),
+                grid.Column("EndDateTime", header: "End Date", format: item => Html.Raw(dateTimeFunc(item.EndDateTime))),
+                grid.Column("Details", header: "Details"),
+                grid.Column("LeaveDays", header: "Leave Days"),
+                grid.Column("", format: @<text><button type="button" class="btn btn-info btn-icon icon-left" onclick="EditLeaveRequestStatus('@item.LeaveRequestId')"><i class="entypo-info"></i>Details</button></text>)
+                ),
+                htmlAttributes: new { @id = "tblSubmittedLeaveRequest" })

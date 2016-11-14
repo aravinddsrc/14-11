@@ -1,0 +1,179 @@
+﻿@model DSRCManagementSystem.Holiday
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Update Holiday</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+      <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+</head>
+<body>
+<div class="modal-content">
+    <div class="modal-header"  style="background-color:#f0f0f1;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×</button>
+        <h4 class="modal-title">
+            Edit Holiday</h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("EditHoliday", "Leave", FormMethod.Post))
+        {
+            <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Date, new { @class = "control-label" })
+                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                        @Html.TextBoxFor(x => x.Date, "{0:dd/MM/yyyy}", new {@id = "Date", @name = "Date", @class = "form-control datetimepicker", @placeholder = Resources.Resource.DN_Holiday_Date, @autocomplete = "off" })
+                        @Html.HiddenFor(x => x.HolidayId)
+                        <span id="Date_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Detail, new { @class = "control-label" })
+                        <b>@Html.Label("*", new { @style = "color:#FF0000" })</b>
+                        @Html.TextBoxFor(x => x.Detail, new { @id = "Detail", @name = "Detail", @class = "form-control", @placeholder = Resources.Resource.DN_Holiday_Detail, @autocomplete = "off", @maxlength = 250 })
+                        <span id="Detail_ID" style="color: Red;"></span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel </button>
+        <button type="button" id="btnAdd" class="btn btn-info" onclick=" UpdateHoliday() ">
+            Save </button>
+    </div>
+</div>
+<script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var submitForm = true;
+
+        jQuery(document).ready(function ($) {
+            $('input#Detail').on('change', function () {
+                $.ajax({
+                    url: "../../Leave/IsHolidayExists",
+                    type: 'POST',
+                    cache: false,
+                    data: { 'holiday': $('input#Detail').val() },
+                    success: function (result) {
+                       
+                        if (result.Result === false) {
+                            document.getElementById("Detail_ID").innerHTML = "";
+                            submitForm = true;
+                        }
+                    }
+                });
+
+            });
+        });
+
+        function UpdateHoliday() {
+          
+            var flag = true;
+            if (document.getElementById('Date').value == '') {
+                document.getElementById("Date_ID").innerHTML = "Select Date";
+                flag = false;
+                submitForm = false;
+            } else {
+                if (submitForm) {
+                    document.getElementById("Date_ID").innerHTML = "";
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+            }
+            if (document.getElementById('Detail').value == '') {
+                document.getElementById("Detail_ID").innerHTML = "Enter Detail";
+                flag = false;
+                submitForm = false;
+            } else {
+                if (submitForm) {
+                    document.getElementById("Detail_ID").innerHTML = "";
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+                flag = true;
+            }
+
+            if (flag == true && submitForm === true) {
+                var values =
+                {
+                    "HolidayId": $("#HolidayId").val(),
+                    "Date": $("#Date").val(),
+                    "Detail": $("#Detail").val()
+                };
+                var toastrOptions = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "toastClass": "White",
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                $.ajax({
+                    url: "../../Leave/EditHoliday/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    success: function (result) {
+                        if (result.Result === "Fail") {
+                            document.getElementById("Detail_ID").innerHTML = "Detail already exists";
+                        }
+                       else if (result.Result === "Success") {
+                             $("#portlet-config").modal('hide');
+                           toastr.success("Holiday details has been updated successfully", toastrOptions);
+                            ReloadGrid();
+                        }
+                        else {
+                            $('#PartialSection').html(result);
+                            $("#portlet-config").modal({ backdrop: 'static', keyboard: false });
+                        }
+                    }
+                });
+            }
+        }
+        $("#Detail").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^([A-Za-z0-9]|\s|\_|\-){1,50}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+    </script>
+</body>
+</html>

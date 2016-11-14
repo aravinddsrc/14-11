@@ -1,0 +1,531 @@
+﻿@model DSRCManagementSystem.Models.EditTimeEntry
+@{
+    ViewBag.Title = "Attendance";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+    {
+
+
+    <style>
+        #Date {
+            height: 41px;
+        }
+
+        th {
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+     
+
+    </style>
+
+
+    <script type="text/javascript">
+        function WarningPopUp(message) {
+
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.warning(message, null, opts);
+        }
+
+    </script>
+}
+@{
+    int SNO = 1;
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+}
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("Attendance", "TimeEntry")">
+            <i class="fa-home"></i>Attendance Management
+        </a>
+    </li>
+    <li class="active">
+        <strong>Biomatrix Attendence</strong> </li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Attendance","TimeEntry")"style="color:black ">
+            Attendance Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Biometric Attendence</b>
+    </p>
+<div class="row">
+
+
+    @{        
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li class="active"><a href="#UploadAttendance" data-toggle="tab" role="tab">Attendance Biometric Upload</a></li>
+            <li><a href="#EnterAttendance" data-toggle="tab" role="tab">Attendance Biometric Entry Edit</a></li>
+        </ul>
+        
+    }
+    <br />
+
+    <div class="panel-body">
+
+        <div class="clear">
+        </div>
+
+        <br />
+
+        <div class="tab-content">
+
+            <div class="tab-pane " id="EnterAttendance">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-heading">
+                        </div>
+                        <div class="panel-body">
+
+                            @using (Html.BeginForm("Attendance", "TimeEntry", FormMethod.Post))
+                            {
+                    
+                    
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            @if (branchcnt == 1)
+                                            {
+                                                <div class="visible-md">
+                                                    @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(x => x.BranchID, Model.BranchList, new { @class = "select2", @id = "BranchID", @onchange = "fnBranchchange()" })
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-md-3">
+                                                    @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(x => x.BranchID, Model.BranchList, new { @class = "select2", @id = "BranchID", @onchange = "fnBranchchange()" })
+                                                </div>
+                                            }
+                                            <div class="col-md-3">
+                                                @Html.Label("All Members", new { @class = "control-label" })
+                                                @Html.DropDownListFor(x => x.EmployeeId, Model.EmployeeList, new { @class = "select2", @id = "EmployeeId", @onchange = "fnUserchange()" })
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                @Html.Label("Date", new { @class = "control-label" })
+                                                @Html.TextBoxFor(x => x.Date, new { @id = "Date", @class = "form-control datetimepicker", @placeholder = "Date", @autocomplete = "off", @onchange = "fnUserchange()" })
+                                            </div>
+
+                                            <div class="col-md-3" style="padding-top: 28px;">
+                                                <button type="submit" name="btn_Submit" class="btn btn-info btn-icon" id="search">
+                                                    Search<i class="entypo-search"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                            if (Model.IsSubmit)
+                                            {
+                                                Model.IsSubmit = false;
+                   
+                                <div class="modal-body">
+                                    @*@if (Model.EmployeeId != null)*@
+                                    @if (Model.IsRecordAvail)
+                                    {
+                                        <table id="tblEmployeeLeaveBalanceDetails" class="table table-bordered datatable">
+
+                                            <tr>
+                                                <th style="font-weight: bold;">Employee ID
+                                                </th>
+                                                <th style="font-weight: bold;">Employee Name
+                                                </th>
+                                                <th style="font-weight: bold;">Date
+                                                </th>
+                                                <th style="font-weight: bold;">In Time
+                                                </th>
+                                                <th style="font-weight: bold;">Out Time
+                                                </th>
+                                                <th></th>
+                                            </tr>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @Model.EmployeeId
+                                                        @Html.HiddenFor(modelItem => Model.UserID)
+                                                    </td>
+                                                    <td>
+                                                        @Model.EmployeeName
+                                                    </td>
+                                                    <td align="center">
+                                                        @Model.Date.Value.ToString("dd/MM/yyyy")
+                                                    </td>
+                                                    <td align="center">
+                                                        @Model.InTime
+                                                    </td>
+                                                    <td align="center">
+                                                        @Model.OutTime
+                                                    </td>
+                                                    <td>
+                                                        <a>
+                                                            <button type="button" class="btn btn-info btn-icon icon-left" onclick='EditTime("@Model.EmployeeId","@Model.Date.Value.ToString("dd/MM/yyyy")")' >
+                                                                <i class="entypo-info"></i>Edit
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div style="text-align: center;">
+                                            <h4>No Record Found</h4>
+                                        </div>
+                                    }
+                                </div>
+                            
+                                            }
+
+                            }
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane active" id="UploadAttendance">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-heading">
+                        </div>
+
+
+
+                        @*                            @{
+                                Html.RenderAction("UploadAttendance", "TimeEntry");
+                            }
+                        *@
+
+
+                        <div>
+                            @using (Html.BeginForm("Attendance", "TimeEntry", FormMethod.Post, new { @id = "TimeEntry", @class = "form-horizontal form-groups-bordered", @enctype = "multipart/form-data" }))
+                            {    
+                                <div class="row">
+                                    @*<div class="col-md-3">
+            </div>*@
+                                    <div class="col-md-12" style="text-align: right">
+                                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                    </div>
+
+                                    <div class="row">
+                                        @if (branchcnt == 1)
+                                        {
+                                            <div class="visible-md">
+                                                @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                            </div>
+              
+                
+                                            <div class="visible-md">
+                                                @Html.DropDownListFor(x => x.BranchID, Model.BranchList, new { @class = "form-control", @id = "BranchID" })
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-2">
+                                                @Html.Label("Branch", (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                                                @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                            </div>
+              
+                                            <div class="col-sm-4">
+                                                @Html.DropDownListFor(x => x.BranchID, Model.BranchList, new { @class = "form-control", @id = "BranchID" })
+                                                <span id="Branch_ER" style="color: red"></span>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <br />
+
+                                    <div class="col-sm-2">
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-2">
+                                            @Html.Label("Excel File", new { @class = "control-label" })
+                                            @Html.Label("  *", new { @style = "color:red;font-weight:bold;" })
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <input type="file" name="excelFile" id="file" accept=".xls,.xlsx" style="width: 100%;" />
+                                            <br />
+                                            @*<input type="submit" value="Upload" class="submit" onclick="doValidation()" />  *@
+                                            <input type="submit" value="Upload" class="submit" />
+                                        </div>
+
+                                    </div>
+                                </div>
+   
+                                <br />
+                                
+   
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="control-label">
+                                            Sample File</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <a href="~/SampleAttendanceFile/Access 1st Mar to 31st Mar 2015.xls">
+                                            <input type="button" value="Sample File Format" /></a>
+                                        @*<div class="forget-password">
+                    <p>
+                        Clik <a href="@Url.Action("SampleAttendanceFile", "TimeEntry")">here</a> to download
+                        sample file format</p>
+                </div>*@
+                                    </div>
+                                </div>
+                            }
+
+                            @if (Model.ErrorSuccessMessage != null)
+                            {
+                                if (Model.ErrorSuccessMessage.Contains("Please select branch"))
+                                { 
+                                <script type="text/javascript">
+                                    WarningPopUp("Select branch.");
+                                </script>
+                                }
+                                else if (Model.ErrorSuccessMessage.Contains("Please upload the excel file"))
+                                { 
+                                <script type="text/javascript">
+                                    WarningPopUp("Select the excel file.");
+                                </script>
+                                }
+                                else if (Model.ErrorSuccessMessage.Contains("Please upload excel files only"))
+                                {
+                                <script type="text/javascript">
+                                    WarningPopUp("Must upload valid excel file only");
+                                </script>
+                                }
+                                else if (Model.ErrorSuccessMessage.Contains("Error"))
+                                {
+                                <script type="text/javascript">
+                                    WarningPopUp("Error: The uploaded document does not contain the valid data");
+                                </script>
+                                }
+                                else
+                                {
+                                <script type="text/javascript">
+                                    toastr.success("Excel file uploaded successfully");
+                                    $("#BranchID").prop('selectedIndex', 0);
+                                </script>
+        
+                                }
+        
+@*string className = Model.ErrorSuccessMessage.Contains("Error in excel upload ") ? "alert alert-error" : "alert alert-success";
+            
+        <div class="@className">
+            <a href="#" class="close" data-dismiss="alert">&times;</a> 
+            <strong>
+            @Model.ErrorSuccessMessage
+            </strong>
+        </div>*@
+   
+                            }
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    function fnUserchange() {
+
+        var selectedId = $('#EmployeeId').val();
+        var date = $('#Date').val();
+        if (selectedId == 0 || date == "") {
+
+            $('#search').hide();
+        }
+        else {
+            $('#search').show();
+        }
+    }
+
+    function fnBranchchange() {
+
+
+        $('#search').hide();
+
+        var BranchId = $('#BranchID').find("option:selected").prop("value");
+
+        var url2 = '@Url.Action("GetAvailEmployees")';
+
+        $.get(url2, { BranchID: BranchId }, function (data) {
+
+            var items = [];
+            items.push("");
+            items.push("<option value=0>--Select--</option>");
+
+            $.each(data, function () {
+                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+
+            });
+            $("#EmployeeId").width(203);
+            $("#EmployeeId").html(items.join(' '));
+            $("#EmployeeId").select2();
+        });
+    }
+
+    $(document).ready(function () {
+        fnUserchange();
+        $("#Date", "#EmployeeId").change(function () { fnUserchange() });
+    });
+</script>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+                localStorage.setItem('lastTab', $(this).attr('href'));
+            });
+            var lastTab = localStorage.getItem('lastTab');
+            if (lastTab) {
+                $('[href="' + lastTab + '"]').tab('show');
+            }
+            if (window.onunload) {
+                window.onunload = function () {
+                    localStorage.clear();
+                }
+            }
+        });
+
+
+        $(document).ready(function () {
+            $(".datetimepicker").datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                daysOfWeekDisabled: [0, 6],
+                autoclose: true,
+
+            })
+
+
+
+
+            $(".date-picker").datepicker("setDate", "");
+
+
+            var table = $("#tblEmployeeLeaveBalanceDetails").dataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "sPaginationType": "bootstrap",
+                stateSave: true,
+                stateSaveCallback: function (settings, data) {
+                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+            }
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+
+        });
+
+
+
+
+    </script>
+    <script type="text/javascript">
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "toastClass": "White",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "1000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        function EditTime(employeeId, date) {
+
+            var BranchId = $("#BranchID").find("option:selected").prop("value");
+
+            $.ajax({
+                url: "../../TimeEntry/EditTime/",
+                type: 'GET', cache: false,
+                data: { EmployeeId: employeeId, Date: date, BranchId: BranchId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal('show');
+                }
+            });
+        }
+
+
+        
+
+    </script>
+}
+
+

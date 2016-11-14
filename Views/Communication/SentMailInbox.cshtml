@@ -1,0 +1,443 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Inbox>
+@{
+    ViewBag.Title = "Sent Mail Item";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <style type="text/css">
+        textarea {
+            resize: none;
+        }
+
+        thead {
+            visibility: visible;
+            position: relative;
+            text-align: left;
+        }
+        /*.dataTables_wrapper .col-left
+    {
+    height: 60px;
+    background-color:#f9f9f9;
+    }
+    .dataTables_wrapper .dataTables_filter
+    {
+    background-color:#f9f9f9;
+    height: 60px;
+    }*/
+        .mail-env .mail-body .mail-table > thead > tr > td:first-child, .mail-env .mail-body .mail-table > tbody > tr > td:first-child, .mail-env .mail-body .mail-table > tfoot > tr > td:first-child, .mail-env .mail-body .mail-table > thead > tr > th:first-child, .mail-env .mail-body .mail-table > tbody > tr > th:first-child, .mail-env .mail-body .mail-table > tfoot > tr > th:first-child {
+            width: 200px;
+        }
+
+        table td:nth-child(2) {
+            word-wrap: break-word;
+            word-break: keep-all;
+        }
+
+        table td:nth-child(3) {
+            word-wrap: normal;
+        }
+
+        table td:nth-child(4) {
+            word-wrap: break-word;
+            word-break: keep-all;
+        }
+    </style>
+
+}
+@{
+    int SNO = 1;
+   
+}
+
+
+@*     <ol class="breadcrumb bc-3">
+    <li>Communication</li>
+        <li class="active"><strong>Sent Mail Item</strong></li> *@
+@*         <li> <span> <button style="float:right;margin-top:-5px;" type="button" id="btnAdd1" class="btn btn-default" onclick="Back()">Back</button> </span>  </li>*@
+@*
+    </ol>
+    *@
+
+<p>
+    Communication
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Sent Mail Item</b>
+</p>
+<br />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ('@TempData["Compose"]' == "Sent") {
+
+                toastr.success('Mail sent successfully');
+            }
+
+        });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-default panel-shadow" data-collapsed="0">
+            <!-- panel head -->
+            <div class="mail-sidebar-row hidden-xs" style="float: right; width: 127px; margin-top: -45px;">
+                <a href="/Communication/mailInvites" class="btn btn-default btn-icon btn-block">Back
+                    <i class="entypo-left"></i></a>
+            </div>
+            <div class="panel-heading" style="margin-top: -10px;">
+
+                <div class="panel-title" color="White">
+                    Sent Mail Item
+                </div>
+            </div>
+
+            <div class="panel-body" style="overflow: auto">
+                @using (Html.BeginForm("Communication", "SentMailInbox", FormMethod.Post))
+                {
+                   
+                        
+                    <div class="mail-env">
+                        <!-- Mail Body -->
+
+                        <div class="mail-body" style="width: 100%;">
+                            <!-- mail table -->
+
+
+
+                            <table class="table table-bordered datatable" id="tblMeeting"  >
+                                <thead>
+                                    <tr style="background-color: black;">
+
+                                        @*<th style="text-align: left;font-weight: bolder;color: aliceblue;width: 200px;    background-color: black;">From
+                                </th>*@
+                                        <th style="text-align: left; font-weight: bolder;">To
+                                        </th>
+                                        <th style="text-align: left; font-weight: bolder;">Subject
+                                        </th>
+                                        @*<th style="text-align: left; font-weight: bolder; width: 200px;">Message
+                                        </th>*@
+                                        @*<th style="text-align: center;font-weight: bolder;color: aliceblue;width: 200px;    background-color: black;">
+                                </th>  
+                                  *@
+                                        <th style="text-align: -webkit-right; font-weight: bolder;width:40%;">Sent On 
+                                        </th>
+                                        <th style="text-align: -webkit-right; font-weight: bolder;width:20%;">Delete
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <!-- mail table header -->
+                                <!-- email list -->
+
+
+
+
+                                @foreach (var item in Model)
+                                {
+     
+                                    @Html.HiddenFor(x => item.id);   
+                               
+                                    <tr>
+                                        <!-- new email class: unread -->
+
+                                        @* <td class="col-name" style="background: lemonchiffon;"> 
+ 
+    <a href="/Communication/ViewSentBox?myParams=@item.id" class="col-name">@item.From</a> </td> *@
+
+
+
+                                        <td class="col-name" style="width: 2100px; word-wrap: break-word; word-break: break-all;">
+
+                                            <a href="/Communication/ViewSentBox?myParams=@item.id" class="col-name">@item.to</a> </td>
+
+                                        <td class="col-name" style="width: 2100px; word-wrap: break-word; word-break: break-all;">
+
+                                            <a href="#" class="star stared"><i class="entypo-star"></i>
+                                            </a><a href="/Communication/ViewSentBox?myParams=@item.id" class="col-name">@item.header</a> </td>
+                                        @*<td class="col-subject" style="background: lemonchiffon;width:2100px;word-wrap:break-word;word-break:break-all;"> <a href="/Communication/ViewSentBox?myParams=@item.id">
+                        @item.message
+                        </a> </td>*@
+                                       @* <td style="background: lemonchiffon; width: 2100px; word-wrap: break-word; word-break: break-all;" class="col-options">
+                                            <a href="/Communication/ViewSentBox?myParams=@item.id">@item.message
+                                            </a></td>*@
+                                        <td style="word-wrap: break-word; word-break: break-all;" class="col-time" >@item.senton</td>
+                                        <td style="text-align: center; ">
+
+                                            <a href="#" data-toggle="tooltip" title="Delete">
+                                                <button type="button" class="btn btn-red"  onclick='Delete(@item.id)' >
+                                                    <i class="entypo-cancel"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr> 
+                                 
+                                }
+                            </table>
+                        </div>
+
+
+                    </div>                                                            
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+<script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+<script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        localStorage.clear();
+        var table = $("#tblMeeting").dataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "sPaginationType": "bootstrap",
+            "aaSorting": [],
+            "columnDefs": [{ bSortable: false, 'aTargets': [3] }],
+            stateSave: true,
+            stateSaveCallback: function (settings, data) {
+                localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+            }
+        });
+
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('thead>tr>th').css('text-align', 'center');
+    });
+
+
+    function Back() {
+
+        var url = '@Url.Action("Inbox", "Communication")';
+                window.location.href = url;
+            }
+            function Back1() {
+
+                var url = '@Url.Action("mailInvites", "Communication")';
+                window.location.href = url;
+            }
+
+
+
+
+
+            function Delete(id) {
+                alert("++++");
+
+                bootbox.confirm("Are you sure want to delete ?", function (conform) {
+                    if (conform) {
+                        $.ajax({
+                            url: "../../Communication/Delete/",
+                            type: 'POST', cache: false,
+                            data: { MailID: id },
+                            success: function (result) {
+                                if (result.Result === "Success") {
+                                    toastr.success("Deleted successfully!");
+                                    setTimeout(function () { location.reload(); }, 1000);
+                                }
+
+                            }
+                        });
+                    }
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+            function checks(k) {
+
+                var values = {
+
+                    "Id": k
+                }
+                $.ajax({
+                    url: "../../Communication/UnreadEmailMessage/",
+                    type: 'GET', cache: false, data: values,
+                    success: function (result) {
+                        window.location.href = '@Url.Action("Inbox", "Communication")';
+                    }
+
+                });
+
+                }
+
+
+                /* Set the defaults for DataTables initialisation */
+                jQuery.extend(true, jQuery.fn.dataTable.defaults, {
+                    "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+                    "sPaginationType": "bootstrap",
+                    "oLanguage": {
+                        "sLengthMenu": "_MENU_ records per page"
+                    }
+                });
+
+
+
+
+                /* Default class modification */
+                jQuery.extend(jQuery.fn.dataTableExt.oStdClasses, {
+                    //"Wrapper": "dataTables_wrapper form-inline",
+                    "sFilterInput": "form-control input-sm",
+                    "sLengthSelect": "form-control input-sm"
+                });
+
+
+                /* API method to get paging information */
+                jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+                    return {
+                        "iStart": oSettings._iDisplayStart,
+                        "iEnd": oSettings.fnDisplayEnd(),
+                        "iLength": oSettings._iDisplayLength,
+                        "iTotal": oSettings.fnRecordsTotal(),
+                        "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                        "iPage": oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+                        "iTotalPages": oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+                    };
+                };
+
+
+                /* Bootstrap style pagination control */
+                jQuery.extend(jQuery.fn.dataTableExt.oPagination, {
+                    "bootstrap": {
+                        "fnInit": function (oSettings, nPaging, fnDraw) {
+                            var oLang = oSettings.oLanguage.oPaginate;
+                            var fnClickHandler = function (e) {
+                                e.preventDefault();
+                                if (oSettings.oApi._fnPageChange(oSettings, e.data.action)) {
+                                    fnDraw(oSettings);
+                                }
+                            };
+
+                            jQuery(nPaging).append(
+                                '<ul class="pagination pagination-sm">' +
+                                    '<li class="prev disabled"><a href="#"><i class="entypo-left-open"></i></a></li>' +
+                                    '<li class="next disabled"><a href="#"><i class="entypo-right-open"></i></a></li>' +
+                                '</ul>'
+                            );
+                            var els = jQuery('a', nPaging);
+                            jQuery(els[0]).bind('click.DT', { action: "previous" }, fnClickHandler);
+                            jQuery(els[1]).bind('click.DT', { action: "next" }, fnClickHandler);
+                        },
+
+                        "fnUpdate": function (oSettings, fnDraw) {
+                            var iListLength = 5;
+                            var oPaging = oSettings.oInstance.fnPagingInfo();
+                            var an = oSettings.aanFeatures.p;
+                            var i, ien, j, sClass, iStart, iEnd, iHalf = Math.floor(iListLength / 2);
+
+                            if (oPaging.iTotalPages < iListLength) {
+                                iStart = 1;
+                                iEnd = oPaging.iTotalPages;
+                            }
+                            else if (oPaging.iPage <= iHalf) {
+                                iStart = 1;
+                                iEnd = iListLength;
+                            } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
+                                iStart = oPaging.iTotalPages - iListLength + 1;
+                                iEnd = oPaging.iTotalPages;
+                            } else {
+                                iStart = oPaging.iPage - iHalf + 1;
+                                iEnd = iStart + iListLength - 1;
+                            }
+
+                            for (i = 0, ien = an.length ; i < ien ; i++) {
+                                // Remove the middle elements
+                                jQuery('li:gt(0)', an[i]).filter(':not(:last)').remove();
+
+                                // Add the new list items and their event handlers
+                                for (j = iStart ; j <= iEnd ; j++) {
+                                    sClass = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                                    jQuery()
+                                        .insertBefore(jQuery('li:last', an[i])[0])
+                                        .bind('click', function (e) {
+                                            e.preventDefault();
+                                            oSettings._iDisplayStart = (parseInt(jQuery('a', this).text(), 10) - 1) * oPaging.iLength;
+                                            fnDraw(oSettings);
+                                        });
+                                }
+
+                                // Add / remove disabled classes from the static elements
+                                if (oPaging.iPage === 0) {
+                                    jQuery('li:first', an[i]).addClass('disabled');
+                                } else {
+                                    jQuery('li:first', an[i]).removeClass('disabled');
+                                }
+
+                                if (oPaging.iPage === oPaging.iTotalPages - 1 || oPaging.iTotalPages === 0) {
+                                    jQuery('li:last', an[i]).addClass('disabled');
+                                } else {
+                                    jQuery('li:last', an[i]).removeClass('disabled');
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+                /*
+                 * TableTools Bootstrap compatibility
+                 * Required TableTools 2.1+
+                 */
+                if (jQuery.fn.DataTable.TableTools) {
+                    // Set the classes that TableTools uses to something suitable for Bootstrap
+                    jQuery.extend(true, jQuery.fn.DataTable.TableTools.classes, {
+                        "container": "DTTT btn-group",
+                        "buttons": {
+                            "normal": "btn btn-white",
+                            "disabled": "disabled"
+                        },
+                        "collection": {
+                            "container": "DTTT_dropdown dropdown-menu",
+                            "buttons": {
+                                "normal": "",
+                                "disabled": "disabled"
+                            }
+                        },
+                        "print": {
+                            "info": "DTTT_print_info modal"
+                        },
+                        "select": {
+                            "row": "active"
+                        }
+                    });
+
+                    // Have the collection use a bootstrap compatible dropdown
+                    jQuery.extend(true, jQuery.fn.DataTable.TableTools.DEFAULTS.oTags, {
+                        "collection": {
+                            "container": "ul",
+                            "button": "li",
+                            "liner": "a"
+                        }
+                    });
+                }
+</script>
+
+
+

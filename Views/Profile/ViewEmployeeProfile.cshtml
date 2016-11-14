@@ -1,0 +1,253 @@
+﻿@model DSRCManagementSystem.Models.Profile
+@{   
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<body>
+<div class="row" style="height:100px;"></div>
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-shadow"  data-collapsed="0">
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" color="White">
+                    My Profile</div>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                @using (Html.BeginForm("ViewEmployeeProfile", "Profile", FormMethod.Post))
+                {                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.EmpID)                        
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.EmpID, new { @id = "EmpID", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.FirstName)                        
+                    </div>
+                    <div class="col-md-4">                        
+                        @Html.TextBoxFor(x => x.FirstName, new { @id = "FirstName", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.EmailAddress)                        
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.EmailAddress, new { @id = "EmailAddress", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.MiddleName)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.MiddleName, new { @id = "MiddleName", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.DepartmentName,(string)ViewBag.Lbl_department)                        
+                    </div>
+                    <div class="col-md-4">                        
+                        @Html.TextBoxFor(x => x.DepartmentName, new { @id = "Department", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.LastName)
+                    </div>
+                    <div class="col-md-4">                        
+                        @Html.TextBoxFor(x => x.LastName, new { @id = "LastName", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.DateOfJoin)                        
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.DateOfJoin, new { @id = "DateOfJoin", @class = "form-control", @disabled = "disabled" })                        
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.ContactNo)                       
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.ContactNo, new { @id = "ContactNo", @class = "form-control", @disabled = "disabled" })                 
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br /> 
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.Previous)                       
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.Previous, new { @id = "Previous", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="col-md-2">
+                      Office No                   
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.officeno, new { @id = "office", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br /> 
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.CurrentExperience)                        
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.CurrentExperience, new { @id = "Current", @class = "form-control", @disabled = "disabled" })                     
+                    </div>
+                    
+                    <div class="col-md-2">
+                       Extension                      
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.extension, new { @id = "extension", @class = "form-control", @disabled = "disabled" })
+                     </div>
+                    
+                    <br /> 
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />   
+                          
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.OverallExperience)                       
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.OverallExperience, new { @id = "overall", @class = "form-control",  @disabled = "disabled" })                     
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.DateOfBirth)                       
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.DateOfBirth, new { @id = "DateOfBirth", @class = "form-control ", @disabled = "disabled" })                       
+                    </div>
+                   
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.MachineName)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.MachineName, new { @id = "MachineName", @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.IPAddress)                       
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.IPAddress, new { @id = "IPAddress", @class = "form-control", @disabled = "disabled" })                       
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.OfficeSkypeId)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.OfficeSkypeId, new { @id = "OfficeSkypeId", @class = "form-control", @disabled = "disabled" })
+                       
+                    </div>
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.Skills)                           
+                    </div>
+                    <div class="col-md-4" >
+                       @Html.TextArea("Skills", new { @id = "Skills", @class = "form-control", @style = "height:100px", @disabled = "disabled" })                                                            
+                    </div>
+
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.PermanentAddress)                        
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextArea("PermanentAddress", new { @id = "pAddress", @class = "form-control", @style = "height:100px", @disabled = "disabled" })                       
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.TemporaryAddress)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextArea("TemporaryAddress", new { @id = "tAddress", @class = "form-control", @style = "height:100px", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+                    
+                    <div class="col-md-2">                       
+                    </div>
+                    <div class="col-md-4">                      
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="clear">
+                    </div>
+                    
+                    <br />
+       
+                    <div class="col-md-2">
+                     @Html.LabelFor(x => x.WorkPlace)                       
+                    </div>
+                    <div class="col-md-4">
+                          @Html.DropDownListFor(x => x.WorkPlace, ViewBag.WorkPlaceList as SelectList, new { @id = "WorkPlace", @class = "form-control", @disabled = "disabled" })                          
+                    </div>
+                    
+                    <div class="col-md-2">
+                        @Html.LabelFor(x => x.Marital)                        
+                    </div>
+                    <div class="col-md-3">                  
+                       @Html.DropDownListFor(x => x.Marital, ViewBag.MaritalList as SelectList, new { @id = "Marital", @class = "form-control", @disabled = "disabled" }) 
+                    </div>
+                    
+                    <div class="clear">
+                    </div>
+                   
+                     <br />
+
+                    <div class="col-md-8"></div>
+                }
+            </div>
+        </div>
+    </div>
+
+         <div class="col-md-3">
+        </div>
+</div>
+</body>

@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <title></title>
+    <style type='text/css'>
+        .btn-success, .btn-green
+        {
+            color: #ffffff;
+            background-color: #00a651;
+            border-color: #00a651;
+        }
+        .btn
+        {
+            display: inline-block;
+            margin-bottom: 0;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            background-image: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 6px 12px;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 3px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+        a
+        {
+            color: #373e4a;
+            text-decoration: none;
+        }
+        .btn-danger
+        {
+            color: #ffffff;
+            background-color: #cc2424;
+            border-color: #cc2424;
+        }
+        .btn-info
+        {
+            color: #ffffff;
+            background-color: #21a9e1;
+            border-color: #21a9e1;
+        }
+        body
+        {
+            margin: 0;
+            padding: 0;
+            min-width: 100% !important;
+        }
+        img
+        {
+            height: auto;
+        }
+        .content
+        {
+            width: 100%;
+            max-width: 600px;
+        }
+        .header
+        {
+            padding: 10px 10px 0px 10px;
+        }
+        .innerpadding
+        {
+            padding: 30px 30px 30px 30px;
+        }
+        .borderbottom
+        {
+            border-bottom: 1px solid #f2eeed;
+        }
+        .subhead
+        {
+            font-size: 15px;
+            color: #ffffff;
+            font-family: sans-serif;
+            letter-spacing: 10px;
+        }
+        .h1, .h2, .bodycopy
+        {
+            color: #153643;
+            font-family: sans-serif;
+        }
+        .h1
+        {
+            font-size: 33px;
+            line-height: 38px;
+            font-weight: bold;
+        }
+        .h2
+        {
+            padding: 0 0 15px 0;
+            font-size: 24px;
+            line-height: 28px;
+            font-weight: bold;
+        }
+        .bodycopy
+        {
+            font-size: 16px;
+            line-height: 22px;
+        }
+        .button
+        {
+            text-align: center;
+            font-size: 18px;
+            font-family: sans-serif;
+            font-weight: bold;
+            padding: 0 30px 0 30px;
+        }
+        .button a
+        {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .footer
+        {
+            padding: 20px 30px 15px 30px;
+        }
+        .footercopy
+        {
+            font-family: sans-serif;
+            font-size: 14px;
+            color: #ffffff;
+        }
+        .footercopy a
+        {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        @media only screen and (max-width: 550px), screen and (max-device-width: 550px)
+        {
+            body[yahoo] .hide
+            {
+                display: none !important;
+            }
+            body[yahoo] .buttonwrapper
+            {
+                background-color: transparent !important;
+            }
+            body[yahoo] .button
+            {
+                padding: 0px !important;
+            }
+            body[yahoo] .button a
+            {
+                background-color: #e05443;
+                padding: 15px 15px 13px !important;
+            }
+            body[yahoo] .unsubscribe
+            {
+                display: block;
+                margin-top: 20px;
+                padding: 10px 50px;
+                background: #2f3942;
+                border-radius: 5px;
+                text-decoration: none !important;
+                font-weight: bold;
+            }
+        }
+        .table-bordered > thead > tr > th, .table-bordered > thead > tr > td
+        {
+            background-color: #303641;
+            border-bottom-width: 1px;
+            color: #F7F6F6;
+        }
+        .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td
+        {
+            border: 1px solid #ebebeb;
+        }
+        .table > thead > tr > th
+        {
+            vertical-align: bottom;
+            border-bottom: 2px solid #ebebeb;
+        }
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
+        {
+            padding: 8px;
+            line-height: 1.428571429;
+            vertical-align: top;
+            border-top: 1px solid #ebebeb;
+        }
+        th
+        {
+            text-align: left;
+            font-weight: 400;
+            color: #303641;
+        }
+        table
+        {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        #tblProjects td:nth-child(3)
+        {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body yahoo bgcolor='#f6f8f1'>
+    <table width='100%' bgcolor='#f6f8f1' border='0' cellpadding='0' cellspacing='0'>
+        <tr>
+            <td>
+                <table bgcolor='#ffffff' style='width: 100%; max-width: 600px;' align='center' cellpadding='0'
+                    cellspacing='0' border='0'>
+                    <tr>
+                        <td bgcolor='#c7d8a7' style='padding: 10px 10px 0px 10px;'>
+                            <table width='100%' align='left' border='0' cellpadding='0' cellspacing='0'>
+                                <tr>
+                                    <td height='70' width='70' style='padding: 0 20px 10px 0;'>
+                                        @Logo
+                                    </td>
+                                    <td height='70'>
+                                        <div style='font-size: 15px; color: #ffffff; font-family: sans-serif;
+                                            letter-spacing: 10px; padding: 0 0 0 3px;'>
+                                           Management Portal
+                                        </div>
+                                        <div style='color: #153643; font-family: sans-serif; font-size: 24px; line-height: 28px;
+                                            font-weight: bold; padding: 5px 0 0 0;'>
+                                            DSRC Fixed Price Project Added
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 30px 30px 30px 30px; border-bottom: 1px solid #f2eeed;'>
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+                               <tr>
+                                    <td style='padding: 0px 0 0px 0;'>
+                                        <p style='color: #006699; font-weight: bold; margin: 0;'>
+                                             Hi,</p>
+                                 <br />
+                                         <p style='padding-left: 2%; padding-bottom:0px; margin: 0;'>
+                                            This mail is to inform you that the following project was added on #Date
+                                         </p>
+
+                                     <br />
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='padding: 20px 0 30px 0;'>
+                                        <br />
+                                        <table style='border-collapse: collapse; border-spacing: 0;' id='tblProjects' width='100%'>
+                                            <thead>
+                                                <tr>                                                
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Project Name
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Project Code
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Project Type
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Project Start Date
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Project End Date
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Created By
+                                                    </th>
+                                                    <th style='background-color: #303641; border-bottom-width: 1px; color: #F7F6F6; border: 1px solid #ebebeb;
+                                                        vertical-align: bottom; border-bottom: 2px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                        vertical-align: top; border-top: 1px solid #ebebeb; text-align: left; font-weight: 400;'>
+                                                        Managed By
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tr>                                               
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429;
+                                                    vertical-align: top; border-top: 1px solid #ebebeb;'>
+                                                    #ProjectName
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb;'>
+                                                    #ProjectCode
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb; white-space: pre-wrap;'>
+                                                   #ProjectType
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb; white-space: pre-wrap;'>
+                                                   #StartDateTime
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb; white-space: pre-wrap;'>
+                                                   #EndDateTime
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb;'>
+                                                   #CreatedBy
+                                                </td>
+                                                <td style='text-align: left; border: 1px solid #ebebeb; padding: 8px; line-height: 1.428571429; vertical-align: top;
+                                                    border-top: 1px solid #ebebeb;'>
+                                                   #ManagedBy
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <p style='padding-left: 2%; '>
+                                            Click on <a href=#ServerName style='color: Blue;'>
+                                                <u>#ServerName
+                                            </u></a>to login into #CompanyName Management Portal</p>
+                                        <br />
+                                        <p style='color: #006699; font-weight: bold;margin: 0;'>
+                                            Thanks,</p>
+                                        <p style='font-weight: bold;margin: 0;'>
+                                            #CompanyName Management</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='padding: 20px 0 30px 0;'>
+                                        &nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 30px 30px 30px 30px; color: #153643; font-family: sans-serif;
+                            font-size: 16px; line-height: 22px;'>
+                            <p style='font-size: 12px; font-weight: bold;'>
+                                Please keep a copy of this mail for future reference, This email has been automatically
+                                generated. Please do not reply to this email address as all responses are directed
+                                to an unattended mailbox and you will not receive a response.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 20px 30px 15px 30px;' bgcolor='#44525f'>
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+                                <tr>
+                                    <td align='center' style='font-family: sans-serif; font-size: 14px; color: #ffffff;'>
+                                        &reg; copyright 2015 - DSRC
+                                        <br />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+

@@ -1,0 +1,182 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.ViewMessage>
+@{
+    ViewBag.Title = "View Message";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+}
+@{
+    int SNO = 1;
+}
+@*<ol class="breadcrumb bc-3">
+    <li><a>Communication</a></li>
+    <li><b>View Messages</b></li>
+</ol>*@
+
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("Messages", "Communication")">Communication</a></li>
+    <li class="active"><strong>View Messages</strong></li>
+</ol>*@
+    <p>
+        <a href="@Url.Action("Messages", "Communication")" style="color:black">Communication</a>
+        &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>View Messages</b>
+    </p>                            
+<br />
+<div class="panel panel-default panel-shadow" data-collapsed="0">
+    <div class="panel-heading">
+        <div class="panel-title" color="White">
+          View Messages</div>
+    </div>
+<div style="height: 20px;">
+</div>
+@using (Html.BeginForm("ViewMessage", "Communication", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-2" style="padding-left: 27px;">
+            Select Message
+        </div>
+        <div class="col-md-6">
+            @Html.DropDownList("MessageId", ViewBag.MessageList as SelectList, "-- Select Message --", new { @id = "MessageId", @name = "MessageId", @class = "select2", onchange = "this.form.submit()" })
+        </div>
+
+     @*   <a class="btn btn-danger btn-sm btn-block btn-icon icon-left" onclick="DeleteProject(88,&quot;a&quot;)">
+                                        <i class="entypo-cancel"></i>Delete</a>*@
+                                        
+        <button type="button" name="btn_Submit" class="btn btn-danger" onclick="DeleteMessage()">
+            Delete <i class="entypo-cancel"></i>
+        </button>
+    </div>
+    <div style="height: 20px;">
+    </div>
+}
+<div id="Content">
+    @Html.Partial("DataGrid", Model)
+</div>
+      <button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;"   onclick="@("window.location.href='" + @Url.Action("Messages", "Communication") + "'")    ;">
+             Back
+           </button>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $("#tblProjects").dataTable({
+                "sPaginationType": "bootstrap",
+                //"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "alengthMenu": [[5, 15, 20, -1], [5, 15, 20, "All"]],
+                "bStateSave": false,
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "5%", "targets": 0 }, { "width": "15%", "targets": 1 }, { "width": "23%", bSortable: false, "targets": 2 }, { "width": "23%", bSortable: false, "targets": 3 },
+                    { "width": "15%", "targets": 4 }, { "width": "15%", "targets": 5 }, { "width": "4%", bSortable: false, "targets": 6 }
+                ],
+                "paging": true
+            });
+
+            $(".dataTables_wrapper select").select2({
+                minimumResultsForSearch: -1
+            });
+
+            $('thead>tr>th').css('text-align', 'center');
+
+
+
+            var sno = 1;
+
+
+            setInterval(function () {
+                var tables = $.fn.dataTable.fnTables(true);
+                if ($("#MessageId").val() !== "") {
+                    $.ajax({
+                        url: '/Communication/MessageGrid',
+                        //    data: { "MessageId": 1 },
+                        data: { "MessageId": $("#MessageId").val() },
+                        success: function (result) {
+                            var t = $('#tblProjects').dataTable().api();
+                            var currentpage = t.page();
+
+                            t.clear().draw();
+                            $.each(result, function (i, value) {
+
+                                var dateInitiated = value.MessageinitiatesDate.substr(6);
+                                var currentTime = new Date(parseInt(dateInitiated));
+                                var month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+                                var day = currentTime.getDate();
+                                var year = currentTime.getFullYear();
+                                var date = "<center>" + day + "-" + month + "-" + year + "</center>";
+                                var dateexpired = value.MessageValidUpto.substr(6);
+                                currentTime = new Date(parseInt(dateexpired));
+                                month = ("0" + (currentTime.getMonth() + 1)).slice(-2);
+                                day = currentTime.getDate();
+                                year = currentTime.getFullYear();
+                                var dateto = "<center>" + day + "-" + month + "-" + year + "</center>";
+
+                                var reply = value.Isreplyable == true ? (value.Comment != null ? value.Comment : "Not yet replied") : "Can't able to reply";
+                                var action = value.IsYesOrNo != null ? (value.IsYesOrNo === true ? '<center><b style="color:green;">Yes</b></center>' : '<center><b style="color:red;">No</b><center>') : (value.MessageType == 2 ? "<center><b>yet Not recived</b></center>" : "<center><b >Not appllicable</b></center>");
+
+                                t.row.add([
+                                      t.rows().data().length + 1,
+                                      value.UserName,
+                                      value.Message,
+                                      reply,
+                                      date,
+                                      dateto,
+                                      action
+                                ]).draw();
+                            });
+                            t.page(currentpage).draw(false);
+                            sno = sno + 1;
+                        }
+                    });
+                }
+
+
+
+
+
+            }, 3000);
+        });
+
+        function SetupTable() {
+        }
+
+        function DeleteMessage() {
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            $.ajax({
+                url: '/Communication/DeleteMessage',
+                data: { "MessageId": $("#MessageId").val() },
+                success: function (result) {
+                    toastr.success("Message Deleted Sucessfully", opts);
+                    location.reload();
+                }
+            });
+        }
+
+
+    </script>
+}

@@ -1,0 +1,80 @@
+﻿@model DSRCManagementSystem.Models.Skills
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Skills Details</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+    <link href="../../Content/Template/css/custom.css" rel="stylesheet" type="text/css" />
+         <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <style>
+        textarea
+        {
+            resize: none;
+        }
+    </style>
+
+      <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header"  style="background-color:#f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+               Skills Details</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("Details", "Skills", FormMethod.Post))
+            {
+                <div class="row">
+                  </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" style="text-align:center">
+                            @Html.Label("Approved By", new { @class = "control-label" })
+                          
+                            @Html.TextBoxFor(x => x.ApprovedName, new { @id = "ApprovedBy", @autocomplete = "off", @disabled = "disabled" })
+                           @* @Html.HiddenFor(x => x.LeaveRequestedId)
+                            @Html.HiddenFor(x => x.UserId)
+                            @Html.HiddenFor(x => x.LeaveTypeId, new { @id = "id" })*@
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" style="text-align:center">
+                            @Html.Label("Approved Date", new { @class = "control-label" })
+                        
+                           @Html.TextBoxFor(x => x.ApprovedDate,new { @id = "ApprovedTime", @autocomplete = "off",  @disabled = "disabled" })
+                        </div>
+                    </div>
+                  </div>
+            }
+            </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close</button>
+        </div>
+   </body>
+</html>

@@ -1,0 +1,266 @@
+﻿@model DSRCManagementSystem.Models.MasterList
+
+
+@{
+  
+    ViewBag.Title = "Edit Master";
+    Layout = null;
+    
+    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Master</title>
+    <link href="../../Content/Template/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/entypo.css" rel="stylesheet"
+        type="text/css" />
+    <link href="../../Content/Template/css/font-icons/entypo/css/animation.css" rel="stylesheet"
+        type="text/css" />
+         <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic"
+        id="style-resource-4" />
+         <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+   
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/en-gb.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/moment.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.js"
+        type="text/javascript"></script>
+    <link href="../../Content/Plugins/bootstrap-datetimepicker/css/bootstrap-datepicker.css"
+        rel="stylesheet" type="text/css" />
+
+     <style>
+      .dropdown-menu {
+    background-color: white;
+}    
+</style>
+
+</head>
+<body>
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×</button>
+            <h4 class="modal-title">
+             Edit Master</h4>
+        </div>
+ 
+     <div class="modal-body">
+
+            @using (Html.BeginForm("AddMaster", "MasterTableDisplay", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+                
+                for (int i = 1; i <= 1; i++)
+                { 
+               
+                 <div class="row">
+                <div class="col-md-12">
+                  
+                    <div class="form-group">
+
+
+                        @for (int j = 1; j < Model.ColumnNames.Count; j++)
+                        {
+                            for (int k = j - 1; k < j; k++)
+                            {
+
+
+                                if (Model.ColumnDataTypes[k].ColumnName0.ToString() == "datetime")
+                                {
+                                     @Html.DisplayFor(m => Model.ColumnNames[j].ColumnName0)                 
+                          @Html.Label("*", new { @style = "color:#FF0000" })                                           
+                          @Html.TextBoxFor(x => Model.ColumnValues[k + 1], "{0:dd-MM-yyyy}", new { @name = "Date", @id = "ID" + j, @autocomplete = "off", @class = "form-control datetimepicker" })               
+                                                     
+                            <span id="span_ID@(j)" style="color: Red;"></span>                           
+                            <br /> 
+                                }
+                                else if (Model.ColumnDataTypes[k].ColumnName0.ToString() == "bit")
+                                {
+                                             @Html.DisplayFor(m => Model.ColumnNames[j].ColumnName0)                 
+                          @Html.Label("*", new { @style = "color:#FF0000" })                                           
+                       @Html.TextBoxFor(x => x.ColumnName1, new { @id = "ID" + j, @Value = "1", disabled = "disabled", @name = "ID", @PlaceHolder = (Model.ColumnDataTypes[k].ColumnName0.ToString() == "nvarchar" || Model.ColumnDataTypes[k].ColumnName0.ToString() == "varchar" ? "String" : Model.ColumnDataTypes[k].ColumnName0.ToString()), @class = "form-control" })  
+                            <span id="span_ID@(j)" style="color: Red;"></span>   
+                                }
+                                else
+                                {
+                           @Html.DisplayFor(m => Model.ColumnNames[j].ColumnName0)                 
+                          @Html.Label("*", new { @style = "color:#FF0000" })                                           
+                         @Html.TextBoxFor(x => Model.ColumnValues[k + 1], new { @id = "ID" + j, @name = "ID", @PlaceHolder = Model.ColumnDataTypes[k].ColumnName0.ToString(), @class = "form-control" })  
+                                                     
+                            <span id="span_ID@(j)" style="color: Red;"></span>                          
+                            <br /> 
+                          
+                                }
+
+                            }
+                        }                           
+                                            
+                    </div>
+                </div>
+                </div>  
+                <br>
+                }            
+                
+     <div class="modal fade in" id="portlet-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+            }
+                         </div> 
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Cancel
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info"  onclick='Save(@Model.ColumnNames.Count())' >
+                Save
+            </button>
+            
+        </div>     
+</div>
+
+                
+ 
+            <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>   
+             <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+          <script type="text/javascript">
+              $(document).ready(function () {
+                  $(function () {
+                      $(".modal-body select").select2({
+                          minimumResultsForSearch: -1
+                      });
+                  });
+
+                  $(".datetimepicker").datepicker({
+                      format: 'dd-mm-yyyy',
+                      // startDate: '1'
+                  });
+
+
+              });
+
+
+
+
+
+                  function Save(t) {
+
+                     
+                      for (var j = 1; j < t; j++) {
+
+                          if (document.getElementById('ID' + j).value == 0) {
+
+
+                              document.getElementById('span_ID' + j).innerHTML = "Enter the Value";
+                              return;
+
+                          }
+                          else {
+                              document.getElementById('span_ID' + j).innerHTML = "";
+                          }
+                      }
+
+
+                     
+                          var value = 0;
+                          $('#portlet-config1').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+
+                          var listOfObjects = [];
+                          var list = [];
+                      
+
+                          for (var k = 1; k <= t ; k++) {
+                              value = $("#ID" + k).val();
+
+                              listOfObjects.push(value);
+                          }
+
+                          var str = listOfObjects.toString();
+                          var str_array = str.split(',');
+
+                          for (var i = 0; i < str_array.length; i++) {                            
+                              str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");                             
+                              list.push(str_array[i].split(','))                              
+                          }
+
+
+
+
+                          var values =
+                               {
+                                   "id":t,
+                                   "ColumnValues": list.toString(),
+
+                               }
+                          var opts =
+                           {
+                               "closeButton": true,
+                               "debug": false,
+                               "positionClass": "toast-top-right",
+                               "toastClass": "White",
+                               "onclick": null,
+                               "showDuration": "300",
+                               "hideDuration": "1000",
+                               "timeOut": "2000",
+                               "extendedTimeOut": "1000",
+                               "showEasing": "swing",
+                               "hideEasing": "linear",
+                               "showMethod": "fadeIn",
+                               "hideMethod": "fadeOut"
+                           }
+
+                          $.ajax({
+                              url: "../../MasterTableDisplay/EditMaster/" ,
+                              type: 'POST',
+                              cache: false,
+                              data: values,
+                              traditional: true,
+                              global: false,
+                              success: function (result) {
+
+                                  if (result.Result === "Success") {
+
+                                      $("#portlet-config").modal('hide');
+                                      toastr.success("Master added successfully", opts);
+                                      setTimeout(function () {location.reload(true);}, 3000);
+                                  }
+
+                                  if (result.Result === "Already") {
+
+                                      toastr.warning("Master  Already Exist", opts);
+
+                                      setTimeout(function () { location.reload(true); }, 3000);
+
+                                      setTimeout(function () { location.reload(); }, 1000);
+
+                                  }
+
+
+                              }
+
+                          });
+
+                      }
+
+
+                
+              
+          </script>
+                
+       </body>
+             </html>

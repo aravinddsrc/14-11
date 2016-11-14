@@ -1,0 +1,317 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.Gallery>
+@{
+    ViewBag.Title = "Album";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <link href="../../Content/Template/css/font-icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/JS/ToasterAlert.js" type="text/javascript"></script>
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .gallery-env article.album header img {
+            height: 220px;
+        }
+        /*#tooltip:hover::alternate {
+            content: "SlideShow";
+
+        }
+                #CountImage:hover {
+            content: "ImageCount";
+
+        }
+                #DeleteImage:hover {
+            content: "DeleteAlbum";
+
+        }*/
+    </style>
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+}
+
+<html>
+
+<body class="page-body">
+@*    <ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("album","gallery")">Gallery</a></li>
+        <li class="active"><strong>Album</strong> </li>
+    </ol>*@
+    <p>
+        <a href="@Url.Action("album","gallery")"style="color:black ">
+            Gallery
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Album</b>
+    </p>
+    <div class="row">
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li class="active"><a href="#CreateAlbum" data-toggle="tab" role="tab">Albums</a></li>
+            <li><a href="#TaggedAlbum" data-toggle="tab" role="tab">Tagged Albums</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="CreateAlbum">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-heading">
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                @Html.Label("Year")
+                                @Html.DropDownList("Years", ViewBag.Years1 as SelectList, new { @id = "Years", @name = "Years", @class = "form-control", @onchange = "GetHoliday(this.value);" })
+                            </div>
+                            <div class="col-sm-9">
+
+                                @if (@ViewBag.CreateAlbum == @ViewBag.UserID)
+                                {
+                                    <div class="btn-group" style="float: right" id="CreateAlbum">
+                                        <button type="button" class="btn btn-blue" style="font-weight: bold" onclick='CreateAlbum()' />
+                                        Create Album
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        
+                        <br />
+
+                        <div class="gallery-env">
+                            <div class="row">
+                                @foreach (var item in Model)
+                                {
+                                <div class="col-sm-4">
+
+                                    <article class="album">
+
+                                        <header>
+
+                                            <a href="../../Gallery/SingleAlbum/?AlbumID=@item.AlbumID">
+                                                <img src="@Url.Content(item.CoverPhotoPath)" />
+                                            </a>
+                                            @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                                                {
+                                                    if (@item.Photocount > 1)
+                                                    {
+                                                <button type="button" class="album-options" style="border:hidden;margin-right: 88px;" onclick='SlideShow(@item.AlbumID)'><i class="entypo-cog"></i>Slide Show</button>
+                                                    }
+                                                    else
+                                                    {
+                                                <button type="button" class="album-options" style="border:hidden;margin-right: 88px;"><i class="entypo-cog"></i>Slide Show</button>
+                                                    }
+                                                <button type="button" class="album-options" style="border:hidden;" onclick='EditAlbum(@item.AlbumID)'><i class="entypo-cog"></i>Edit Album</button>
+
+                                                }
+                                        </header>
+
+                                        <section class="album-info">
+                                            <h3><a href="../../Gallery/SingleAlbum/?AlbumID=@item.AlbumID">@item.AlbumTitle</a></h3>
+                                            @if (item.AlbumDescription != null)
+                                                {
+                                                    if (item.AlbumDescription.Length > 48)
+                                                    {
+                                                <p>@item.AlbumDescription </p>
+                                                    }
+                                                    else
+                                                    {
+                                                <p>@item.AlbumDescription </p>
+                                                <br />
+                                                    }
+                                                }
+                                            @if (item.AlbumDescription == null)
+                                                {
+                                                <p style="visibility:hidden">Welcome</p>
+                                                <br />
+                                                }
+                                        </section>
+
+                                        <footer>
+
+                                            <div class="album-images-count">
+                                                <i class="entypo-camera" data-tooltip aria-haspopup="true" class="has-tip" title="Image Count!"></i>
+                                                @item.Photocount
+                                            </div>
+
+                                            <div class="album-options">
+                                                <a><i aria-disabled="true" class="entypo entypo-calendar" data-tooltip aria-haspopup="true" class="has-tip" title="@item.EventDate.ToShortDateString()"></i></a>
+                                                @if (@item.Photocount > 1)
+                                                    {
+                                                    <a onclick='SlideShow(@item.AlbumID)'><i style="cursor:pointer" class="entypo entypo-picture" data-tooltip aria-haspopup="true" class="has-tip" title="Slide Show!"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                    <a><i aria-disabled="true" class="entypo entypo-picture" data-tooltip aria-haspopup="true" class="has-tip" title="Slide Show!"></i></a>
+                                                    }
+                                                <a><i class="entypo-user" data-tooltip aria-haspopup="true" class="has-tip" title="@item.CreatedBy"></i></a>
+                                                @if (ViewBag.CreateAlbum == @ViewBag.UserID)
+                                                    {
+                                                    <a onclick='DeleteAlbum(@item.AlbumID)'><i style="cursor:pointer" class="entypo-trash" data-tooltip aria-haspopup="true" class="has-tip" title="Delete Album"></i></a>
+                                                    }
+                                            </div>
+
+                                        </footer>
+
+                                    </article>
+
+                                </div>
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade in" id="portlet-config" role="dialog" aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+
+                            <div class="modal-dialog">
+                                <div class="tools">
+                                    <div id="PartialSection">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane" id="TaggedAlbum">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        @Html.Label("Year")
+                                        @Html.DropDownList("Years", ViewBag.Years1 as SelectList, new { @id = "Years", @name = "Years", @class = "form-control", @onchange = "GetHoliday(this.value);" })
+                                    </div>
+                                    @*<div class="col-sm-9">
+
+                                            @if (@ViewBag.CreateAlbum == @ViewBag.UserID)
+                                            {
+
+                                            }
+                                        </div>*@
+                                </div>
+                                
+                                <br />
+                                @{
+                                    Html.RenderAction("TaggedAlbums", "Gallery");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+        var opts = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        function EditAlbum(AlbumID) {
+
+            $.ajax({
+                url: "../../Gallery/EditAlbum/" + AlbumID,
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+
+            });
+
+        }
+        function SlideShow(AlbumID) {
+
+            $.ajax({
+                url: "../../Gallery/AlbumSlider/",
+                type: 'GET', cache: false,
+                data: { AlbumID: AlbumID },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+
+            });
+
+        }
+        function CreateAlbum() {
+
+            $.ajax({
+                url: "../../Gallery/CreateAlbum/",
+                type: 'GET', cache: false,
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+
+                }
+
+            });
+        }
+        function DeleteAlbum(AlbumID) {
+            bootbox.confirm("Are you sure want to delete ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "../../Gallery/DeleteAlbum/",
+                        type: 'POST', cache: false,
+                        data: { AlbumID: AlbumID },
+                        success: function (result) {
+                            if (result == "success") {
+                                toastr.success("Album Deleted Successfully", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+                            else {
+                                toastr.warning("Album Deletion Failed", opts);
+                                setTimeout(function () { location.reload(); }, 1000);
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+        function GetHoliday(Year) {
+            {
+                $.ajax({
+                    url: "../../Holiday/GetYear/",
+                    type: 'GET',
+                    cache: false,
+                    data: { year: Year },
+                    success: function (result) {
+                        window.location.href = '@Url.Action("Album","Gallery")' + '?year=' + result;
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

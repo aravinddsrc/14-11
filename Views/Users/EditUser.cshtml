@@ -1,0 +1,2263 @@
+﻿@model DSRCManagementSystem.Models.UserModel
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    DSRCManagementSystem.DSRCManagementSystemEntities1 db = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+    var branchcnt = db.Master_Branches.ToList().Count;
+    var branchId = db.Master_Branches.ToList();
+    var mstatus = @ViewBag.Marital;
+}
+@section AddToHead{
+
+    <link href="~/Content/css/hopscotch-0.1.1.css" rel="stylesheet" />
+   
+    <script src="~/Content/Plugins/hopscotch-0.1.1.js"></script>
+    <style>
+        .switch {
+            position: relative;
+            display: block;
+            vertical-align: top;
+            width: 100px;
+            height: 30px;
+            padding: 3px;
+            margin: 0 10px 10px 0;
+            background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+            background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+            border-radius: 18px;
+            box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .switch-label {
+            position: relative;
+            display: block;
+            height: inherit;
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #eceeef;
+            border-radius: inherit;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        }
+
+            .switch-label:before, .switch-label:after {
+                position: absolute;
+                top: 50%;
+                margin-top: -.5em;
+                line-height: 1;
+                -webkit-transition: inherit;
+                -moz-transition: inherit;
+                -o-transition: inherit;
+                transition: inherit;
+            }
+
+            .switch-label:before {
+                content: attr(data-off);
+                right: 11px;
+                color: #aaaaaa;
+                text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .switch-label:after {
+                content: attr(data-on);
+                left: 11px;
+                color: #FFFFFF;
+                text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+            }
+
+        .switch-input:checked ~ .switch-label {
+            background: #E1B42B;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-input:checked ~ .switch-label:before {
+                opacity: 0;
+            }
+
+            .switch-input:checked ~ .switch-label:after {
+                opacity: 1;
+            }
+
+        .switch-handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+            background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+            border-radius: 100%;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+            .switch-handle:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -6px 0 0 -6px;
+                width: 12px;
+                height: 12px;
+                background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+                background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+                border-radius: 6px;
+                box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+            }
+
+        .switch-input:checked ~ .switch-handle {
+            left: 74px;
+            box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-label, .switch-handle {
+            transition: All 0.3s ease;
+            -webkit-transition: All 0.3s ease;
+            -moz-transition: All 0.3s ease;
+            -o-transition: All 0.3s ease;
+        }
+
+
+    </style>
+}
+
+
+    <style>
+     .dropdown-menu {
+    background-color:white;
+}
+        </style>
+
+
+@*<ol class="breadcrumb bc-3">
+    <li>
+        <a href="@Url.Action("ManageUsers", "users")">
+            <i class="fa-home"></i>Manage Employees
+        </a>
+    </li>
+    <li class="active">
+        <strong>Edit Employee</strong>
+    </li>
+</ol>*@
+ <p>
+        <a href="@Url.Action("ManageUsers","Users")"style="color:black ">
+            Manage Employees
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Edit Employees</b>                       
+    </p>
+@using (Html.BeginForm("EditUser", "Users", FormMethod.Post, new { @id = "rootwizard-2", @class = "form-wizard" }))
+{
+    //Genral Information
+     
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        General Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                 <div class="row">
+                     <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.EmpID, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                               @Html.HiddenFor(u => u.EmpID, new { @id = "Idempid",@Value=ViewBag.EmpID})    
+                                @Html.TextBoxFor(x => x.EmpID, new
+                           {
+                               @id = "Idempcode",
+                               @name = "EmpID",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_EmpID,
+                               @autocomplete = "off",
+                               @Value = ViewBag.EmpID,
+                               disabled = "disabled",
+                               @maxlength = "10",
+                               @Style = "height: 43px;"
+                           })
+
+                               @* @Html.HiddenFor(x => x.UserId)*@
+                                 @* added on 22/09*@
+                                @Html.HiddenFor(x => x.UserId, new { @id ="userid", @value=ViewBag.UserId})
+
+                               @* @Html.HiddenFor(x => x.UserId)*@
+                               @* added on 19/09*@
+                                @Html.HiddenFor(x => x.UserId, new { @id ="userid", @value=ViewBag.UserId})
+
+                                <span id="span_empid" style="color: Red;"></span>
+                            </div>
+                        </div>
+                     @if (branchcnt==1)
+                        
+                        {
+                        <div class="visible-md">
+                            <div class="form-group ">
+                                @Html.LabelFor(u => u.BranchName, (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                              
+                                @Html.DropDownList("Branch", ViewBag.BranchList as SelectList, new
+                                {
+                                    @id = "Idbranchname",
+                                    @name = "BranchName",
+                                    @class = "form-control",
+                                    @onchange = "GetDepartments()"
+                                })
+                                
+                            </div>
+                        </div>
+                          }else{
+                               <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(u => u.BranchName, (string)ViewBag.Lbl_branch, new { @class = "control-label" })
+                              @Html.Label("*", new { @style = "color:#FF0000" })
+                              @Html.DropDownList("BranchID", ViewBag.BranchList as SelectList, new
+                                {
+                                    @id = "Idbranchname",
+                                    @name = "BranchName",
+                                    @class = "form-control",
+                                    @onchange = "GetDepartments()"
+                                })
+                                <span id="span_branch" style="color: Red;"></span>
+                            </div>
+                        </div>
+                          }
+                        </div>
+                    
+                     <div class="row">
+                     
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.FirstName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+
+                                @Html.TextBoxFor(x => x.FirstName, new
+                           {
+                               @id = "Idfirstname",
+                               @name = "FirstName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_FirstName,
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_firstname" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.MiddleName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.MiddleName, new
+                           {
+                               @id = "Idmiddlename",
+                               @name = "MiddleName",
+                               @class = "form-control",
+                               @placeholder ="Middle Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_middlename" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         </div>
+
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.LastName, new
+                           {
+                               @id = "Idlastname",
+                               @name = "LastName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_LastName,
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_lastname" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                     
+                        
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.ContactNo, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.ContactNo, new
+                           {
+                               @id = "Idcontactno",
+                               @name = "ContactNo",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_ContactNo,
+                               @autocomplete = "off",
+                               @maxlength = 15,
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_contactno" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.EmailAddress, new
+                           {
+                               @id = "Idemailaddress",
+                               @name = "EmailAddress",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_EmailAddress,
+                               @autocomplete = "off",
+                               @type = "email",
+                               @maxlength = "40",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_emailaddress" style="color: Red;"></span>
+                            </div>
+                        </div>
+                                           
+                         
+                       <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.Label("Gender", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownListFor(x => x.GenderID, ViewBag.GenderList as SelectList, "--Select--",
+                                                            new { @id = "Idgender", @name = "GenderID", @class = "form-control" })
+                                <span id="span_gender" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+  </div>
+                </div>
+            </div>
+        </div>
+   
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Office Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+                <div class="panel-body" style="display: block;">
+                   
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.Label("Department", (string)ViewBag.Lbl_department, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("DepartmentId",  ViewBag.Department as SelectList,"--Select--", new
+                           {
+                               @id = "Iddepartment",
+                               @name = "DepartmentId",
+                               @class = "form-control",
+                               @onchange = "GetGroups()"
+                           })
+                                <span id="span_department" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Group",(string)ViewBag.Lbl_depgroup, new { @class = "control-label" })
+                                @Html.DropDownListFor(u => u.GroupName, ViewBag.Groups as SelectList,"--Select--", new
+                           {
+                               @id = "Idgroup",
+                               @name = "Group",
+                               @class = "form-control",
+                           })
+                                <span id="span_group" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.WorkplaceId, new { @class = "control-label" })
+                                
+                                @Html.DropDownListFor(x => x.WorkplaceId, ViewBag.WorkPlaceList as SelectList, "--Select--", new
+                           {
+                               @id = "Idworkplace",
+                               @class = "form-control"
+                           })
+                                <span id="span_workplace" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.DesignationName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("DesignationID",  ViewBag.DesignationList as SelectList, new
+                           {
+                               @id = "Iddesignation",
+                               @name = "DesignationID",
+                               @class = "form-control"
+                           })
+                                <span id="span_designation" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.UserName, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.UserName, new
+                           {
+                               @id = "Idusername",
+                               @name = "UserName",
+                               @class = "form-control",
+                               @placeholder = Resources.Resource.DN_ProfileModel_UserName,
+                               @autocomplete = "off",
+                               @maxlength = "40",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_username" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.DateOfJoin, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.DateOfJoin, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "Iddateofjoin",
+                               @name = "DateOfJoin",
+                               @class = "form-control datetimepicker",
+                               @placeholder = Resources.Resource.DN_ProfileModel_DateofJoin,
+                               @autocomplete = "off",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_dateofjoin" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.Label("Reporting Person", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("Id1", ViewBag.ReportingPerson as MultiSelectList, new
+                           {
+                               @id = "Idreportingperson",
+                               @class = "select2-container select2-container-multi select2 visible has-error",
+                               @multiple = "multiple"
+                           })
+                                <span id="span_reportingperson" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.Label("Role Name", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("RollID", ViewBag.Roles as SelectList,"--Select--", new
+                           {
+                               @id = "RollName",
+                               @class = "form-control",
+                              
+                           })
+                                <span id="RollNames" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Region", new { @class = "control-label" })
+                                @Html.DropDownListFor(x => x.RegionId, ViewBag.Region as SelectList, new
+                               {
+                                   @id = "Idregion",
+                                   @class = "form-control"
+                               })
+                                <span id="span_region" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    //Personal Information
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Personal Information
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                      
+                    </div>
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.DateOfBirth, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.TextBoxFor(x => x.DateOfBirth, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "Iddateofbirth",
+                               @name = "DateOfBirth",
+                               @class = "form-control datetimepicker",
+                               @placeholder = Resources.Resource.DN_ProfileModel_DateofBirth,
+                               @autocomplete = "off",
+                               @Style = "height: 43px;"
+                           })
+                                <span id="span_dateofbirth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BloodGroup, new { @class = "control-label" })
+
+                                 @Html.DropDownList("Blood Group", ViewBag.BloogGroup as SelectList,"--Select--", new
+                           {
+                               @id = "BloodGroup",
+                               @name = "BloodGroup",
+                               @class = "form-control",
+                               @placeholder = "Blood Group",
+                               @autocomplete = "off",
+                               @maxlength = "5",
+                                @Style="height: 43px;"
+                           })
+                                 <span id="span_blood" style="color: Red;"></span>
+
+                                
+                            </div>
+
+                        </div>
+                       
+                    </div>
+
+                     <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.MotherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.MotherName, new
+                           {
+                               @id = "MotherName",
+                               @name = "MotherName",
+                               @class = "form-control",
+                               @placeholder = "Mother Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                  <span id="span_mother" style="color: Red;"></span>
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.FatherName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.FatherName, new
+                           {
+                               @id = "FatherName",
+                               @name = "FatherName",
+                               @class = "form-control",
+                               @placeholder = "Father Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                 <span id="span_father" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                        </div>
+                    <div class="row">
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.BirthPlace, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.BirthPlace, new
+                           {
+                               @id = "BirthPlace",
+                               @name = "BirthPlace",
+                               @class = "form-control",
+                               @placeholder = "Birth Place",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                               @Style = "height: 43px;"
+                           })
+                                  <span id="span_birth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Nationality, new { @class = "control-label" })
+                                @Html.DropDownListFor(x => x.NationalityID, ViewBag.Nationality as MultiSelectList, "--Select--", new
+                           {
+                               @id = "Nationality",
+                               @name = "Nationality",
+                               @class = "form-control"
+                           })
+                                <span id="span_nationality" style="color: Red;"></span>
+                            </div>
+                        </div>
+
+                         </div>
+                <div class="row">
+                        
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Religious, new { @class = "control-label" })
+                                @Html.DropDownList("ReligiousID", ViewBag.Religious as SelectList,"--Select--", new
+                           {
+                               @id = "Religious",
+                               @name = "Religious",
+                               @class = "form-control"
+                           })
+
+                                 <span id="span_religious" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group has-error">
+                                @Html.LabelFor(x => x.Marital, new { @class = "control-label" })
+                                @Html.DropDownList("MaritalStatusId", ViewBag.Marital as SelectList,"--Select--", new
+                           {
+                               @id = "Marital",
+                               @name = "NoOfChild",
+                               @class = "form-control",
+                               @onchange = "Chkstatus()"
+                               
+                           })
+                                <span id="span_Marital" style="color: Red;"></span>
+                            </div>
+                        </div>                        
+
+                        </div>
+
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Spouse / Husband Name", new { @class = "control-label" })
+                                @if(mstatus.SelectedValue == 2)
+                                {
+                               
+                                @Html.TextBoxFor(x => x.SpouseName, new
+                           {
+                               @id = "SpouseName",
+                               @name = "SpouseName",
+                               @class = "form-control",
+                               @placeholder = "Spouse / Husband Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                                @Style="height: 43px;",
+                               @disabled="disabled"
+                           })
+                                }
+
+                                @if (mstatus.SelectedValue == 1)
+                                {
+                                     //@Html.LabelFor(x => x.SpouseName, new { @class = "control-label" })
+                                     @Html.TextBoxFor(x => x.SpouseName, new
+                           {
+                               @id = "SpouseName",
+                               @name = "SpouseName",
+                               @class = "form-control",
+                               @placeholder = "Spouse Name",
+                               @autocomplete = "off",
+                               @maxlength = "50",
+                                @Style="height: 43px;"
+                           })
+
+                                }
+                                   <span id="span_spouse" style="color: Red;"></span>
+
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.NoOfChild, new { @class = "control-label" })
+                                 @if(mstatus.SelectedValue == 2)
+                                 {
+                                @Html.DropDownList("NoOfChild", ViewBag.Child as MultiSelectList,"--Select--", new
+                           {
+                               @id = "NoOfChild",
+                               @name = "NoOfChild",
+                               @class = "form-control",
+                               @disabled="disabled"
+                               
+                           })
+                                 }
+                                 @if(mstatus.SelectedValue == 1)
+                                 {
+                                @Html.DropDownList("NoOfChild", ViewBag.Child as MultiSelectList,"--Select--", new
+                           {
+                               @id = "NoOfChild",
+                               @name = "NoOfChild",
+                               @class = "form-control"
+                           })
+                                 }
+
+                            </div>
+                        </div>
+
+                          
+
+                          </div>  
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.AnniversaryDate, new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                 @if(mstatus.SelectedValue == 2)
+                                 {
+                                @Html.TextBoxFor(x => x.AnniversaryDate, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "AnniversaryDate",
+                               @name = "AnniversaryDate",
+                               @class = "form-control datetimepicker",
+                               @placeholder = "Anniversary Date",
+                               @autocomplete = "off",
+                                @Style="height: 43px;",
+                                 @disabled="disabled"
+                           })
+                                 }
+
+                                @if(mstatus.SelectedValue == 1)
+                                 {
+                                @Html.TextBoxFor(x => x.AnniversaryDate, "{0:dd/MM/yyyy}", new
+                           {
+                               @id = "AnniversaryDate",
+                               @name = "AnniversaryDate",
+                               @class = "form-control datetimepicker",
+                               @placeholder = "Anniversary Date",
+                               @autocomplete = "off",
+                                @Style="height: 43px;"
+                           })
+                                 }
+                                 
+                                <span id="AnniversaryDate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        </div>                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+     //Contact Information
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Contact Information 
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentAddress1 ,new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.PresentAddress1, new
+                           {
+                               @id = "PresentAddress1",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 1",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                                <span id="span_address1" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress2)
+                                @Html.TextAreaFor(x => x.PresentAddress2, new
+                           {
+                               @id = "PresentAddress2",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 2",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                            </div>
+                        </div>
+
+                        </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentAddress3)
+                                @Html.TextAreaFor(x => x.PresentAddress3, new
+                           {
+                               @id = "PresentAddress3",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Address 3",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentCountry ,new { @class = "control-label" })
+                                @Html.DropDownList("Present Country", ViewBag.PresentCountry as SelectList,"--Select--", new
+                           {
+                               @id = "PresentCountry",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Country",
+                               @maxlength = 100,
+                                @Style="height: 43px;",
+                                 @onchange = "GetState()"
+                           })
+                                  <span id="span_presentcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                     <div class="row">
+                         
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Presentstate ,new { @class = "control-label" })
+                                @Html.DropDownList("Present state", ViewBag.Presentstate as SelectList,"--Select--", new
+                           {
+                               @id = "Presentstate",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present state",
+                               @maxlength = 100,
+                                @Style="height: 43px;",
+                                 @onchange = "GetCity()"
+                           })
+                                 <span id="span_presentstate" style="color: Red;"></span>
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PresentCity ,new { @class = "control-label" })
+                                @Html.DropDownList("Present City", ViewBag.Presentcity as SelectList,"--Select--", new
+                           {
+                               @id = "PresentCity",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present City",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                                 <span id="span_presentcity" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        </div>
+
+                    
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PresentPinCode ,new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PresentPinCode, new
+                           {
+                               @id = "PresentPinCode",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Pin Code",
+                               @maxlength = 6,
+                                @Style="height: 43px;"
+                           })
+                                 <span id="span_pincode" style="color: Red;"></span>
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    //Permanent Address
+    
+     <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Permanent Address 
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+
+                    <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress1,new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.PermanentAddress1, new
+                           {
+                               @id = "PermanentAddress1",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 1",
+                               @maxlength = 100,
+                              @Style="height: 43px;",
+                             
+                           })
+                                 <span id="span_Permanent" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress2)
+                                @Html.TextAreaFor(x => x.PermanentAddress2, new
+                           {
+                               @id = "PermanentAddress2",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 2",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                            </div>
+                        </div>
+
+                        </div>
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentAddress3)
+                                @Html.TextAreaFor(x => x.PermanentAddress3, new
+                           {
+                               @id = "PermanentAddress3",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Permanent Address 3",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                            </div>
+                        </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentCountry ,new { @class = "control-label" })
+                                @Html.DropDownList("Permanent Country", ViewBag.PermanentCountry as SelectList,"--Select--", new
+                           {
+                               @id = "PermanentCountry",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present Country",
+                               @maxlength = 100,
+                                @Style="height: 43px;",
+                                 @onchange = "GetState()"
+                           })
+                                <span id="span_Permanentcountry" style="color: Red;"></span>
+                            </div>
+                        </div>
+                         </div>
+                     <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.Permanentstate ,new { @class = "control-label" })
+                                @Html.DropDownList("Permanent state", ViewBag.Permanentstate as SelectList,"--Select--", new
+                           {
+                               @id = "Permanentstate",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present state",
+                               @maxlength = 100,
+                                @Style="height: 43px;",
+                                 @onchange = "GetCity()"
+                           })
+                                  <span id="span_Permanentstate" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                          
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                @Html.LabelFor(x => x.PermanentCity ,new { @class = "control-label" })
+                                @Html.DropDownList("Permanent City", ViewBag.Permanentcity as SelectList,"--Select--", new
+                           {
+                               @id = "PermanentCity",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Present City",
+                               @maxlength = 100,
+                                @Style="height: 43px;"
+                           })
+                                <span id="span_Permanentcity" style="color: Red;"></span> 
+                            </div>
+                        </div>
+
+                        </div>
+
+                    
+                     <div class="row">
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.PermanentPinCode,new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.PermanentPinCode, new
+                           {
+                               @id = "PermanentPinCode",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Pin Code",
+                               @maxlength = 6,
+                                @Style="height: 43px;"
+                           })
+                                  <span id="span_Permanentpincode" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                       
+
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    
+    //Work Experience
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Work Experience
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Experience, new { @class = "control-label" })
+                                @Html.Label("Year", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("YearId", ViewBag.YearsList as SelectList, new { @id = "Idexpyear", @name = "YearId", @class = "form-control" })
+                                <span id="span_expyear" style="color: Red;"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Experience Month", new { @class = "control-label" })
+                                @*@Html.Label("*", new { @style = "color:#FF0000" })*@
+                                @Html.DropDownList("MonthId", ViewBag.MonthList as SelectList, new { @id = "Idexpmonth", @name = "MonthId", @class = "form-control" })
+                                <span id="span_expmonth" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    //Skills
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Skills
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.Label("Skills", new { @class = "control-label" })
+                                @Html.TextAreaFor(x => x.Tecnology, new
+                           {
+                               @id = "Idskills",
+                               @name = "ID",
+                               @class = "form-control",
+                               @placeholder = "Skills",
+                               @autocomplete = "off",
+                               @style = "height:70px;resize:vertical;",
+                               @maxlength = 1000
+                           })
+                                <span id="span_skills" style="color: Red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Emergency Contact
+                    </div>
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" style="display: block;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.EmergencyContactName, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.EmergencyContactName, new
+                           {
+                               @id = "EmergencyContactName",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Name",
+                               @maxlength = 100,
+                               @Style = "height: 43px;"
+                           })
+                                 <span id="span_emer" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                       
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RelationShipName, new { @class = "control-label" })
+                                 @Html.DropDownListFor(x => x.RelationShipID, ViewBag.RelationShip as SelectList, "--Select--", new { @id = "RelationShipName", @name = "RelationShip", @class = "form-control" })
+                                 <span id="span_emerrel" style="color: Red;"></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Emergency, new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.Emergency, new
+                           {
+                               @id = "EmergencyContactNumber",
+                               @class = "form-control",
+                               @autocomplete = "off",
+                               @placeholder = "Emergency Contact Number",
+                               @maxlength = 15,
+                               @Style = "height: 43px;"
+                           })
+                                 <span id="span_emercontactno" style="color: Red;"></span> 
+                               
+                            </div>
+                           
+                        </div>
+                         <div class="col-md-6"  >
+                              <div class="form-group">
+                                  <br />
+                            <label class="switch" >
+                                @Html.CheckBox("Block", new { @id = "switch-input", @class = "switch-input" , @name = "Block"})
+                                <span class="switch-label" data-on="Blocked" data-off="UnBlocked" style="width: 100px"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                                  </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+}
+<div class="modal-footer">
+    <a type="submit" class="btn btn-default" href="@Url.Action("ManageUsers", "Users")">Cancel</a>
+    <button type="button" id="Idsubmitbtn" class="btn btn-info" onclick="SaveAddUser()">Save</button>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#rootwizard-2 ul li > a>span").each(function (element) {
+            $(this).click(function (event) {
+                event.stopPropagation();
+            });
+        });
+        $("body select").select2({
+            //minimumResultsForSearch: -1
+        });
+
+
+        $("#PresentPinCode").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        $("#PermanentPinCode").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+
+        $("#EmergencyContactNumber").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        $("#Idcontactno").on('paste keypress', (function (e) {
+            var key;
+            if (e.which) {
+                key = String.fromCharCode(e.which);
+            } else {
+                key = e.originalEvent.clipboardData.getData('Text');
+            }
+            var value = $(this).val() + key;
+            if (!/^[0-9]{1,999}$/.test(value)) {
+                e.preventDefault();
+            }
+        }));
+
+        $(".datetimepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            todayHighlight: true,
+            orientation: 'auto bottom',
+            autoclose: true,
+            endDate: 'today',
+            onClose: function () {
+                $(this).focus();
+            },
+            onSelect: function () {
+                $(this).focus();
+            },
+        })
+.on('hide', function () {
+    if (!this.firstHide) {
+        if (!$(this).is(":focus")) {
+            this.firstHide = true;
+            // this will inadvertently call show (we're trying to hide!)
+            this.focus();
+        }
+    } else {
+        this.firstHide = false;
+    }
+})
+.on('show', function () {
+    if (this.firstHide) {
+        // careful, we have an infinite loop!
+        $(this).datepicker('hide');
+    }
+});
+
+        $("#Idempid").attr("disabled", true);
+        if ($("#Idemailaddress").val() != "") {
+            $("#Idemailaddress").attr("disabled", true);
+        }
+
+        if ($("#Idusername").val() != "") {
+            $("#Idusername").attr("disabled", true);
+        }
+
+       // $("#Idusername").attr("disabled", true);
+        var flagFocus = false;
+
+        $("input").focusout(function () {
+            if (this.value != "") {
+                if ($(this).parent().hasClass("has-error")) {
+                    flagFocus = true;
+                    $(this).parent().removeClass("has-error")
+                    $(this).parent().addClass("has-success")
+                }
+            }
+            else {
+                if ($(this).parent().hasClass("has-error") || flagFocus == true) {
+                    $(this).parent().removeClass("has-success")
+                    $(this).parent().addClass("has-error")
+                    flagFocus = false;
+                }
+            }
+        });
+        $("select").change(function () {
+            if (this.value == "") {
+                if ($(this).parent().hasClass("has-success")) {
+                    flagFocus = true;
+                    $(this).parent().removeClass("has-success")
+                    $(this).parent().addClass("has-error")
+                }
+            }
+            else {
+                if ($(this).parent().hasClass("has-success") && flagFocus == true) {
+                    $(this).parent().removeClass("has-error")
+                    $(this).parent().addClass("has-success")
+                }
+            }
+        })
+        $("#Idsubmitbtn").on("click", function () {
+            $("body").scrollTop(0);
+        });
+    });
+
+
+    $("#Idcontactno").on('paste keypress', (function (e) {
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!/^[0-9]{1,15}$/.test(value)) {
+            e.preventDefault();
+        }
+    }));
+
+    $("#Idextension").on('paste keypress', (function (e) {
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!/^[0-9]{1,10}$/.test(value)) {
+            e.preventDefault();
+        }
+    }));
+
+    $("#Idofficeno").on('paste keypress', (function (e) {
+        var key;
+        if (e.which) {
+            key = String.fromCharCode(e.which);
+        } else {
+            key = e.originalEvent.clipboardData.getData('Text');
+        }
+        var value = $(this).val() + key;
+        if (!/^[0-9]{1,10}$/.test(value)) {
+            e.preventDefault();
+        }
+    }));
+    function GetState() {
+        // alert("+++++");
+
+        var Cid = $("#PresentCountry").find("option:selected").prop("value");
+        var Cid1 = $("#PermanentCountry").find("option:selected").prop("value");
+
+        //  alert(Cid);
+
+        if (Cid !== "" && Cid1 == "") {
+            $('#Presentstate').empty();
+            $('#Presentstate').select2();
+            var url2 = '@Url.Action("GetStates", "Users")';
+
+            $.get(url2, { CountryId: Cid }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#Presentstate").html(items.join(' '));
+                $("#Presentstate").select2();
+
+
+
+            });
+
+
+
+
+
+        }
+
+        if (Cid1 !== "") {
+
+            $('#Permanentstate').empty();
+            $('#Permanentstate').select2();
+
+            var url2 = '@Url.Action("GetStates", "Users")';
+
+            $.get(url2, { CountryId: Cid1 }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#Permanentstate").html(items.join(' '));
+                $("#Permanentstate").select2();
+
+
+
+            });
+
+
+
+
+
+        }
+
+
+    }
+
+    function GetCity() {
+        //  alert("+++++");
+
+        var Cid = $("#Presentstate").find("option:selected").prop("value");
+        var Cid1 = $("#Permanentstate").find("option:selected").prop("value");
+        //  alert(Cid);
+
+        if (Cid !== "" && Cid1 == "") {
+            $('#PresentCity').empty();
+            $('#PresentCity').select2();
+            var url2 = '@Url.Action("GetCity", "Users")';
+
+            $.get(url2, { StateId: Cid }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#PresentCity").html(items.join(' '));
+                $("#PresentCity").select2();
+
+
+
+            });
+        }
+
+        if (Cid1 !== "") {
+
+
+
+            $('#PermanentCity').empty();
+            $('#PermanentCity').select2();
+
+            var url2 = '@Url.Action("GetCity", "Users")';
+
+            $.get(url2, { StateId: Cid1 }, function (data) {
+
+                var items = [];
+                var itemsGroup = [];
+                items.push("");
+                itemsGroup.push("");
+                itemsGroup.push("<option value=0>--Select--</option>");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+
+                $("#PermanentCity").html(items.join(' '));
+                $("#PermanentCity").select2();
+
+
+
+            });
+
+
+
+
+
+        }
+
+    }
+
+    
+
+
+    function SaveAddUser() {
+
+
+        var checkValidation = true;
+
+        var FirstName = $("#Idfirstname").val();
+        var FirstNametrim = FirstName.replace(/\s/g, "").length;
+        var Middlename = $("#Idmiddlename").val();
+        var Middlenametrim = Middlename.replace(/\s/g, "").length;
+        var LastName = $("#Idlastname").val();
+        var LastNametrim = LastName.replace(/\s/g, "").length;
+        var Empid = $("#Idempid").val();
+        var EmpidTrim = Empid.replace(/\s/g, "").length;
+        var contactexp = /^[7-9][0-9]{9}$/;
+        var phone = $("#Idcontactno").val();
+
+        var Ephone = $("#EmergencyContactNumber").val();
+        var value = $("#Iddateofjoin").val();
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        var today = dd + '/' + mm + '/' + yyyy;
+        var startDate = $("#Iddateofjoin").val();
+        var splitedStartDate = startDate.split("-");
+        var endDate = today;
+        var splitedEndDate = endDate.split("/");
+        var startDateTime = new Date(splitedStartDate[2], splitedStartDate[1] - 1, splitedStartDate[0]);
+        var endDateTime = new Date(splitedEndDate[2], splitedEndDate[1] - 1, splitedEndDate[0]);
+        var regexIpaddress = /^(([01]?\d\d?|2[0-4]\d|25[0-5])\.){3}([01]?\d\d?|25[0-5]|2[0-4]\d)$/;
+
+        if (document.getElementById('Iddepartment').value == "0" || document.getElementById('Idworkplace').value == ""
+            || document.getElementById('Iddesignation').value == "0" || document.getElementById('RollName').value == "0" || document.getElementById('RollName').value == ""
+            || EmpidTrim == "" || document.getElementById('Idusername').value == "" || FirstNametrim == "" || LastNametrim == "" || document.getElementById('Marital').value == "" || document.getElementById('Marital').value == "0"
+            || document.getElementById('Iddateofbirth').value == "" || document.getElementById('Idgender').value == "" || phone.length < 10 || Ephone.length < 10
+
+            || document.getElementById('Iddateofjoin').value == "" || document.getElementById('Idreportingperson').value == "" || document.getElementById('Idemailaddress').value == ""
+            || startDateTime > endDateTime || document.getElementById('Idcontactno').value == "" || !contactexp.test(phone) 
+            || document.getElementById('PermanentAddress1').value == "" ) {
+
+            checkValidation = true;
+
+            if (EmpidTrim == "") {
+                document.getElementById("span_empid").innerHTML = "Enter employee id";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_empid").innerHTML = "";
+            }
+            if (document.getElementById('Iddateofjoin').value == "") {
+                document.getElementById("span_dateofjoin").innerHTML = "Select date of join";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_dateofjoin").innerHTML = "";
+            }
+            if (document.getElementById('Idreportingperson').value == "") {
+
+                document.getElementById("span_reportingperson").innerHTML = "Select reporting person";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_reportingperson").innerHTML = "";
+            }
+            if (document.getElementById('Idworkplace').value == "") {
+                document.getElementById("span_workplace").innerHTML = "Select work place ";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_workplace").innerHTML = "";
+            }
+            if (startDateTime > endDateTime) {
+                document.getElementById("span_dateofjoin").innerHTML = "Joining date is greater than todays date";
+                checkValidation = false;
+            }
+            if (FirstNametrim == "") {
+                document.getElementById("span_firstname").innerHTML = "Enter first name ";
+                checkValidation = false;
+            }
+            else
+                document.getElementById("span_firstname").innerHTML = "";
+            if (LastNametrim == "") {
+                document.getElementById("span_lastname").innerHTML = "Enter last name ";
+                checkValidation = false;
+            }
+            else
+                document.getElementById("span_lastname").innerHTML = "";
+            if (document.getElementById('Idgender').value == "") {
+                document.getElementById("span_gender").innerHTML = "Select gender";
+                checkValidation = false;
+            }
+            else
+                document.getElementById("span_gender").innerHTML = "";
+            //if (document.getElementById('Idmaritalstatus').value == "")
+            //    document.getElementById("span_marital").innerHTML = "Select Maritial Status";
+            //else
+            //    document.getElementById("span_marital").innerHTML = "";
+            //if (document.getElementById('Idbranchname').value == "0")
+            //    document.getElementById("span_branch").innerHTML = "Select Branch";
+            //else
+            //    document.getElementById("span_branch").innerHTML = "";
+            if (document.getElementById('Iddepartment').value == "0") {
+                document.getElementById("span_department").innerHTML = "Select department";
+                checkValidation = false;
+            }
+            else
+                document.getElementById("span_department").innerHTML = "";
+            if (document.getElementById('Iddesignation').value == "0") {
+                document.getElementById("span_designation").innerHTML = "Select designation";
+                checkValidation = false;
+            }
+            else
+                document.getElementById("span_designation").innerHTML = "";
+            if (document.getElementById('Iddateofbirth').value == "") {
+                document.getElementById("span_dateofbirth").innerHTML = "Select date of birth";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_dateofbirth").innerHTML = "";
+            }
+            if (document.getElementById('Idusername').value == "") {
+                document.getElementById("span_username").innerHTML = "Enter user name";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_username").innerHTML = "";
+            }
+            if (document.getElementById('Idcontactno').value == "") {
+                document.getElementById("span_contactno").innerHTML = "Enter mobile number";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_contactno").innerHTML = "";
+            }
+            if (document.getElementById('Idemailaddress').value == "") {
+                document.getElementById("span_emailaddress").innerHTML = "Enter email address";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_emailaddress").innerHTML = "";
+            }
+
+            //if (document.getElementById('BloodGroup').value == "" || document.getElementById('BloodGroup').value == null) {
+
+            //    document.getElementById("span_blood").innerHTML = "Select blood group";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_blood").innerHTML = "";
+            //}
+
+
+            //if (document.getElementById('MotherName').value == "") {
+            //    document.getElementById("span_mother").innerHTML = "Enter mother name";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_mother").innerHTML = "";
+            //}
+
+            //if (document.getElementById('FatherName').value == "") {
+            //    document.getElementById("span_father").innerHTML = "Enter father name";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_father").innerHTML = "";
+            //}
+            //if (document.getElementById('BirthPlace').value == "") {
+            //    document.getElementById("span_birth").innerHTML = "Enter birth place";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_birth").innerHTML = "";
+            //}
+
+            //if (document.getElementById('Nationality').value == "") {
+            //    document.getElementById("span_nationality").innerHTML = "Select nationality";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_nationality").innerHTML = "";
+            //}
+
+
+            //if (document.getElementById('Religious').value == "") {
+            //    document.getElementById("span_religious").innerHTML = "Select religious";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_religious").innerHTML = "";
+            //}
+
+
+            //if (document.getElementById('PresentAddress1').value == "") {
+            //    document.getElementById("span_address1").innerHTML = "Enter present address 1";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_address1").innerHTML = "";
+            //}
+
+
+            //if (document.getElementById('PresentCountry').value == "") {
+            //    document.getElementById("span_presentcountry").innerHTML = "Select present country";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_presentcountry").innerHTML = "";
+            //}
+
+
+
+            //if (document.getElementById('Presentstate').value == "" || document.getElementById('Presentstate').value == "0") {
+            //    document.getElementById("span_presentstate").innerHTML = "Select present state";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_presentstate").innerHTML = "";
+            //}
+
+            //if (document.getElementById('PresentCity').value == "" || (document.getElementById('PresentCity').value == "0")) {
+            //    document.getElementById("span_presentcity").innerHTML = "Select present city";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_presentcity").innerHTML = "";
+            //}
+
+
+             var pat1 = /^\d{6}$/;
+            var pat2 = /^\d{10}$/;
+            var pin_code = document.getElementById("PresentPinCode");
+            var permanentpin_code = document.getElementById("PermanentPinCode");
+            //if (document.getElementById('PresentPinCode').value == "" || document.getElementById('PresentPinCode').value == null) {
+
+            //    document.getElementById("span_pincode").innerHTML = "Enter Pin Code";
+            //    checkValidation = false;
+            //}
+            if (document.getElementById('PresentPinCode').value != "") {
+                if (!pat1.test(pin_code.value)) {
+
+                    document.getElementById("span_pincode").innerHTML = "Enter 6 digit Pin Code";
+                    checkValidation = false;
+
+                }
+            }
+            //else {
+            //    document.getElementById("span_pincode").innerHTML = "";
+            //}
+
+//            if (document.getElementById('PermanentAddress1').value == "") {
+//                document.getElementById('span_Permanent').innerHTML = "Enter Permanent address 1";
+//                checkValidation = false;
+//            }
+
+//            else {
+//                document.getElementById('span_Permanent').innerHTML = "";
+//            }
+
+
+            //if (document.getElementById('PermanentCountry').value == "") {
+            //    document.getElementById("span_Permanentcountry").innerHTML = "Select permanent country";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_Permanentcountry").innerHTML = "";
+            //}
+
+
+
+            //if (document.getElementById('Permanentstate').value == "" || document.getElementById('Permanentstate').value == "0") {
+            //    document.getElementById("span_Permanentstate").innerHTML = "Select permanent state";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_Permanentstate").innerHTML = "";
+            //}
+
+
+
+            //if (document.getElementById('PermanentCity').value == "" || document.getElementById('PermanentCity').value == "0") {
+            //    document.getElementById("span_Permanentcity").innerHTML = "Select permanent city";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_Permanentcity").innerHTML = "";
+            //}
+
+
+
+
+           // if (document.getElementById('PermanentPinCode').value == "" || document.getElementById('PermanentPinCode').value == null) {
+               // document.getElementById("span_Permanentpincode").innerHTML = "Enter Pin Code ";
+                //checkValidation = false;
+            //}
+            if (document.getElementById('PermanentPinCode').value != "") {
+                if (!pat1.test(permanentpin_code.value)) {
+                    document.getElementById("span_Permanentpincode").innerHTML = "Enter 6 digit Pin Code";
+                    checkValidation = false;
+                }
+            }
+            //else {
+            //    document.getElementById("span_Permanentpincode").innerHTML = "";
+          //  }
+
+
+            if (document.getElementById('RollName').value == "0" || document.getElementById('RollName').value == "") {
+                document.getElementById("RollNames").innerHTML = "Select Role Name";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("RollNames").innerHTML = "";
+            }
+
+
+            //if (document.getElementById('EmergencyContactName').value == "") {
+            //    document.getElementById("span_emer").innerHTML = "Enter emergency contact name";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_emer").innerHTML = "";
+            //}
+
+            if (document.getElementById('Marital').value == "" || document.getElementById('Marital').value == "0") {
+                document.getElementById("span_Marital").innerHTML = "Select marital status";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_Marital").innerHTML = "";
+            }
+
+            //if (document.getElementById('RelationShipName').value == "") {
+            //    document.getElementById("span_emerrel").innerHTML = "Enter relationship name";
+            //    checkValidation = false;
+            //}
+            //else {
+            //    document.getElementById("span_emerrel").innerHTML = "";
+            //}
+
+
+            //if (document.getElementById('EmergencyContactNumber').value == "") {
+            //    document.getElementById("span_emercontactno").innerHTML = " Enter emergency contact number";
+            //    checkValidation = false;
+            //}
+            if (document.getElementById('EmergencyContactNumber').value != "") {
+                if (Ephone.length < 10) {
+                    document.getElementById("span_emercontactno").innerHTML = "Enter minimum 10 numbers";
+                    checkValidation = false;
+                }
+            }
+            //else {
+            //    document.getElementById("span_emercontactno").innerHTML = "";
+            //}
+
+
+            if (phone.length < 10) {
+                document.getElementById("span_contactno").innerHTML = "Enter minimum 10 numbers";
+                checkValidation = false;
+            }
+            else {
+                document.getElementById("span_contactno").innerHTML = "";
+            }
+
+            //if ($("#Idcontactno").val() != '') {
+            //    if (!contactexp.test(phone))
+            //        document.getElementById("span_contactno").innerHTML = "Invalid Mobile Number";
+            //    else
+            //        document.getElementById("span_contactno").innerHTML = "";
+            //}
+
+            //if ($("#EmergencyContactNumber").val() != '') {
+            //    if (!contactexp.test(phone))
+            //    {
+            //        document.getElementById("span_contactno").innerHTML = "Invalid Mobile Number";
+
+            //        checkValidation = false;
+            //    }
+            //    else
+            //        document.getElementById("span_contactno").innerHTML = "";
+            //}
+
+        }
+
+        if (checkValidation == true) {
+            var values =
+                        {
+
+                            "EmpID": $("#Idempid").val(),
+                            "EMPCODE": $("#Idempcode").val(),
+                            "DesignationID": $("#Iddesignation").find("option:selected").val(),
+                            "RoleName": $("#Iddesignation").find("option:selected").text(),
+                            "DepartmentId": $("#Iddepartment").find("option:selected").val(),
+                            "DepartmentName": $("#Iddepartment").find("option:selected").text(),
+                            "GenderID": $("#Idgender").find("option:selected").val(),
+                            "GenderName": $("#Idgender").find("option:Selected").text(),
+                            "FirstName": $("#Idfirstname").val(),
+                            "MiddleName": $("#Idmiddlename").val(),
+                            "LastName": $("#Idlastname").val(),
+                            "DateOfJoin": $('#Iddateofjoin').val(),
+                            "DateOfBirth": $('#Iddateofbirth').val(),
+                            "EmailAddress": $("#Idemailaddress").val(),
+                            "ExperienceMonth": $("#Idexpmonth").find("option:selected").val(),
+                            "ExperienceYear": $("#Idexpyear").find("option:selected").val(),
+                            "Tecnology": $("#Idskills").val(),
+                            "IsActive": true,
+                            "WorkplaceId": $("#Idworkplace").find("option:selected").val(),
+                            "WorkPlace": $("#Idworkplace").find("option:selected").text(),
+                            "MaritalStatusId": $("#Marital").find("option:selected").val(),
+                            "Marital": $("#Marital").find("option:selected").text(),
+                            "BranchID": $("#Idbranchname").find("option:selected").val(),
+                            "BranchName": $("#Idbranchname").find("option:selected").prop("value"),
+                            //"UserId": $("#Idreportingperson").val(),
+
+                            //added on 22/09
+                            "UserId": $("#userid").val(),
+
+                            //added on 19/09
+                            "UserId": $("#userid").val(),
+
+                            "multiselectemployees": $("#Idreportingperson").val().toString(),
+                            "SelectedEmpList": $("#Idreportingperson").val(),
+                            // "IPAddress": $("#Idipaddress").val(),
+                            // "MachineName": $("#Idmachinename").val(),
+                            "ContactNo": $("#Idcontactno").val(),
+                            //"PermanentAddress": $("#Idpermanentaddress").val(),
+                            //"OfficeSkypeId": $("#Idofficeskypeid").val(),
+                            "GroupId": $("#Idgroup").find("option:selected").val(),
+                            "UserName": $("#Idusername").val(),
+                            "RegionId": $("#Idregion").find("option:selected").val(),
+                            // "OfficeNo": $("#Idofficeno").val(),
+                            //"Extension": $("#Idextension").val(),
+                            "flag": $("#flag").val(),
+                            "quick": $("#quick").val(),
+
+
+                            "RollName": $("#RollName").find("option:Selected").text(),
+                            "RollID": $("#RollName").find("option:selected").val(),
+                            "BloodGroup": $("#BloodGroup").val(),
+                            "FatherName": $("#FatherName").val(),
+                            "MotherName": $("#MotherName").val(),
+                            "BirthPlace": $("#BirthPlace").val(),
+                            "Nationality": $("#Nationality").find("option:Selected").text(),
+                            "NationalityID": $("#Nationality").find("option:selected").val(),
+                            "Religious": $("#Religious").find("option:Selected").text(),
+                            "ReligiousID": $("#Religious").find("option:selected").val(),
+                            "SpouseName": $("#SpouseName").val(),
+                            "NoOfChild": $("#NoOfChild").find("option:Selected").text(),
+                            "AnniversaryDate": $("#AnniversaryDate").val(),
+                            "PresentAddress1": $("#PresentAddress1").val(),
+                            "PresentAddress2": $("#PresentAddress2").val(),
+                            "PresentAddress3": $("#PresentAddress3").val(),
+                            "PresentCity": $("#PresentCity").find("option:Selected").text(),
+                            "PresentCityID": $("#PresentCity").find("option:selected").val(),
+                            "PresentCountry": $("#PresentCountry").find("option:Selected").text(),
+                            "PresentCountryID": $("#PresentCountry").find("option:selected").val(),
+                            "Presentstate": $("#Presentstate").find("option:Selected").text(),
+                            "PresentstateID": $("#Presentstate").find("option:selected").val(),
+                            "PresentPinCode": $("#PresentPinCode").val(),
+                            "PermanentAddress1": $("#PermanentAddress1").val(),
+                            "PermanentAddress2": $("#PermanentAddress2").val(),
+                            "PermanentAddress3": $("#PermanentAddress3").val(),
+                            "PermanentCity": $("#PermanentCity").find("option:Selected").text(),
+                            "PermanentCityID": $("#PermanentCity").find("option:selected").val(),
+                            "PresentCountryID": $("#PermanentCountry").find("option:Selected").text(),
+                            "PermanentCountry": $("#PermanentCountry").find("option:selected").val(),
+                            "PermanentstateID": $("#Permanentstate").find("option:selected").val(),
+                            "Permanentstate": $("#Permanentstate").find("option:Selected").text(),
+                            "PermanentPinCode": $("#PermanentPinCode").val(),
+                            "EmergencyContactName": $("#EmergencyContactName").val(),
+                            "Emergency": $("#EmergencyContactNumber").val(),
+                            "RelationShipID": $("#RelationShipName").find("option:selected").val(),
+                            "RelationShipName": $("#RelationShipName").find("option:Selected").text(),
+                            "Block": document.getElementById('switch-input').checked,
+
+
+
+
+                        }
+
+            var opts = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "toastClass": "White",
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            $.ajax({
+                url: "../../Users/EditUser/",
+                type: 'POST',
+                cache: false,
+                data: values,
+                global: false,
+                success: function (result) {
+                    if (result === "EmpIDCharc") {
+                        document.getElementById("span_empid").innerHTML = "Numbers accepts only upto five digits";
+                    }
+                    else if (result === "EmailAddress") {
+                        document.getElementById("span_emailaddress").innerHTML = "Enter valid email address";
+                    }
+                    else if (result === "EmailAddressExisting") {
+                        document.getElementById("span_emailaddress").innerHTML = "Email Address Already Existing";
+                    }
+                    else if (result === "EmpIDExisting") {
+                        document.getElementById("span_emailaddress").innerHTML = "Employee ID Already Existing";
+                    }
+                    else {
+                        window.location.href = '@Url.Action("ManageUsers", "Users")';
+                                }
+                            },
+                        });
+        }
+    }
+    function GetDepartments() {
+
+        var Bid = $("#Idbranchname").find("option:selected").prop("value");
+
+        if (Bid !== "") {
+
+            var url2 = '@Url.Action("GetDepartments", "Users")';
+
+            $.get(url2, { BranchId: Bid }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#Iddepartment").html(items.join(' '));
+                $("#Iddepartment").select2();
+            });
+
+            var url3 = '@Url.Action("GetPersons", "Users")';
+            $.get(url3, { BranchId: Bid }, function (data) {
+
+                var items = [];
+                items.push("");
+                items.push("<option value=0>--Select--</option>");
+
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#Idreportingperson").html(items.join(' '));
+                $("#Idreportingperson").select2();
+            });
+        }
+    }
+
+    function Chkstatus() {
+        //  var status = document.getElementById('Marital').value;
+        if (document.getElementById('Marital').value == '2')
+        {
+            $("#SpouseName").val("");
+            $("#AnniversaryDate").val("");
+            $("#NoOfChild").val('0');
+            $("#NoOfChild").select2();
+
+            $("#SpouseName").prop('disabled', true);
+            $("#NoOfChild").prop('disabled', true);
+            $("#AnniversaryDate").prop('disabled', true);
+        }
+        else {
+            $("#SpouseName").prop('disabled', false);
+            $("#NoOfChild").prop('disabled', false);
+            $("#AnniversaryDate").prop('disabled', false);
+
+        }
+    }
+    //ebds
+
+    function GetGroups() {
+
+        var Did = $("#Iddepartment").find("option:selected").prop("value");
+
+        if (Did !== "") {
+
+            var url2 = '@Url.Action("GetGroups", "Users")';
+
+        $.get(url2, { DepartmentId: Did }, function (data) {
+
+            var items = [];
+            items.push("");
+            items.push("<option value=0>--Select--</option>");
+
+            $.each(data, function () {
+                items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+            });
+            $("#Idgroup").html(items.join(' '));
+            $("#Idgroup").select2();
+        });
+    }
+}
+</script>
+
+
+
+
+@section scripts
+{
+
+
+    <script type="text/javascript">
+
+
+        var tour = {
+            id: "hello-hopscotch",
+            steps: [
+
+                {
+                    //-----1-----//
+
+                },
+
+                {
+                    //-----2-----//
+
+
+                },
+
+
+                 {
+                     //-----3-----//
+
+
+                 },
+                  {
+                      //-----4-----//
+
+
+                  },
+                  {
+                      //-----5-----//
+
+
+                  },
+                     {
+                         //-----6-----//
+
+
+                     },
+              {
+                  //-----7-----//
+
+              },
+              {
+                  //-----8-----//
+
+              },
+               {
+                   //-----9-----//
+               },
+               {
+                   //-----10-----//
+
+               },
+                 {
+                     //-----11-----//
+
+
+
+
+
+                 },
+                 {
+                     //-----12----//
+                     target: 'Idsubmitbtn',
+                     title: '',
+                     content: 'Fill Out The Forms ,Then Hit Save!',
+                     placement: 'left',
+                     arrowOffset: 1,
+                     yOffset: -20,
+                     multipage: true,
+                     onNext: function () {
+
+                         window.location.href = '@Url.Action("ManageUsers", "Users")';
+                     }
+
+                 },
+                 {
+
+                 },
+
+            ]
+
+
+        };
+
+
+             if (hopscotch.getState() === "hello-hopscotch:11") {
+                 hopscotch.startTour(tour);
+             }
+
+    </script>
+}

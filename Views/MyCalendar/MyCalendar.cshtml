@@ -1,0 +1,586 @@
+﻿@model IEnumerable<DSRCManagementSystem.Models.CalendarEventModel>
+@{
+    ViewBag.Title = "My Calendar";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section AddToHead
+{
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+
+        .tooltip-inner {
+            max-width: 350px;
+        }
+
+        .colorClass1 {
+            background-color: rgb(245,105,84);
+            border-color: rgb(245,105,84);
+        }
+
+        .colorClass2 {
+            background-color: rgb(0,141,76);
+            border-color: rgb(12,158,55);
+        }
+
+        .colorClass3 {
+            background-color: rgb(0,115,183);
+            border-color: rgb(0,84,168);
+        }
+
+        .colorClass4 {
+            background-color: rgb(153,50,204);
+            border-color: rgb(153,50,204);
+        }
+
+        .colorClass5 {
+            background-color: rgb(255,105,180);
+            border-color: rgb(255,105,180);
+        }
+
+        .colorClass6 {
+            background-color: rgb(50,200,200);
+            border-color: rgb(50,200,200);
+        }
+
+        .red {
+            width: 10px;
+            height: 10px;
+            background: red;
+            margin-top: 1.5px;
+        }
+
+        .blue {
+            width: 10px;
+            height: 10px;
+            background: #0073B7;
+            margin-top: 1.5px;
+        }
+
+        .green {
+            width: 10px;
+            height: 10px;
+            background: green;
+            margin-top: 1.5px;
+        }
+
+        .voilet {
+            width: 10px;
+            height: 10px;
+            background: #9932CC;
+            margin-top: 1.5px;
+        }
+
+        .pink {
+            width: 10px;
+            height: 10px;
+            background: #FF69B4;
+        }
+
+        .MediumTurquoise {
+            width: 10px;
+            height: 10px;
+            background: #32C8C8;
+            margin-top: 1.5px;
+        }
+
+        /*bootstrap tooltip*/
+        .tooltip-inner {
+            white-space: pre-wrap;
+            text-align: justify;
+        }
+
+        div.tooltip-inner {
+            width: auto;
+            height: auto;
+        }
+
+        .fc-event-container {
+            cursor: pointer;
+        }
+
+        .square1 {
+            width: 10px;
+            height: 10px;
+            background: red;
+            margin-top: 1.5px;
+        }
+
+        .square2 {
+            width: 10px;
+            height: 10px;
+            background: #0073B7;
+            margin-top: 1.5px;
+        }
+
+        th {
+            text-align:center;
+        }
+        td {
+            text-align:center;
+        }
+
+          .dropdown-menu {
+    background-color: white;
+}    
+
+    </style>
+<script src="~/Content/moment.js" type="text/javascript"></script>
+<script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+<script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+<link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="fc-toolbar">
+    <div class="fc-left">
+@*        <ol class="breadcrumb bc-3">
+            <li><a href="@Url.Action("mycalendar","mycalendar")">Calendar</a> </li>
+            <li><b>My Calendar</b> </li>
+        </ol>*@
+    <p>
+        <a href="@Url.Action("mycalendar","mycalendar")"style="color:black ">
+            Calendar
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>My Calendar</b>
+    </p>
+    </div>
+</div>
+<br />
+<br />
+
+<div class="row">
+    <div class="fc-toolbar">
+        <div class="col-md-12 fc-left">
+            <div class="col-md-2">
+                <div class="col-md-1 square2">
+                </div>
+                <div class="col-md-1">Task</div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+@if (ViewBag.Aurthorized == true)
+{
+    <div class="panel-body">
+        <div style="float:right">
+            <button class="btn btn-blue" type="button" style="font-weight: bold;" onclick="CreateEvent()">
+                Create Event
+            </button>
+        </div>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@{int SNO = 1;}
+<br />
+
+<div class="fc-toolbar">
+    <div class="fc-center"></div>
+    <div class="fc-right" style="margin-left: 50em;">
+        @if (ViewBag.IsReportingPerson == true)
+        {
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    @Html.Label("Reporting Persons", new { @class = "control-label", @style = "padding:5px;" })
+                </div>
+                <div class="col-md-3  col-centered">
+                    @Html.DropDownList("ReportingUserid", ViewBag.ReportingPersons as SelectList, "---Select---", new
+                {
+                    @id = "IdReportingPerson",
+                    @name = "ReportingUserid",
+                    @class = "form-control",
+                    @style = "width:170px"
+                })
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="fc-clear"></div>
+<br />
+<br />
+@section Scripts
+{
+    @*<script src="~/Scripts/jquery-1.7.1.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.js"></script>
+    <script src="../../Content/Calender/moment.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="../../Content/Calender/jquery-ui.custom.min.js" type="text/javascript"></script>
+    <link href="../../Content/Calender/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Template/js/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="../../Content/bootstrap/bootbox.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/toastr.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/select2/select2.min.js" type="text/javascript"></script>
+    <script src="~/Content/moment.js" type="text/javascript"></script>*@
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        loadCalendar();
+
+        $("#IdReportingPerson").select2();
+
+    });
+
+    $("#IdReportingPerson").change(function () {
+        $('#calendar').fullCalendar('removeEventSource', '/MyCalendar/GetEvents');
+
+        $('#calendar').fullCalendar("addEventSource",
+        {
+            url: "/MyCalendar/GetEvents",
+            type: "GET",
+            data: function () {
+                return {
+                    ReportpersonId: parseInt($("#IdReportingPerson").val())
+                };
+            }
+        });
+    });
+    function loadCalendar() {
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,timelineDay,timelineThreeDays,agendaWeek,basicDay',//'month,basicWeek,basicDay'
+            },
+            defaultDate: new Date(),
+            scrollTime: '00:00',
+            aspectRatio: 1.5,
+            defaultView: 'month',
+            //views: {
+            //    timelineThreeDays: {
+            //        type: 'timeline',
+            //        duration: { days: 3 }
+            //    }
+            //},
+            //editable: true,
+            //weekNumbers: true,
+            eventLimit: true,
+            displayEventTime: false,
+            displayEventEnd: false,
+            ignoreTimezone: true,
+            timezone: 'local',
+            events:
+                {
+                    url: "/MyCalendar/GetEvents",
+                    type: 'GET',
+                    data: function () { return { LeaveTypeId: parseInt($("#IdReportingPerson").val()) }; },
+                },
+            timeFormat: 'H(:mm)',
+            disableDragging: true,
+            eventRender: function (event, element) {
+                var convstart = new Date(event.start).toString();
+                var convend = new Date(event.end).toString();
+
+                var myArray = [];
+
+                @foreach (var d in @ViewBag.calendar)
+            {
+                @:myArray.push("@d");
+                                                                                }
+                if (jQuery.inArray(($('#EditId').val(event.id).val()), myArray) > -1) {
+                $(element).tooltip({
+                   
+                    title: "Title: " + event.title + "\nDescription: " + event.description + "\nStartDate:" + moment(convstart).format("DD/MM/YYYY") + "\nEndDate:" + moment(convend).format("DD/MM/YYYY") + "\nStartTime:" + moment(convstart).format("HH:mm") + "\nEndTime:" + moment(convend).format("HH:mm") + "\nCreated By: " + event.name, container: "body"
+                });
+                    }else
+                    {
+                    $(element).tooltip({
+
+                        title: "Description: " + event.description + "\nStart Date:" + moment(convstart).format("DD/MM/YYYY") + "\nCreated By: " + event.name, container: "body"
+                    });
+                    }
+            },
+            eventClick: function (event, element) {
+                var myArray = [];
+
+                @foreach (var d in @ViewBag.calendar)
+            {
+                @:myArray.push("@d");
+                                                                                }
+                $('#EditId').val(event.id);
+                //var check = $('#EditId').val(event.id).val();
+                $('#DeleteId').val(event.id);
+                if (jQuery.inArray(($('#EditId').val(event.id).val()), myArray) > -1) {
+                    $('#EventTitle').html(event.title);
+                    $('#EditEvent').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+                else {
+                    $('#TaskTitle').html(event.title);
+                    $('#CalendarTask').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                }
+            }
+        });
+    }
+        
+    function CreateEvent() {
+        $.ajax({
+            url: "@Url.Action("CreateEvent", "MyCalendar")",
+            type: 'GET', cache: false,
+
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+    function ViewEvent() {
+        var id = $("#EditId").val();
+        $.ajax({
+            url: "@Url.Action("ViewEvent", "MyCalendar")",
+            type: 'GET', cache: false, data: { EventId: id },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+    function EditEvent() {
+        var id = $("#EditId").val();
+        $.ajax({
+            url: "@Url.Action("EditEvent", "MyCalendar")",
+            type: 'GET', cache: false, data: { EventId: id },
+            success: function (result) {
+                $('#PartialSection').html(result);
+                $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+            }
+        });
+    }
+    function DeleteEvent() {
+        var id = $("#DeleteId").val();
+        bootbox.confirm("Are you sure want to delete ?", function (conform) {
+            if (conform) {
+                $.ajax({
+                    url: "../MyCalendar/DeleteEvent/",
+                    type: 'POST', cache: false, data: { EventId: id }, success: function (result) {
+                        var opts = {
+                            "closeButton": true,
+                            "debug": false,
+                            "positionClass": "toast-top-right",
+                            "onclick": null,
+                            "showDuration": "500",
+                            "hideDuration": "1000",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        if (result == "Success") {
+                            toastr.success("Event Deleted successfully!", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    </script>
+}
+<div id='calendar'>
+</div>
+
+<div id="EditEvent" class="modal fade">
+    <div class="modal-dialog">
+        @{
+            int? eventid = Convert.ToInt32(Session["EventID"]);
+            DSRCManagementSystem.DSRCManagementSystemEntities1 objdb = new DSRCManagementSystem.DSRCManagementSystemEntities1();
+            var eventCreator = objdb.CalenderEvents.Where(c => c.EventID == eventid).Select(c => c.CreatedBy).FirstOrDefault();
+            
+            if (ViewBag.EventCreator == true)
+            {
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #f0f0f1;">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4 class="modal-title">
+                            Edit/Delete Events
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <table class="table table-bordered datatable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <b>S.No</b>
+                                        </th>
+                                        <th style="text-align: center">
+                                            @Html.Label("Event Name", new { @style = "font-weight:bold" })
+                                        </th>
+                                        <th >Edit</th>
+                                        <th >Delete</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>@SNO</td>
+                                    <td id="EventTitle" style="word-break: break-all;text-align:left"></td>
+                                    <td style="text-align:center">
+                                        <input type="hidden" id="EditId" />
+                                        <button type="button" class="btn btn-blue" data-toggle="tooltip" title="Edit" onclick="EditEvent()">
+                                            <i class="entypo-pencil"></i>
+                                        </button>
+                                    </td>
+                                    <td style="text-align: center;font-weight:bold">
+                                        <input type="hidden" id="DeleteId" />
+                                        <button type="button" class="btn btn-red" data-toggle="tooltip" title="Delete" onclick="DeleteEvent()">
+                                            <i class="entypo-cancel"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (ViewBag.EventMember == true)
+            {
+
+                <div class="modal-content" id="">
+                    <div class="modal-header" style="background-color: #f0f0f1;">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4 class="modal-title">
+                            View Events
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <table class="table table-bordered datatable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <b>S.No</b>
+                                        </th>
+                                        <th style="text-align: center;">
+                                            @Html.Label("Event Name", new { @style = "font-weight:bold" })
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>@SNO</td>
+                                    <td id="EventTitle" style="word-break: break-all;text-align: left;"></td>
+                                    <td style="font-weight:bold">
+                                        <input type="hidden" id="EditId"  />
+                                        <button type="button" class="btn btn-info" data-toggle="tooltip" title="View" onclick="ViewEvent()">
+                                            <i class="entypo-info"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+        }
+    </div>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="CalendarTask" class="modal fade">
+    <div class="modal-dialog">
+        @{
+
+            <div class="modal-content" id="">
+                <div class="modal-header" style="background-color: #f0f0f1;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title">
+                        Task Events
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <table class="table table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <b>S.No</b>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @Html.Label("Event Name", new { @style = "font-weight:bold" })
+                                    </th>
+                                    <th> @Html.Label("View", new { @style = "font-weight:bold" })</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>@SNO</td>
+                                <td id="TaskTitle" style="word-break: break-all;text-align:left;"></td>
+                                <td style="text-align: center;font-weight:bold">
+                                    @* <input type="hidden" id="EditId" />*@
+                                    <button type="button" class="btn btn-info" data-toggle="tooltip" title="View" onclick="ViewEvent()">
+                                        <i class="entypo-info"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+            </div>
+        </div>
+    </div>
+</div>

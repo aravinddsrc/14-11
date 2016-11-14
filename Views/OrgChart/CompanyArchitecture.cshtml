@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "MembersTimeEntry";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet"
+        type="text/css">
+    <link href="../../Content/Plugins/Organise%20Chart%20Plugin/jquery.orgchart.css"
+        rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <ol class="breadcrumb bc-3">
+        @*<li><a><i class="entypo-home"></i>Home</a> </li>*@
+        <li><a>Company Architecture</a> </li>
+        <li class="active"><strong>Architecture Chart</strong> </li>
+    </ol>
+    <div id="orgChartContainer">
+        <div id="orgChart">
+        </div>
+    </div>
+    <div id="consoleOutput">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel</button>
+        <button type="button" id="btnAddLeaveRequest" class="btn btn-info" onclick=" Test() ">
+            Save</button>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="../../Content/Plugins/Organise%20Chart%20Plugin/jquery.orgchart.js"
+        type="text/javascript"></script>
+    <script type="text/javascript">
+        var testData = [];
+        var chart;
+        function Test() {
+            var jsondata = [];
+            var data = chart.getData();
+            $.each(data, function (key, value) {
+
+                jsondata.push({ "id": value.id, "name": value.name, "parent": value.parent });
+
+            });
+
+        
+                $.ajax({
+                    url: "../../OrgChart/CompanyArchitectureData",
+                    type: 'POST',
+                    cache: false,
+                    data: { jsondata: JSON.stringify(jsondata) },
+                    async: false,
+                    traditional: true,
+                    success: function (result) {
+                    }
+                });
+        
+            $('#orgChart').data();
+        }
+
+        function Changestate() {
+            chart.opts.allowEdit = true;
+        }
+        $(function ($) {
+            
+            var AddedNode = [];
+            $.ajax({
+                url: "../../OrgChart/CompanyArchitectureData",
+                type: 'GET',
+                cache: false,
+                async: false,
+                success: function (result) {
+                    $.each(result, function (key, value) {
+
+                        testData.push({ id: value.id, name: value.name, parent: value.parent });
+                    });
+                }
+            });
+            
+            chart = $('#orgChart').orgChart({
+                data: testData,
+                showControls: true,
+                allowEdit: true,
+                newNodeText: ' .',
+                onAddNode: function (node) {
+                    chart.newNode(node.data.id);
+                },
+                onDeleteNode: function (node) {
+                    chart.deleteNode(node.data.id);
+                },
+
+                onClickNode: function (node) {
+
+                }
+
+            });
+        });
+
+        function log(text) {
+
+            $('#consoleOutput').append('<p>' + text + '</p>')
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿@model IEnumerable<DSRCManagementSystem.SearchResult>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead
+{
+    <script src="../../Content/Template/js/raphael-min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/morris.min.js" type="text/javascript"></script>
+    <style>
+       .dropdown-menu {
+    background-color: white;
+}        
+ </style> 
+}
+@{
+    int SNO = 1;   
+}
+@*<ol class="breadcrumb bc-3">
+        <li><a href="@Url.Action("Skills","Skills")">Skills</a></li>
+    <li class="active"><strong>Search Skill</strong> </li>
+</ol>*@
+     <p>
+        <a href="@Url.Action("Skills","Skills")"style="color:black ">
+            Skills
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Search Skill</b>
+    </p>
+<div style="float: right" class="search-container">
+    @using (Html.BeginForm("SearchSkill", "Skills", FormMethod.Post))
+    { 
+        <input type="text" name="SearchKey" placeholder="Search..." required>
+        <input type="submit" value="Search">
+    }
+</div>
+<br/> <br/>
+<div class="table table-bordered datatable" style="overflow:auto" >
+    <table class="table table-bordered datatable" id="tbl" >
+        <thead>
+            <tr>
+                <th>
+                    S.No
+                </th>
+                <th>
+                    Emp Id
+                </th>
+                <th>
+                    Emp Name
+                </th>
+                <th>
+                    Experience
+                </th>
+                <th>
+                    Phone No
+                </th>
+                <th>
+                    Skypee Id
+                </th>
+                <th>
+                    Technology
+                </th>
+                <th>
+                    Skills
+                </th>
+                <th>
+                   More Details
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(SNO++)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @{
+            if (string.IsNullOrEmpty(item.Experience))
+            {
+                        <label>
+                            -</label>
+            }
+            else
+            {                
+                        @Html.DisplayFor(modelItem => item.Experience)
+            }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNo)
+                </td>
+                <td>
+                    @{
+            if (string.IsNullOrEmpty(item.OfficeSkypeId))
+            {
+                        <label>
+                            -</label>
+            }
+            else
+            {      
+                        @Html.DisplayFor(modelItem => item.OfficeSkypeId)
+            }
+                    }
+                </td>
+                <td>
+                    @{
+            if (string.IsNullOrEmpty(item.Technology))
+            {
+                        <label>
+                            -</label>
+            }
+            else
+            {
+                        @Html.DisplayFor(modelItem => item.Technology)
+            }
+                    }
+                </td>
+                <td>
+                    @{
+            if (String.IsNullOrEmpty(item.Skills))
+            {
+                        <label>
+                            -</label>
+            }
+            else
+            {       
+                        <a onclick='detail("@item.UserID")' style="text-decoration: underline">@Html.DisplayFor(modelItem => item.Skills)
+                        </a>
+            }
+                    }
+                </td>
+                <td>
+                    <a>
+                        @*<button type="button" class="btn btn-info btn-sm btn-block btn-icon icon-left" onclick='Edit("@item.EmpID")'>
+                            <i class="entypo-pencil"></i>More Details
+                        </button>*@
+                        <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-info" onclick='Edit("@item.EmpID")'>
+                                            <i class="entypo-infinity"></i></a>
+
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="tools">
+            <div id="PartialSection">
+                <div id="LoaderContent" style="height: 100%;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="../../Content/Template/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../Content/Template/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        jQuery(document).ready(function ($) {
+            $("#tbl").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "bStateSave": false,
+                "bAutoWidth": false,
+                "columnDefs": [{ bSortable: false, 'aTargets': [8] }, { bSortable: false, 'aTargets': [8]}]
+            });
+            $(".dataTables_wrapper select").select2({
+                //minimumResultsForSearch: -1
+            });
+            $('thead>tr>th').css('text-align', 'center');
+        });
+
+        function Edit(EmpID) {
+            $.ajax({ url: "../../Skills/ShowDetails/",
+                type: 'GET', cache: false, data: { EmpID: EmpID },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo('body').modal({ backdrop: 'static', keyboard: false });
+
+                }
+            });
+        }
+
+        function detail(UserId) {
+            $.ajax({ url: "../../Skills/SkillDetails/",
+                type: 'GET', cache: false, data: { UserId: UserId },
+                success: function (result) {
+                    $('#PartialSection').html(result);
+                    $('#portlet-config').appendTo('body').modal({ backdrop: 'static', keyboard: false });
+
+                }
+            });
+        }
+
+    </script>
+}

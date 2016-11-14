@@ -1,0 +1,353 @@
+﻿@model DSRCManagementSystem.Models.AssignRole
+@{
+    ViewBag.Title = "Assign New Role";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section AddToHead{
+    <script src="../../Completion/multiselect.min.js" type="text/javascript"></script>
+   
+    <script src="../../Completion/multiselect.js" type="text/javascript"></script>
+    }
+
+  <style>
+      .dropdown-menu {
+    background-color: white;
+}   
+        </style> 
+
+   <ol class="breadcrumb bc-3">
+    <li>Administration Setup</li>
+    <li class="active"><strong>Manage Roles</strong> </li>
+</ol>
+     <div class="modal-content">
+        <div class="modal-header" style="background-color: #f0f0f1;">
+           
+            <h4 class="modal-title">
+             Assign Role
+             </h4>
+        </div>
+        <div class="modal-body">
+           @using (Html.BeginForm("AssignNewRole", "ManageRole", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right">
+                        @Html.Label("*", new { @style = "color:#FF0000" }) Required field(s)
+                    </div>
+                </div>
+        <div class="row">
+                 <div class="col-md-4">
+              @Html.Label("Role Name", new { @style = "font-weight:bold;"  })
+              @Html.TextBox("RoleName",(String)@ViewBag.RoleNamedisplay,new { @id = "RoleName", @class = "form-control",disabled="disabled"} )
+                </div>
+            </div>
+               <br/>
+                    <div class="row">
+                    <div class="col-md-4">
+
+                         @if (ViewBag.RoleNamedisplay == ViewBag.DisplayRoleName)
+                       {
+                        <div style="text-align: center;">
+                           
+                              @*@Html.Hidden("RoleId",(int)@ViewBag.Role, new { @id="RoleID"})*@
+                            @Html.HiddenFor(x=>x.RoleID)
+                           
+                             @Html.Label("UnAssigned Employees", new { @style = "float:left;"  })
+                                
+                            @Html.Label("*", new { @style = "color:#FF0000;float:left;" })
+                            @Html.DropDownList("unuserid", (MultiSelectList)ViewBag.UnAssignedEmployees, new { @multiple = "multiple", @class = "form-control", @id = "multiselect", @name = "from", @style = "Height:200Px",disabled="disabled" })
+                        </div>
+                         }
+                         @if (ViewBag.RoleNamedisplay != ViewBag.DisplayRoleName)
+                       {
+                        <div style="text-align: center;">
+                            @Html.HiddenFor(x=>x.RoleID)
+                             @Html.Label("UnAssigned Employees", new { @style = "float:left;"  })
+                            @Html.Label("*", new { @style = "color:#FF0000;float:left;" })
+                            @Html.DropDownList("unuserid", (MultiSelectList)ViewBag.UnAssignedEmployees, new { @multiple = "multiple", @class = "form-control", @id = "multiselect", @name = "from", @style = "Height:200Px" })
+                        </div>
+                         }
+
+                       <span id="Emp1" style="color: Red;"></span>
+                    </div>
+                    <div class="col-md-4" style="text-align: center">
+                        <div style="text-align: center;">
+                            @Html.Label("")
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <button type="button" id="multiselect_rightSelected" class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                        </button>
+                        <button type="button" id="multiselect_leftSelected" class="btn btn-block">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                        </button>
+                    </div>
+                      @if (ViewBag.RoleNamedisplay == ViewBag.DisplayRoleName)
+                       {
+                         <div class="col-md-4">
+                        <div class="form-group">
+                              
+                            @Html.Label("Assigned Employees", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            
+                            <select name="to" id="multiselect_to" class="form-control" multiple="multiple" style="height: 200Px" disabled="disabled">
+                        
+                             
+                                @if (ViewBag.AssignedEmployees != null)
+                                {
+                                    foreach (var item in ViewBag.AssignedEmployees)
+                                    {
+                                        if (item != null)
+                                        { 
+                                    <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                                <span id="message" style="color: Red;"></span>
+                            <span id="Emp" style="color: Red;"></span>
+                        </div>
+                    </div>
+                   }
+                        @if (ViewBag.RoleNamedisplay != ViewBag.DisplayRoleName)
+                       {
+                         <div class="col-md-4">
+                        <div class="form-group">
+                              
+                            @Html.Label("Assigned Employees", new { @class = "control-label" })
+                            @Html.Label("*", new { @style = "color:#FF0000" })
+                            
+                            <select name="to" id="multiselect_to" class="form-control" multiple="multiple" style="height: 200Px">
+                        
+                             
+                                @if (ViewBag.AssignedEmployees != null)
+                                {
+                                    foreach (var item in ViewBag.AssignedEmployees)
+                                    {
+                                        if (item != null)
+                                        { 
+                                    <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                                <span id="message" style="color: Red;"></span>
+                            <span id="Emp" style="color: Red;"></span>
+                        </div>
+                    </div>
+                   }
+                    </div>
+                <br /> <br /> 
+
+            }
+        </div>
+        <div class="modal-footer">
+        
+          @if (ViewBag.RoleNamedisplay == ViewBag.DisplayRoleName)
+                       {
+
+              <button type="button" class="btn btn-default" data-dismiss="modal" onclick='cancel()' disabled="disabled">
+                Reset
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="AssignNew()" disabled="disabled">
+                Save
+            </button>
+          }
+            
+              
+          @if (ViewBag.RoleNamedisplay != ViewBag.DisplayRoleName)
+                       {
+
+              <button type="button" class="btn btn-default" data-dismiss="modal" onclick='cancel()'>
+                Reset
+            </button>
+            <button type="button" id="btnAdd" class="btn btn-info" onclick="AssignNew()">
+                Save
+            </button>
+          }
+            
+           
+        </div>
+         
+         <button class="btn btn-Default" style="float: right; padding-right:10px;margin-top:25px;"   onclick="@("window.location.href='" + @Url.Action("ViewRoles", "ManageRole") + "'")    ;">
+             Back
+           </button>
+    </div>
+    <div class="modal fade in" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="tools">
+                <div id="PartialSection">
+                    <div id="LoaderContent" style="height: 100%;">
+                        <img src="../../Content/Template/images/finalloader.GIF" style="margin-left: 43%;
+                            margin-top: 40%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        var submitform = true;
+        $('#multiselect').multiselect();
+        $('#multiselect').multiselect({
+            startUp: function ($left, $right) {
+                $right.find('option').each(function (index, option) {
+                    $left.find('option[value="' + option.value + '"]').remove();
+                });
+            },
+            beforeMoveToRight: function ($left, $right, options) { return true; },
+            afterMoveToRight: function ($left, $right, options) { },
+            beforeMoveToLeft: function ($left, $right, option) { return true; },
+            afterMoveToLeft: function ($left, $right, option) { },
+            sort: function (a, b) {
+
+                if (a.innerHTML == 'NA') {
+                    return 1;
+                } else if (b.innerHTML == 'NA') {
+                    return -1;
+                }
+                return (a.innerHTML > b.innerHTML) ? 1 : -1;
+            }
+        });
+
+        function load() {
+
+            setTimeout(function () { location.reload(); }, 1000);
+
+        }
+        function cancel() {
+
+            setTimeout(function () { location.reload(); }, 1000);
+        }
+
+        $("#RoleId").on('change', function () {
+
+            var url2 = '@Url.Action("RoleName")';
+
+            $.get(url2, { pid: value }, function (data) {
+                var items = [];
+                items.push("");
+                items.push("<option value='0'> --Select-- </option>");
+                $.each(data, function () {
+                    items.push("<option value=" + this.Value + ">" + this.Text + "</option>");
+                });
+                $("#RoleId").html(items.join(' '));
+
+                $("#RoleId").select2();
+            });
+
+        });
+
+        $("#ProjectId").select2();
+        $("#PhaseId").select2();
+        $("#TaskName").select2();
+
+
+        function AssignNew() {
+          
+            if (document.getElementById('multiselect_to').value == '' && document.getElementById('multiselect').value == '') {
+
+                document.getElementById("message").innerHTML = "Select  Employee";
+                document.getElementById("Emp").innerHTML = "";
+
+            }
+
+            if (document.getElementById('multiselect_to').value == '' ) {
+            }
+            else {
+                $("#multiselect_to option").prop("selected", "selected");
+                var values =
+                           {
+                               "multiselectemployees": $("#multiselect_to").val().toString(),
+                               "SelectedEmpList": $("#multiselect_to").val(),
+                               "RoleId": $("#RoleID").val()
+                           }
+                var opts =
+                       {
+                           "closeButton": true,
+                           "debug": false,
+                           "positionClass": "toast-top-right",
+                           "toastClass": "White",
+                           "onclick": null,
+                           "showDuration": "300",
+                           "hideDuration": "1000",
+                           "timeOut": "2000",
+                           "extendedTimeOut": "1000",
+                           "showEasing": "swing",
+                           "hideEasing": "linear",
+                           "showMethod": "fadeIn",
+                           "hideMethod": "fadeOut"
+                       }
+
+                $.ajax({
+
+                    url: "../../ManageRole/AssignNewRole/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+                        if (result == "Success") {
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                            toastr.success(" Role assigned successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                        if (result.message == "Already") {
+                            toastr.warning(result.name + " Role assigned .", opts);
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('multiselect').value != '' )
+            {
+                $('#multiselect option').prop('selected', true);
+                var values = { "unemployees": $("#multiselect").val().toString(), "RoleId": $("#RoleID").val() }
+
+                var opts =
+                     {
+                         "closeButton": true,
+                         "debug": false,
+                         "positionClass": "toast-top-right",
+                         "toastClass": "White",
+                         "onclick": null,
+                         "showDuration": "300",
+                         "hideDuration": "1000",
+                         "timeOut": "2000",
+                         "extendedTimeOut": "1000",
+                         "showEasing": "swing",
+                         "hideEasing": "linear",
+                         "showMethod": "fadeIn",
+                         "hideMethod": "fadeOut"
+                     }
+
+                $.ajax({
+
+                    url: "../../ManageRole/AssignNewRoles/",
+                    type: 'POST',
+                    cache: false,
+                    data: values,
+                    traditional: true,
+                    global: false,
+                    success: function (result) {
+
+                        if (result == "Success") {
+
+                            $('#portlet-config').appendTo("body").modal({ backdrop: 'static', keyboard: false });
+                            toastr.success(" Role unassigned successfully", opts);
+                            setTimeout(function () { location.reload(); }, 1000);
+                        }
+                        if (result.message == "Already") {
+                            toastr.warning(result.name + " Role assigned .", opts);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+

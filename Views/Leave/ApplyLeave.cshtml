@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Apply Leave";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*<ol class="breadcrumb bc-3">
+    <li><a href="@Url.Action("ApplyLeave", "Leave")">Leave Management</a></li>
+    <li class="active"><strong>Apply Leave</strong></li>                
+</ol>*@
+    <p>
+        <a href="@Url.Action("ApplyLeave","Leave")"style="color:black ">
+            Leave Management
+        </a>
+          &#160;<img src="~/Images/righ-arrow.png" />&#160;
+        <b>Apply Leave</b>
+    </p>
+
+
+
+
+<div class="row">
+
+    
+    @{        
+        <ul class="nav nav-tabs bordered" role="tablist">
+            <!-- available classes "bordered", "right-aligned" -->
+            <li class="active"><a href="#Myleaverequest" data-toggle="tab" role="tab">My Leave Request</a></li>            
+            <li><a href="#Myleavebalance" data-toggle="tab" role="tab">My Leave Balance</a></li>          
+        </ul>
+        
+        }
+        <br />
+                       
+ <div class="panel-body">
+    
+    <div class="clear">
+    </div>
+    
+    <br />
+       
+     <div class="tab-content">
+
+     <div class="tab-pane active" id="Myleaverequest">
+        <div class="row">
+            <div class="col-md-12">
+            <div class="panel-heading">
+            </div>                   
+                @{
+                    Html.RenderAction("LeaveRequests", "Leave");                      
+                }
+            </div>
+        </div>
+     </div>
+
+  
+     <div class="tab-pane" id="Myleavebalance">
+        <div class="row">
+            <div class="col-md-12">
+            <div class="panel-heading">
+            </div>                   
+                @{
+                    var userId = Convert.ToInt32(Session["UserId"]);
+                    var currentYear = DateTime.Today.Year;
+                    Html.RenderAction("LeaveBalance", "Leave", new { years = new List<int>() { currentYear }, userId });   
+                  
+                 }
+     
+
+            </div>
+        </div>
+     </div>   
+     
+     
+  
+
+    </div>
+  </div>
+</div>
+
