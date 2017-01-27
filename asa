@@ -1,0 +1,211 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using Twilio;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Cache;
+
+namespace WSG.Controllers
+{
+
+    public class HomeController : Controller
+    {
+        string userName;
+        string passWord;
+        HttpWebRequest req;
+        CookieContainer cookieCntr;
+        HttpWebResponse response;
+        static string responseee;
+        string url;
+        Dictionary<string, bool> contacts;
+        string WorkingSite = "www";
+        string siteUrl = string.Empty;
+        public ActionResult Index()
+        {
+
+
+            return View();
+        }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+        public ActionResult DashBoard()
+
+        {
+            var client = new TwilioRestClient(Environment.GetEnvironmentVariable("AC3bc92eba7b6dcf69e85b51af77de5e81"), Environment.GetEnvironmentVariable("420f4417b43bfcc87e70bbeed6537891"));
+
+            client.SendMessage("+13057126137", "+918148681001", "Ahoy from Twilio!");
+
+            return View();
+        }
+
+
+        public ActionResult New()
+        {
+            try
+            {
+
+                siteUrl = string.Format("http://{0}.160by2.com", WorkingSite);
+
+
+
+                userName = "8148681001";
+                passWord = "4225";
+                string msg = "Hi";
+
+                //List<string> txtContacts = new List<string>();
+                //txtContacts.Add("8148681001");
+                string[] txtContacts = new string[] { "8148681001", "9176155771" };
+
+                if (Connect() == true)
+                {
+                    //TextReader tr = new StreamReader(fuContacts.PostedFile.InputStream);
+                    string[] lst = txtContacts;
+                    contacts = new Dictionary<string, bool>();
+                    //string[] cts = File.ReadAllLines(MapPath("~/contacts.txt")).Select(line => line.Trim().TrimEnd(',').Replace(Environment.NewLine, "")).ToArray();
+                    //String line;
+                    //while ((line = tr.ReadLine()) != null)
+                    foreach (string line in lst)
+                    {
+                        string s = line.Trim().TrimEnd(',');
+                        if (contacts.ContainsKey(s) == false)
+                        {
+                            contacts.Add(line, SendMessage(s, msg));
+                        }
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+            return View();
+
+        }
+        bool Connect()
+        {
+            try { 
+            url = string.Empty;
+            this.req = (HttpWebRequest)WebRequest.Create(string.Format("{0}/re-login", siteUrl));
+            this.req = SetHeaders(this.req, false, string.Format("{0}/", siteUrl), true);
+
+            url = string.Format("username={0}&password={1}&button=Login", userName, passWord);
+            this.req.ContentLength = url.Length;
+            StreamWriter writer = new StreamWriter(this.req.GetRequestStream(), System.Text.Encoding.ASCII);
+            writer.Write(url);
+            writer.Close();
+            this.response = (HttpWebResponse)this.req.GetResponse();
+            this.cookieCntr = this.req.CookieContainer;
+            this.response.Close();
+
+            string tmpUrl = this.req.RequestUri.AbsoluteUri;
+            tmpUrl = string.Format("{0}/Home.action;jsessionid={1}?id={1}", siteUrl, cookieCntr.GetCookies(req.RequestUri)[0].Value);
+            this.req = (HttpWebRequest)WebRequest.Create(string.Format("{0}/SendSMS?id={1}", siteUrl, cookieCntr.GetCookies(req.RequestUri)[0].Value));
+            this.req = SetHeaders(this.req, false, tmpUrl, false);
+            this.req.Method = "GET";
+            this.req.CookieContainer = this.cookieCntr;
+
+            this.response = (HttpWebResponse)this.req.GetResponse();
+            responseee = new StreamReader(this.response.GetResponseStream()).ReadToEnd();
+            //dfsadf6566af66
+            string str = "<input type=\"hidden\" id=\"action1\" name=\"action1\"";
+            int index = responseee.IndexOf(str, StringComparison.OrdinalIgnoreCase);
+            string sub = responseee.Substring(index, 70);
+            sub = sub.Split('>')[0];
+            responseee = sub.Split(new string[] { "value=" }, StringSplitOptions.RemoveEmptyEntries)[1].Replace("\"", "").Trim();
+
+            this.response.Close();
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
+            return true;
+
+
+        }
+
+        HttpWebRequest SetHeaders(HttpWebRequest reqest, bool useEncoding, string referer, bool isNewCookie)
+        {
+            try { 
+            reqest.Method = "POST";
+            reqest.KeepAlive = true;
+            HttpRequestCachePolicy cachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.Refresh);
+            reqest.CachePolicy = cachePolicy;
+            reqest.Headers.Add("Origin", siteUrl);
+            reqest.UserAgent = "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4";
+            reqest.ContentType = "application/x-www-form-urlencoded";
+            reqest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            if (!string.IsNullOrEmpty(referer))
+                reqest.Referer = referer;
+            if (useEncoding)
+                reqest.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
+            reqest.Headers.Add("Accept-Language", "en-US,en;q=0.8");
+            reqest.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
+            reqest.AllowAutoRedirect = true;
+            if (isNewCookie)
+                reqest.CookieContainer = new CookieContainer();
+            else
+                reqest.CookieContainer = this.cookieCntr;
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+            }
+            return reqest;
+        }
+
+        bool SendMessage(string mobileNo, string Message)
+        {
+            try
+            {
+                this.req = (HttpWebRequest)WebRequest.Create(string.Format("{0}/SendSMSAction", siteUrl));
+                this.req = SetHeaders(this.req, false, string.Format("{0}/SendSMS?id={0}", siteUrl, cookieCntr.GetCookies(req.RequestUri)[0].Value), false);
+                this.url = string.Format("hid_exists=no&action1={0}&mobile1={1}&msg1={2}&sel_month=0&sel_day=0&sel_year=0&sel_hour=hh&sel_minute=mm&sel_cat=0&messid_0={2}&txta_fback=", responseee, mobileNo, Server.UrlEncode(Message));
+
+                this.req.ContentLength = this.url.Length;
+                StreamWriter writer = new StreamWriter(this.req.GetRequestStream(), System.Text.Encoding.ASCII);
+                writer.Write(this.url);
+                writer.Close();
+
+                this.response = (HttpWebResponse)this.req.GetResponse();
+                string ss = new StreamReader(this.response.GetResponseStream()).ReadToEnd();
+                this.response.Close();
+                return true;
+            }
+            catch { return false; }
+        }
+
+
+
+    }
+
+
+
+
+
+
+}
+
+
